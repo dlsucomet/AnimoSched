@@ -5,3 +5,10 @@
 .topnav {
     background-color: var(--primary);
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
