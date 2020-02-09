@@ -31,14 +31,14 @@ ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'archerone',
+    # 'archerone.apps.ProjectConfig',
     'django.contrib.admin',
     'django.contrib.auth', #core authentication framework
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'archerone',
-    # 'archerone.apps.ProjectConfig',
 ]
 
 MIDDLEWARE = [
