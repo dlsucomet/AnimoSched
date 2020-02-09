@@ -1,0 +1,7 @@
+:root {
+    --primary: #006A4E;
+}
+
+.topnav {
+    background-color: var(--primary);
+}
