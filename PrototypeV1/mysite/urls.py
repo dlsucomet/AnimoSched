@@ -23,6 +23,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('archerone/', include('archerone.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
     path('', RedirectView.as_view(url='archerone/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) # static is for serving static files (CSS, Javascript, images, etc.); only for development

@@ -127,3 +127,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Login redirect
 LOGIN_REDIRECT_URL = '/'
+
+# Custom user model
+AUTH_USER_MODEL = 'archerone.User'
