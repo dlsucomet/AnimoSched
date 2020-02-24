@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from archerone.forms import SignUpForm
+from archerone.models import User
 
 def index(request):
     """View function for home page"""
@@ -27,3 +28,22 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def profile(request, id_number):
+    u = User.objects.get(id_number=id_number)
+    
+    # up = UserProfile.objects.get(created_by = u)
+    # cv = UserProfile.objects.filter(created_by = User.objects.get(pk=user))
+    # blog = New.objects.filter(created_by = u) 
+    # replies = Reply.objects.filter(reply_to = blog)
+    # vote = Vote.objects.filter(voted=blog)
+    # following = Relations.objects.filter(initiated_by = u)
+    # follower = Relations.objects.filter(follow = u)
+        
+    return render(request, 'profile/public_profile.html', {
+        'u':u,  
+        # 'ing': following.order_by('-date_initiated'),  
+        # 'er': follower.order_by('-date_follow'),
+        # 'list':blog.order_by('-date'),
+        # 'replies':replies
+        })

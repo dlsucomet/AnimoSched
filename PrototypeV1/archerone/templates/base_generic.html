@@ -12,29 +12,62 @@
 </head>
 
 <body>
-  <nav class="topnav navbar navbar-expand-sm navbar-dark">
-    <a class="navbar-brand" href="{% url 'index' %}">ArcherOne</a>
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button> -->
+  {% block navbar %}
+    <nav class="topnav navbar navbar-expand-sm navbar-dark">
+      <a class="navbar-brand" href="{% url 'index' %}">ArcherOne</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Preferences</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Search Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Generate Schedule</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">View Flowchart</a>
+          </li>
+          <!-- <li class="nav-item">
+            <div class="dropdown">
+              <a href="#" id="imageDropdown" data-toggle="dropdown">
+                <img src="https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png">
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Menu item 1</a></li>
+                <li role="presentation" class="divider"></li>
+              </ul>
+            </div>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' id_number=user.snsss %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          <li class="nav-item">
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  {% endblock %}
+
+  {% block sidebar %}
+  {% endblock %}
 
   {% block content %}
   {% endblock %}

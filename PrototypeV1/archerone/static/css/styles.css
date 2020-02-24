@@ -12,3 +12,36 @@
     margin-right: auto;
     width: 50%;
   }
+
+.sidenav {
+    height: 100%;
+    width: 25%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--primary);
+    overflow-x: hidden; /* disable horizontal scroll */
+    padding-top: 20px;
+}
+
+.sidenav-main {
+    margin-left: 25%;
+    padding: 0px 10px;
+}
+
+.sidenav #upper {
+    min-width: 20%;
+    max-width: 20%;
+    position: absolute;
+    left: 2%;
+    top: 2%;
+}
+
+.sidenav #lower {
+    min-width: 100%;
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
