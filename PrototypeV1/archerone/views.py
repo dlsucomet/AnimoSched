@@ -40,7 +40,7 @@ def profile(request, id_number):
     # following = Relations.objects.filter(initiated_by = u)
     # follower = Relations.objects.filter(follow = u)
         
-    return render(request, 'profile/public_profile.html', {
+    return render(request, 'profile/private_profile.html', {
         'u':u,  
         # 'ing': following.order_by('-date_initiated'),  
         # 'er': follower.order_by('-date_follow'),
