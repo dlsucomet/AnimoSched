@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from archerone.forms import SignUpForm
+from archerone.forms import SignUpForm, EditProfileForm, EditPreferenceForm
 from archerone.models import User, PreferenceList
 
 def index(request):
@@ -31,35 +31,51 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-def profile(request, id_number):
-    u = User.objects.get(id_number=id_number)
-    
-    # up = UserProfile.objects.get(created_by = u)
-    # cv = UserProfile.objects.filter(created_by = User.objects.get(pk=user))
-    # blog = New.objects.filter(created_by = u) 
-    # replies = Reply.objects.filter(reply_to = blog)
-    # vote = Vote.objects.filter(voted=blog)
-    # following = Relations.objects.filter(initiated_by = u)
-    # follower = Relations.objects.filter(follow = u)
-        
-    return render(request, 'profile/private_profile.html', {
-        'u':u,  
-        # 'ing': following.order_by('-date_initiated'),  
-        # 'er': follower.order_by('-date_follow'),
-        # 'list':blog.order_by('-date'),
-        # 'replies':replies
-        })
+def profile(request):
+    u = request.user
+    args = {'u': u}
+    return render(request, 'profile/profile.html', args)
 
-# def preferences(request):
-#     if request.method == 'POST':
-#         form = PreferenceForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             email = form.cleaned_data.get('email')
-#             raw_password = form.cleaned_data.get('password1')
-#             user = authenticate(email=email, password=raw_password)
-#             login(request, user)
-#             return redirect('preferences')
-#     else:
-#         form = PreferenceForm()
-#     return render(request, 'profile/preferences.html', {'form': form})
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'profile/profile_edit.html', args)
+
+def preferences(request):
+    instance = PreferenceList.objects.get(user=request.user)
+    form = EditPreferenceForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        form.save()
+        return redirect('preferences')
+    args = {'form': form}
+    return render(request, 'profile/preferences.html', args)
+
+
+
+
+        
+
+    #     def profile(request, id_number):
+    # u = 
+    
+    # # up = UserProfile.objects.get(created_by = u)
+    # # cv = UserProfile.objects.filter(created_by = User.objects.get(pk=user))
+    # # blog = New.objects.filter(created_by = u) 
+    # # replies = Reply.objects.filter(reply_to = blog)
+    # # vote = Vote.objects.filter(voted=blog)
+    # # following = Relations.objects.filter(initiated_by = u)
+    # # follower = Relations.objects.filter(follow = u)
+        
+    # return render(request, 'profile/profile.html', {
+    #     'u':u,  
+    #     # 'ing': following.order_by('-date_initiated'),  
+    #     # 'er': follower.order_by('-date_follow'),
+    #     # 'list':blog.order_by('-date'),
+    #     # 'replies':replies
+    #     })
