@@ -58,10 +58,13 @@ class EditPreferenceForm(forms.ModelForm):
         ('F', 'F'),
         ]
 
-    # preferred_days = forms.BooleanField(label='College', widget=forms.Select(choices=DAYS))
-    min_courses = forms.IntegerField(label='Min. courses per day')
-    max_courses = forms.IntegerField(label='Max. courses per day')
+    earliest_class_time = forms.TimeField(label='Earliest class time', required=False)
+    latest_class_time = forms.TimeField(label='Latest class time', required=False)
+    break_length = forms.TimeField(label='Break length', required=False)
+    preferred_days = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,choices=DAYS,required=False)
+    min_courses = forms.IntegerField(label='Min. courses per day',required=False)
+    max_courses = forms.IntegerField(label='Max. courses per day',required=False)
 
     class Meta:
         model = PreferenceList
-        fields = ('min_courses', 'max_courses')
+        fields = ('earliest_class_time', 'latest_class_time', 'break_length', 'preferred_days', 'min_courses', 'max_courses')
