@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from archerone.forms import SignUpForm
-from archerone.models import User
+from archerone.models import User, PreferenceList
 
 def index(request):
     """View function for home page"""
@@ -23,6 +23,8 @@ def signup(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
+            list = PreferenceList(user=user)
+            list.save()
             login(request, user)
             return redirect('index')
     else:
@@ -47,3 +49,17 @@ def profile(request, id_number):
         # 'list':blog.order_by('-date'),
         # 'replies':replies
         })
+
+# def preferences(request):
+#     if request.method == 'POST':
+#         form = PreferenceForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             email = form.cleaned_data.get('email')
+#             raw_password = form.cleaned_data.get('password1')
+#             user = authenticate(email=email, password=raw_password)
+#             login(request, user)
+#             return redirect('preferences')
+#     else:
+#         form = PreferenceForm()
+#     return render(request, 'profile/preferences.html', {'form': form})

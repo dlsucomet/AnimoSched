@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
-from .models import User
+from .models import User, PreferenceList
 
 class SignUpForm(UserCreationForm):
     COLLEGES = [
@@ -25,3 +25,20 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'id_number', 'college', 'course', 'password1', 'password2', )
+    
+class PreferenceForm(UserCreationForm):
+    DAYS = [
+        ('M', 'M'),
+        ('T', 'T'),
+        ('W', 'W'),
+        ('H', 'H'),
+        ('F', 'F'),
+        ]
+
+    # preferred_days = forms.BooleanField(label='College', widget=forms.Select(choices=COLLEGES))
+    min_courses = forms.IntegerField(label='Min. courses per day')
+    max_courses = forms.IntegerField(label='Max. courses per day')
+
+    class Meta:
+        model = PreferenceList
+        fields = ('min_courses', 'max_courses')
