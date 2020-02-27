@@ -23,7 +23,7 @@
         <ul class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'signup' %}">Preferences</a>
+            <a class="nav-link" href="{% url 'preferences' %}">Preferences</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Search Courses</a>
@@ -46,7 +46,7 @@
             </div>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="profile/{{ user.id_number }}">Profile</a>
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
