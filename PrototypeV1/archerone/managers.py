@@ -1,3 +1,5 @@
+from django.db import models
+
 from django.contrib.auth.base_user import BaseUserManager
 
 class UserManager(BaseUserManager):
@@ -23,3 +25,8 @@ class UserManager(BaseUserManager):
             raise ValueError('superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
+
+class PreferenceListManager(models.Manager):
+    def create_list(self, title):
+        list = self.create(title=title)
+        return list

@@ -2,11 +2,12 @@
 
 {% block content %}
     {% if user.is_authenticated %}
+        <h2>DLSU email: {{u.email}}</h2>
         <h2>Name: {{u.get_full_name}}</h2>
         <h2>ID number: {{u.id_number}}</h2>
-        <h2>Course: {{u.course}}</h2>
         <h2>College: {{u.college}}</h2>
-        <h2>DLSU email: {{u.email}}</h2>
+        <h2>Course: {{u.course}}</h2>
+        <a href="{% url 'edit_profile' %}">Edit</a>
     {% else %}
         <h2>You're not <a href="{% url 'login' %}">logged in</a>, silly!</h2>
     {% endif %}
