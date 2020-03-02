@@ -1,0 +1,28 @@
+
+    <style type="text/css">
+        .search_bar{
+        max-width: 500px;
+        width: 100%;
+        }
+
+
+    </style>
+
+        {% extends "base_generic.html" %}
+
+        {% block content %}
+        <h2><center>2nd Trimester, AY 2019-2020</center></h2>
+
+        <form method="post" action="{% url 'generate_schedule' %}">
+            {% csrf_token %}
+            <center>
+            <div class="search_bar mt -sm mr-2">
+                <form method="get">
+                    <input type="text" class="form-control" name="course_query" id="cq_id" placeholder="Enter course name...">
+                </form>
+            </div>
+            </center>
+        </form>
+        {% endblock content%}
+
+

@@ -56,6 +56,19 @@ def preferences(request):
     args = {'form': form}
     return render(request, 'profile/preferences.html', args)
 
+def generate_schedule(request):
+
+    context = {}
+
+    query = ""
+    if request.GET:
+        query = request.GET[course_query]
+        context['query'] = str(query)
+
+    u = request.user
+    args = {'u' : u}
+    return render(request, 'schedule_management/generate_schedule.html', args)
+
 
 
 
