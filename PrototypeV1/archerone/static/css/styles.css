@@ -27,12 +27,12 @@
 
 .sidenav-main {
     margin-left: 25%;
-    padding: 0px 10px;
+    padding: 10px 10px;
 }
 
 .sidenav #upper {
-    min-width: 20%;
-    max-width: 20%;
+    min-width: 15%;
+    max-width: 15%;
     position: absolute;
     left: 2%;
     top: 2%;
@@ -45,3 +45,25 @@
     left: 0;
     bottom: 0;
 }
+
+#signup-message {
+    text-align: right;
+}
+
+#signup-form {
+    text-align: center;
+    /* vertical-align: middle; */
+    padding: 70px 0;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    background-color: transparent;
+}
+
+a:hover {
+    color: #49ab81;
+    text-decoration: underline;
+}
+
