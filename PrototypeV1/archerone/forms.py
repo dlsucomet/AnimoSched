@@ -22,6 +22,12 @@ class SignUpForm(UserCreationForm):
     college = forms.CharField(label='College', widget=forms.Select(choices=COLLEGES))
     course = forms.CharField(label='Course', max_length=100)
 
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if "@dlsu.edu.ph" not in data:
+            raise forms.ValidationError("Please enter a valid DLSU email address.")
+        return data
+
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'id_number', 'college', 'course', 'password1', 'password2', )
