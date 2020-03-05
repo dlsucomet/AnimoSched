@@ -14,7 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=100)
     last_name = models.CharField(_('last name'), max_length=100)
-    id_number = models.CharField(_('id number'), max_length=8, validators=[numeric])
+    id_number = models.CharField(_('id number'), unique=True, max_length=8, validators=[numeric])
     college = models.CharField(_('college'), max_length=100) # temp
     course = models.CharField(_('course'), max_length=100) # temp
     is_active = models.BooleanField(_('active'), default=True)
