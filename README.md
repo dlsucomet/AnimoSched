@@ -8,15 +8,17 @@ https://nodejs.org/en/download/
 
 https://pypi.org/project/pipenv/
 
-## Installation
+https://classic.yarnpkg.com/en/docs/install/
 
-`pip install pipenv`
+## Installation
 
 `pipenv install django djangorestframework django-cors-headers`
 
+`cd frontend`
+
 `npm install -g create-react-app`
 
-`yarn add bootstrap reactstrap axios`
+`yarn add create-react-app bootstrap reactstrap axios`
 
 ## Usage
 
@@ -32,4 +34,4 @@ Start Django Server:
 
 `cd backend`
 
-`python manage.py runserver`
+`pipenv run python manage.py runserver`
