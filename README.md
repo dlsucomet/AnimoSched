@@ -6,19 +6,9 @@ https://www.python.org/downloads/
 
 https://nodejs.org/en/download/
 
+https://pypi.org/project/pipenv/
+
 ## Installation
-
-### Automatic:
-
-For Bash:
-
-`sh install.sh`
-
-For CMD:
-
-`install.bat`
-
-### Manual:
 
 `pip install pipenv`
 
@@ -30,10 +20,16 @@ For CMD:
 
 ## Usage
 
-For Bash:
+You need to run both the React Server and the Django Server.
 
-`sh runserver.sh`
+Start React Server:
 
-For CMD:
+`cd frontend`
 
-`runserver.bat`
+`yarn start`
+
+Start Django Server:
+
+`cd backend`
+
+`python manage.py runserver`
