@@ -30,7 +30,7 @@ class Menu extends React.Component{
 
                         <Nav.Link href="#deets">Preferences</Nav.Link>
                         <Nav.Link href="#deets">Search Courses</Nav.Link>
-                        <Nav.Link href="#deets">Generate Schedule</Nav.Link>
+                        <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                         <Nav.Link href="#deets">View Flowchart</Nav.Link>
                         <Nav.Link href="/profile">
                             <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
