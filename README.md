@@ -42,3 +42,20 @@ Start Django Server:
 
 `python manage.py runserver`
 
+## REST API
+
+Get all users:
+
+`/api/users/`
+
+Get all courses:
+
+`/api/courses/`
+
+Get all colleges:
+
+`/api/colleges/`
+
+Get a specific user using id:
+
+`/api/users/[id]`
