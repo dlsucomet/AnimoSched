@@ -12,11 +12,7 @@ https://classic.yarnpkg.com/en/docs/install/
 
 ## Installation
 
-`pipenv install django djangorestframework django-cors-headers`
-
-If pipenv doesn't work, then go ahead and install directly:
-
-`pip install django djangorestframework django-cors-headers`
+`pip install django djangorestframework django-cors-headers django-rest-auth`
 
 Then go to the frontend directory to install react dependencies:
 
@@ -43,10 +39,6 @@ Start React Server:
 Start Django Server:
 
 `cd backend`
-
-`pipenv run python manage.py runserver`
-
-or just
 
 `python manage.py runserver`
 
