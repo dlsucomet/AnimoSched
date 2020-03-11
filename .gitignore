@@ -522,3 +522,4 @@ gradle-app.setting
 
 # yarn.lock
 yarn.lock
+package-lock.json
