@@ -62,6 +62,10 @@ componentDidMount(){
         }
     }
 
+    test = () =>{
+        console.log("hello from text");
+    }
+
   
 
   render() {
@@ -193,16 +197,10 @@ componentDidMount(){
       }
     }
 
-    addCard = () => {
+    addCard = (name) => {
       this.setState(state =>{
         const oldItems = state.highCourses;
-        var tempName = "";
-        if(this.courseName.current.value == null){
-            tempName = "Course" + oldItems.length;
-        }else{
-            tempName = this.courseName.current.value
-        }
-        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: tempName});
+        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: name});
         return{highCourses};
       });
     };
