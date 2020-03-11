@@ -10,6 +10,8 @@ import MainPage from "./pages/Index";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import ProfilePage from "./pages/Profile";
+import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
+import CourseDnD from "./components/CourseDnD";
 
 class App extends Component {
   render() {
@@ -20,6 +22,8 @@ class App extends Component {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/generateSchedule" component={GenerateSchedulePage} />
+          <Route exact path="/courseDNDTestingPurposes" component={CourseDnD} />
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
           <Redirect to="/404" />
         </Switch>
