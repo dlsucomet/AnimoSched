@@ -6,8 +6,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 
-from .managers import UserManager 
-
 import datetime
 
 class College(models.Model):
@@ -33,17 +31,20 @@ class Course(models.Model):
 
 class User(AbstractBaseUser):
     username = None
-    id_num = models.IntegerField()
+    id_num = models.CharField(max_length=9, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     courses = models.ManyToManyField(Course)
     timestamp = models.DateTimeField(auto_now=True)
 
+    # objects = UserManager()
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name']
+    REQUIRED_FIELDS = ['id_num','first_name','last_name']
 
     class Meta:
+        # ordering = ['id_num','last_name']
         verbose_name = _('user')
         verbose_name_plural = _('users')
 

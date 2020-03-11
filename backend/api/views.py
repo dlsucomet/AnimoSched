@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets          
-from .serializers import UserSerializer, CourseSerializer, CollegeSerializer 
+from .serializers import CustomRegisterSerializer, UserSerializer, CourseSerializer, CollegeSerializer 
 from .models import User, Course, College
-from rest_auth.registration.views import RegisterView
+
 
 class UserViewSet(viewsets.ModelViewSet):
   serializer_class = UserSerializer
