@@ -12,9 +12,11 @@ const groupStyle = {
 class CourseDnD extends Component {
   constructor(props) {
     super();
+     
     this.state = {
-      highCourses: generateItems(4, (index) => ( {id: '1' + index, data: 'Majors' + index})),
-      lowCourses: generateItems(4, (index) => ( {id: '2' + index,data: 'Minors' + index})),
+        highCourses: [],
+        //highCourses: generateItems(4, (index) => ( {id: "1" + index, data: 'Majors' + index})),
+      //lowCourses: generateItems(4, (index) => ( {id: '2' + index,data: 'Minors' + index})),
       highContainer: {
         id: 'columns1',
         type: "container",
@@ -39,11 +41,33 @@ class CourseDnD extends Component {
     this.courseName = React.createRef();
   }
 
+componentDidMount(){
+    this.refreshList();
+}
+
+    refreshList = () => {
+        var newItems = ['Ad','Josh'];
+        if(this.props.idTag == '1'){
+            newItems = ["Major1", "Major2", "Major3"];
+        }else if(this.props.idTag == '2'){
+            newItems = ["Minor1", "Minor2", "Minor3"];
+        }
+
+        for(let i = 0; i < newItems.length; i++) {
+            this.setState(state =>{
+                const oldItems = state.highCourses;
+                const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
+                return{highCourses};
+            });
+        }
+    }
+
   
 
   render() {
     let searchCourseField = this.props.searchCourseField;
     return (
+       
       <div>
         <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px' }}>
           <div style= {groupStyle}>
@@ -60,23 +84,6 @@ class CourseDnD extends Component {
             </Container>
         </div>
         </div>
-        <div className="simple-page2">
-            <div className="simple-page" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px' }}>
-                <div style= {groupStyle}>
-                    <Container groupName="1" getChildPayload={i => this.state.lowCourses[i]} onDrop={e => this.setState({ lowCourses: applyDrag(this.state.lowCourses, e) })}>
-                        {this.state.lowCourses.map(p => {
-                        return (
-                            <Draggable key={p.id}>
-                            <div className="draggable-item">
-                                {p.data}
-                            </div>
-                            </Draggable>
-                        );
-                        })}
-                    </Container>
-                </div>
-            </div>
-        </div>
  
           <div id="search_container">
             <input ref={this.courseName}
@@ -90,41 +97,6 @@ class CourseDnD extends Component {
       </div>
     );
   }
-
-    
-    // constructor() {
-    //   super();
-  
-    //   this.onColumnDrop = this.onColumnDrop.bind(this);
-    //   this.onCardDrop = this.onCardDrop.bind(this);
-    //   this.getCardPayload = this.getCardPayload.bind(this);
-    //   this.state = {
-    //     scene: {
-    //       type: "container",
-    //       props: {
-    //         orientation: "horizontal"
-    //       },
-    //       children: generateItems(2, i => ({
-    //         id: `column${i}`,
-    //         type: "container",
-    //         name: columnNames[i],
-    //         props: {
-    //           orientation: "vertical",
-    //           className: "card-container",
-    //         },
-    //         children: generateItems(4, j => ({
-    //           type: "draggable",
-    //           id: `${i}${j}`,
-    //           props: {
-    //             className: "card",
-    //             style: { backgroundColor: '#98FB98' }
-    //           },
-    //           data: courses[j]
-    //         }))
-    //       }))
-    //     },
-    //   };
-    // }
   
     // render() {
     //   return (
@@ -224,14 +196,20 @@ class CourseDnD extends Component {
     addCard = () => {
       this.setState(state =>{
         const oldItems = state.highCourses;
-        const highCourses = state.highCourses.concat({id: oldItems.length, data: this.courseName.current.value});
+        var tempName = "";
+        if(this.courseName.current.value == null){
+            tempName = "Course" + oldItems.length;
+        }else{
+            tempName = this.courseName.current.value
+        }
+        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: tempName});
         return{highCourses};
       });
     };
 
+
     onClearArray = () => {
       this.setState({highCourses: []});
-      this.setState({lowCourses: []});
     };
   }
 
