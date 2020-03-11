@@ -5,7 +5,9 @@ from api import views
 
 router = routers.DefaultRouter()                      
 # router.register(r'register', views.CustomRegisterView)     
-router.register(r'preferences', views.PreferenceView)     
+router.register(r'users', views.UserViewSet)
+router.register(r'courses', views.CourseViewSet)     
+router.register(r'colleges', views.CollegeViewSet)     
 
 urlpatterns = [
     path('api/', include(router.urls)),                

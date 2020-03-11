@@ -3,19 +3,37 @@ import { Container, Draggable } from "react-smooth-dnd";
 import { applyDrag, generateItems } from '../components/ultils';
 import '../css/CourseDnD.css';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+const groupStyle = {
+    marginLeft: '50px',
+    flex: 1
+  };
 
 
 class CourseDnD extends Component {
   constructor(props) {
     super();
     this.state = {
-      items: generateItems(4, (index) => {
-        return {
-          id: index,
-          data: 'Majors' + index
-        };
-      }),
-      courseName: "",
+      highCourses: generateItems(4, (index) => ( {id: '1' + index, data: 'Majors' + index})),
+      lowCourses: generateItems(4, (index) => ( {id: '2' + index,data: 'Minors' + index})),
+      highContainer: {
+        id: 'columns1',
+        type: "container",
+        name: "Highest Priority",
+        props: {
+            orientation: "vertical",
+            className: "card-container"
+        }
+      },
+      lowContainer: {
+        id: 'columns2',
+        type: "container",
+        name: "Lowest Priority",
+        props: {
+            orientation: "vertical",
+            className: "card-container"
+        }
+    }
+      
     };
 
     this.courseName = React.createRef();
@@ -27,18 +45,37 @@ class CourseDnD extends Component {
     let searchCourseField = this.props.searchCourseField;
     return (
       <div>
-        <div className="simple-page">
-          <Container onDrop={e => this.setState({ items: applyDrag(this.state.items, e) })}>
-            {this.state.items.map(p => {
-              return (
-                <Draggable key={p.id}>
-                  <div className="draggable-item">
-                    {p.data}
-                  </div>
-                </Draggable>
-              );
-            })}
-          </Container>
+        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px' }}>
+          <div style= {groupStyle}>
+            <Container groupName="1" getChildPayload={i => this.state.highCourses[i]} onDrop={e => this.setState({ highCourses: applyDrag(this.state.highCourses, e) })}>
+                {this.state.highCourses.map(p => {
+                return (
+                    <Draggable key={p.id}>
+                    <div className="draggable-item">
+                        {p.data}
+                    </div>
+                    </Draggable>
+                );
+                })}
+            </Container>
+        </div>
+        </div>
+        <div className="simple-page2">
+            <div className="simple-page" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px' }}>
+                <div style= {groupStyle}>
+                    <Container groupName="1" getChildPayload={i => this.state.lowCourses[i]} onDrop={e => this.setState({ lowCourses: applyDrag(this.state.lowCourses, e) })}>
+                        {this.state.lowCourses.map(p => {
+                        return (
+                            <Draggable key={p.id}>
+                            <div className="draggable-item">
+                                {p.data}
+                            </div>
+                            </Draggable>
+                        );
+                        })}
+                    </Container>
+                </div>
+            </div>
         </div>
  
           <div id="search_container">
@@ -46,8 +83,7 @@ class CourseDnD extends Component {
             type="text"
             name={searchCourseField}
             id="exampleSearch"
-            placeholder="Enter Course Name..."
-            />
+            placeholder="Enter Course Name..."/>
           </div>
           <button className="addBtn" onClick={this.addCard}>Add course</button>
 
@@ -187,14 +223,15 @@ class CourseDnD extends Component {
 
     addCard = () => {
       this.setState(state =>{
-        const oldItems = state.items;
-        const items = state.items.concat({id: oldItems.length, data: this.courseName.current.value});
-        return{items};
+        const oldItems = state.highCourses;
+        const highCourses = state.highCourses.concat({id: oldItems.length, data: this.courseName.current.value});
+        return{highCourses};
       });
     };
 
     onClearArray = () => {
-      this.setState({items: []});
+      this.setState({highCourses: []});
+      this.setState({lowCourses: []});
     };
   }
 

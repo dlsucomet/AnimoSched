@@ -17,7 +17,7 @@ export const applyDrag = (arr, dragResult) => {
   };
   
   export const generateItems = (count, creator) => {
-    const result = [];
+    var result = [];
     for (let i = 0; i < count; i++) {
       result.push(creator(i));
     }

@@ -133,8 +133,7 @@ STATIC_URL = '/static/'
 
 # API-related
 CORS_ORIGIN_WHITELIST = [
-        'http://localhost:3000',
-        'http://localhost:8000',
+        'http://*'
 ]
 
 # REST-related
