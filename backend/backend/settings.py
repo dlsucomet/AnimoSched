@@ -37,11 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'corsheaders',
     'rest_framework',
-    'api',
-    'core'
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'api'
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -129,3 +136,22 @@ CORS_ORIGIN_WHITELIST = [
         'http://localhost:3000',
         'http://localhost:8000',
 ]
+
+# REST-related
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_USER_EMAIL_FIELD = 'email'
+# ACCOUNT_LOGOUT_ON_GET = True
+
+# AUTH_USER_MODEL = 'users.User'
+
+# REST_AUTH_SERIALIZERS = {
+#     "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
+# }
+# REST_AUTH_REGISTER_SERIALIZERS = {
+#     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
+# }
