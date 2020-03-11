@@ -24,7 +24,7 @@ Then go to the frontend directory to install react dependencies:
 
 Additional packages that need to be installed:
 
-`yarn add simple-flexbox react-smooth-dnd`
+`yarn add simple-flexbox react-smooth-dnd react-router`
 
 ## Usage
 
