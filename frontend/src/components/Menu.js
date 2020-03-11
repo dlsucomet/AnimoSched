@@ -29,7 +29,7 @@ class Menu extends React.Component{
                         <Nav.Link href="/register">Sign Up</Nav.Link>
 
                         <Nav.Link href="#deets">Preferences</Nav.Link>
-                        <Nav.Link href="#deets">Search Courses</Nav.Link>
+                        <Nav.Link href="/courseDNDTestingPurposes">Search Courses</Nav.Link>
                         <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                         <Nav.Link href="#deets">View Flowchart</Nav.Link>
                         <Nav.Link href="/profile">
