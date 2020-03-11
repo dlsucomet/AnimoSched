@@ -62,6 +62,10 @@ componentDidMount(){
         }
     }
 
+    test = () =>{
+        console.log("hello from text");
+    }
+
   
 
   render() {

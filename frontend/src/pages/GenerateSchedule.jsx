@@ -55,7 +55,7 @@ class GenerateSchedule extends Component {
                         <Row vertical = 'center'>
                             <Column flexGrow={1} horizontal = 'center'>
                                 <h3>Highest Priority</h3>
-                                <span><CourseDnD idTag={this.state.highPriorityId} ref="child"/></span>
+                                <span><CourseDnD idTag={this.state.highPriorityId} /></span>
 
                             </Column>
                             <Column flexGrow={1} horizontal = 'center'>
