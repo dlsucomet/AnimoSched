@@ -7,7 +7,7 @@ import '../css/Menu.css';
 class Menu extends React.Component{
     render (){
         return(
-            <Navbar collapseOnSelect expand="lg" className="color-nav" variant="dark">
+            <Navbar sticky="top" collapseOnSelect expand="lg" className="color-nav" variant="dark">
                 <Navbar.Brand href="/">ArcherOne</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -31,7 +31,7 @@ class Menu extends React.Component{
                         <Nav.Link href="#deets">Preferences</Nav.Link>
                         <Nav.Link href="#deets">Search Courses</Nav.Link>
                         <Nav.Link href="#deets">Generate Schedule</Nav.Link>
-                        <Nav.Link href="#deets">View Flowchart</Nav.Link>
+                        <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                         <Nav.Link href="/profile">
                             <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="10" cy="10" r="8"></circle>
