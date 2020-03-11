@@ -1,14 +1,17 @@
 from django.shortcuts import render
 from rest_framework import viewsets          
-# from .serializers import UserSerializer      
-from .serializers import PreferenceSerializer      
-# from .models import User 
-from .models import Preference, User
-from rest_auth.registration.views import RegisterView
+from .serializers import CustomRegisterSerializer, UserSerializer, CourseSerializer, CollegeSerializer 
+from .models import User, Course, College
 
-class CustomRegisterView(RegisterView):
-    queryset = User.objects.all()          
 
-class PreferenceView(viewsets.ModelViewSet):       
-  serializer_class = PreferenceSerializer          
-  queryset = Preference.objects.all()              
+class UserViewSet(viewsets.ModelViewSet):
+  serializer_class = UserSerializer
+  queryset = User.objects.all()              
+
+class CourseViewSet(viewsets.ModelViewSet):       
+  serializer_class = CourseSerializer 
+  queryset = Course.objects.all()              
+
+class CollegeViewSet(viewsets.ModelViewSet):       
+  serializer_class = CollegeSerializer 
+  queryset = College.objects.all()              

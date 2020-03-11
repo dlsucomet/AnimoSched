@@ -24,7 +24,7 @@ Then go to the frontend directory to install react dependencies:
 
 Additional packages that need to be installed:
 
-`yarn add simple-flexbox react-smooth-dnd`
+`yarn add simple-flexbox react-smooth-dnd react-router`
 
 ## Usage
 
@@ -42,3 +42,20 @@ Start Django Server:
 
 `python manage.py runserver`
 
+## REST API
+
+Get all users:
+
+`/api/users/`
+
+Get all courses:
+
+`/api/courses/`
+
+Get all colleges:
+
+`/api/colleges/`
+
+Get a specific user using id:
+
+`/api/users/[id]`

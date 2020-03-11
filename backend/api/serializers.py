@@ -1,31 +1,35 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import User, Preference
+from .models import User, Course, College 
 
 class CustomRegisterSerializer(RegisterSerializer):
+    id_num = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
-    password1 = serializers.CharField(write_only=True)
-    name = serializers.CharField(required=True)
-    date_of_birth = serializers.DateField(required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
 
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
 
         return {
-            'password1': self.validated_data.get('password1', ''),
+            'id_num': self.validated_data.get('id_num', ''),
             'email': self.validated_data.get('email', ''),
-            'name': self.validated_data.get('name', ''),
-            'date_of_birth': self.validated_data.get('date_of_birth', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
         }
 
-class CustomUserDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email','name','date_of_birth')
-        read_only_fields = ('email',)
-
-class PreferenceSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Preference 
-    fields = ('id', 'min_courses', 'max_courses')
+    model = User
+    fields = ('id','id_num','email','first_name','last_name','courses')
+
+class CourseSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Course 
+    fields = ('id', 'college','course_code', 'course_name', 'course_desc', 'units')
+
+class CollegeSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = College 
+    fields = ('id', 'college_code', 'college_name')
