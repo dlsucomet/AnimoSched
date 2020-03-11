@@ -5,10 +5,10 @@ import Menu from '../components/Menu';
 class Index extends Component {
     render() {
       return (
-          <div>
-            <Menu />
+        <div>
+          <Menu />
   
-            <Column flexGrow={1}>
+          <Column flexGrow={1}>
   
             <Row vertical='center'>
               <Column flexGrow={1}>
