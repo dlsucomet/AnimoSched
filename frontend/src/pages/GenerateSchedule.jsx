@@ -5,12 +5,15 @@ import Menu from '../components/Menu';
 import CourseDnD from '../components/CourseDnD';
 
 class GenerateSchedule extends Component {
+
     constructor(props) {
         super();
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
-            value: ""
+            value: "",
+            highCourses: ['Major1', 'Major2'],
+            lowCourses: ['Minor1', 'Minor2'],
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -18,12 +21,14 @@ class GenerateSchedule extends Component {
 
     handleKeyPress = (event) => {
         if(event.key === 'Enter'){
-            this.setState({value: event.target.value});
-            console.log('enter press here! ');
-            console.log(event.target.value);
+            const newCourse = event.target.value;
+            this.setState(state =>{
+                const highCourses = state.highCourses.concat(newCourse);
+                return{highCourses};
+            });
+            console.log(this.state.highCourses)
         }
       }
-
     handleAddCard = () =>{
 
     }
@@ -55,12 +60,12 @@ class GenerateSchedule extends Component {
                         <Row vertical = 'center'>
                             <Column flexGrow={1} horizontal = 'center'>
                                 <h3>Highest Priority</h3>
-                                <span><CourseDnD idTag={this.state.highPriorityId} /></span>
+                                <span><CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/></span>
 
                             </Column>
                             <Column flexGrow={1} horizontal = 'center'>
                                 <h3>Lowest Priority</h3>
-                                <span><CourseDnD idTag={this.state.lowPriorityId}/></span>
+                                <span><CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/></span>
                             </Column>
                         </Row>
                         <Row horizontal = 'center'>
