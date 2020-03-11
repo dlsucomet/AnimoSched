@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import User, Preference
+from .models import User, Course, College 
 
 class CustomRegisterSerializer(RegisterSerializer):
     email = serializers.EmailField(required=True)
@@ -19,13 +19,17 @@ class CustomRegisterSerializer(RegisterSerializer):
             'date_of_birth': self.validated_data.get('date_of_birth', ''),
         }
 
-class CustomUserDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email','name','date_of_birth')
-        read_only_fields = ('email',)
-
-class PreferenceSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Preference 
-    fields = ('id', 'min_courses', 'max_courses')
+    model = User
+    fields = ('id','id_num','email','first_name','last_name','courses')
+
+class CourseSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Course 
+    fields = ('id', 'college','course_code', 'course_name', 'course_desc', 'units')
+
+class CollegeSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = College 
+    fields = ('id', 'college_code', 'college_name')
