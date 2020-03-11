@@ -16,14 +16,7 @@ class Register extends Component {
             pass: "",
             passCon: "",
         }
-        // this.firstName = React.createRef();
-        // this.lastName = React.createRef();
-        // this.email = React.createRef();
-        // this.idNo = React.createRef();
-        // this.college = React.createRef();
-        // this.course = React.createRef();
-        // this.pass = React.createRef();
-        // this.passCon = React.createRef();
+
     }
 
     handleChange = (e) => {
