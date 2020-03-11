@@ -1,0 +1,11 @@
+.profile-category {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+
+.profile-category-content {
+    border-color: #007453;
+    border-style: solid;
+    padding: 3%;
+}

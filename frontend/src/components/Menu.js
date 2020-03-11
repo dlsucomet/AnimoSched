@@ -1,5 +1,5 @@
 import React from 'react';
-import {Nav, NavItem, Navbar, Badge, NavDropdown} from 'react-bootstrap';
+import { Nav, NavItem, Navbar, Badge, NavDropdown } from 'react-bootstrap';
 import FriendRequests from '../images/NavBar-FriendRequest.png';
 import Notifications from '../images/NavBar-Notification.png';
 import '../css/Menu.css';
@@ -24,11 +24,15 @@ class Menu extends React.Component{
                     </Nav> */}
                     
                     <Nav className="ml-auto">
+                        {/* NAV BAR WHEN LOGGED IN */}
+                        <Nav.Link href="/login">Login</Nav.Link>
+                        <Nav.Link href="/register">Sign Up</Nav.Link>
+
                         <Nav.Link href="#deets">Preferences</Nav.Link>
                         <Nav.Link href="#deets">Search Courses</Nav.Link>
                         <Nav.Link href="#deets">Generate Schedule</Nav.Link>
                         <Nav.Link href="#deets">View Flowchart</Nav.Link>
-                        <Nav.Link href="#deets">
+                        <Nav.Link href="/profile">
                             <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="10" cy="10" r="8"></circle>
                             </svg>
