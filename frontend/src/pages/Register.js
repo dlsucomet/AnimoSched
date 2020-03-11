@@ -3,6 +3,39 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Register.svg';
 
 class Register extends Component {
+    constructor(props){
+        super();
+
+        this.state = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            idNo: "",
+            college: "RVRCOB",
+            course: "",
+            pass: "",
+            passCon: "",
+        }
+
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    collectData = () =>{
+        console.log(this.state.firstName);
+        console.log(this.state.lastName);
+        console.log(this.state.email);
+        console.log(this.state.idNo);
+        console.log(this.state.college);
+        console.log(this.state.course);
+        console.log(this.state.pass);
+        console.log(this.state.passCon);
+    }
+    
     render() {
       return (
         <div>
@@ -23,26 +56,26 @@ class Register extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    <form>
+                    {/* <form> */}
                         First Name
                         <br/>
-                        <input/><br/><br/>
+                        <input name = "firstName" value={this.state.firstName} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         Last Name
                         <br/>
-                        <input/><br/><br/>
+                        <input name = "lastName" value={this.state.lastName} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         Email
                         <br/>
-                        <input/><br/><br/>
+                        <input name = "email" value={this.state.email} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         ID Number
                         <br/>
-                        <input/><br/><br/>
+                        <input name = "idNo" value={this.state.idNo} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         College
                         <br/>
-                        <select id="college" name="college">
+                        <select id="college" name="college" value={this.state.college} onChange={e => this.handleChange(e)} >
                           <option value="RVRCOB">Ramon V. del Rosario College of Business (RVR COB)</option>
                           <option value="CCS">College of Computer Studies (CCS)</option>
                           <option value="GCOE">Gokongwei College of Engineering (GCOE)</option>
@@ -55,18 +88,18 @@ class Register extends Component {
 
                         Course
                         <br/>
-                        <input/><br/><br/>
+                        <input name = "course" value={this.state.course} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         Password
                         <br/>
-                        <input type="password"/><br/><br/>
+                        <input type="password" name = "pass" value={this.state.pass} onChange={e => this.handleChange(e)}/><br/><br/>
 
                         Confirm Password
                         <br/>
-                        <input type="password"/><br/><br/>
+                        <input type="password" name = "passCon" value={this.state.passCon} onChange={e => this.handleChange(e)}/><br/><br/>
 
-                        <input type="submit" class="btn btn-success" value="Register" />
-                    </form>
+                        <input type="submit" class="btn btn-success" value="Register" onClick={this.collectData}/>
+                    {/* </form> */}
                     
                     <br/>
                     

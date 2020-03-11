@@ -3,6 +3,27 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 
 class Login extends Component {
+    constructor(props){
+        super();
+
+        this.state = {
+            email: "",
+            pass: "",
+        }
+
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    collectData = () =>{
+        console.log(this.state.email);
+        console.log(this.state.pass);
+    }
+
     render() {
       return (
         <div>
@@ -23,21 +44,21 @@ class Login extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    <form>
+                    {/* <form> */}
                         Email
                         <br/>
-                        <input></input>
+                        <input name="email" onChange={e => this.handleChange(e)}></input>
                         <br/>
                         <br/>
 
                         Password
                         <br/>
-                        <input type="password"></input>
+                        <input type="password" name="pass" onChange={e => this.handleChange(e)}></input>
                         <br/>
                         <br/>
 
-                        <input type="submit" class="btn btn-success" value="Login" />
-                    </form>
+                        <input type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
+                    {/* </form> */}
                     
                     <br/>
                     
