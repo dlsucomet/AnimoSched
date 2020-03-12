@@ -43,7 +43,6 @@ class CourseDnD extends Component {
   }
 
 componentWillReceiveProps() {
-  console.log("updating");
   this.refreshList();
 }
 
