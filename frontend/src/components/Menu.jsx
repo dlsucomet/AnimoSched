@@ -28,13 +28,11 @@ class Menu extends React.Component{
                         <Nav.Link href="/login">Login</Nav.Link>
                         <Nav.Link href="/register">Sign Up</Nav.Link>
 
-                        <Nav.Link href="#deets">Preferences</Nav.Link>
-                        <Nav.Link href="#deets">Search Courses</Nav.Link>
-                        <Nav.Link href="#deets">Generate Schedule</Nav.Link>
-                        <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
-                        <Nav.Link href="/courseDNDTestingPurposes">Search Courses</Nav.Link>
+                        <Nav.Link href="/preferences">Preferences</Nav.Link>
+                        <Nav.Link href="/search_courses">Search Courses</Nav.Link>
+                        <Nav.Link href="/courseDNDTestingPurposes">DND Testing Purposes</Nav.Link>
                         <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
-                        <Nav.Link href="#deets">View Flowchart</Nav.Link>
+                        <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                         <Nav.Link href="/profile">
                             <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="10" cy="10" r="8"></circle>

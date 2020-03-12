@@ -67,10 +67,6 @@ class Register extends Component {
 
                         <input type="submit" class="btn btn-success" value="Register" />
                     </form>
-                    
-                    <br/>
-                    
-                    <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
                 </div>
             </div>
         </div>        
