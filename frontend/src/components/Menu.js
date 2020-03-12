@@ -3,8 +3,18 @@ import { Nav, NavItem, Navbar, Badge, NavDropdown } from 'react-bootstrap';
 import FriendRequests from '../images/NavBar-FriendRequest.png';
 import Notifications from '../images/NavBar-Notification.png';
 import '../css/Menu.css';
+import axios from 'axios';
 
 class Menu extends React.Component{
+
+    logout = () => {
+       axios.get('http://localhost:8000/api/auth/logout/')
+       .then(res => {
+           console.log(res);
+           localStorage.setItem('user',undefined)
+       }) 
+    }
+
     render (){
         return(
             <Navbar sticky="top" collapseOnSelect expand="lg" className="color-nav" variant="dark">
@@ -51,7 +61,7 @@ class Menu extends React.Component{
                             </svg>
                         </Nav.Link>
                         <NavDropdown id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
+                            <NavDropdown.Item onClick={this.logout}>Logout</NavDropdown.Item>
                         </NavDropdown>
                         {/* <Nav.Link eventKey={2} href="#memes"> Dank memes </Nav.Link> */}
                     </Nav>
