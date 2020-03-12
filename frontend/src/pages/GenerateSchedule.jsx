@@ -7,20 +7,22 @@ import '../css/GenerateSchedule.css';
 import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
 import ReactDOM from "react-dom";
-import Pagination from "react-js-pagination";
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 class GenerateSchedule extends Component {
 
     constructor(props) {
         super();
+
+        this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
+        this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
             highCourses: [],
             lowCourses: [],
-            generatedContent: [<GenSchedInfo/>,<GenSchedInfo/>],
-            activePage: 2,
+            currentPage: 0
             
         };
 
@@ -82,7 +84,7 @@ class GenerateSchedule extends Component {
     
     render() { 
         let search_field = this.props.search_field;
-        
+        const { currentPage } = this.state;
         return (
             <div>
                 <Menu />
@@ -123,13 +125,28 @@ class GenerateSchedule extends Component {
                             <GenSchedInfo/>
                         </div>
                         <Row horizontal='center'>Pagination here
-                        <Pagination
-                            activePage={this.state.activePage}
-                            itemsCountPerPage={10}
-                            totalItemsCount={450}
-                            pageRangeDisplayed={5}
-                            onChange={this.handlePageChange.bind(this)}
-                            />
+                            <Pagination aria-label="Page navigation example">
+                                <PaginationItem disabled={currentPage <= 0}>
+                                    <PaginationLink onClick={e => this.handleClick(e, currentPage - 1)}
+                                        previous
+                                        href="#" />
+                                </PaginationItem>
+                                {this.generatedContent.map((page, i) => 
+                                    <PaginationItem active={i === currentPage} key={i}>
+                                        <PaginationLink onClick={e => this.handleClick(e, i)} href="#">
+                                        {i + 1}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                    )}
+                                <PaginationItem disabled={currentPage >= this.pagesCount - 1}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, currentPage + 1)}
+                                        next
+                                        href="#"
+                                    />
+                                    
+                                    </PaginationItem>
+                            </Pagination>
                         </Row>
                     </Column>
                 </div>
