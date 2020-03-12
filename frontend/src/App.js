@@ -17,6 +17,7 @@ import PreferencesPage from "./pages/Preferences.jsx";
 import SearchCoursesPage from "./pages/SearchCourses.jsx";
 
 class App extends Component {
+
   render() {
     return (
       <Router>

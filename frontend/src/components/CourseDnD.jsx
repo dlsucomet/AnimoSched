@@ -10,6 +10,7 @@ const groupStyle = {
 
 
 class CourseDnD extends Component {
+
   constructor(props) {
     super();
      
@@ -41,17 +42,18 @@ class CourseDnD extends Component {
     this.courseName = React.createRef();
   }
 
+componentWillReceiveProps() {
+  console.log("updating");
+  this.refreshList();
+}
+
 componentDidMount(){
-    this.refreshList();
+  this.refreshList();
 }
 
     refreshList = () => {
-        var newItems = ['Ad','Josh'];
-        if(this.props.idTag == '1'){
-            newItems = ["Major1", "Major2", "Major3"];
-        }else if(this.props.idTag == '2'){
-            newItems = ["Minor1", "Minor2", "Minor3"];
-        }
+        var newItems = this.props.courses;
+        this.state.highCourses = []
 
         for(let i = 0; i < newItems.length; i++) {
             this.setState(state =>{
@@ -61,8 +63,6 @@ componentDidMount(){
             });
         }
     }
-
-  
 
   render() {
     let searchCourseField = this.props.searchCourseField;
@@ -85,14 +85,7 @@ componentDidMount(){
         </div>
         </div>
  
-          <div id="search_container">
-            <input ref={this.courseName}
-            type="text"
-            name={searchCourseField}
-            id="exampleSearch"
-            placeholder="Enter Course Name..."/>
-          </div>
-          <button className="addBtn" onClick={this.addCard}>Add course</button>
+          {/* <button className="addBtn" onClick={this.refreshList}>Add course</button> */}
 
       </div>
     );
@@ -193,16 +186,10 @@ componentDidMount(){
       }
     }
 
-    addCard = () => {
+    addCard = (name) => {
       this.setState(state =>{
         const oldItems = state.highCourses;
-        var tempName = "";
-        if(this.courseName.current.value == null){
-            tempName = "Course" + oldItems.length;
-        }else{
-            tempName = this.courseName.current.value
-        }
-        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: tempName});
+        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: name});
         return{highCourses};
       });
     };

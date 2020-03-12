@@ -4,8 +4,9 @@ from rest_auth.registration.serializers import RegisterSerializer
 from .models import User, Course, College 
 
 class CustomRegisterSerializer(RegisterSerializer):
-    id_num = serializers.CharField(required=True)
+    # username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
+    password1 = serializers.CharField(write_only=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
 
@@ -13,7 +14,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         super(CustomRegisterSerializer, self).get_cleaned_data()
 
         return {
-            'id_num': self.validated_data.get('id_num', ''),
+            # 'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1',''),
             'email': self.validated_data.get('email', ''),
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
@@ -22,7 +24,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('id','id_num','email','first_name','last_name','courses')
+    fields = ('id','username','email','first_name','last_name','courses')
 
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:

@@ -1,8 +1,66 @@
 import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
+import axios from 'axios';
 
 class Login extends Component {
+    constructor(props){
+        super();
+
+        this.state = {
+            email: "",
+            pass: "",
+            token: "",
+        }
+
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    collectData = () =>{
+        console.log(this.state.email);
+        console.log(this.state.pass);
+        const data = {
+            email: this.state.email,
+            password: this.state.pass
+        }
+        axios.post('http://localhost:8000/api/auth/login/', data,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', res.data.user.id);
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
+    }
+
+    // test = () =>{
+    //     console.log(this.state.token)
+    //     axios.get('http://localhost:8000/api/auth/user/',
+    //     {
+    //         headers: {
+    //             'X-CSRF-TOKEN': this.state.token,
+    //         }
+    //     })
+    //     .then(res => {
+    //         console.log(res);
+    //         console.log(res.data);
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
+    // }
+
     render() {
       return (
         <div>
@@ -23,25 +81,25 @@ class Login extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    <form>
+                    {/* <form> */}
                         Email
                         <br/>
-                        <input></input>
+                        <input name="email" onChange={e => this.handleChange(e)}></input>
                         <br/>
                         <br/>
 
                         Password
                         <br/>
-                        <input type="password"></input>
+                        <input type="password" name="pass" onChange={e => this.handleChange(e)}></input>
                         <br/>
                         <br/>
 
-                        <input type="submit" class="btn btn-success" value="Login" />
-                    </form>
+                        <input type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
+                    {/* </form> */}
                     
                     <br/>
                     
-                    <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+                    <p><a onClick={this.test}>"Forgot your password?"</a></p>
                 </div>
             </div>
         </div>        
