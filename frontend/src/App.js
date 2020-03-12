@@ -15,6 +15,7 @@ import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
 import CourseDnD from "./components/CourseDnD";
 
 class App extends Component {
+
   render() {
     return (
       <Router>
