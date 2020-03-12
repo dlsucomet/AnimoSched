@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import User, Course, College 
+from .models import User, Course, College, HighPriorityCourseList, LowPriorityCourseList
 
 class CustomRegisterSerializer(RegisterSerializer):
     # username = serializers.CharField(required=True)
@@ -24,7 +24,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('id','username','email','first_name','last_name','courses')
+    fields = ('id','email','first_name','last_name','highCourses','lowCourses')
 
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:
@@ -35,3 +35,13 @@ class CollegeSerializer(serializers.ModelSerializer):
   class Meta:
     model = College 
     fields = ('id', 'college_code', 'college_name')
+
+class HighCourseSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = HighPriorityCourseList
+    fields = ('id', 'courses')
+
+class LowCourseSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = LowPriorityCourseList 
+    fields = ('id', 'courses')

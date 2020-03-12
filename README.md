@@ -12,7 +12,7 @@ https://classic.yarnpkg.com/en/docs/install/
 
 ## Installation
 
-`pip install django djangorestframework django-cors-headers django-rest-auth`
+`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth`
 
 Then go to the frontend directory to install react dependencies:
 
@@ -24,7 +24,7 @@ Then go to the frontend directory to install react dependencies:
 
 Additional packages that need to be installed:
 
-`yarn add simple-flexbox react-smooth-dnd react-router`
+`yarn add simple-flexbox react-smooth-dnd react-router @devexpress/dx-react-core @devexpress/dx-react-scheduler @material-ui/core @material-ui/icons @devexpress/dx-react-scheduler-material-ui`
 
 ## Usage
 

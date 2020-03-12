@@ -6,6 +6,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 
+from annoying.fields import AutoOneToOneField
 from .managers import UserManager
 
 import datetime
@@ -31,14 +32,21 @@ class Course(models.Model):
         verbose_name = _('course')
         verbose_name_plural = _('courses')
 
+class HighPriorityCourseList(models.Model):
+    courses = models.ManyToManyField(Course)
+
+class LowPriorityCourseList(models.Model):
+    courses = models.ManyToManyField(Course)
+
 class User(AbstractBaseUser):
     # username = models.CharField(max_length=9) 
     username = None
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    courses = models.ManyToManyField(Course)
     timestamp = models.DateTimeField(auto_now=True)
+    highCourses = AutoOneToOneField(HighPriorityCourseList, on_delete=models.CASCADE,null=True)
+    lowCourses = AutoOneToOneField(LowPriorityCourseList, on_delete=models.CASCADE,null=True)
 
     objects = UserManager()
 
@@ -52,5 +60,7 @@ class User(AbstractBaseUser):
 
     def __str__(self):              
         return self.email
+
+
 
     

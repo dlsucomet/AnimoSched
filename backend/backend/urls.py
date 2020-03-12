@@ -7,6 +7,8 @@ from api import views
 router = routers.DefaultRouter()                      
 router.register(r'users', views.UserViewSet)
 router.register(r'courses', views.CourseViewSet)     
+router.register(r'highcourses', views.HighCourseViewSet)     
+router.register(r'lowcourses', views.LowCourseViewSet)     
 router.register(r'colleges', views.CollegeViewSet)     
 
 urlpatterns = [

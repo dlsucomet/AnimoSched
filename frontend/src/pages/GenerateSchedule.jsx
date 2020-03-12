@@ -17,10 +17,11 @@ class GenerateSchedule extends Component {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
-            highCourses: ['Major1', 'Major2'],
-            lowCourses: ['Minor1', 'Minor2'],
+            highCourses: [],
+            lowCourses: [],
             generatedContent: [<GenSchedInfo/>,<GenSchedInfo/>],
             activePage: 2,
+            
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -31,8 +32,34 @@ class GenerateSchedule extends Component {
         if(user != undefined){
             axios.get('http://localhost:8000/api/users/'+user)
             .then(res => {
-                console.log(res.data.highcourses);
-                console.log(res.data.lowcourses);
+                axios.get('http://localhost:8000/api/highcourses/'+res.data.highCourses)
+                .then(res => {
+                    const courses = res.data.courses;
+                    for(let i = 0 ; i < courses.length ; i++){
+                        console.log(courses[i])
+                        axios.get('http://localhost:8000/api/courses/'+courses[i])
+                        .then(res => {
+                            this.setState(state =>{
+                                const highCourses = state.highCourses.concat(res.data.course_code);
+                                return{highCourses};
+                            });
+                        })
+                    }
+                })
+                axios.get('http://localhost:8000/api/lowcourses/'+res.data.lowCourses)
+                .then(res => {
+                    const courses = res.data.courses;
+                    for(let i = 0 ; i < courses.length ; i++){
+                        console.log(courses[i])
+                        axios.get('http://localhost:8000/api/courses/'+courses[i])
+                        .then(res => {
+                            this.setState(state =>{
+                                const lowCourses = state.lowCourses.concat(res.data.course_code);
+                                return{lowCourses};
+                            });
+                        })
+                    }
+                })
             })
         }
     }
