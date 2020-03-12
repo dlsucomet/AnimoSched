@@ -47,7 +47,7 @@ class ScheduleView extends Component {
             <Paper>
                 <Scheduler data={appointments}>
                 <ViewState currentDate="2018-06-28" />
-                <WeekView startDayHour={9} endDayHour={19} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
+                <WeekView startDayHour={9} endDayHour={17} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
                 <Appointments />
                 </Scheduler>
             </Paper>
