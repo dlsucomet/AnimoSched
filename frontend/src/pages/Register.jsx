@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Register.svg';
+import axios from 'axios';
 
 class Register extends Component {
     constructor(props){
@@ -34,6 +35,32 @@ class Register extends Component {
         console.log(this.state.course);
         console.log(this.state.pass);
         console.log(this.state.passCon);
+        const data = {
+            email: this.state.email,
+            // username: this.state.idNo,
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            password1: this.state.pass,
+            password2: this.state.passCon
+        };
+        axios.post('http://localhost:8000/api/auth/registration/', data,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
+        axios.get('http://localhost:8000/api/auth/user')
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
     }
     
     render() {

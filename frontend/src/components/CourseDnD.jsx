@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Draggable } from "react-smooth-dnd";
-import { applyDrag, generateItems } from '../components/ultils';
+import { applyDrag, generateItems } from '../components/ultils.jsx';
 import '../css/CourseDnD.css';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 const groupStyle = {

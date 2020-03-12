@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Column, Row } from 'simple-flexbox';
-import Menu from '../components/Menu';
+import Menu from '../components/Menu.jsx';
 import '../css/Profile.css';
 
 class Profile extends Component {

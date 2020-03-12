@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Column, Row} from 'simple-flexbox';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import Menu from '../components/Menu';
+import Menu from '../components/Menu.jsx';
 import CourseDnD from '../components/CourseDnD';
 import '../css/GenerateSchedule.css';
 import ScheduleView from '../components/ScheduleView';
 import ClassesTable from '../components/ClassesTable';
-
+import axios from 'axios';
 
 class GenerateSchedule extends Component {
 
@@ -21,6 +21,17 @@ class GenerateSchedule extends Component {
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+
+    componentDidMount(){
+        const user = localStorage.getItem('user');
+        if(user != undefined){
+            axios.get('http://localhost:8000/api/users/'+user)
+            .then(res => {
+                console.log(res.data.highcourses);
+                console.log(res.data.lowcourses);
+            })
+        }
     }
 
     handleKeyPress = (event) => {
