@@ -11,7 +11,7 @@ class Menu extends React.Component{
        axios.get('http://localhost:8000/api/auth/logout/')
        .then(res => {
            console.log(res);
-           localStorage.setItem('user',undefined)
+           localStorage.removeItem('user')
        }) 
     }
 
@@ -58,8 +58,9 @@ class Menu extends React.Component{
                 </React.Fragment>
             );
         }
-    
-        const session = true;
+        var session = localStorage.getItem('user') == undefined;
+        console.log(localStorage.getItem('user'))
+        console.log(session)
 
         return(
             <Navbar sticky="top" collapseOnSelect expand="lg" className="color-nav" variant="dark">
@@ -67,7 +68,7 @@ class Menu extends React.Component{
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">                    
                     <Nav className="ml-auto">
-                        {session ? loggedIn() : loggedOut()}
+                        {session ? loggedOut() : loggedIn()}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

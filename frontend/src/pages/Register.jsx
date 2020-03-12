@@ -52,14 +52,11 @@ class Register extends Component {
         .then(res => {
             console.log(res);
             console.log(res.data);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', res.data.user.id);
         })
         .catch(error => {
             console.log(error.response)
-        });
-        axios.get('http://localhost:8000/api/auth/user')
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
         });
     }
     
