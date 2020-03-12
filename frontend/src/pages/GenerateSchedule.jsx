@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Column, Row} from 'simple-flexbox';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import Menu from '../components/Menu';
+import Menu from '../components/Menu.jsx';
 import CourseDnD from '../components/CourseDnD';
 import '../css/GenerateSchedule.css';
 import ScheduleView from '../components/ScheduleView';

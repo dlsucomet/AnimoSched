@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import '../css/Flowchart.css';
 import SidebarIMG from '../images/Login.svg';
-import Menu from '../components/Menu';
+import Menu from '../components/Menu.jsx';
 
 class Flowchart extends Component {
     render() {

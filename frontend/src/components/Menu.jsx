@@ -37,9 +37,9 @@ class Menu extends React.Component{
                         {/* NAV BAR WHEN LOGGED IN */}
                         <Nav.Link href="/login">Login</Nav.Link>
                         <Nav.Link href="/register">Sign Up</Nav.Link>
-
-                        <Nav.Link href="#deets">Preferences</Nav.Link>
-                        <Nav.Link href="#deets">Search Courses</Nav.Link>
+                        <Nav.Link href="/preferences">Preferences</Nav.Link>
+                        <Nav.Link href="/search_courses">Search Courses</Nav.Link>
+                        <Nav.Link href="/courseDNDTestingPurposes">DND Testing Purposes</Nav.Link>
                         <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                         <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                         <Nav.Link href="/profile">
