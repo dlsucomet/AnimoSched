@@ -140,7 +140,7 @@ class GenerateSchedule extends Component {
                                     )}
                                 <PaginationItem disabled={currentPage >= this.pagesCount - 1}>
                                     <PaginationLink
-                                        onClick={e => this.handleClick(e, currentPage + 1)}
+                                        onClick={e => this.handleClick(e, currentPage + 1), this.currentPage}
                                         next
                                         href="#"
                                     />
