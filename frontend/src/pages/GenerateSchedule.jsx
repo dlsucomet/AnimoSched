@@ -1,23 +1,29 @@
 import React, {Component} from 'react';
 import {Column, Row} from 'simple-flexbox';
-import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import {Input} from 'reactstrap';
 import Menu from '../components/Menu.jsx';
 import CourseDnD from '../components/CourseDnD';
 import '../css/GenerateSchedule.css';
-import ScheduleView from '../components/ScheduleView';
-import ClassesTable from '../components/ClassesTable';
+import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
+import ReactDOM from "react-dom";
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 class GenerateSchedule extends Component {
 
     constructor(props) {
         super();
+
+        this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
+        this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
             highCourses: [],
             lowCourses: [],
+            currentPage: 0
+            
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -69,12 +75,16 @@ class GenerateSchedule extends Component {
             });
             console.log(this.state.highCourses)
         }
-      }
+    }
     
+    handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({activePage: pageNumber});
+    }
     
     render() { 
         let search_field = this.props.search_field;
-        
+        const { currentPage } = this.state;
         return (
             <div>
                 <Menu />
@@ -96,7 +106,7 @@ class GenerateSchedule extends Component {
                                     />
                                 </div>
                             </Row>
-                            <Row vertical = 'center' style={{margin: "40px"}}>
+                            <Row vertical = 'center' style={{margin: "20px"}}>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Highest Priority</h3>
                                     <span><CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/></span>
@@ -107,47 +117,37 @@ class GenerateSchedule extends Component {
                                     <span><CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/></span>
                                 </Column>
                             </Row>
-                            <Row horizontal = 'center' style={{margin: "40px"}}>
+                            <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <button className="btn btn-secondary btn-sm" onClick={this.showDiv}>Generate Schedule</button>
                             </Row>
                         </div>
                         <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
-                            <Row verticle = 'center' className = "RowSchedInfoContainer">
-                                <Column flexGrow={1} horizontal = 'center' >
-                                    <h3>Schedule here</h3>
-                                    <ScheduleView />
-                                </Column>
-                                <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "60px"}} >
-                                    <Row horizontal = 'center'>
-                                        <ClassesTable/>
-                                    </Row>
-                                    <Row horizontal = 'center'>
-                                        <Column vertical = 'center' style={{marginLeft: "60px"}}>
-                                            Preferences
-                                            <textarea style= {{height: "200px"}}>
-                             
-                                            Matched preferences
-                                            > Earliest Start Time: 9:15 AM
-                                            > Earliest End Time: 2:15 PM
-                                            > Break Preferences: 15 minutes
-                                            > Maximum Courses Per day: Within Range (Max of 4)
-
-                                            Unmatched preferences
-                                            > Professor Bob Uy not included
-                                    
-                                            </textarea>
-                                        </Column>
-                                        <Column vertical = 'center' style={{marginLeft: "60px"}}>
-                                            Course Conflict
-                                            <textarea style= {{height: "200px"}}>
-                                            > HUMALIT conflicts with with ClassB2
-                                            > KASPIL conflicts with with ClassC3
-                                            </textarea>
-                                        </Column>
-                                    </Row>
-                                </Column>
-                            </Row>
+                            <GenSchedInfo/>
                         </div>
+                        <Row horizontal='center'>Pagination here
+                            <Pagination aria-label="Page navigation example">
+                                <PaginationItem disabled={currentPage <= 0}>
+                                    <PaginationLink onClick={e => this.handleClick(e, currentPage - 1)}
+                                        previous
+                                        href="#" />
+                                </PaginationItem>
+                                {this.generatedContent.map((page, i) => 
+                                    <PaginationItem active={i === currentPage} key={i}>
+                                        <PaginationLink onClick={e => this.handleClick(e, i)} href="#">
+                                        {i + 1}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                    )}
+                                <PaginationItem disabled={currentPage >= this.pagesCount - 1}>
+                                    <PaginationLink
+                                        onClick={e => this.handleClick(e, currentPage + 1)}
+                                        next
+                                        href="#"
+                                    />
+                                    
+                                    </PaginationItem>
+                            </Pagination>
+                        </Row>
                     </Column>
                 </div>
             </div>  
