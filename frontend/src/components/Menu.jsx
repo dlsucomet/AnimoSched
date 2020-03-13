@@ -21,7 +21,6 @@ class Menu extends React.Component{
                 <React.Fragment>
                     <Nav.Link href="/preferences">Preferences</Nav.Link>
                     <Nav.Link href="/search_courses">Search Courses</Nav.Link>
-                    <Nav.Link href="/courseDNDTestingPurposes">DND Testing Purposes</Nav.Link>
                     <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                     <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                     <Nav.Link href="/profile">
