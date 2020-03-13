@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
 class Login extends Component {
     constructor(props){
@@ -60,6 +61,22 @@ class Login extends Component {
     //         console.log(error);
     //     });
     // }
+    
+    state = {
+        redirect: false
+      }
+
+      setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+      }
+
+      renderRedirect = () => {
+        if (this.state.redirect) {
+          return <Redirect to='/' />
+        }
+      }
 
     render() {
       return (
@@ -94,7 +111,8 @@ class Login extends Component {
                         <br/>
                         <br/>
 
-                        <input type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
+                        {this.renderRedirect()}
+                        <button onClick={this.setRedirect} type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
                     {/* </form> */}
                     
                     <br/>
