@@ -68,8 +68,8 @@ componentDidMount(){
     return (
        
       <div>
-        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px' }}>
-          <div style= {groupStyle} className="card-column-header">
+        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px'}}>
+          <div className= "card-container" >
             <Container groupName="1" getChildPayload={i => this.state.highCourses[i]} onDrop={e => this.setState({ highCourses: applyDrag(this.state.highCourses, e) })}>
                 {this.state.highCourses.map(p => {
                 return (
