@@ -17,6 +17,10 @@ django-filter = "*"
 djangorestframework-jwt = "*"
 django-cors-middleware = "*"
 django-annoying = "*"
+django-extensions = "*"
+pyparsing = "*"
+pydot = "*"
+pygraphviz = "*"
 
 [requires]
 python_version = "3.6"
