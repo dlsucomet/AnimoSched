@@ -12,7 +12,7 @@ https://classic.yarnpkg.com/en/docs/install/
 
 ## Installation
 
-`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions pyparsing pydot pygraphviz`
+`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions`
 
 Then go to the frontend directory to install react dependencies:
 
