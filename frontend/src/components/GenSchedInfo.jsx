@@ -6,6 +6,7 @@ import ClassesTable from '../components/ClassesTable';
 class GenSchedInfo extends Component {
     state = {  }
     render() { 
+        
         return (
             <Row verticle = 'center' className = "RowSchedInfoContainer">
                 <Column flexGrow={1} horizontal = 'center' >

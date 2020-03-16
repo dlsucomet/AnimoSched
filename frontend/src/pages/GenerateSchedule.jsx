@@ -13,7 +13,7 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super();
-
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         //this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
         this.pageCount= 2;
         this.state = {
@@ -71,6 +71,7 @@ class GenerateSchedule extends Component {
     }
 
     handleKeyPress = (event) => {
+        event.preventDefault();
         if(event.key === 'Enter'){
             const newCourse = event.target.value;
             this.setState(state =>{
