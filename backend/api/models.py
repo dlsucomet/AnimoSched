@@ -84,7 +84,6 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now=True)
     schedules = models.ManyToManyField(Schedule)
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
