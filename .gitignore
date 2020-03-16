@@ -530,3 +530,8 @@ lint/tmp/
 .history
 
 # End of https://www.gitignore.io/api/node,django,python,reactnative,visualstudiocode
+
+# Lock Files
+yarn.lock
+package-lock.json
+Pipfile.lock
