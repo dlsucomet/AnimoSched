@@ -76,7 +76,7 @@ class HighPriorityCourseList(models.Model):
 class LowPriorityCourseList(models.Model):
     courses = models.ManyToManyField(Course)
 
-class PreferenceList(models.Model):
+class Preference(models.Model):
     earliest_class_time = models.TimeField(_('earliest class time'), null=True)
     latest_class_time = models.TimeField(_('latest class time'), null=True)
     preferred_days = models.ManyToManyField(Day)
@@ -90,8 +90,8 @@ class PreferenceList(models.Model):
     lowCourses = AutoOneToOneField(LowPriorityCourseList, on_delete=models.CASCADE,null=True)
 
     class Meta:
-        verbose_name = _('preference_list')
-        verbose_name_plural = _('preference_lists')
+        verbose_name = _('preference')
+        verbose_name_plural = _('preferences')
 
 class Schedule(models.Model):
     courseOfferings = models.ManyToManyField(CourseOffering)
