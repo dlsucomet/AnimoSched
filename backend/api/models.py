@@ -55,7 +55,6 @@ class Timeslot(models.Model):
     begin_time = models.TimeField()
     end_time = models.TimeField()
 
-
 class CourseOffering(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -70,28 +69,9 @@ class CourseOffering(models.Model):
     max_enrolled = models.IntegerField()
     status = models.BooleanField()
 
-class HighPriorityCourseList(models.Model):
-    courses = models.ManyToManyField(Course)
-
-class LowPriorityCourseList(models.Model):
-    courses = models.ManyToManyField(Course)
-
-class Preference(models.Model):
-    earliest_class_time = models.TimeField(_('earliest class time'), null=True)
-    latest_class_time = models.TimeField(_('latest class time'), null=True)
-    preferred_days = models.ManyToManyField(Day)
-    break_length = models.TimeField(_('break length'), null=True)
-    min_courses = models.IntegerField(_('min courses per day'), null=True)
-    max_courses = models.IntegerField(_('max courses per day'), null=True)
-    preferred_faculty = models.ManyToManyField(Faculty) 
-    preferred_buildings = models.ManyToManyField(Building)
-    preferred_sections = models.ManyToManyField(Section)
-    highCourses = AutoOneToOneField(HighPriorityCourseList, on_delete=models.CASCADE,null=True)
-    lowCourses = AutoOneToOneField(LowPriorityCourseList, on_delete=models.CASCADE,null=True)
-
-    class Meta:
-        verbose_name = _('preference')
-        verbose_name_plural = _('preferences')
+class CoursePriority(models.Model):
+    courses = models.ForeignKey(Course,on_delete=models.CASCADE)
+    priority = models.BooleanField()
 
 class Schedule(models.Model):
     courseOfferings = models.ManyToManyField(CourseOffering)
@@ -103,7 +83,6 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now=True)
-    PreferenceList = AutoOneToOneField(PreferenceList, on_delete=models.CASCADE, null=True)
     schedules = models.ManyToManyField(Schedule)
 
     objects = UserManager()
@@ -119,6 +98,20 @@ class User(AbstractBaseUser):
     def __str__(self):              
         return self.email
 
+class Preference(models.Model):
+    earliest_class_time = models.TimeField(_('earliest class time'), null=True)
+    latest_class_time = models.TimeField(_('latest class time'), null=True)
+    preferred_days = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)
+    break_length = models.TimeField(_('break length'), null=True)
+    min_courses = models.IntegerField(_('min courses per day'), null=True)
+    max_courses = models.IntegerField(_('max courses per day'), null=True)
+    preferred_faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, null=True) 
+    preferred_buildings = models.ForeignKey(Building, on_delete=models.CASCADE, null=True)
+    preferred_sections = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
+    course_priority = models.ForeignKey(CoursePriority, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
+    class Meta:
+        verbose_name = _('preference')
+        verbose_name_plural = _('preferences')
     
