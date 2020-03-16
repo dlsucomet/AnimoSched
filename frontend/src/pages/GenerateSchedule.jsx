@@ -14,7 +14,7 @@ class GenerateSchedule extends Component {
     constructor(props) {
         super();
 
-        this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
+        //this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
         this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
@@ -22,7 +22,11 @@ class GenerateSchedule extends Component {
             value: "",
             highCourses: [],
             lowCourses: [],
-            currentPage: 0
+            currentPage: 0,
+            currentContent: <GenSchedInfo/>,
+            generatedContents: [<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>],
+            //testContents: [<GenSchedInfo/>,<GenSchedInfo/>],
+            pagesCount: 1,
             
         };
 
@@ -77,14 +81,27 @@ class GenerateSchedule extends Component {
         }
     }
     
-    handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({activePage: pageNumber});
+
+    handlePageChange = (e,index) => {
+        e.preventDefault();
+        this.setState(state =>{
+            var currentContent = state.generatedContents[index];
+            return {currentContent};
+            });
+
+        this.setState(state =>{
+            var currentPage = index;
+            return {currentPage};
+            });
+        console.log("pressed page " + index);
+        console.log(this.state.generatedContents[index]);
     }
     
     render() { 
         let search_field = this.props.search_field;
         const { currentPage } = this.state;
+        this.state.pagesCount = this.state.generatedContents.length;
+        this.state.currentContent = this.state.generatedContents[this.state.currentPage];
         return (
             <div>
                 <Menu />
@@ -106,15 +123,15 @@ class GenerateSchedule extends Component {
                                     />
                                 </div>
                             </Row>
-                            <Row vertical = 'center' style={{margin: "20px"}}>
+                            <Row vertical = 'center'>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Highest Priority</h3>
-                                    <span><CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/></span>
+                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/>
 
                                 </Column>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Lowest Priority</h3>
-                                    <span><CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/></span>
+                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/>
                                 </Column>
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
@@ -122,27 +139,25 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
                         <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
-                            <GenSchedInfo/>
+                            <span>{this.state.currentContent}</span>
                         </div>
-                        <Row horizontal='center'>Pagination here
+                        <Row horizontal='center'>
                             <Pagination aria-label="Page navigation example">
-                                <PaginationItem disabled={currentPage <= 0}>
-                                    <PaginationLink onClick={e => this.handleClick(e, currentPage - 1)}
-                                        previous
-                                        href="#" />
+                                <PaginationItem disabled={this.state.currentPage <= 0}>
+                                    <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                        previous/>
                                 </PaginationItem>
-                                {this.generatedContent.map((page, i) => 
-                                    <PaginationItem active={i === currentPage} key={i}>
-                                        <PaginationLink onClick={e => this.handleClick(e, i)} href="#">
+                                {[...Array(this.state.pagesCount)].map((page, i) => 
+                                    <PaginationItem active={i === this.state.currentPage} key={i}>
+                                        <PaginationLink onClick={e => this.handlePageChange(e, i)}>
                                         {i + 1}
                                         </PaginationLink>
                                     </PaginationItem>
                                     )}
-                                <PaginationItem disabled={currentPage >= this.pagesCount - 1}>
+                                <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
                                     <PaginationLink
-                                        onClick={e => this.handleClick(e, currentPage + 1)}
+                                        onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
                                         next
-                                        href="#"
                                     />
                                     
                                     </PaginationItem>
