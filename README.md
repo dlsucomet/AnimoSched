@@ -12,7 +12,7 @@ https://classic.yarnpkg.com/en/docs/install/
 
 ## Installation
 
-`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions`
+`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions django-annoying`
 
 Then go to the frontend directory to install react dependencies:
 
@@ -39,6 +39,14 @@ Start React Server:
 Start Django Server:
 
 `cd backend`
+
+Make migrations and migrate:
+
+`python manage.py makemigrations`
+
+`python manage.py migrate`
+
+Run the server:
 
 `python manage.py runserver`
 
