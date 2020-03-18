@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
-import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
 class Login extends Component {
@@ -21,13 +20,6 @@ class Login extends Component {
         })
     }
 
-    collectData = () =>{
-        const data = {
-            email: this.state.email,
-            password: this.state.pass
-        }
-        this.props.handle_login(data);
-    }
 
     // test = () =>{
     //     console.log(this.state.token)
@@ -62,6 +54,15 @@ class Login extends Component {
         }
       }
 
+      handleSubmit = (event) => {
+        event.preventDefault();
+        const data = {
+            email: this.state.email,
+            password: this.state.pass
+        }
+        this.props.handle_login(data);
+        this.setRedirect();
+      }
     render() {
       return (
         <div>
@@ -82,7 +83,7 @@ class Login extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    {/* <form> */}
+                    <form onSubmit={this.handleSubmit}>
                         Email
                         <br/>
                         <input name="email" onChange={e => this.handleChange(e)}></input>
@@ -96,8 +97,8 @@ class Login extends Component {
                         <br/>
 
                         {this.renderRedirect()}
-                        <input onClick={this.setRedirect} type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
-                    {/* </form> */}
+                        <input type="submit" class="btn btn-success" value="Login" />
+                    </form>
                     
                     <br/>
                     

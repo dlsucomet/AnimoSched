@@ -19,7 +19,7 @@ class Menu extends React.Component{
                         <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="10" cy="10" r="8"></circle>
                         </svg>
-                        Name
+                       {this.props.first_name} 
                     </Nav.Link>
                     <Nav.Link href="#deets">
                         {/* <img class='img-responsive' src={FriendRequests}/> */}
@@ -34,7 +34,7 @@ class Menu extends React.Component{
                         </svg>
                     </Nav.Link>
                     <NavDropdown id="collasible-nav-dropdown">
-                        <NavDropdown.Item onClick={this.logout}>Logout</NavDropdown.Item>
+                        <NavDropdown.Item onClick={this.props.handle_logout}>Logout</NavDropdown.Item>
                     </NavDropdown>
                     {/* <Nav.Link eventKey={2} href="#memes"> Dank memes </Nav.Link> */}
                 </React.Fragment>
@@ -56,7 +56,7 @@ class Menu extends React.Component{
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">                    
                     <Nav className="ml-auto">
-                        {this.props.logged_in ? loggedOut() : loggedIn()}
+                        {this.props.logged_in ? loggedIn() : loggedOut()}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
