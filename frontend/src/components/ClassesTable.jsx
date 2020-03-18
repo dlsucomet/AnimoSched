@@ -67,7 +67,8 @@ class ClassesTable extends Component {
     }
 
 
-     createTable = (tableArray) =>{        
+     createTable = (tableArray) =>{     
+         //pass data with unique id number   
         this.setState(
             {tableContent: tableArray}
         );

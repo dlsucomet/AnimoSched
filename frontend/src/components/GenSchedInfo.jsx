@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Column, Row} from 'simple-flexbox';
 import ScheduleView from '../components/ScheduleView';
 import ClassesTable from '../components/ClassesTable';
+import BoxInfo from '../components/BoxInfo';
 
 class GenSchedInfo extends Component {
     state = {  }
@@ -18,8 +19,10 @@ class GenSchedInfo extends Component {
                         <ClassesTable/>
                     </Row>
                     <Row horizontal = 'center'>
-                        <Column horizontal = 'center' style={{marginLeft: "40px"}}>
+                        <Column horizontal = 'center' style={{marginLeft: "10px"}}>
                             Preferences
+                            <BoxInfo/>
+                            {/* Preferences
                             <textarea style= {{height: "200px"}}>
                 
                             Matched preferences
@@ -31,9 +34,9 @@ class GenSchedInfo extends Component {
                             Unmatched preferences
                             > Professor Bob Uy not included
                     
-                            </textarea>
+                            </textarea> */}
                         </Column>
-                        <Column horizontal = 'center' style={{marginLeft: "60px"}}>
+                        <Column horizontal = 'center' style={{marginLeft: "40px"}}>
                             Course Conflict
                             <textarea style= {{height: "200px"}}>
                             > HUMALIT conflicts with with ClassB2
