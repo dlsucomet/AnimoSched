@@ -43,21 +43,7 @@ class Register extends Component {
             password1: this.state.pass,
             password2: this.state.passCon
         };
-        axios.post('http://localhost:8000/api/auth/registration/', data,
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', res.data.user.id);
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+        this.props.handle_register(data);
     }
     
     render() {

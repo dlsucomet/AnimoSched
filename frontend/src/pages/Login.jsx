@@ -11,7 +11,6 @@ class Login extends Component {
         this.state = {
             email: "",
             pass: "",
-            token: "",
         }
 
     }
@@ -23,26 +22,11 @@ class Login extends Component {
     }
 
     collectData = () =>{
-        console.log(this.state.email);
-        console.log(this.state.pass);
         const data = {
             email: this.state.email,
             password: this.state.pass
         }
-        axios.post('http://localhost:8000/api/auth/login/', data,
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', res.data.user.id);
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+        this.props.handle_login(data);
     }
 
     // test = () =>{
@@ -112,7 +96,7 @@ class Login extends Component {
                         <br/>
 
                         {this.renderRedirect()}
-                        <button onClick={this.setRedirect} type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
+                        <input onClick={this.setRedirect} type="submit" class="btn btn-success" value="Login" onClick={this.collectData}/>
                     {/* </form> */}
                     
                     <br/>
