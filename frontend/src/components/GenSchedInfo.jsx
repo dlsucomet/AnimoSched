@@ -7,7 +7,8 @@ import BoxInfo from '../components/BoxInfo';
 class GenSchedInfo extends Component {
     state = {  }
     render() { 
-        
+        const prefContent = ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'];
+        const conflictsContent= ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3']
         return (
             <Row verticle = 'center' className = "RowSchedInfoContainer">
                 <Column flexGrow={1} horizontal = 'center' >
@@ -21,27 +22,13 @@ class GenSchedInfo extends Component {
                     <Row horizontal = 'center'>
                         <Column horizontal = 'center' style={{marginLeft: "10px"}}>
                             Preferences
-                            <BoxInfo/>
-                            {/* Preferences
-                            <textarea style= {{height: "200px"}}>
-                
-                            Matched preferences
-                            > Earliest Start Time: 9:15 AM
-                            > Earliest End Time: 2:15 PM
-                            > Break Preferences: 15 minutes
-                            > Maximum Courses Per day: Within Range (Max of 4)
-
-                            Unmatched preferences
-                            > Professor Bob Uy not included
-                    
-                            </textarea> */}
+                            
+                            <BoxInfo content={prefContent} />
+ 
                         </Column>
                         <Column horizontal = 'center' style={{marginLeft: "40px"}}>
                             Course Conflict
-                            <textarea style= {{height: "200px"}}>
-                            > HUMALIT conflicts with with ClassB2
-                            > KASPIL conflicts with with ClassC3
-                            </textarea>
+                            <BoxInfo content={conflictsContent}/>
                         </Column>
                     </Row>
                 </Column>

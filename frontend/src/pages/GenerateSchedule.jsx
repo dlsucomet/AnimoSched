@@ -27,6 +27,7 @@ class GenerateSchedule extends Component {
             generatedContents: [<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>],
             //testContents: [<GenSchedInfo/>,<GenSchedInfo/>],
             pagesCount: 1,
+            searchedCourse: "",
             
         };
 
@@ -114,12 +115,12 @@ class GenerateSchedule extends Component {
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div id="search_container">
-                                    <Input
+                                    <input
                                     type="search"
                                     name={search_field}
                                     id="exampleSearch"
                                     placeholder="Enter Course Name..."
-                                    value = {this.state.Input}
+                                    value = {this.state.searchedCourse}
                                     onKeyPress={this.handleKeyPress}
                                     />
                                 </div>
