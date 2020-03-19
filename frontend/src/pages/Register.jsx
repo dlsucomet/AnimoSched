@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Register.svg';
-import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
 class Register extends Component {
     constructor(props){
@@ -27,6 +27,27 @@ class Register extends Component {
     }
 
     collectData = () =>{
+
+    }
+
+    state = {
+        redirect: false
+    }
+
+    setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+    }
+
+    renderRedirect = () => {
+        if (this.state.redirect) {
+          return <Redirect to='/' />
+        }
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
         console.log(this.state.firstName);
         console.log(this.state.lastName);
         console.log(this.state.email);
@@ -43,23 +64,10 @@ class Register extends Component {
             password1: this.state.pass,
             password2: this.state.passCon
         };
-        axios.post('http://localhost:8000/api/auth/registration/', data,
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res);
-            console.log(res.data);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', res.data.user.id);
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+        this.props.handle_register(data);
+        this.setRedirect();
     }
-    
+
     render() {
       return (
         <div>
@@ -80,7 +88,7 @@ class Register extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    {/* <form> */}
+                    <form onSubmit={this.handleSubmit}>
                         First Name
                         <br/>
                         <input name = "firstName" value={this.state.firstName} onChange={e => this.handleChange(e)}/><br/><br/>
@@ -122,8 +130,9 @@ class Register extends Component {
                         <br/>
                         <input type="password" name = "passCon" value={this.state.passCon} onChange={e => this.handleChange(e)}/><br/><br/>
 
-                        <input type="submit" class="btn btn-success" value="Register" onClick={this.collectData}/>
-                    {/* </form> */}
+                        {this.renderRedirect()}
+                        <input type="submit" class="btn btn-success" value="Register" />
+                    </form>
                     
                     <br/>
                     
