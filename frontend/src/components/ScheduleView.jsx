@@ -9,7 +9,7 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { blue, purple } from "@material-ui/core/colors";
-import { appointments } from "./data";
+// import { appointments } from "./data";
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
@@ -39,13 +39,18 @@ const formatDayScaleDate = (date, options) => {
   );
 
 class ScheduleView extends Component {
+    constructor(props){
+      super(props);
+      
+    }
     state = {  
+      classes: this.props.content
     }
     render() { 
         return (
             <MuiThemeProvider theme={theme}>
             <Paper>
-                <Scheduler data={appointments}>
+                <Scheduler data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
                 <WeekView startDayHour={9} endDayHour={17} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
                 <Appointments />
