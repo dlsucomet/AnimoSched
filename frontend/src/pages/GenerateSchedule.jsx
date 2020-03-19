@@ -12,7 +12,7 @@ import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 class GenerateSchedule extends Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         //this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
         this.pageCount= 2;
@@ -106,7 +106,7 @@ class GenerateSchedule extends Component {
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
         return (
             <div>
-                <Menu />
+                {this.props.menu()}
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>
                         <div className="courseInputContainer">

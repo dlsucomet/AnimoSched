@@ -3,10 +3,13 @@ import { Column, Row } from 'simple-flexbox';
 import Menu from '../components/Menu.jsx';
 
 class Index extends Component {
+    constructor(props){
+      super(props);
+    }
     render() {
       return (
         <div>
-          <Menu />
+          {this.props.menu()}
   
           <Column flexGrow={1}>
   
