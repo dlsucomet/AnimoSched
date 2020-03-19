@@ -46,16 +46,10 @@ class SearchCourses extends Component {
         createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
       ];
 
-      function testing(value) {
-        if (value == 0){
-          return alert(0);
-        }
-        else if (value == 1){
-          return alert(1);
-        }
-        else{
-          return alert(2);
-        }
+      function ShowHideDiv() {
+        var chkYes = this.getElementById("open");
+        var dvPassport = this.getElementById("dvPassport");
+        dvPassport.style.display = chkYes.checked ? "block" : "none";
       }
 
       return (
@@ -68,36 +62,32 @@ class SearchCourses extends Component {
                   <input/><br/>
                 </center>
 
-                <div className="filterss">
-                  <center>
-                    <form onSubmit="testing(0)">
-                      <p>Filters:</p>
-                      <input type="radio" name="filter" value="All" /> All
-                      <input type="radio" name="filter" value="Open" /> Open
-                      <input type="radio" name="filter" value="Closed" /> Closed
-                      <p><input type="submit" value="Submit" /></p>
-                    </form>
-
-                  </center>
-
-
-                    {/* <center>
+                <div className="filters">
+                    <center>
                       <span className="filterLabel">Filters:</span>
                       
-                      <input type="radio" id="all" name="gender" value="male" onclick="testing(0)"/>
-                      <label className="radio-description" for="all">All Sections</label>
+                      <label className="radio-description" for="all">
+                        <input type="radio" id="all" name="filter" value="all" onclick={this.ShowHideDiv()}/>
+                        All Sections
+                      </label>
 
-                      
-                      <input type="radio" id="open" name="gender" value="male" onclick="testing(1)"/>
-                      <label className="radio-description" for="open">Open Sections</label>
+                      <label className="radio-description" for="open">
+                        <input type="radio" id="open" name="filter" value="open" onclick={this.ShowHideDiv()}/>
+                        Open Sections
+                      </label>
 
-                      
-                      <input type="radio" id="closed" name="gender" value="male" onclick="testing(2)"/>
-                      <label className="radio-description" for="closed">Closed Sections</label>
-                    </center> */}
+                      <label className="radio-description" for="closed">
+                        <input type="radio" id="closed" name="filter" value="closed" onclick={this.ShowHideDiv()}/>
+                        Closed Sections
+                      </label>
+                    </center>
                 </div>
 
-                <div className="filters">
+                <div id="dvPassport" style={{display: 'none'}}>
+                    ONCLICK WORKING!
+                </div>
+
+                <div className="viewCourses">
                   <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                       <TableHead>
