@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Container, Draggable } from "react-smooth-dnd";
 import { applyDrag, generateItems } from '../components/ultils.jsx';
 import '../css/CourseDnD.css';
-import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+
 const groupStyle = {
     marginLeft: '50px',
     flex: 1
@@ -76,6 +77,8 @@ componentDidMount(){
                     <Draggable key={p.id}>
                     <div className="draggable-item">
                         {p.data}
+                        <Button close />
+                        
                     </div>
                     </Draggable>
                 );

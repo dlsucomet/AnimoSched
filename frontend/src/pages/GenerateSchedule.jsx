@@ -115,7 +115,7 @@ class GenerateSchedule extends Component {
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div id="search_container">
-                                    <input
+                                    <Input
                                     type="search"
                                     name={search_field}
                                     id="exampleSearch"
