@@ -62,7 +62,8 @@ class Register extends Component {
             first_name: this.state.firstName,
             last_name: this.state.lastName,
             password1: this.state.pass,
-            password2: this.state.passCon
+            password2: this.state.passCon,
+            college: this.state.college
         };
         this.props.handle_register(data);
         this.setRedirect();
