@@ -25,6 +25,7 @@ class ClassesTable extends Component {
             }
 
         ]
+        
     }
 
     dummyData = [
