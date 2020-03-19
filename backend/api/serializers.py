@@ -9,6 +9,12 @@ class CustomRegisterSerializer(RegisterSerializer):
     password1 = serializers.CharField(write_only=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
+    college = serializers.CharField(required=True)
+
+    def validate_email(self, value):
+        if "@dlsu.edu.ph" not in value:
+            raise serializers.ValidationError("Please enter a valid DLSU email address.")
+        return value
 
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
