@@ -4,10 +4,13 @@ import Menu from '../components/Menu.jsx';
 import '../css/Profile.css';
 
 class Profile extends Component {
+    constructor(props){
+      super(props);
+    }
     render() {
       return (
           <div>
-            <Menu />
+            {this.props.menu()}
 
             <div className="profile-category">
                 <h2>Account Profile</h2>

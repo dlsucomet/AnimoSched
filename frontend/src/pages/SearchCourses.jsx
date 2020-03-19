@@ -13,6 +13,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 class SearchCourses extends Component {
+    constructor(props){
+      super(props);
+    }
     render() {
       const StyledTableCell = withStyles(theme => ({
         head: {
@@ -51,7 +54,7 @@ class SearchCourses extends Component {
 
       return (
           <div>
-            <Menu />
+            {this.props.menu()}
 
             <div className="search-container">
                 <center>

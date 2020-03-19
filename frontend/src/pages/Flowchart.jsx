@@ -4,10 +4,13 @@ import SidebarIMG from '../images/Login.svg';
 import Menu from '../components/Menu.jsx';
 
 class Flowchart extends Component {
+    constructor(props){
+      super(props);
+    }
     render() {
       return (
         <div>
-            <Menu />
+            {this.props.menu()}
 
             <div class="sidemenu">
                 <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center>

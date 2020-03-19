@@ -20,7 +20,7 @@ Then go to the frontend directory to install react dependencies:
 
 `yarn global add create-react-app`
 
-`yarn add bootstrap reactstrap axios`
+`yarn add create-react-app bootstrap reactstrap axios`
 
 Additional packages that need to be installed:
 
@@ -52,18 +52,18 @@ Run the server:
 
 ## REST API
 
-Get all users:
+Login:
 
-`/api/users/`
+`/api/auth/login`
 
-Get all courses:
+Register:
 
-`/api/courses/`
+`/api/auth/registration`
 
-Get all colleges:
+Get user info of logged in user:
 
-`/api/colleges/`
+`/api/auth/user`
 
-Get a specific user using id:
+Get list of users:
 
-`/api/users/[id]`
+`/api/users`

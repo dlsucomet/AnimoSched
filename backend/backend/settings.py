@@ -137,12 +137,13 @@ STATIC_URL = '/static/'
 
 # API-related
 # CORS_ORIGIN_WHITELIST = [
-#         'http://localhost:8000',
-#         'http://localhost:3000'
+#         'http://localhost:8000/',
+#         'http://localhost:3000/'
 # ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "XCSRF-TOKEN"
+SESSION_SAME_COOKIE = None
 
 # REST-related
 REST_SESSION_LOGIN = True
@@ -157,6 +158,17 @@ ACCOUNT_USER_EMAIL_FIELD = 'email'
 ACCOUNT_LOGOUT_ON_GET = True
 
 AUTH_USER_MODEL = 'api.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
 
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "api.serializers.UserSerializer",
