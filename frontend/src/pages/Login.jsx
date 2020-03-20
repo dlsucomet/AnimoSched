@@ -90,6 +90,8 @@ class Login extends Component {
 
       handleSubmit = (event) => {
         event.preventDefault();
+        console.log(this.state.email)
+        console.log(this.state.pass)
         if(this.handleValidation()){
           const data = {
               email: this.state.email,
