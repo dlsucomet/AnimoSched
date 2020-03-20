@@ -16,10 +16,16 @@ class SearchCourses extends Component {
     constructor(props){
       super(props);
     }
+
+
+
+
+
+
     render() {
       const StyledTableCell = withStyles(theme => ({
         head: {
-          backgroundColor: theme.palette.common.black,
+          backgroundColor: '#006A4E',
           color: theme.palette.common.white,
         },
         body: {
@@ -46,12 +52,6 @@ class SearchCourses extends Component {
         createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
       ];
 
-      function ShowHideDiv() {
-        var chkYes = this.getElementById("open");
-        var dvPassport = this.getElementById("dvPassport");
-        dvPassport.style.display = chkYes.checked ? "block" : "none";
-      }
-
       return (
           <div>
             {this.props.menu()}
@@ -67,24 +67,20 @@ class SearchCourses extends Component {
                       <span className="filterLabel">Filters:</span>
                       
                       <label className="radio-description" for="all">
-                        <input type="radio" id="all" name="filter" value="all" onclick={this.ShowHideDiv()}/>
+                        <input type="radio" id="all" name="filter" value="all"/>
                         All Sections
                       </label>
 
                       <label className="radio-description" for="open">
-                        <input type="radio" id="open" name="filter" value="open" onclick={this.ShowHideDiv()}/>
+                        <input type="radio" id="open" name="filter" value="open"/>
                         Open Sections
                       </label>
 
                       <label className="radio-description" for="closed">
-                        <input type="radio" id="closed" name="filter" value="closed" onclick={this.ShowHideDiv()}/>
+                        <input type="radio" id="closed" name="filter" value="closed"/>
                         Closed Sections
                       </label>
                     </center>
-                </div>
-
-                <div id="dvPassport" style={{display: 'none'}}>
-                    ONCLICK WORKING!
                 </div>
 
                 <div className="viewCourses">
@@ -105,9 +101,6 @@ class SearchCourses extends Component {
                       </TableHead>
                       <TableBody>
                         {rows.map(row => (
-
-                          // classNmbr, course, section, faculty, day, time, room, capacity, enrolled) {
-
                           <StyledTableRow key={row.classNmbr}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
                             <StyledTableCell> {row.course} </StyledTableCell>
