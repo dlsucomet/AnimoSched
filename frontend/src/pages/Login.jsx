@@ -8,9 +8,6 @@ class Login extends Component {
         super();
 
         this.state = {
-            email: "",
-            pass: "",
-
             fields: {},
             errors: {}
         }
@@ -90,12 +87,10 @@ class Login extends Component {
 
       handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state.email)
-        console.log(this.state.pass)
         if(this.handleValidation()){
           const data = {
-              email: this.state.email,
-              password: this.state.pass
+              email: this.state.fields["email"],
+              password: this.state.fields["pass"]
           }
           this.props.handle_login(data);
           this.setRedirect();
