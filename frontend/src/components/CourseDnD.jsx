@@ -13,57 +13,68 @@ const groupStyle = {
 class CourseDnD extends Component {
 
   constructor(props) {
-    super();
-     
+    super(props);
+    
+
     this.state = {
-        highCourses: [],
-        //highCourses: generateItems(4, (index) => ( {id: "1" + index, data: 'Majors' + index})),
+        courses: this.props.courses,
+      //highCourses: generateItems(4, (index) => ( {id: "1" + index, data: 'Majors' + index})),
       //lowCourses: generateItems(4, (index) => ( {id: '2' + index,data: 'Minors' + index})),
-      highContainer: {
-        id: 'columns1',
-        type: "container",
-        name: "Highest Priority",
-        props: {
-            orientation: "vertical",
-            className: "card-container"
-        }
-      },
-      lowContainer: {
-        id: 'columns2',
-        type: "container",
-        name: "Lowest Priority",
-        props: {
-            orientation: "vertical",
-            className: "card-container"
-        }
-    }
+    //   highContainer: {
+    //     id: 'columns1',
+    //     type: "container",
+    //     name: "Highest Priority",
+    //     props: {
+    //         orientation: "vertical",
+    //         className: "card-container"
+    //     }
+    //   },
+    //   lowContainer: {
+    //     id: 'columns2',
+    //     type: "container",
+    //     name: "Lowest Priority",
+    //     props: {
+    //         orientation: "vertical",
+    //         className: "card-container"
+    //     }
+    // }
       
     };
 
     this.courseName = React.createRef();
+    this.triggerUpdate = this.triggerUpdate.bind(this);
+
   }
 
 componentWillReceiveProps() {
   this.refreshList();
+
 }
 
 componentDidMount(){
   this.refreshList();
+  
+
 }
 
     refreshList = () => {
         var newItems = this.props.courses;
-        this.state.highCourses = []
+        this.state.courses = []
 
         for(let i = 0; i < newItems.length; i++) {
             this.setState(state =>{
-                const oldItems = state.highCourses;
-                const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
-                return{highCourses};
+                const oldItems = state.courses;
+                const courses = state.courses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
+                return{courses};
             });
-        }
+        }   
     }
 
+    triggerUpdate=(e)=>{
+      this.setState({ courses: applyDrag(this.state.courses, e) })
+      console.log(this.props.idTag + " course state contains: " +this.state.courses);
+      this.props.updateFunction(this.state.courses);
+    }
   render() {
     let searchCourseField = this.props.searchCourseField;
     return (
@@ -71,8 +82,8 @@ componentDidMount(){
       <div>
         <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px'}}>
           <div className= "card-container" >
-            <Container groupName="1" getChildPayload={i => this.state.highCourses[i]} onDrop={e => this.setState({ highCourses: applyDrag(this.state.highCourses, e) })}>
-                {this.state.highCourses.map(p => {
+            <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={ this.triggerUpdate}>
+                {this.state.courses.map(p => {
                 return (
                     <Draggable key={p.id}>
                     <div className="draggable-item">
@@ -190,15 +201,15 @@ componentDidMount(){
 
     addCard = (name) => {
       this.setState(state =>{
-        const oldItems = state.highCourses;
-        const highCourses = state.highCourses.concat({id: this.props.idTag + oldItems.length, data: name});
-        return{highCourses};
+        const oldItems = state.courses;
+        const courses = state.courses.concat({id: this.props.idTag + oldItems.length, data: name});
+        return{courses};
       });
     };
 
 
     onClearArray = () => {
-      this.setState({highCourses: []});
+      this.setState({courses: []});
     };
   }
 

@@ -13,8 +13,9 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super(props);
+        this.updateHighPriorty = this.updateHighPriorty.bind(this);
+        this.updateLowPriority = this.updateLowPriority.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        //this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
         this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
@@ -23,7 +24,7 @@ class GenerateSchedule extends Component {
             highCourses: [],
             lowCourses: [],
             currentPage: 0,
-            currentContent: <GenSchedInfo/>,
+            currentContent: "",
             generatedContents: [],
             // generatedContents : ['Hello', 'There', 'Josh'],
             // currentContent: ['Hello'],
@@ -106,13 +107,29 @@ class GenerateSchedule extends Component {
     createSchedInfo = (arrayGenSched)=>{
         console.log("Hi I was called");
         var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
 
         );
 
         this.setState({generatedContents});
         var currentContent = generatedContents[0];
         this.setState({currentContent});
+    }
+
+    updateHighPriorty(courseUpdate){
+        var newArray = [];
+        courseUpdate.map(course=>{
+            newArray.push(course.data);
+        })
+        this.setState({highCourses: newArray})
+    }
+
+    updateLowPriority(courseUpdate){
+        var newArray = [];
+        courseUpdate.map(course=>{
+            newArray.push(course.data);
+        })
+        this.setState({lowCourses: newArray})
     }
     
     render() { 
@@ -262,7 +279,7 @@ class GenerateSchedule extends Component {
                                     name={search_field}
                                     id="exampleSearch"
                                     placeholder="Enter Course Name..."
-                                    value = {this.state.searchedCourse}
+                                    value = {this.state.Input}
                                     onKeyPress={this.handleKeyPress}
                                     />
                                 </div>
@@ -270,12 +287,12 @@ class GenerateSchedule extends Component {
                             <Row vertical = 'center'>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Highest Priority</h3>
-                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/>
+                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
 
                                 </Column>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Lowest Priority</h3>
-                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/>
+                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
                                 </Column>
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>

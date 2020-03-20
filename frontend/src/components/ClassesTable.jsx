@@ -4,27 +4,6 @@ import { Table } from 'reactstrap';
 
 class ClassesTable extends Component {
     state = {  
-        // tableContent: [
-        //     {
-        //         id: 1, 
-        //         course: "LASARE2", 
-        //         section:"S17", 
-        //         faculty: "DELA CRUZ, JUAN", 
-        //         day:"MAR 30", 
-        //         time:"08:00AM-5:00PM",
-        //         room: "G310"
-        //     },
-        //     {
-        //         id: 2, 
-        //         course: "IPERSEF", 
-        //         section:"S15", 
-        //         faculty: "DEL TORRE, MARIA", 
-        //         day:"APR 05", 
-        //         time:"08:00AM-5:00PM",
-        //         room: "G304"
-        //     }
-
-        // ]
 
         tableContent: this.props.content
     }

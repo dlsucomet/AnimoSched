@@ -13,6 +13,7 @@ class GenSchedInfo extends Component {
         tableContent: this.props.tableContent,
         conflictsContent: this.props.conflictsContent,
         prefContent: this.props.prefContent,
+        id: this.props.id,
         
     }
     render() { 
@@ -121,18 +122,18 @@ class GenSchedInfo extends Component {
                 </Column>
                 <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "40px"}} >
                     <Row horizontal = 'center'>
-                        <ClassesTable content={this.state.tableContent}/>
+                        <ClassesTable content={this.state.tableContent} />
                     </Row>
                     <Row horizontal = 'center'>
                         <Column horizontal = 'center' style={{marginLeft: "10px"}}>
                             Preferences
                             
-                            <BoxInfo content={this.state.prefContent} />
+                            <BoxInfo content={this.state.prefContent } id={1+this.state.id}/>
  
                         </Column>
                         <Column horizontal = 'center' style={{marginLeft: "40px"}}>
                             Course Conflict
-                            <BoxInfo content={this.state.conflictsContent}/>
+                            <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/>
                         </Column>
                     </Row>
                 </Column>
