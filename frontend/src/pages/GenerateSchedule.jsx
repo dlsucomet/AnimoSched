@@ -43,7 +43,6 @@ class GenerateSchedule extends Component {
     }
 
     handleKeyPress = (event) => {
-        event.preventDefault();
         if(event.key === 'Enter'){
             const newCourse = event.target.value;
             this.setState(state =>{
