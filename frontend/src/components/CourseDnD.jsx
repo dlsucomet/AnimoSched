@@ -41,40 +41,36 @@ class CourseDnD extends Component {
       
     };
 
-    this.courseName = React.createRef();
-    this.triggerUpdate = this.triggerUpdate.bind(this);
-
   }
 
-componentWillReceiveProps() {
-  this.refreshList();
+componentWillReceiveProps(props) {
+  this.refreshList(props);
 
 }
 
 componentDidMount(){
-  this.refreshList();
-  
-
+  this.refreshList(this.props);
 }
 
-    refreshList = () => {
-        var newItems = this.props.courses;
-        this.state.courses = []
+refreshList = (props) => {
+    var newItems = props.courses;
+    this.state.courses = []
 
-        for(let i = 0; i < newItems.length; i++) {
-            this.setState(state =>{
-                const oldItems = state.courses;
-                const courses = state.courses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
-                return{courses};
-            });
-        }   
-    }
+    for(let i = 0; i < newItems.length; i++) {
+        this.setState(state =>{
+            const oldItems = state.courses;
+            const courses = state.courses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
+            return{courses};
+        });
+    }   
+}
 
-    triggerUpdate=(e)=>{
-      this.setState({ courses: applyDrag(this.state.courses, e) })
-      console.log(this.props.idTag + " course state contains: " +this.state.courses);
-      this.props.updateFunction(this.state.courses);
-    }
+triggerUpdate=(e)=>{
+  this.setState({ courses: applyDrag(this.state.courses, e) })
+  this.props.updateFunction(this.state.courses);
+  console.log(this.props.idTag + " course state contains: " +this.state.courses);
+}
+
   render() {
     let searchCourseField = this.props.searchCourseField;
     return (

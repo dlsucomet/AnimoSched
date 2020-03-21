@@ -21,8 +21,8 @@ class GenerateSchedule extends Component {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
-            highCourses: [],
-            lowCourses: [],
+            highCourses: ['COMPRO1', 'COMPRO2'],
+            lowCourses: ['IPERSEF', 'SOCTEC1'],
             currentPage: 0,
             currentContent: "",
             generatedContents: [],
@@ -39,40 +39,7 @@ class GenerateSchedule extends Component {
     }
 
     componentDidMount(){
-        const user = localStorage.getItem('user');
-        if(user != undefined){
-            axios.get('http://localhost:8000/api/users/'+user)
-            .then(res => {
-                axios.get('http://localhost:8000/api/highcourses/'+res.data.highCourses)
-                .then(res => {
-                    const courses = res.data.courses;
-                    for(let i = 0 ; i < courses.length ; i++){
-                        console.log(courses[i])
-                        axios.get('http://localhost:8000/api/courses/'+courses[i])
-                        .then(res => {
-                            this.setState(state =>{
-                                const highCourses = state.highCourses.concat(res.data.course_code);
-                                return{highCourses};
-                            });
-                        })
-                    }
-                })
-                axios.get('http://localhost:8000/api/lowcourses/'+res.data.lowCourses)
-                .then(res => {
-                    const courses = res.data.courses;
-                    for(let i = 0 ; i < courses.length ; i++){
-                        console.log(courses[i])
-                        axios.get('http://localhost:8000/api/courses/'+courses[i])
-                        .then(res => {
-                            this.setState(state =>{
-                                const lowCourses = state.lowCourses.concat(res.data.course_code);
-                                return{lowCourses};
-                            });
-                        })
-                    }
-                })
-            })
-        }
+
     }
 
     handleKeyPress = (event) => {
