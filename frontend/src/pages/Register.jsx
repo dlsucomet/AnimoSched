@@ -224,7 +224,6 @@ class Register extends Component {
                     
                     <br/>
                     
-                    <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
                 </div>
             </div>
         </div>        

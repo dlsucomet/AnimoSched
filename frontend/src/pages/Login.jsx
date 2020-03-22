@@ -142,7 +142,7 @@ class Login extends Component {
                     
                     <br/>
                     
-                    <p><a onClick={this.test}>"Forgot your password?"</a></p>
+                    <p><a href="/reset_password">Forgot your password?</a></p>
                 </div>
             </div>
         </div>        

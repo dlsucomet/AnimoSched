@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-ro
 import MainPage from "./pages/Index.jsx";
 import LoginPage from "./pages/Login.jsx";
 import RegisterPage from "./pages/Register.jsx";
+import ResetPasswordPage from "./pages/ResetPassword.jsx";
+import ResetPasswordDonePage from "./pages/ResetPasswordDone.jsx";
 import ProfilePage from "./pages/Profile.jsx";
 import FlowchartPage from "./pages/Flowchart.jsx";
 import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
@@ -126,6 +128,22 @@ class App extends Component {
     );
   }
 
+  resetPasswordPage = () => {
+    return (
+      <ResetPasswordPage
+        handle_resetPassword={this.handle_resetPassword}
+      />
+    );
+  }
+
+  resetPasswordDonePage = () => {
+    return (
+      <ResetPasswordDonePage
+        handle_resetPasswordDone={this.handle_resetPasswordDone}
+      />
+    );
+  }
+
   menu = () => {
     return (
       <Menu
@@ -192,6 +210,8 @@ class App extends Component {
           <Route exact path="/" render={this.mainPage} />
           <Route exact path="/login" component={this.loginPage}/>
           <Route exact path="/register" component={this.registerPage} />
+          <Route exact path="/reset_password" component={this.resetPasswordPage} />
+          <Route exact path="/reset_password_done" component={this.resetPasswordDonePage} />
           {this.state.logged_in && 
           <Route exact path="/profile" component={this.profilePage} />
           }
