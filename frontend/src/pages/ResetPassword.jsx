@@ -3,13 +3,12 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
-class Login extends Component {
+class ResetPassword extends Component {
     constructor(props){
         super();
 
         this.state = {
             email: "",
-            pass: "",
         }
 
     }
@@ -19,7 +18,6 @@ class Login extends Component {
             [e.target.name]: e.target.value
         })
     }
-
 
     // test = () =>{
     //     console.log(this.state.token)
@@ -50,7 +48,7 @@ class Login extends Component {
 
       renderRedirect = () => {
         if (this.state.redirect) {
-          return <Redirect to='/' />
+          return <Redirect to='/ResetPasswordDone' />
         }
       }
 
@@ -58,9 +56,7 @@ class Login extends Component {
         event.preventDefault();
         const data = {
             email: this.state.email,
-            password: this.state.pass
         }
-        this.props.handle_login(data);
         this.setRedirect();
       }
     render() {
@@ -78,35 +74,24 @@ class Login extends Component {
             </div>
 
             <div class="sidenav-main">
-                <div id="signup-message">
-                    <h5>Not a member? <a href="/register">Sign up!</a></h5>
+                <div id="reset-message">
+                    <h5>Enter your email to reset your password. We'll send you a confirmation link.</h5>
                 </div>
                 
-                <div id="signup-form">
+                <div id="reset-form">
                     <form onSubmit={this.handleSubmit}>
                         Email
                         <br/>
                         <input name="email" onChange={e => this.handleChange(e)}></input>
                         <br/>
                         <br/>
-
-                        Password
-                        <br/>
-                        <input type="password" name="pass" onChange={e => this.handleChange(e)}></input>
-                        <br/>
-                        <br/>
-
                         {this.renderRedirect()}
                         <input type="submit" class="btn btn-success" value="Login" />
-                    </form>
-                    
-                    <br/>
-                    
-                    <p><a href="/ResetPassword">Forgot your password?</a></p>
+                    </form>                                    
                 </div>
             </div>
         </div>        
       );
     }
   }
-  export default Login;
+  export default ResetPassword;

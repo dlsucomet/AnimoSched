@@ -50,7 +50,13 @@ INSTALLED_APPS = [
     'api'
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'archerone.testing@gmail.com'
+EMAIL_HOST_PASSWORD = 'ARCHER1:D'
 
 SITE_ID = 1
 
@@ -143,7 +149,7 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "XCSRF-TOKEN"
-SESSION_SAME_COOKIE = None
+SESSION_SAME_COOKIE = None #temp disable
 
 # REST-related
 REST_SESSION_LOGIN = True
@@ -155,7 +161,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_EMAIL_FIELD = 'email'
-ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET = True #temp disable
 
 AUTH_USER_MODEL = 'api.User'
 
@@ -168,7 +174,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-}
+} #temp comment
 
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "api.serializers.UserSerializer",

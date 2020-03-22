@@ -19,6 +19,16 @@ class College(models.Model):
         verbose_name = _('college')
         verbose_name_plural = _('colleges')
 
+class Degree(models.Model):
+    degree_code = models.CharField(max_length=8)
+    degree_name = models.CharField(max_length=120)
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('degree')
+        verbose_name_plural = _('degrees')
+
 class Course(models.Model):
     course_code = models.CharField(max_length=8)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
@@ -81,12 +91,14 @@ class User(AbstractBaseUser):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, blank=True, null=True)
+    degree = models.ForeignKey(Degree, on_delete=models.SET_NULL, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
     schedules = models.ManyToManyField(Schedule)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'college', 'degree']
 
     class Meta:
         # ordering = ['id_num','last_name']
