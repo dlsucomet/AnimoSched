@@ -23,8 +23,9 @@ class ResetPasswordDone extends Component {
             </div>
 
             <div class="sidenav-main">
+                <br/>
                 <div id="reset-message">
-                    <h5>We've emailed you instructions for setting your password. If they haven't arrived in a few minutes, check your spam folder.</h5>
+                    <h5>We've emailed you instructions for setting your password.<br />If they haven't arrived in a few minutes, check your spam folder.</h5>
                 </div>              
             </div>
         </div>        

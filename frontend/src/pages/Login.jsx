@@ -102,7 +102,7 @@ class Login extends Component {
                     
                     <br/>
                     
-                    <p><a href="/ResetPassword">Forgot your password?</a></p>
+                    <p><a href="/reset_password">Forgot your password?</a></p>
                 </div>
             </div>
         </div>        

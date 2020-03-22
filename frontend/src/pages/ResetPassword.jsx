@@ -6,11 +6,9 @@ import { Redirect } from "react-router-dom";
 class ResetPassword extends Component {
     constructor(props){
         super();
-
         this.state = {
             email: "",
         }
-
     }
 
     handleChange = (e) => {
@@ -18,29 +16,13 @@ class ResetPassword extends Component {
             [e.target.name]: e.target.value
         })
     }
-
-    // test = () =>{
-    //     console.log(this.state.token)
-    //     axios.get('http://localhost:8000/api/auth/user/',
-    //     {
-    //         headers: {
-    //             'X-CSRF-TOKEN': this.state.token,
-    //         }
-    //     })
-    //     .then(res => {
-    //         console.log(res);
-    //         console.log(res.data);
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
-    // }
     
     state = {
         redirect: false
       }
 
       setRedirect = () => {
+        console.log("Setting redirect");
         this.setState({
           redirect: true
         })
@@ -48,17 +30,20 @@ class ResetPassword extends Component {
 
       renderRedirect = () => {
         if (this.state.redirect) {
-          return <Redirect to='/ResetPasswordDone' />
+          console.log("Rendering redirect");
+          return <Redirect to='/reset_password_done' />
         }
       }
 
       handleSubmit = (event) => {
         event.preventDefault();
+        console.log(this.state.email);
         const data = {
             email: this.state.email,
         }
         this.setRedirect();
       }
+
     render() {
       return (
         <div>
@@ -74,8 +59,9 @@ class ResetPassword extends Component {
             </div>
 
             <div class="sidenav-main">
+              <br/>
                 <div id="reset-message">
-                    <h5>Enter your email to reset your password. We'll send you a confirmation link.</h5>
+                    <h5>Enter your email address to reset your password.<br/>We'll send you a link to reset your password.</h5>
                 </div>
                 
                 <div id="reset-form">
@@ -86,7 +72,7 @@ class ResetPassword extends Component {
                         <br/>
                         <br/>
                         {this.renderRedirect()}
-                        <input type="submit" class="btn btn-success" value="Login" />
+                        <input type="submit" class="btn btn-success" value="Send link" />
                     </form>                                    
                 </div>
             </div>
