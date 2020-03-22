@@ -3,31 +3,95 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Register.svg';
 import { Redirect } from "react-router-dom";
 
+import ComboBox from '../components/ComboBox.jsx';
+
 class Register extends Component {
     constructor(props){
         super();
 
         this.state = {
-            firstName: "",
-            lastName: "",
-            email: "",
-            idNo: "",
-            college: "RVRCOB",
-            course: "",
-            pass: "",
-            passCon: "",
+            // firstName: "",
+            // lastName: "",
+            // email: "",
+            // idNo: "",
+            // college: "RVRCOB",
+            // course: "",
+            // pass: "",
+            // passCon: "",
+
+            fields: {},
+            errors: {}
         }
 
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    handleChange = (field, e) => {
+        // this.setState({
+        //     [e.target.name]: e.target.value
+        // })
+
+        let fields = this.state.fields;
+        fields[field] = e.target.value;        
+        this.setState({fields});
     }
 
     collectData = () =>{
 
+    }
+
+    handleValidation = () => {
+        let fields = this.state.fields;
+        let errors = {};
+        let formIsValid = true;
+  
+        // FIRSTNAME
+        if(!fields["firstName"]){
+            formIsValid = false;
+            errors["firstName"] = "Required First Name"
+        }
+
+        // LASTNAME
+        if(!fields["lastName"]){
+            formIsValid = false;
+            errors["lastName"] = "Required Last Name"
+        }
+
+        // EMAIL
+        if(!fields["email"]){
+          formIsValid = false;
+          errors["email"] = "Required Email"
+        }
+  
+        if(typeof fields["email"] !== "undefined"){
+          let lastAtPos = fields["email"].lastIndexOf('@');
+          let lastDotPos = fields["email"].lastIndexOf('.');
+  
+          if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+            formIsValid = false;
+            errors["email"] = "Invalid Email";
+          }
+        }
+
+        // ID NUMBER
+        if(!fields["idNo"]){
+            formIsValid = false;
+            errors["idNo"] = "Required ID Number"
+        }
+  
+        // PASSWORD
+        if(!fields["pass"]){
+          formIsValid = false;
+          errors["pass"] = "Required Password"
+        }
+
+        // CONFIRM PASSWORD
+        if(!fields["passCon"]){
+            formIsValid = false;
+            errors["passCon"] = "Required Confirm Password"
+        }
+  
+        this.setState({errors: errors});
+        return formIsValid;
     }
 
     state = {
@@ -48,25 +112,34 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state.firstName);
-        console.log(this.state.lastName);
-        console.log(this.state.email);
-        console.log(this.state.idNo);
-        console.log(this.state.college);
-        console.log(this.state.course);
-        console.log(this.state.pass);
-        console.log(this.state.passCon);
-        const data = {
-            email: this.state.email,
-            // username: this.state.idNo,
-            first_name: this.state.firstName,
-            last_name: this.state.lastName,
-            password1: this.state.pass,
-            password2: this.state.passCon,
-            college: this.state.college
-        };
-        this.props.handle_register(data);
-        this.setRedirect();
+        // console.log(this.state.firstName);
+        // console.log(this.state.lastName);
+        // console.log(this.state.email);
+        // console.log(this.state.idNo);
+        // console.log(this.state.college);
+        // console.log(this.state.course);
+        // console.log(this.state.pass);
+        // console.log(this.state.passCon);
+
+        if(this.handleValidation()){
+            const data = {
+
+                // START EDITING HERE
+
+                email: this.state.email,
+                // username: this.state.idNo,
+                first_name: this.state.firstName,
+                last_name: this.state.lastName,
+                password1: this.state.pass,
+                password2: this.state.passCon,
+                college: this.state.college
+            };
+            this.props.handle_register(data);
+            this.setRedirect();
+          }
+        else{
+            alert("Form has invalid input.");
+        }
     }
 
     render() {
@@ -89,47 +162,61 @@ class Register extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit.bind(this)}>
                         First Name
                         <br/>
-                        <input name = "firstName" value={this.state.firstName} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input name="firstName" placeholder="John" value={this.state.fields["firstName"]} onChange={this.handleChange.bind(this, "firstName")}/>
+                        <span className="error">{this.state.errors["firstName"]}</span>
+                        <br/><br/>
 
                         Last Name
                         <br/>
-                        <input name = "lastName" value={this.state.lastName} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input name="lastName" placeholder="Dela Cruz" value={this.state.fields["lastName"]} onChange={this.handleChange.bind(this, "lastName")}/>
+                        <span className="error">{this.state.errors["lastName"]}</span>
+                        <br/><br/>
 
                         Email
                         <br/>
-                        <input name = "email" value={this.state.email} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}/>
+                        <span className="error">{this.state.errors["email"]}</span>
+                        <br/><br/>
 
                         ID Number
                         <br/>
-                        <input name = "idNo" value={this.state.idNo} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input name="idNo" placeholder="11612345" onChange={this.handleChange.bind(this, "idNo")} value={this.state.fields["idNo"]}/>
+                        <span className="error">{this.state.errors["idNo"]}</span>
+                        <br/><br/>
 
                         College
                         <br/>
-                        <select id="college" name="college" value={this.state.college} onChange={e => this.handleChange(e)} >
-                          <option value="RVRCOB">Ramon V. del Rosario College of Business (RVR COB)</option>
-                          <option value="CCS">College of Computer Studies (CCS)</option>
-                          <option value="GCOE">Gokongwei College of Engineering (GCOE)</option>
-                          <option value="CLA">College of Liberal Arts (CLA)</option>
-                          <option value="SOE">School of Economics (SOE)</option>
-                          <option value="BAGCED">Br. Andrew Gonzales FSC College of Education (BAGCED)</option>
-                          <option value="COS">College of Science (COS)</option>
+                        <select id="college" name="college" value={this.state.fields["college"]} onChange={this.handleChange.bind(this, "college")} >
+                            <option> Select College </option>
+                            <option value="BAGCED">Br. Andrew Gonzalez College of Education (BAGCED)</option>
+                            <option value="RVRCOB">Ramon V. del Rosario College of Business (RVRCOB)</option>
+                            <option value="CCS">College of Computer Studies (CCS)</option>
+                            <option value="CLA">College of Liberal Arts (CLA)</option>
+                            <option value="COS">College of Science (COS)</option>
+                            <option value="GCOE">Gokongwei College of Engineering (GCOE)</option>
+                            <option value="SOE">School of Economics (SOE)</option>
                         </select>
                         <br/><br/>
 
-                        Course
+                        Degree Program
                         <br/>
-                        <input name = "course" value={this.state.course} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input name="course" value={this.state.fields["course"]} onChange={this.handleChange.bind(this, "course")}/><br/><br/>
+                        <ComboBox college={this.state.fields["college"]}/><br/>
 
                         Password
                         <br/>
-                        <input type="password" name = "pass" value={this.state.pass} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}/>
+                        <span className="error">{this.state.errors["pass"]}</span>
+                        <br/><br/>
 
                         Confirm Password
                         <br/>
-                        <input type="password" name = "passCon" value={this.state.passCon} onChange={e => this.handleChange(e)}/><br/><br/>
+                        <input type="password" name="passCon" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "passCon")} value={this.state.fields["passCon"]}/>
+                        <span className="error">{this.state.errors["passCon"]}</span>
+                        <br/><br/>
 
                         {this.renderRedirect()}
                         <input type="submit" class="btn btn-success" value="Register" />
