@@ -27,7 +27,9 @@ class App extends Component {
       logged_in: localStorage.getItem('token') ? true : false,
       first_name: '',
       last_name: '',
-      id_num: ''
+      id_num: '',
+      colleges:{},
+      degrees:{}
     };
   }
 
@@ -57,7 +59,7 @@ class App extends Component {
     }
   }
 
-  handle_login = (data) => {
+  handle_login = (data, _callback) => {
     axios.post('http://localhost:8000/api/auth/login/', data,
     {
         headers: {
@@ -74,13 +76,15 @@ class App extends Component {
           last_name: res.data.user.last_name,
           id_num: ''
         })
+        _callback(true);
     })
     .catch(error => {
         console.log(error.response)
+        _callback(false);
     });
   }
 
-  handle_register = (data) => {
+  handle_register = (data, _callback) => {
     axios.post('http://localhost:8000/api/auth/registration/', data,
     {
         headers: {
@@ -96,9 +100,11 @@ class App extends Component {
           last_name: res.data.user.last_name,
           id_num: ''
         })
+        _callback(true);
     })
     .catch(error => {
         console.log(error.response)
+        _callback(false);
     });
   }
 

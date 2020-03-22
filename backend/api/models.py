@@ -11,8 +11,8 @@ from .managers import UserManager
 import datetime
 
 class College(models.Model):
-    college_code = models.CharField(max_length=12)
-    college_name = models.CharField(max_length=120)
+    college_code = models.CharField(max_length=12, unique=True)
+    college_name = models.CharField(max_length=120, unique=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -20,8 +20,8 @@ class College(models.Model):
         verbose_name_plural = _('colleges')
 
 class Degree(models.Model):
-    degree_code = models.CharField(max_length=8)
-    degree_name = models.CharField(max_length=120)
+    degree_code = models.CharField(max_length=8, unique=True)
+    degree_name = models.CharField(max_length=120, unique=True)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
 
@@ -124,4 +124,3 @@ class Preference(models.Model):
     class Meta:
         verbose_name = _('preference')
         verbose_name_plural = _('preferences')
-    

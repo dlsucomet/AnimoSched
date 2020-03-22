@@ -15,7 +15,7 @@ class CollegeSerializer(serializers.ModelSerializer):
 
 class DegreeSerializer(serializers.ModelSerializer):
   class Meta:
-    model = College 
+    model = Degree 
     fields = ('id', 'degree_code', 'degree_name', 'college')
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -35,8 +35,8 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     # college = CollegeSerializer()
-    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all())
-    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all())
+    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), required=False)
+    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all(), required=False)
     
     def validate_email(self, value):
         if "@dlsu.edu.ph" not in value:

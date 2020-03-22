@@ -92,8 +92,11 @@ class Login extends Component {
               email: this.state.fields["email"],
               password: this.state.fields["pass"]
           }
-          this.props.handle_login(data);
-          this.setRedirect();
+          this.props.handle_login(data, (res) => {
+            if(res){
+              this.setRedirect();
+            }
+          });
         }
         else{
           alert("Form has invalid input.");

@@ -4,26 +4,39 @@ import SidebarIMG from '../images/Register.svg';
 import { Redirect } from "react-router-dom";
 
 import ComboBox from '../components/ComboBox.jsx';
+import axios from 'axios';
 
 class Register extends Component {
     constructor(props){
-        super();
+        super(props);
 
         this.state = {
-            // firstName: "",
-            // lastName: "",
-            // email: "",
-            // idNo: "",
-            // college: "RVRCOB",
-            // course: "",
-            // pass: "",
-            // passCon: "",
-
             fields: {},
-            errors: {}
+            errors: {},
+            colleges: [],
+            degrees: [],
         }
 
     }
+    componentDidMount(){
+        axios.get('http://localhost:8000/api/colleges/')
+        .then(res => {
+          var newArray = [];
+          res.data.map(college=>{
+              newArray.push(college);
+          })
+          this.setState({colleges: newArray})
+        })
+        axios.get('http://localhost:8000/api/degrees/')
+        .then(res => {
+          var newArray = [];
+          res.data.map(degree=>{
+              newArray.push(degree);
+          })
+          this.setState({degrees: newArray});
+          console.log(newArray);
+        })
+      }
 
     handleChange = (field, e) => {
         // this.setState({
@@ -112,30 +125,26 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        // console.log(this.state.firstName);
-        // console.log(this.state.lastName);
-        // console.log(this.state.email);
-        // console.log(this.state.idNo);
-        // console.log(this.state.college);
-        // console.log(this.state.course);
-        // console.log(this.state.pass);
-        // console.log(this.state.passCon);
 
         if(this.handleValidation()){
             const data = {
 
                 // START EDITING HERE
 
-                email: this.state.email,
+                email: this.state.fields['email'],
                 // username: this.state.idNo,
-                first_name: this.state.firstName,
-                last_name: this.state.lastName,
-                password1: this.state.pass,
-                password2: this.state.passCon,
-                college: this.state.college
+                first_name: this.state.fields['firstName'],
+                last_name: this.state.fields['lastName'],
+                password1: this.state.fields['pass'],
+                password2: this.state.fields['passCon'],
+                // college: this.state.fields['college']
             };
-            this.props.handle_register(data);
-            this.setRedirect();
+            this.props.handle_register(data, (res) => {
+                if(res){
+                    this.setRedirect();
+                }else{
+                }
+            });
           }
         else{
             alert("Form has invalid input.");
@@ -190,21 +199,17 @@ class Register extends Component {
                         College
                         <br/>
                         <select id="college" name="college" value={this.state.fields["college"]} onChange={this.handleChange.bind(this, "college")} >
-                            <option> Select College </option>
-                            <option value="BAGCED">Br. Andrew Gonzalez College of Education (BAGCED)</option>
-                            <option value="RVRCOB">Ramon V. del Rosario College of Business (RVRCOB)</option>
-                            <option value="CCS">College of Computer Studies (CCS)</option>
-                            <option value="CLA">College of Liberal Arts (CLA)</option>
-                            <option value="COS">College of Science (COS)</option>
-                            <option value="GCOE">Gokongwei College of Engineering (GCOE)</option>
-                            <option value="SOE">School of Economics (SOE)</option>
+                            <>
+                            
+                            {this.state.colleges.map(college => (
+                                <option value={college.id}>{college.college_name}</option>
+                            ))}
+                            </>
                         </select>
                         <br/><br/>
 
-                        Degree Program
                         <br/>
-                        <input name="course" value={this.state.fields["course"]} onChange={this.handleChange.bind(this, "course")}/><br/><br/>
-                        <ComboBox college={this.state.fields["college"]}/><br/>
+                        <ComboBox name="course" value={this.state.fields["course"]} onChange={this.handleChange.bind(this, "course")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
                         Password
                         <br/>
