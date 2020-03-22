@@ -13,66 +13,36 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super(props);
+        this.updateHighPriorty = this.updateHighPriorty.bind(this);
+        this.updateLowPriority = this.updateLowPriority.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        //this.generatedContent= [<GenSchedInfo/>,<GenSchedInfo/>];
         this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
-            highCourses: [],
-            lowCourses: [],
+            highCourses: ['COMPRO1', 'COMPRO2'],
+            lowCourses: ['IPERSEF', 'SOCTEC1'],
             currentPage: 0,
-            currentContent: <GenSchedInfo/>,
-            generatedContents: [<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>,<GenSchedInfo/>],
-            //testContents: [<GenSchedInfo/>,<GenSchedInfo/>],
+            currentContent: "",
+            generatedContents: [],
+            // generatedContents : ['Hello', 'There', 'Josh'],
+            // currentContent: ['Hello'],
             pagesCount: 1,
             searchedCourse: "",
             
         };
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        
+        
     }
 
     componentDidMount(){
-        const user = localStorage.getItem('user');
-        if(user != undefined){
-            axios.get('http://localhost:8000/api/users/'+user)
-            .then(res => {
-                axios.get('http://localhost:8000/api/highcourses/'+res.data.highCourses)
-                .then(res => {
-                    const courses = res.data.courses;
-                    for(let i = 0 ; i < courses.length ; i++){
-                        console.log(courses[i])
-                        axios.get('http://localhost:8000/api/courses/'+courses[i])
-                        .then(res => {
-                            this.setState(state =>{
-                                const highCourses = state.highCourses.concat(res.data.course_code);
-                                return{highCourses};
-                            });
-                        })
-                    }
-                })
-                axios.get('http://localhost:8000/api/lowcourses/'+res.data.lowCourses)
-                .then(res => {
-                    const courses = res.data.courses;
-                    for(let i = 0 ; i < courses.length ; i++){
-                        console.log(courses[i])
-                        axios.get('http://localhost:8000/api/courses/'+courses[i])
-                        .then(res => {
-                            this.setState(state =>{
-                                const lowCourses = state.lowCourses.concat(res.data.course_code);
-                                return{lowCourses};
-                            });
-                        })
-                    }
-                })
-            })
-        }
+
     }
 
     handleKeyPress = (event) => {
-        event.preventDefault();
         if(event.key === 'Enter'){
             const newCourse = event.target.value;
             this.setState(state =>{
@@ -90,7 +60,8 @@ class GenerateSchedule extends Component {
             var currentContent = state.generatedContents[index];
             return {currentContent};
             });
-
+        
+        this.setState({currentPage: index});
         this.setState(state =>{
             var currentPage = index;
             return {currentPage};
@@ -98,12 +69,166 @@ class GenerateSchedule extends Component {
         console.log("pressed page " + index);
         console.log(this.state.generatedContents[index]);
     }
+
+    createSchedInfo = (arrayGenSched)=>{
+        console.log("Hi I was called");
+        var generatedContents = arrayGenSched.map((item, index) =>
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
+
+        );
+
+        this.setState({generatedContents});
+        var currentContent = generatedContents[0];
+        this.setState({currentContent});
+    }
+
+    updateHighPriorty(courseUpdate){
+        var newArray = [];
+        courseUpdate.map(course=>{
+            newArray.push(course.data);
+        })
+        this.setState({highCourses: newArray})
+    }
+
+    updateLowPriority(courseUpdate){
+        var newArray = [];
+        courseUpdate.map(course=>{
+            newArray.push(course.data);
+        })
+        this.setState({lowCourses: newArray})
+    }
     
     render() { 
         let search_field = this.props.search_field;
-        const { currentPage } = this.state;
+        // const { currentPage } = this.state;
         this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
+
+        var jsonSample =[
+            {
+                id: 1,
+                scheduleContent: [
+                    {
+                      title: "HUMAART",
+                      startDate: new Date(2018, 5, 25, 9, 30),
+                      endDate: new Date(2018, 5, 25, 11, 30),
+                      id: 0,
+                      location: "Room 1",
+                      source: "G302",
+                      description: "Professor lulu"
+                    },
+                    {
+                      title: "KASPIL2",
+                      startDate: new Date(2018, 5, 25, 12, 0),
+                      endDate: new Date(2018, 5, 25, 13, 0),
+                      id: 1,
+                      location: "Room 1"
+                    },
+                    {
+                      title: "TREDTRI",
+                      startDate: new Date(2018, 5, 25, 14, 30),
+                      endDate: new Date(2018, 5, 25, 15, 30),
+                      id: 2,
+                      location: "Room 2"
+                    }
+                ],
+                tableContent: [
+                    {
+                        id: 1, 
+                        course: "LASARE2", 
+                        section:"S17", 
+                        faculty: "DELA CRUZ, JUAN", 
+                        day:"MAR 30", 
+                        time:"08:00AM-5:00PM",
+                        room: "G310"
+                    },
+                    {
+                        id: 2, 
+                        course: "IPERSEF", 
+                        section:"S15", 
+                        faculty: "DEL TORRE, MARIA", 
+                        day:"APR 05", 
+                        time:"08:00AM-05:00PM",
+                        room: "G304"
+                    }
+        
+                ],
+                
+                prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
+                
+                conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
+
+            },
+
+            {
+                id: 2,
+                scheduleContent: [
+                    {
+                        title: "CSSERVM",
+                        startDate: new Date(2018, 5, 26, 10, 0),
+                        endDate: new Date(2018, 5, 26, 11, 0),
+                        id: 3,
+                        location: "Room 2"
+                      },
+                      {
+                        title: "INOVATE",
+                        startDate: new Date(2018, 5, 26, 12, 0),
+                        endDate: new Date(2018, 5, 26, 13, 35),
+                        id: 4,
+                        location: "Room 2"
+                      },
+                      {
+                          title: "HUMAART",
+                          startDate: new Date(2018, 5, 27, 9, 30),
+                          endDate: new Date(2018, 5, 27, 11, 30),
+                          id: 0,
+                          location: "Room 1"
+                          },
+                          {
+                          title: "KASPIL2",
+                          startDate: new Date(2018, 5, 27, 12, 0),
+                          endDate: new Date(2018, 5, 27, 13, 0),
+                          id: 1,
+                          location: "Room 1"
+                          },
+                          {
+                          title: "TREDTRI",
+                          startDate: new Date(2018, 5, 27, 14, 30),
+                          endDate: new Date(2018, 5, 27, 15, 30),
+                          id: 2,
+                          location: "Room 2"
+                      },
+                ],
+                tableContent: [
+                    {
+                        id: 1, 
+                        course: "LASARE1", 
+                        section:"S16", 
+                        faculty: "DOE, JOHN", 
+                        day:"JAN 30", 
+                        time:"08:00AM-05:00PM",
+                        room: "G301"
+                    },
+                    {
+                        id: 2, 
+                        course: "LASARE2", 
+                        section:"S17", 
+                        faculty: "THO, JANE", 
+                        day:"APR 12", 
+                        time:"08:00AM-05:00PM",
+                        room: "G306"
+                    }
+        
+                ],
+                
+                prefContent: ['Match Preferences','> Earliest Start Time: 11:00 AM', '> Earliest End Time: 4:00 PM', ' ', 'Unmatched Preferences', '> Professor Fritz Flowers not included'],
+                
+                conflictsContent: ['> CSSERVM conflicts with with ClassB2', '> TREDTRI conflicts with with ClassC3'],    
+
+            }
+
+        ]
+
         return (
             <div>
                 {this.props.menu()}
@@ -120,7 +245,7 @@ class GenerateSchedule extends Component {
                                     name={search_field}
                                     id="exampleSearch"
                                     placeholder="Enter Course Name..."
-                                    value = {this.state.searchedCourse}
+                                    value = {this.state.Input}
                                     onKeyPress={this.handleKeyPress}
                                     />
                                 </div>
@@ -128,16 +253,16 @@ class GenerateSchedule extends Component {
                             <Row vertical = 'center'>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Highest Priority</h3>
-                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses}/>
+                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
 
                                 </Column>
                                 <Column flexGrow={1} horizontal = 'center'>
                                     <h3>Lowest Priority</h3>
-                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses}/>
+                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
                                 </Column>
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
-                                <button className="btn btn-secondary btn-sm" onClick={this.showDiv}>Generate Schedule</button>
+                                <button className="btn btn-secondary btn-sm" onClick={()=>this.createSchedInfo(jsonSample)}>Generate Schedule</button>
                             </Row>
                         </div>
                         <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
