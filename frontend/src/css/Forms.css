@@ -93,3 +93,9 @@ body {
     left: 0;
     bottom: 0;
 }
+
+.error {
+    margin-left: 5px;
+    font-size: 13px;
+    color: red;
+  }

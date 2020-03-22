@@ -8,16 +8,47 @@ class Login extends Component {
         super();
 
         this.state = {
-            email: "",
-            pass: "",
+            fields: {},
+            errors: {}
         }
 
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    handleChange(field, e){    		
+      let fields = this.state.fields;
+      fields[field] = e.target.value;        
+      this.setState({fields});
+    }
+
+    handleValidation = () => {
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+
+      // EMAIL
+      if(!fields["email"]){
+        formIsValid = false;
+        errors["email"] = "Required Email"
+      }
+
+      if(typeof fields["email"] !== "undefined"){
+        let lastAtPos = fields["email"].lastIndexOf('@');
+        let lastDotPos = fields["email"].lastIndexOf('.');
+
+        if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+          formIsValid = false;
+          errors["email"] = "Invalid Email";
+        }
+      }
+
+      // PASSWORD
+      if(!fields["pass"]){
+        formIsValid = false;
+        errors["pass"] = "Required Password"
+      }
+
+      this.setState({errors: errors});
+      return formIsValid;
     }
 
 
@@ -56,12 +87,17 @@ class Login extends Component {
 
       handleSubmit = (event) => {
         event.preventDefault();
-        const data = {
-            email: this.state.email,
-            password: this.state.pass
+        if(this.handleValidation()){
+          const data = {
+              email: this.state.fields["email"],
+              password: this.state.fields["pass"]
+          }
+          this.props.handle_login(data);
+          this.setRedirect();
         }
-        this.props.handle_login(data);
-        this.setRedirect();
+        else{
+          alert("Form has invalid input.");
+        }
       }
     render() {
       return (
@@ -83,16 +119,20 @@ class Login extends Component {
                 </div>
                 
                 <div id="signup-form">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit.bind(this)}>
                         Email
                         <br/>
-                        <input name="email" onChange={e => this.handleChange(e)}></input>
+                        <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
+                        <span className="error">{this.state.errors["email"]}</span>
+
                         <br/>
                         <br/>
 
                         Password
                         <br/>
-                        <input type="password" name="pass" onChange={e => this.handleChange(e)}></input>
+                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}></input>
+                        <span className="error">{this.state.errors["pass"]}</span>
+
                         <br/>
                         <br/>
 
