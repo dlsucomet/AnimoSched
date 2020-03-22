@@ -137,8 +137,10 @@ class Register extends Component {
                 last_name: this.state.fields['lastName'],
                 password1: this.state.fields['pass'],
                 password2: this.state.fields['passCon'],
-                // college: this.state.fields['college']
+                college: Number(this.state.fields['college']),
+                degree: this.state.fields['degree']
             };
+            console.log(data);
             this.props.handle_register(data, (res) => {
                 if(res){
                     this.setRedirect();
