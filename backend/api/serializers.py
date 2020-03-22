@@ -35,8 +35,8 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     # college = CollegeSerializer()
-    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), required=False)
-    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all(), required=False)
+    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), required=True)
+    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all(), required=True)
     
     def validate_email(self, value):
         if "@dlsu.edu.ph" not in value:
