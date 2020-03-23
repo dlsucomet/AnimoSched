@@ -84,7 +84,6 @@ class GenerateSchedule extends Component {
     }
 
     createSchedInfo = (arrayGenSched)=>{
-        console.log("Hi I was called");
         var generatedContents = arrayGenSched.map((item, index) =>
                 <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
 
@@ -148,21 +147,25 @@ class GenerateSchedule extends Component {
                 ],
                 tableContent: [
                     {
-                        id: 1, 
+                        id: 1,
+                        classNmbr: 1230, 
                         course: "LASARE2", 
                         section:"S17", 
                         faculty: "DELA CRUZ, JUAN", 
                         day:"MAR 30", 
-                        time:"08:00AM-5:00PM",
+                        startTime:"08:00",
+                        endTime : "15:30",
                         room: "G310"
                     },
                     {
-                        id: 2, 
+                        id: 2,
+                        classNmbr: 1405, 
                         course: "IPERSEF", 
                         section:"S15", 
                         faculty: "DEL TORRE, MARIA", 
                         day:"APR 05", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"08:00",
+                        endTime : "15:30",
                         room: "G304"
                     }
         
@@ -216,20 +219,24 @@ class GenerateSchedule extends Component {
                 tableContent: [
                     {
                         id: 1, 
+                        classNmbr: 2394,
                         course: "LASARE1", 
                         section:"S16", 
                         faculty: "DOE, JOHN", 
                         day:"JAN 30", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"09:00",
+                        endTime : "16:30",
                         room: "G301"
                     },
                     {
                         id: 2, 
+                        classNmbr: 3048,
                         course: "LASARE2", 
                         section:"S17", 
                         faculty: "THO, JANE", 
                         day:"APR 12", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"11:00",
+                        endTime : "15:30",
                         room: "G306"
                     }
         
