@@ -11,6 +11,7 @@ import LoginPage from "./pages/Login.jsx";
 import RegisterPage from "./pages/Register.jsx";
 import ResetPasswordPage from "./pages/ResetPassword.jsx";
 import ResetPasswordDonePage from "./pages/ResetPasswordDone.jsx";
+import ResetPasswordConfirmPage from "./pages/ResetPasswordConfirm.jsx";
 import ProfilePage from "./pages/Profile.jsx";
 import FlowchartPage from "./pages/Flowchart.jsx";
 import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
@@ -108,6 +109,31 @@ class App extends Component {
     });
   }
 
+  handle_resetPassword = (data, _callback) => {
+    axios.post('http://localhost:8000/api/auth/password/reset/', data,
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => {
+        console.log(res.data);
+        console.log(res.data.email);
+        localStorage.setItem('token', res.data.token);
+        this.setState({
+          logged_in: true,
+          first_name: res.data.user.first_name,
+          last_name: res.data.user.last_name,
+          id_num: ''
+        })
+        _callback(true);
+    })
+    .catch(error => {
+        console.log(error.response)
+        _callback(false);
+    });
+  }
+
   handle_logout = () => {
     localStorage.removeItem('token');
     this.setState({
@@ -144,9 +170,13 @@ class App extends Component {
 
   resetPasswordDonePage = () => {
     return (
-      <ResetPasswordDonePage
-        handle_resetPasswordDone={this.handle_resetPasswordDone}
-      />
+      <ResetPasswordDonePage/>
+    );
+  }
+
+  resetPasswordConfirmPage = () => {
+    return (
+      <ResetPasswordConfirmPage/>
     );
   }
 
@@ -216,8 +246,9 @@ class App extends Component {
           <Route exact path="/" render={this.mainPage} />
           <Route exact path="/login" component={this.loginPage}/>
           <Route exact path="/register" component={this.registerPage} />
-          <Route exact path="/reset_password" component={this.resetPasswordPage} />
-          <Route exact path="/reset_password_done" component={this.resetPasswordDonePage} />
+          <Route exact path="/password_reset" component={this.resetPasswordPage} />
+          <Route exact path="/password_reset_done" component={this.resetPasswordDonePage} />
+          <Route path="/password_reset_confirm/:uidb64/:token" component={this.resetPasswordConfirmPage} />
           {this.state.logged_in && 
           <Route exact path="/profile" component={this.profilePage} />
           }

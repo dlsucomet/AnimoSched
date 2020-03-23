@@ -3,18 +3,16 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
-class Login extends Component {
-    constructor(props){
+class ResetPasswordConfirm extends Component {
+    constructor(props) {
         super();
-
         this.state = {
             fields: {},
             errors: {}
         }
-
     }
 
-    handleChange(field, e){    		
+    handleChange = (field, e) => {
       let fields = this.state.fields;
       fields[field] = e.target.value;        
       this.setState({fields});
@@ -26,82 +24,60 @@ class Login extends Component {
       let formIsValid = true;
 
       // EMAIL
-      if(!fields["email"]){
+      if(!fields["email"]) {
         formIsValid = false;
-        errors["email"] = "Required Email"
+        errors["email"] = "Enter a valid email."
       }
 
-      if(typeof fields["email"] !== "undefined"){
+      if(typeof fields["email"] !== "undefined") {
         let lastAtPos = fields["email"].lastIndexOf('@');
         let lastDotPos = fields["email"].lastIndexOf('.');
 
         if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
           formIsValid = false;
-          errors["email"] = "Invalid Email";
+          errors["email"] = "Enter a valid email.";
         }
-      }
-
-      // PASSWORD
-      if(!fields["pass"]){
-        formIsValid = false;
-        errors["pass"] = "Required Password"
       }
 
       this.setState({errors: errors});
       return formIsValid;
     }
-
-
-    // test = () =>{
-    //     console.log(this.state.token)
-    //     axios.get('http://localhost:8000/api/auth/user/',
-    //     {
-    //         headers: {
-    //             'X-CSRF-TOKEN': this.state.token,
-    //         }
-    //     })
-    //     .then(res => {
-    //         console.log(res);
-    //         console.log(res.data);
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
-    // }
     
     state = {
         redirect: false
-      }
+    }
 
-      setRedirect = () => {
-        this.setState({
-          redirect: true
-        })
-      }
+    setRedirect = () => {
+      console.log("Setting redirect");
+      this.setState({
+        redirect: true
+      })
+    }
 
-      renderRedirect = () => {
-        if (this.state.redirect) {
-          return <Redirect to='/' />
+    renderRedirect = () => {
+      if(this.state.redirect) {
+        console.log("Rendering redirect");
+        return <Redirect to='/reset_password_done' />
+      }
+    }
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      if(this.handleValidation()) {
+        const data = {
+          email: this.state.fields["email"]
         }
-      }
-
-      handleSubmit = (event) => {
-        event.preventDefault();
-        if(this.handleValidation()){
-          const data = {
-              email: this.state.fields["email"],
-              password: this.state.fields["pass"]
+        this.props.handle_resetPassword(data, (res) => {
+          if(res) {
+            this.setRedirect();
           }
-          this.props.handle_login(data, (res) => {
-            if(res){
-              this.setRedirect();
-            }
-          });
-        }
-        else{
-          alert("Form has invalid input.");
-        }
+        });
       }
+      else {
+        alert("Form has invalid input.");
+      }
+    }
+
     render() {
       return (
         <div>
@@ -117,39 +93,26 @@ class Login extends Component {
             </div>
 
             <div class="sidenav-main">
-                <div id="signup-message">
-                    <h5>Not a member? <a href="/register">Sign up!</a></h5>
+              <br/>
+                <div id="reset-message">
+                    <h5>Enter your new password below.</h5>
                 </div>
                 
-                <div id="signup-form">
+                <div id="reset-form">
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         Email
                         <br/>
-                        <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
+                        <input name="email" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
                         <span className="error">{this.state.errors["email"]}</span>
-
                         <br/>
                         <br/>
-
-                        Password
-                        <br/>
-                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}></input>
-                        <span className="error">{this.state.errors["pass"]}</span>
-
-                        <br/>
-                        <br/>
-
                         {this.renderRedirect()}
-                        <input type="submit" class="btn btn-success" value="Login" />
-                    </form>
-                    
-                    <br/>
-                    
-                    <p><a href="/password_reset">Forgot your password?</a></p>
+                        <input type="submit" class="btn btn-success" value="Send link" />
+                    </form>                                    
                 </div>
             </div>
         </div>        
       );
     }
   }
-  export default Login;
+  export default ResetPasswordConfirm;
