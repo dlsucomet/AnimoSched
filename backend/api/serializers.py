@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import setup_user_email
 
 from .models import User, Course, College, CoursePriority, Degree
 
@@ -35,8 +37,8 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     # college = CollegeSerializer()
-    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), required=True)
-    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all(), required=True)
+    college = serializers.IntegerField(required=True)
+    degree = serializers.IntegerField(required=True)
     
     def validate_email(self, value):
         if "@dlsu.edu.ph" not in value:
@@ -52,6 +54,6 @@ class CustomRegisterSerializer(RegisterSerializer):
             'email': self.validated_data.get('email', ''),
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
-            'college': self.validated_data.get('college', ''),
-            'degree': self.validated_data.get('degree', ''),
+            'college': 1,
+            'degree': 1
         }

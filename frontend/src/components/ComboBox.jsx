@@ -42,6 +42,8 @@ class ComboBox extends React.Component{
               options={this.state.programList}
               style={{ width: 500 }}
               renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
+              value={this.props.value}
+              onChange={this.props.onChange}
             />
         );
     }

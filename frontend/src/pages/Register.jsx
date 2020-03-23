@@ -45,6 +45,7 @@ class Register extends Component {
 
         let fields = this.state.fields;
         fields[field] = e.target.value;        
+        console.log(field);
         this.setState({fields});
     }
 
@@ -138,7 +139,7 @@ class Register extends Component {
                 password1: this.state.fields['pass'],
                 password2: this.state.fields['passCon'],
                 college: Number(this.state.fields['college']),
-                degree: this.state.fields['degree']
+                degree: Number('1')
             };
             console.log(data);
             this.props.handle_register(data, (res) => {
@@ -147,8 +148,7 @@ class Register extends Component {
                 }else{
                 }
             });
-          }
-        else{
+        }else{
             alert("Form has invalid input.");
         }
     }
@@ -211,7 +211,7 @@ class Register extends Component {
                         <br/><br/>
 
                         <br/>
-                        <ComboBox name="course" value={this.state.fields["course"]} onChange={this.handleChange.bind(this, "course")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
+                        <ComboBox name="degree" value={this.state.fields["degree"]} onChange={this.handleChange.bind(this, "degree")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
                         Password
                         <br/>
