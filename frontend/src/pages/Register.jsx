@@ -139,7 +139,7 @@ class Register extends Component {
                 password1: this.state.fields['pass'],
                 password2: this.state.fields['passCon'],
                 college: Number(this.state.fields['college']),
-                degree: Number('1')
+                degree: Number(this.state.fields['degree'])
             };
             console.log(data);
             this.props.handle_register(data, (res) => {

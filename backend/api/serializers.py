@@ -37,8 +37,8 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     # college = CollegeSerializer()
-    college = serializers.IntegerField(required=True)
-    degree = serializers.IntegerField(required=True)
+    college = serializers.PrimaryKeyRelatedField(queryset=College.objects.all(), required=True)
+    degree = serializers.PrimaryKeyRelatedField(queryset=Degree.objects.all(),required=True)
     
     def validate_email(self, value):
         if "@dlsu.edu.ph" not in value:
@@ -54,6 +54,17 @@ class CustomRegisterSerializer(RegisterSerializer):
             'email': self.validated_data.get('email', ''),
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
-            'college': 1,
-            'degree': 1
+            'college': self.validated_data.get('college',''),
+            'degree': self.validated_data.get('degree','') 
         }
+    def save(self, request):
+      adapter = get_adapter()
+      user = adapter.new_user(request)
+      self.cleaned_data = self.get_cleaned_data()
+      user.college = self.get_cleaned_data().get('college')
+      user.degree = self.get_cleaned_data().get('degree')
+      adapter.save_user(request, user, self)
+      self.custom_signup(request, user)
+      setup_user_email(request, user, [])
+      return user
+
