@@ -17,11 +17,6 @@ class SearchCourses extends Component {
       super(props);
     }
 
-
-
-
-
-
     render() {
       const StyledTableCell = withStyles(theme => ({
         head: {
@@ -107,7 +102,7 @@ class SearchCourses extends Component {
                             <StyledTableCell> {row.section} </StyledTableCell>
                             <StyledTableCell> {row.faculty} </StyledTableCell>
                             <StyledTableCell> {row.day} </StyledTableCell>
-                            <StyledTableCell> {row.startTime} - {row.startTime} </StyledTableCell>
+                            <StyledTableCell> {row.startTime} - {row.endTime} </StyledTableCell>
                             <StyledTableCell> {row.room} </StyledTableCell>
                             <StyledTableCell align="right"> {row.capacity} </StyledTableCell>
                             <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
