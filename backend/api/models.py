@@ -95,6 +95,7 @@ class User(AbstractBaseUser):
     degree = models.ForeignKey(Degree, on_delete=models.SET_NULL, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
     schedules = models.ManyToManyField(Schedule)
+    is_active = models.BooleanField(default=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

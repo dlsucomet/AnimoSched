@@ -4,45 +4,79 @@ import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
 class ResetPassword extends Component {
-    constructor(props){
+    constructor(props) {
         super();
         this.state = {
-            email: "",
+            fields: {},
+            errors: {}
         }
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    handleChange = (field, e) => {
+      let fields = this.state.fields;
+      fields[field] = e.target.value;        
+      this.setState({fields});
+    }
+
+    handleValidation = () => {
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+
+      // EMAIL
+      if(!fields["email"]) {
+        formIsValid = false;
+        errors["email"] = "Enter a valid email."
+      }
+
+      if(typeof fields["email"] !== "undefined") {
+        let lastAtPos = fields["email"].lastIndexOf('@');
+        let lastDotPos = fields["email"].lastIndexOf('.');
+
+        if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+          formIsValid = false;
+          errors["email"] = "Enter a valid email.";
+        }
+      }
+
+      this.setState({errors: errors});
+      return formIsValid;
     }
     
     state = {
         redirect: false
-      }
+    }
 
-      setRedirect = () => {
-        console.log("Setting redirect");
-        this.setState({
-          redirect: true
-        })
-      }
+    setRedirect = () => {
+      console.log("Setting redirect");
+      this.setState({
+        redirect: true
+      })
+    }
 
-      renderRedirect = () => {
-        if (this.state.redirect) {
-          console.log("Rendering redirect");
-          return <Redirect to='/reset_password_done' />
-        }
+    renderRedirect = () => {
+      if(this.state.redirect) {
+        console.log("Rendering redirect");
+        return <Redirect to='/reset_password_done' />
       }
+    }
 
-      handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(this.state.email);
+    handleSubmit = (event) => {
+      event.preventDefault();
+      if(this.handleValidation()) {
         const data = {
-            email: this.state.email,
+          email: this.state.fields["email"]
         }
-        this.setRedirect();
+        this.props.handle_resetPassword(data, (res) => {
+          if(res) {
+            this.setRedirect();
+          }
+        });
       }
+      else {
+        alert("Form has invalid input.");
+      }
+    }
 
     render() {
       return (
@@ -65,10 +99,11 @@ class ResetPassword extends Component {
                 </div>
                 
                 <div id="reset-form">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit.bind(this)}>
                         Email
                         <br/>
-                        <input name="email" onChange={e => this.handleChange(e)}></input>
+                        <input name="email" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
+                        <span className="error">{this.state.errors["email"]}</span>
                         <br/>
                         <br/>
                         {this.renderRedirect()}

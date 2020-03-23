@@ -6,7 +6,7 @@ from .models import User, Course, College, CoursePriority, Degree
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree')
+    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'is_active')
 
 class CollegeSerializer(serializers.ModelSerializer):
   class Meta:
