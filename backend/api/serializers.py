@@ -3,7 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
-from .models import User, Course, College, CoursePriority, Degree
+from .models import User, Course, College, CoursePriority, Degree, Preference
 
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
@@ -29,6 +29,12 @@ class CoursePrioritySerializer(serializers.ModelSerializer):
   class Meta:
     model = CoursePriority 
     fields = ('id', 'courses')
+
+class PreferenceSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Preference
+    fields = ('id', 'earliest_class_time', 'latest_class_time', 'preferred_days', 'break_length', 'min_courses', 'max_courses', 'preferred_faculty', 'preferred_buildings', 'preferred_sections', 'course_priority', 'user')
+
 
 class CustomRegisterSerializer(RegisterSerializer):
     # username = serializers.CharField(required=True)

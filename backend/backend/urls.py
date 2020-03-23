@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'courses', views.CourseViewSet)     
 router.register(r'degrees', views.DegreeViewSet)     
+router.register(r'preferences', views.PreferenceViewSet)     
 router.register(r'coursepriority', views.CoursePriorityViewSet)     
 router.register(r'colleges', views.CollegeViewSet)     
 

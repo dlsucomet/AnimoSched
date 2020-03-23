@@ -18,7 +18,7 @@ class Register extends Component {
         }
 
     }
-    componentDidMount(){
+    componentWillMount(){
         axios.get('http://localhost:8000/api/colleges/')
         .then(res => {
           var newArray = [];

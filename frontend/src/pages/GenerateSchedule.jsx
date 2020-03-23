@@ -272,7 +272,7 @@ class GenerateSchedule extends Component {
                                     <Autocomplete
                                     options={this.state.courseList}
                                     // getOptionLabel={option => option.name}
-                                    style={{ width: 300 }}
+                                    style={{ width: 200 }}
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}
                                     />

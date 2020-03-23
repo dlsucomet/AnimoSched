@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
-from .serializers import CustomRegisterSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer
-from .models import User, Course, Degree, College, CoursePriority
+from .serializers import CustomRegisterSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer
+from .models import User, Course, Degree, College, CoursePriority, Preference
 
 class UserViewSet(viewsets.ModelViewSet):
   serializer_class = UserSerializer
@@ -23,6 +23,11 @@ class CoursePriorityViewSet(viewsets.ModelViewSet):
 class CollegeViewSet(viewsets.ModelViewSet):       
   serializer_class = CollegeSerializer 
   queryset = College.objects.all()              
+
+class PreferenceViewSet(viewsets.ModelViewSet):       
+  serializer_class = PreferenceSerializer 
+  queryset = Preference.objects.all()              
+
 def initialize(request):
   try:
     ccs = College(college_code='CCS', college_name='College of Computer Studies')

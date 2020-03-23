@@ -36,7 +36,7 @@ class App extends Component {
 
   // this.state.logged_in --> indicates if user is logged in or not
 
-  componentDidMount(){
+  componentWillMount(){
     if(this.state.logged_in){
       axios.get('http://localhost:8000/api/auth/user/',
       {
