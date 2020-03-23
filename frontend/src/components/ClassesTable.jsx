@@ -116,7 +116,7 @@ class ClassesTable extends Component {
             // </div>
 
             <div>
-                <h3>Non-credit courses</h3>
+                <h3>Non-credited Course Details</h3>
                 <div className="viewCourses">
                   <TableContainer component={Paper}>
                     <Table aria-label="customized table">
