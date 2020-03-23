@@ -18,27 +18,6 @@ class CourseDnD extends Component {
 
     this.state = {
         courses: this.props.courses,
-      //highCourses: generateItems(4, (index) => ( {id: "1" + index, data: 'Majors' + index})),
-      //lowCourses: generateItems(4, (index) => ( {id: '2' + index,data: 'Minors' + index})),
-    //   highContainer: {
-    //     id: 'columns1',
-    //     type: "container",
-    //     name: "Highest Priority",
-    //     props: {
-    //         orientation: "vertical",
-    //         className: "card-container"
-    //     }
-    //   },
-    //   lowContainer: {
-    //     id: 'columns2',
-    //     type: "container",
-    //     name: "Lowest Priority",
-    //     props: {
-    //         orientation: "vertical",
-    //         className: "card-container"
-    //     }
-    // }
-      
     };
 
   }
@@ -65,6 +44,17 @@ refreshList = (props) => {
     }   
 }
 
+removeCourse = (index) =>{
+  console.log("Removing course: " + index);
+  var courses = [...this.state.courses];
+  if(index !== -1){
+    courses.splice(index, 1);
+    this.setState({courses});
+  }
+
+  // this.props.updateFunction(this.state.courses);
+}
+
 triggerUpdate=(e)=>{
   this.setState({ courses: applyDrag(this.state.courses, e) })
   this.props.updateFunction(this.state.courses);
@@ -72,20 +62,19 @@ triggerUpdate=(e)=>{
 }
 
   render() {
-    let searchCourseField = this.props.searchCourseField;
     return (
        
       <div>
-        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'stretch', marginTop: '50px', marginRight: '50px'}}>
+
+        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center', marginTop: '50px', marginRight: '50px'}}>
           <div className= "card-container" >
-            <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={ this.triggerUpdate}>
-                {this.state.courses.map(p => {
+            <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate}>
+                {this.state.courses.map((p, index) => {
                 return (
                     <Draggable key={p.id}>
                     <div className="draggable-item">
                         {p.data}
-                        <Button close />
-                        
+                        <Button close  style={{ marginTop: "11px", marginRight: "10px"}} onClick={() => this.removeCourse(index)}/>
                     </div>
                     </Draggable>
                 );

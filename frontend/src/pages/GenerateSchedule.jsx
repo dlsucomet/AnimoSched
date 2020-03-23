@@ -9,6 +9,7 @@ import axios from 'axios';
 import ReactDOM from "react-dom";
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
+
 class GenerateSchedule extends Component {
 
     constructor(props) {
@@ -88,6 +89,7 @@ class GenerateSchedule extends Component {
             newArray.push(course.data);
         })
         this.setState({highCourses: newArray})
+
     }
 
     updateLowPriority(courseUpdate){
@@ -252,12 +254,12 @@ class GenerateSchedule extends Component {
                             </Row>
                             <Row vertical = 'center'>
                                 <Column flexGrow={1} horizontal = 'center'>
-                                    <h3>Highest Priority</h3>
+                                    <h3 className='priortyTitle'>Highest Priority</h3>
                                     <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
 
                                 </Column>
                                 <Column flexGrow={1} horizontal = 'center'>
-                                    <h3>Lowest Priority</h3>
+                                    <h3 className='priortyTitle'>Lowest Priority</h3>
                                     <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
                                 </Column>
                             </Row>
