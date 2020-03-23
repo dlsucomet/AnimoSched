@@ -8,6 +8,8 @@ import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
 import ReactDOM from "react-dom";
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 
 class GenerateSchedule extends Component {
@@ -16,7 +18,7 @@ class GenerateSchedule extends Component {
         super(props);
         this.updateHighPriorty = this.updateHighPriorty.bind(this);
         this.updateLowPriority = this.updateLowPriority.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.pageCount= 2;
         this.state = {
             highPriorityId: "1",
@@ -24,6 +26,7 @@ class GenerateSchedule extends Component {
             value: "",
             highCourses: ['COMPRO1', 'COMPRO2'],
             lowCourses: ['IPERSEF', 'SOCTEC1'],
+            courseList: ['HUMAART', 'GREATWK'],
             currentPage: 0,
             currentContent: "",
             generatedContents: [],
@@ -34,18 +37,27 @@ class GenerateSchedule extends Component {
             
         };
 
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        
-        
     }
 
     componentDidMount(){
 
     }
 
-    handleKeyPress = (event) => {
-        if(event.key === 'Enter'){
-            const newCourse = event.target.value;
+    // handleKeyPress = (event) => {
+    //     if(event.key === 'Enter'){
+    //         const newCourse = event.target.value;
+    //         this.setState(state =>{
+    //             const highCourses = state.highCourses.concat(newCourse);
+    //             return{highCourses};
+    //         });
+    //         console.log(this.state.highCourses)
+    //     }
+    // }
+
+    handleAutoCompleteChange = (e, val) => {
+        console.log(val)
+        if(val != undefined && val.trim() != ''){
+            const newCourse = val; 
             this.setState(state =>{
                 const highCourses = state.highCourses.concat(newCourse);
                 return{highCourses};
@@ -242,13 +254,20 @@ class GenerateSchedule extends Component {
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div id="search_container">
-                                    <Input
+                                    {/* <Input
                                     type="search"
                                     name={search_field}
                                     id="exampleSearch"
                                     placeholder="Enter Course Name..."
                                     value = {this.state.Input}
                                     onKeyPress={this.handleKeyPress}
+                                    /> */}
+                                    <Autocomplete
+                                    options={this.state.courseList}
+                                    // getOptionLabel={option => option.name}
+                                    style={{ width: 300 }}
+                                    renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
+                                    onChange={this.handleAutoCompleteChange}
                                     />
                                 </div>
                             </Row>

@@ -45,12 +45,14 @@ class Register extends Component {
 
         let fields = this.state.fields;
         fields[field] = e.target.value;        
-        console.log(field);
         this.setState({fields});
     }
 
-    collectData = () =>{
-
+    handleAutoCompleteChange = (e, val) => {
+        let fields = this.state.fields;
+        fields['degree'] = val.id;
+        console.log(val.id);
+        this.setState({fields});
     }
 
     handleValidation = () => {
@@ -211,7 +213,7 @@ class Register extends Component {
                         <br/><br/>
 
                         <br/>
-                        <ComboBox name="degree" value={this.state.fields["degree"]} onChange={this.handleChange.bind(this, "degree")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
+                        <ComboBox name="degree" handleAutoCompleteChange={this.handleAutoCompleteChange} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
                         Password
                         <br/>

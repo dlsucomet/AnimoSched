@@ -9,7 +9,7 @@ class ComboBox extends React.Component{
         this.state = {
             college: '',
             programList: [],
-            degrees: []
+            degrees: [],
         }
     }
 
@@ -44,8 +44,7 @@ class ComboBox extends React.Component{
               getOptionLabel={option => option.name}
               style={{ width: 500 }}
               renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
-              value={this.props.value}
-              onChange={this.props.onChange}
+              onChange={this.props.handleAutoCompleteChange}
             />
         );
     }
