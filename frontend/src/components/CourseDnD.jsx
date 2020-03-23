@@ -23,6 +23,7 @@ class CourseDnD extends Component {
   }
 
 componentWillReceiveProps(props) {
+  console.log(props)
   this.refreshList(props);
 
 }
@@ -45,14 +46,11 @@ refreshList = (props) => {
 }
 
 removeCourse = (index) =>{
-  console.log("Removing course: " + index);
-  var courses = [...this.state.courses];
+  var newCourses = [...this.state.courses];
   if(index !== -1){
-    courses.splice(index, 1);
-    this.setState({courses});
+    newCourses.splice(index, 1);
   }
-
-  // this.props.updateFunction(this.state.courses);
+  this.props.updateFunction(newCourses);
 }
 
 triggerUpdate=(e)=>{
