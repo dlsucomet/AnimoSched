@@ -19,16 +19,16 @@ import PreferencesPage from "./pages/Preferences.jsx";
 import SearchCoursesPage from "./pages/SearchCourses.jsx";
 import Menu from "./components/Menu.jsx";
 
-import axios from "axios";
+import axios from 'axios';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       logged_in: localStorage.getItem('token') ? true : false,
-      first_name: '',
-      last_name: '',
-      id_num: '',
+      first_name: localStorage.getItem('first_name'),
+      last_name: localStorage.getItem('last_name'),
+      user_id: localStorage.getItem('user_id'),
       colleges:{},
       degrees:{}
     };
@@ -37,27 +37,26 @@ class App extends Component {
   // this.state.logged_in --> indicates if user is logged in or not
 
   componentWillMount(){
-    if(this.state.logged_in){
-      axios.get('http://localhost:8000/api/auth/user/',
-      {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}` 
-        },
-        withCredentials: true
-      })
-      .then(res => {
-        console.log(res.data)
-        this.setState({
-          logged_in: true,
-          first_name: res.data.first_name,
-          last_name: res.data.last_name,
-          id_num: ''
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
+    // if(this.state.logged_in){
+    //   axios.get('http://localhost:8000/api/auth/user/',
+    //   {
+    //     headers: {
+    //       Authorization: `JWT ${localStorage.getItem('token')}` 
+    //     },
+    //     withCredentials: true
+    //   })
+    //   .then(res => {
+    //     this.setState({
+    //       logged_in: true,
+    //       first_name: res.data.first_name,
+    //       last_name: res.data.last_name,
+    //       id_num: ''
+    //     })
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // }
   }
 
   handle_login = (data, _callback) => {
@@ -68,14 +67,15 @@ class App extends Component {
         }
     })
     .then(res => {
-        console.log(res.data);
-        console.log(res.data.user.first_name);
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('first_name', res.data.user.first_name);
+        localStorage.setItem('last_name', res.data.user.last_name);
+        localStorage.setItem('user_id', res.data.user.id);
         this.setState({
           logged_in: true,
           first_name: res.data.user.first_name,
           last_name: res.data.user.last_name,
-          id_num: ''
+          user_id: res.data.user.id,
         })
         _callback(true);
     })
@@ -95,11 +95,14 @@ class App extends Component {
     .then(res => {
         console.log(res.data);
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('first_name', res.data.user.first_name);
+        localStorage.setItem('last_name', res.data.user.last_name);
+        localStorage.setItem('user_id', res.data.user.id);
         this.setState({
           logged_in: true,
           first_name: res.data.user.first_name,
           last_name: res.data.user.last_name,
-          id_num: ''
+          user_id: res.data.user.id,
         })
         _callback(true);
     })
@@ -136,6 +139,9 @@ class App extends Component {
 
   handle_logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('first_name');
+    localStorage.removeItem('last_name');
+    localStorage.removeItem('id_num');
     this.setState({
       logged_in: false,
       first_name: '',

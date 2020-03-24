@@ -21,6 +21,7 @@ django-extensions = "*"
 pyparsing = "*"
 pydot = "*"
 pygraphviz = "*"
+z3-solver = "*"
 
 [requires]
 python_version = "3.6"

@@ -15,6 +15,7 @@ router.register(r'colleges', views.CollegeViewSet)
 urlpatterns = [
     path('init/', views.initialize),                
     path('api/', include(router.urls)),                
+    path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
     path('api/refresh-token/', refresh_jwt_token),                

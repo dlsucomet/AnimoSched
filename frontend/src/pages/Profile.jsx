@@ -2,11 +2,53 @@ import React, { Component } from "react";
 import { Column, Row } from 'simple-flexbox';
 import Menu from '../components/Menu.jsx';
 import '../css/Profile.css';
+import axios from 'axios';
+import ResetPassword from "./ResetPassword.jsx";
 
 class Profile extends Component {
     constructor(props){
       super(props);
+      this.state = {
+          email: '',
+          first_name: '',
+          last_name: '',
+          college: '',
+          degree: '',
+          id_num: '',
+      }
     }
+
+    componentWillMount(){
+        axios.get('http://localhost:8000/api/auth/user/',
+        {
+            headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}` 
+            },
+            withCredentials: true
+        })
+        .then(res => {
+            this.setState({
+            email: res.data.email,
+            first_name: res.data.first_name,
+            last_name: res.data.last_name,
+            id_num: '', 
+            })
+            const college = res.data.college;
+            const degree = res.data.degree;
+            axios.get('http://localhost:8000/api/colleges/'+college+'/')
+            .then(res => {
+              this.setState({college: res.data.college_name})
+              axios.get('http://localhost:8000/api/degrees/'+degree+'/')
+              .then(res => {
+                this.setState({degree: res.data.degree_name});
+              })
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
     render() {
       return (
           <div>
@@ -16,25 +58,29 @@ class Profile extends Component {
                 <h2>Account Profile</h2>
 
                 <div className="profile-category-content">
-                    Full Name
+                    First Name
                     <br/>
-                    <input/><br/><br/>
+                    <input value={this.state.first_name}/><br/><br/>
+
+                    Last Name
+                    <br/>
+                    <input value={this.state.last_name}/><br/><br/>
 
                     ID Number
                     <br/>
-                    <input/><br/><br/>
+                    <input value={this.state.id_num}/><br/><br/>
 
                     College
                     <br/>
-                    <input/><br/><br/>
+                    <input value={this.state.college}/><br/><br/>
 
-                    Course
+                    Degree
                     <br/>
-                    <input/><br/><br/>
+                    <input value={this.state.degree}/><br/><br/>
 
                     Email
                     <br/>
-                    <input/><br/><br/>
+                    <input value={this.state.email}/><br/><br/>
                 </div>
             </div>
 

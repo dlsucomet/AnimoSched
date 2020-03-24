@@ -1,7 +1,31 @@
 import React, { Component } from "react";
 import '../css/Preferences.css';
+import axios from 'axios';
 
 class Preferences extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            min_courses: 0,
+        }
+    }
+    
+    componentWillMount(){
+        const id = localStorage.getItem('user_id');
+        axios.get('http://localhost:8000/api/preferencelist/'+id+'/')
+        .then(res => {
+            res.data.map(preference =>{
+                if(preference.earliest_class_time != null){
+                }
+                if(preference.min_courses != null){
+                    this.state.min_courses = preference.min_courses;
+                    console.log(this.state.min_courses)
+                }
+            })
+        });
+    }
+
+
     render() {
       return (
         <div>
@@ -66,7 +90,7 @@ class Preferences extends Component {
                         <div className="preference-category-content">
                             Minimum Courses per Day
                             <br/>
-                            <input/><br/><br/>
+                            <input value={this.state.min_courses}/><br/><br/>
 
                             Maximum Courses per Day
                             <br/>
