@@ -47,9 +47,9 @@ class GenSchedInfo extends Component {
                     
                 </Row>
         
-                <Row horizontal='center'>
+                {/* <Row horizontal='center'>
                     <Button style={{margin: "40px"}}>Save Schedule</Button>
-                </Row>
+                </Row> */}
            
             </Column>
                 
