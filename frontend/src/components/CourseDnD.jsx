@@ -64,7 +64,7 @@ triggerUpdate=(e)=>{
        
       <div>
 
-        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center', marginTop: '50px', marginRight: '50px'}}>
+        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center'}}>
           <div className= "card-container" >
             <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate}>
                 {this.state.courses.map((p, index) => {

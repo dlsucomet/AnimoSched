@@ -18,3 +18,31 @@
 .priorityTitle{
     margin-right: 100px;
 }
+
+.DnDContainer{
+    margin-top: 40px;
+}
+
+.paginationContainer{
+    margin-top: 35px;
+}
+
+.page-link{
+    color:#5b8c85;
+}
+
+.page-item.active .page-link {
+    background-color: #5b8c85;
+    border-color: #5b8c85;
+}
+
+.schedButton{
+    border-radius: 25px;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-image: linear-gradient(-20deg, #134E5E, #71B280);
+    border: none;
+    color: white;
+    box-shadow: 6px 5px #e8f4ea;
+}
