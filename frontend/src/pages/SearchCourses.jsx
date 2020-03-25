@@ -12,15 +12,23 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import ComboBox from '../components/ComboBox.jsx';
+
 class SearchCourses extends Component {
     constructor(props){
       super(props);
+
+      this.state = {
+        fields: {}
+      }
     }
 
-
-
-
-
+    handleChange = (field, e) => {
+      let fields = this.state.fields;
+      fields[field] = e.target.value;
+      console.log(field);
+      this.setState({fields});
+    }
 
     render() {
       const StyledTableCell = withStyles(theme => ({
@@ -57,10 +65,11 @@ class SearchCourses extends Component {
             {this.props.menu()}
 
             <div className="search-container">
-                <center>
+
+                <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
-                  <input/><br/>
-                </center>
+                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleChange.bind(this, "courses")} />
+                </div>
 
                 <div className="filters">
                     <center>

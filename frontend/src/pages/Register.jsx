@@ -211,7 +211,7 @@ class Register extends Component {
                         <br/><br/>
 
                         <br/>
-                        <ComboBox name="degree" value={this.state.fields["degree"]} onChange={this.handleChange.bind(this, "degree")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
+                        <ComboBox page="register" name="degree" value={this.state.fields["degree"]} onChange={this.handleChange.bind(this, "degree")} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
                         Password
                         <br/>
