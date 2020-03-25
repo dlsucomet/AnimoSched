@@ -8,6 +8,8 @@ import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
 import ReactDOM from "react-dom";
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 
 class GenerateSchedule extends Component {
@@ -16,14 +18,16 @@ class GenerateSchedule extends Component {
         super(props);
         this.updateHighPriorty = this.updateHighPriorty.bind(this);
         this.updateLowPriority = this.updateLowPriority.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.pageCount= 2;
+        // this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.generatedRef = React.createRef();
+        this.handleScrollToGen = this.handleScrollToGen.bind(this);
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
             highCourses: ['COMPRO1', 'COMPRO2'],
             lowCourses: ['IPERSEF', 'SOCTEC1'],
+            courseList: ['HUMAART', 'GREATWK'],
             currentPage: 0,
             currentContent: "",
             generatedContents: [],
@@ -31,21 +35,41 @@ class GenerateSchedule extends Component {
             // currentContent: ['Hello'],
             pagesCount: 1,
             searchedCourse: "",
+            hideGenContent:true,
+        
+
             
         };
 
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        
-        
     }
 
     componentDidMount(){
-
+        // this.handleScrollToGen();
     }
 
-    handleKeyPress = (event) => {
-        if(event.key === 'Enter'){
-            const newCourse = event.target.value;
+    componentDidUpdate(prevProp, prevState){
+        if(prevState.generatedContents !== this.state.generatedContents){
+            this.handleScrollToGen();
+            prevState.generatedContents = this.state.generatedContents;
+        }
+       
+    }
+
+    // handleKeyPress = (event) => {
+    //     if(event.key === 'Enter'){
+    //         const newCourse = event.target.value;
+    //         this.setState(state =>{
+    //             const highCourses = state.highCourses.concat(newCourse);
+    //             return{highCourses};
+    //         });
+    //         console.log(this.state.highCourses)
+    //     }
+    // }
+
+    handleAutoCompleteChange = (e, val) => {
+        console.log(val)
+        if(val != undefined && val.trim() != ''){
+            const newCourse = val; 
             this.setState(state =>{
                 const highCourses = state.highCourses.concat(newCourse);
                 return{highCourses};
@@ -69,10 +93,11 @@ class GenerateSchedule extends Component {
             });
         console.log("pressed page " + index);
         console.log(this.state.generatedContents[index]);
+
+        this.handleScrollToGen();
     }
 
     createSchedInfo = (arrayGenSched)=>{
-        console.log("Hi I was called");
         var generatedContents = arrayGenSched.map((item, index) =>
                 <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
 
@@ -81,6 +106,10 @@ class GenerateSchedule extends Component {
         this.setState({generatedContents});
         var currentContent = generatedContents[0];
         this.setState({currentContent});
+        this.setState({hideGenContent: false});
+
+        this.handleScrollToGen();
+
     }
 
     updateHighPriorty(courseUpdate){
@@ -100,11 +129,19 @@ class GenerateSchedule extends Component {
         this.setState({lowCourses: newArray})
     }
     
+    handleScrollToGen=()=>{
+        console.log("I'm scrollinggg");
+        window.scrollTo({
+            top: this.generatedRef.current.offsetTop,
+            behavior: "smooth"
+        })
+    }
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
         this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
+        const style = this.state.hideGenContent ? {display: "none"} :  {margin: "40px"};
 
         var jsonSample =[
             {
@@ -136,21 +173,25 @@ class GenerateSchedule extends Component {
                 ],
                 tableContent: [
                     {
-                        id: 1, 
+                        id: 1,
+                        classNmbr: 1230, 
                         course: "LASARE2", 
                         section:"S17", 
                         faculty: "DELA CRUZ, JUAN", 
                         day:"MAR 30", 
-                        time:"08:00AM-5:00PM",
+                        startTime:"08:00",
+                        endTime : "15:30",
                         room: "G310"
                     },
                     {
-                        id: 2, 
+                        id: 2,
+                        classNmbr: 1405, 
                         course: "IPERSEF", 
                         section:"S15", 
                         faculty: "DEL TORRE, MARIA", 
                         day:"APR 05", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"08:00",
+                        endTime : "15:30",
                         room: "G304"
                     }
         
@@ -204,20 +245,24 @@ class GenerateSchedule extends Component {
                 tableContent: [
                     {
                         id: 1, 
+                        classNmbr: 2394,
                         course: "LASARE1", 
                         section:"S16", 
                         faculty: "DOE, JOHN", 
                         day:"JAN 30", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"09:00",
+                        endTime : "16:30",
                         room: "G301"
                     },
                     {
                         id: 2, 
+                        classNmbr: 3048,
                         course: "LASARE2", 
                         section:"S17", 
                         faculty: "THO, JANE", 
                         day:"APR 12", 
-                        time:"08:00AM-05:00PM",
+                        startTime:"11:00",
+                        endTime : "15:30",
                         room: "G306"
                     }
         
@@ -242,56 +287,72 @@ class GenerateSchedule extends Component {
                             </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div id="search_container">
-                                    <Input
+                                    {/* <Input
                                     type="search"
                                     name={search_field}
                                     id="exampleSearch"
                                     placeholder="Enter Course Name..."
                                     value = {this.state.Input}
                                     onKeyPress={this.handleKeyPress}
+                                    /> */}
+                                    <Autocomplete
+                                    options={this.state.courseList}
+                                    // getOptionLabel={option => option.name}
+                                    style={{ width: 200 }}
+                                    renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
+                                    onChange={this.handleAutoCompleteChange}
                                     />
                                 </div>
                             </Row>
-                            <Row vertical = 'center'>
-                                <Column flexGrow={1} horizontal = 'center'>
-                                    <h3 className='priortyTitle'>Highest Priority</h3>
-                                    <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
+                            <div className={"DnDContainer"}>
+                                <Row vertical = 'center'>
+                                    <Column flexGrow={1} horizontal = 'center'>
+                                        <h3 className='priortyTitle'>Highest Priority</h3>
+                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
 
-                                </Column>
-                                <Column flexGrow={1} horizontal = 'center'>
-                                    <h3 className='priortyTitle'>Lowest Priority</h3>
-                                    <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
-                                </Column>
-                            </Row>
+                                    </Column>
+                                    <Column flexGrow={1} horizontal = 'center'>
+                                        <h3 className='priortyTitle'>Lowest Priority</h3>
+                                        <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
+                                    </Column>
+                                </Row>
+                            </div>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
-                                <button className="btn btn-secondary btn-sm" onClick={()=>this.createSchedInfo(jsonSample)}>Generate Schedule</button>
+                                <button className="schedButton" onClick={()=>this.createSchedInfo(jsonSample)} style={{marginTop: "20px"}}>Generate Schedule</button>
                             </Row>
                         </div>
-                        <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
+
+                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} onChange={this.handleScrollToGen}>
                             <span>{this.state.currentContent}</span>
+                        
+                            <div className = "paginationContainer">
+                                <Row horizontal='center'>
+                                    <Pagination aria-label="Page navigation example">
+                                        <PaginationItem disabled={this.state.currentPage <= 0}>
+                                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                                previous/>
+                                        </PaginationItem>
+                                        {[...Array(this.state.pagesCount)].map((page, i) => 
+                                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                                {i + 1}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                            )}
+                                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                            <PaginationLink
+                                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                                next
+                                            />
+                                            
+                                            </PaginationItem>
+                                    </Pagination>
+                                </Row>
+                            </div>
+                            <Row horizontal='center'>
+                                <button className={"schedButton"} style={{margin: "30px"}}>Save Schedule</button>
+                            </Row>  
                         </div>
-                        <Row horizontal='center'>
-                            <Pagination aria-label="Page navigation example">
-                                <PaginationItem disabled={this.state.currentPage <= 0}>
-                                    <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                        previous/>
-                                </PaginationItem>
-                                {[...Array(this.state.pagesCount)].map((page, i) => 
-                                    <PaginationItem active={i === this.state.currentPage} key={i}>
-                                        <PaginationLink onClick={e => this.handlePageChange(e, i)}>
-                                        {i + 1}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                    )}
-                                <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                                    <PaginationLink
-                                        onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                        next
-                                    />
-                                    
-                                    </PaginationItem>
-                            </Pagination>
-                        </Row>
                     </Column>
                 </div>
             </div>  

@@ -38,7 +38,7 @@ class ComboBox extends React.Component{
     render (){
         
         console.log(this.props.page);
-
+      
         if(this.props.page == "register"){
             return (
                 <Autocomplete

@@ -23,6 +23,7 @@ class CourseDnD extends Component {
   }
 
 componentWillReceiveProps(props) {
+  console.log(props)
   this.refreshList(props);
 
 }
@@ -45,14 +46,11 @@ refreshList = (props) => {
 }
 
 removeCourse = (index) =>{
-  console.log("Removing course: " + index);
-  var courses = [...this.state.courses];
+  var newCourses = [...this.state.courses];
   if(index !== -1){
-    courses.splice(index, 1);
-    this.setState({courses});
+    newCourses.splice(index, 1);
   }
-
-  // this.props.updateFunction(this.state.courses);
+  this.props.updateFunction(newCourses);
 }
 
 triggerUpdate=(e)=>{
@@ -66,7 +64,7 @@ triggerUpdate=(e)=>{
        
       <div>
 
-        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center', marginTop: '50px', marginRight: '50px'}}>
+        <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center'}}>
           <div className= "card-container" >
             <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate}>
                 {this.state.courses.map((p, index) => {

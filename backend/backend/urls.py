@@ -8,12 +8,14 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'courses', views.CourseViewSet)     
 router.register(r'degrees', views.DegreeViewSet)     
+router.register(r'preferences', views.PreferenceViewSet)     
 router.register(r'coursepriority', views.CoursePriorityViewSet)     
 router.register(r'colleges', views.CollegeViewSet)     
 
 urlpatterns = [
     path('init/', views.initialize),                
     path('api/', include(router.urls)),                
+    path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
     path('api/refresh-token/', refresh_jwt_token),                
