@@ -10,6 +10,7 @@ class ComboBox extends React.Component{
             college: '',
             programList: [],
             degrees: [],
+            courseList: ['INOVATE', 'TREDTRI']
         }
     }
 
@@ -36,17 +37,33 @@ class ComboBox extends React.Component{
 
     render (){
         
-
-        return (
-            <Autocomplete
-              id="combo-box-demo"
-              options={this.state.programList}
-              getOptionLabel={option => option.name}
-              style={{ width: 500 }}
-              renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
-              onChange={this.props.handleAutoCompleteChange}
-            />
-        );
+        console.log(this.props.page);
+      
+        if(this.props.page == "register"){
+            return (
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={this.state.programList}
+                  getOptionLabel={option => option.name}
+                  style={{ width: 500 }}
+                  renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
+                  value={this.props.value}
+                  onChange={this.props.onChange}
+                />
+            );
+        }
+        else if(this.props.page == "search"){
+            return (
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={this.state.courseList}
+                //   style={{ width: 500 }}
+                  filterSelectedOptions
+                  renderInput={params => <TextField {...params} label="Search Courses" variant="outlined" />}
+                />
+            );
+        }
     }
 }
 
