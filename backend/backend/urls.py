@@ -16,5 +16,6 @@ urlpatterns = [
     path('api/', include(router.urls)),                
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
-    path('api/refresh-token/', refresh_jwt_token),                
+    path('api/refresh-token/', refresh_jwt_token),
+    path('', include('django.contrib.auth.urls')),                
 ]

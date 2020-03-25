@@ -57,6 +57,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'archerone.testing@gmail.com'
 EMAIL_HOST_PASSWORD = 'ARCHER1:D'
+DEFAULT_FROM_EMAIL = 'archerone.testing@gmail.com'
 
 SITE_ID = 1
 
@@ -76,7 +77,9 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'backend/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -178,6 +181,7 @@ REST_FRAMEWORK = {
 
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "api.serializers.UserSerializer",
+    'PASSWORD_RESET_SERIALIZER': 'api.serializers.PasswordResetSerializer',
 }
 REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "api.serializers.CustomRegisterSerializer",

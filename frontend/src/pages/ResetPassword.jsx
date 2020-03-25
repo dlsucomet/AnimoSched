@@ -57,7 +57,7 @@ class ResetPassword extends Component {
     renderRedirect = () => {
       if(this.state.redirect) {
         console.log("Rendering redirect");
-        return <Redirect to='/reset_password_done' />
+        return <Redirect to='/password_reset_done' />
       }
     }
 
@@ -95,7 +95,7 @@ class ResetPassword extends Component {
             <div class="sidenav-main">
               <br/>
                 <div id="reset-message">
-                    <h5>Enter your email address to reset your password.<br/>We'll send you a link to reset your password.</h5>
+                    <h5>Enter your email address below.<br/>We'll send you a link to reset your password.</h5>
                 </div>
                 
                 <div id="reset-form">

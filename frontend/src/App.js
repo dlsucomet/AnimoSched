@@ -12,6 +12,7 @@ import RegisterPage from "./pages/Register.jsx";
 import ResetPasswordPage from "./pages/ResetPassword.jsx";
 import ResetPasswordDonePage from "./pages/ResetPasswordDone.jsx";
 import ResetPasswordConfirmPage from "./pages/ResetPasswordConfirm.jsx";
+import ResetPasswordCompletePage from "./pages/ResetPasswordComplete.jsx";
 import ProfilePage from "./pages/Profile.jsx";
 import FlowchartPage from "./pages/Flowchart.jsx";
 import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
@@ -119,13 +120,23 @@ class App extends Component {
     .then(res => {
         console.log(res.data);
         console.log(res.data.email);
-        localStorage.setItem('token', res.data.token);
-        this.setState({
-          logged_in: true,
-          first_name: res.data.user.first_name,
-          last_name: res.data.user.last_name,
-          id_num: ''
-        })
+        _callback(true);
+    })
+    .catch(error => {
+        console.log(error.response)
+        _callback(false);
+    });
+  }
+
+  handle_resetPasswordConfirm = (data, _callback) => {
+    axios.post('http://localhost:8000/api/auth/password/reset/confirm/', data,
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => {
+        console.log(res.data);
         _callback(true);
     })
     .catch(error => {
@@ -176,7 +187,15 @@ class App extends Component {
 
   resetPasswordConfirmPage = () => {
     return (
-      <ResetPasswordConfirmPage/>
+      <ResetPasswordConfirmPage
+        handle_resetPasswordConfirm={this.handle_resetPasswordConfirm}
+      />
+    );
+  }
+
+  resetPasswordCompletePage = () => {
+    return (
+      <ResetPasswordCompletePage/>
     );
   }
 
@@ -248,7 +267,8 @@ class App extends Component {
           <Route exact path="/register" component={this.registerPage} />
           <Route exact path="/password_reset" component={this.resetPasswordPage} />
           <Route exact path="/password_reset_done" component={this.resetPasswordDonePage} />
-          <Route path="/password_reset_confirm/:uidb64/:token" component={this.resetPasswordConfirmPage} />
+          <Route path="/reset/:uidb64/:token" component={this.resetPasswordConfirmPage} />
+          <Route exact path="/password_reset_complete" component={this.resetPasswordCompletePage} />
           {this.state.logged_in && 
           <Route exact path="/profile" component={this.profilePage} />
           }

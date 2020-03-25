@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 class ResetPasswordConfirm extends Component {
     constructor(props) {
         super();
         this.state = {
             fields: {},
-            errors: {}
+            errors: {},
         }
     }
 
@@ -19,24 +20,19 @@ class ResetPasswordConfirm extends Component {
     }
 
     handleValidation = () => {
+      console.log(this.props);
       let fields = this.state.fields;
       let errors = {};
       let formIsValid = true;
 
-      // EMAIL
-      if(!fields["email"]) {
+      if(!fields["pass"]){
         formIsValid = false;
-        errors["email"] = "Enter a valid email."
+        errors["pass"] = "Password required."
       }
 
-      if(typeof fields["email"] !== "undefined") {
-        let lastAtPos = fields["email"].lastIndexOf('@');
-        let lastDotPos = fields["email"].lastIndexOf('.');
-
-        if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+      if(!fields["passCon"]){
           formIsValid = false;
-          errors["email"] = "Enter a valid email.";
-        }
+          errors["passCon"] = "Password confirmation required."
       }
 
       this.setState({errors: errors});
@@ -57,7 +53,7 @@ class ResetPasswordConfirm extends Component {
     renderRedirect = () => {
       if(this.state.redirect) {
         console.log("Rendering redirect");
-        return <Redirect to='/reset_password_done' />
+        return <Redirect to='/password_reset_complete' />
       }
     }
 
@@ -65,9 +61,12 @@ class ResetPasswordConfirm extends Component {
       event.preventDefault();
       if(this.handleValidation()) {
         const data = {
-          email: this.state.fields["email"]
+          new_password1: this.state.fields['pass'],
+          new_password2: this.state.fields['passCon'],
+          uid: this.props.match.params.uidb64,
+          token: this.props.match.params.token,
         }
-        this.props.handle_resetPassword(data, (res) => {
+        this.props.handle_resetPasswordConfirm(data, (res) => {
           if(res) {
             this.setRedirect();
           }
@@ -100,10 +99,15 @@ class ResetPasswordConfirm extends Component {
                 
                 <div id="reset-form">
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        Email
+                        Password
                         <br/>
-                        <input name="email" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
-                        <span className="error">{this.state.errors["email"]}</span>
+                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}/>
+                        <span className="error">{this.state.errors["pass"]}</span>
+                        <br/><br/>
+                        Confirm password
+                        <br/>
+                        <input type="password" name="passCon" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "passCon")} value={this.state.fields["passCon"]}/>
+                        <span className="error">{this.state.errors["passCon"]}</span>
                         <br/>
                         <br/>
                         {this.renderRedirect()}
@@ -115,4 +119,4 @@ class ResetPasswordConfirm extends Component {
       );
     }
   }
-  export default ResetPasswordConfirm;
+  export default withRouter(ResetPasswordConfirm);
