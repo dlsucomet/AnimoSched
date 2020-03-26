@@ -14,11 +14,11 @@ class ComboBox extends React.Component{
         }
     }
 
-    componentWillReceiveProps(props){
-        this.state.degrees = props.degrees;
-        this.state.college = props.college;
-        this.changeProgramList(props)
-    }
+    // componentWillReceiveProps(props){
+    //     this.state.degrees = props.degrees;
+    //     this.state.college = props.college;
+    //     this.changeProgramList(props)
+    // }
 
     changeProgramList(props) {
 
