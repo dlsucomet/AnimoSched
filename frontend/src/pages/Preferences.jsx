@@ -25,7 +25,6 @@ class Preferences extends Component {
         });
     }
 
-
     render() {
       return (
         <div>
