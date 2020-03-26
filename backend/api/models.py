@@ -31,9 +31,9 @@ class Degree(models.Model):
 
 class Course(models.Model):
     course_code = models.CharField(max_length=8)
-    college = models.ForeignKey(College, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=120)
     course_desc = models.TextField()
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     units = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
 
@@ -49,8 +49,8 @@ class Section(models.Model):
     section_code = models.CharField(max_length=3)
 
 class Building(models.Model):
-    bldg_name = models.CharField(max_length=100)
     bldg_code = models.CharField(max_length=50)
+    bldg_name = models.CharField(max_length=100)
 
 class Room(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE)
