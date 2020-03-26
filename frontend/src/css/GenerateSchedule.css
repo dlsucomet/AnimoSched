@@ -41,7 +41,8 @@
     padding: 10px;
     padding-left: 30px;
     padding-right: 30px;
-    background-image: linear-gradient(-20deg, #134E5E, #71B280);
+    background-color: #16775D;
+    /* background-image: linear-gradient(-20deg, #134E5E, #71B280); */
     border: none;
     color: white;
     box-shadow: 6px 5px #e8f4ea;
