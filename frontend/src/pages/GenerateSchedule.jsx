@@ -25,9 +25,9 @@ class GenerateSchedule extends Component {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
-            highCourses: ['COMPRO1', 'COMPRO2'],
-            lowCourses: ['IPERSEF', 'SOCTEC1'],
-            courseList: ['HUMAART', 'GREATWK'],
+            highCourses: [],
+            lowCourses: [],
+            courseList: [],
             currentPage: 0,
             currentContent: "",
             generatedContents: [],
@@ -41,6 +41,49 @@ class GenerateSchedule extends Component {
             
         };
 
+    }
+
+    componentWillMount(){
+        const id = localStorage.getItem('user_id');
+        axios.get('http://localhost:8000/api/courses/')
+        .then(res => {
+            console.log(res)
+            res.data.map(course => {
+                var courses = this.state.courseList;
+                var addCourse = {'id':course.id,'course_code':course.course_code}
+                courses.push(addCourse)
+                this.setState({courseList: courses})
+            })
+            axios.get('http://localhost:8000/api/courseprioritylist/'+id+'/')
+            .then(res => {
+                res.data.map(preference =>{
+                    console.log(preference)
+                    if(preference.course_priority != null){
+                        axios.get('http://localhost:8000/api/coursepriority/'+preference.course_priority+'/')
+                        .then(res => {
+                            const priority = res.data.priority
+                            var newCourseList = []
+                            this.state.courseList.map(course =>{
+                                if(course.id == res.data.courses){
+                                    if(priority){
+                                        var courses = this.state.highCourses;
+                                        courses.push(course.course_code)
+                                        this.setState({highCourses: courses})
+                                    }else{
+                                        var courses = this.state.lowCourses;
+                                        courses.push(course.course_code)
+                                        this.setState({lowCourses: courses})
+                                    }
+                                }else{
+                                    newCourseList.push(course)
+                                }
+                            })
+                            this.setState({courseList:newCourseList})
+                        })
+                    }
+                })
+            });
+        })
     }
 
     componentDidMount(){
@@ -67,7 +110,7 @@ class GenerateSchedule extends Component {
     // }
 
     handleAutoCompleteChange = (e, val) => {
-        console.log(val)
+        val = val.course_code;
         if(val != undefined && val.trim() != ''){
             const newCourse = val; 
             this.setState(state =>{
@@ -297,7 +340,7 @@ class GenerateSchedule extends Component {
                                     /> */}
                                     <Autocomplete
                                     options={this.state.courseList}
-                                    // getOptionLabel={option => option.name}
+                                    getOptionLabel={option => option.course_code}
                                     style={{ width: 200 }}
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}

@@ -46,7 +46,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class DaySerializer(serializers.ModelSerializer):
   class Meta:
     model = Day 
-    fields = ('id', 'day')
+    fields = ('id','day_code', 'day_name')
 
 class TimeslotSerializer(serializers.ModelSerializer):
   class Meta:

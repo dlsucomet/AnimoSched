@@ -6,7 +6,11 @@ class Preferences extends Component {
     constructor(props){
         super(props)
         this.state = {
-            min_courses: 0,
+            earliest_class_time: null,
+            latest_class_time: null,
+            break_length: null,
+            min_courses: 0, 
+            max_courses: 0, 
         }
     }
     
@@ -15,11 +19,29 @@ class Preferences extends Component {
         axios.get('http://localhost:8000/api/preferencelist/'+id+'/')
         .then(res => {
             res.data.map(preference =>{
+                console.log(preference)
                 if(preference.earliest_class_time != null){
+                    this.setState({earliest_class_time:preference.earliest_class_time})
+                }
+                if(preference.latest_class_time != null){
+                    this.setState({latest_class_time:preference.latest_class_time})
+                }
+                if(preference.preferred_days != null){
+                }
+                if(preference.break_length != null){
+                    this.setState({break_length:preference.break_length})
                 }
                 if(preference.min_courses != null){
-                    this.state.min_courses = preference.min_courses;
-                    console.log(this.state.min_courses)
+                    this.setState({min_courses:preference.min_courses})
+                }
+                if(preference.max_courses != null){
+                    this.setState({max_courses:preference.max_courses})
+                }
+                if(preference.preferred_faculty != null){
+                }
+                if(preference.preferred_buildings != null){
+                }
+                if(preference.preferred_sections != null){
                 }
             })
         });
@@ -51,11 +73,11 @@ class Preferences extends Component {
                         <div className="preference-category-content">
                             Earliest Time
                             <br/>
-                            <input type="time"/><br/><br/>
+                            <input value={this.state.earliest_class_time} type="time"/><br/><br/>
 
                             Latest Time
                             <br/>
-                            <input type="time"/><br/><br/>
+                            <input value={this.state.latest_class_time} type="time"/><br/><br/>
 
                             Preferred Days
                             <br/>
@@ -79,7 +101,7 @@ class Preferences extends Component {
 
                             Break Length
                             <br/>
-                            <input/><br/><br/>
+                            <input value={this.state.break_length} /><br/><br/>
                         </div>
                     </div>
 
@@ -93,7 +115,7 @@ class Preferences extends Component {
 
                             Maximum Courses per Day
                             <br/>
-                            <input/><br/><br/>
+                            <input value={this.state.max_courses}/><br/><br/>
                         </div>
                     </div>
 

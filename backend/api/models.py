@@ -58,6 +58,7 @@ class Room(models.Model):
     room_capacity = models.IntegerField()
 
 class Day(models.Model):
+    day_code = models.CharField(max_length=2)
     day_name = models.CharField(max_length=10)
 
 class Timeslot(models.Model): 
