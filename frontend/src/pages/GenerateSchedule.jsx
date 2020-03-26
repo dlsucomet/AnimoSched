@@ -21,6 +21,7 @@ class GenerateSchedule extends Component {
         // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.generatedRef = React.createRef();
         this.handleScrollToGen = this.handleScrollToGen.bind(this);
+        this.handleSaveChange = this.handleSaveChange.bind(this);
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
@@ -36,6 +37,9 @@ class GenerateSchedule extends Component {
             pagesCount: 1,
             searchedCourse: "",
             hideGenContent:true,
+            savedScheds: [],
+            saveButtonLabel: "Save Schedule",
+            saveButtonStyle: {margin: "30px"},
         
 
             
@@ -80,7 +84,8 @@ class GenerateSchedule extends Component {
     
 
     handlePageChange = (e,index) => {
-        e.preventDefault();
+        // e.preventDefault();
+  
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
             return {currentContent};
@@ -95,6 +100,17 @@ class GenerateSchedule extends Component {
         console.log(this.state.generatedContents[index]);
 
         this.handleScrollToGen();
+
+        if(this.state.savedScheds.includes(this.state.generatedContents[index])){
+            console.log("Saved Scheds: " + this.state.savedScheds.length);
+            this.setState({saveButtonLabel: "Saved"});
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
+            this.setState({saveButtonStyle: styleChange});
+        }else{
+            this.setState({saveButtonLabel: "Save Schedule"});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white", border: "none"};
+            this.setState({saveButtonStyle: styleChange});
+        }
     }
 
     createSchedInfo = (arrayGenSched)=>{
@@ -136,6 +152,43 @@ class GenerateSchedule extends Component {
             behavior: "smooth"
         })
     }
+
+    handleSaveChange=()=>{
+
+        if(this.state.savedScheds.includes(this.state.currentContent)){
+            
+            var newArray = [...this.state.savedScheds];
+            var index = newArray.filter(value => value.id == this.state.currentContent.id); 
+            console.log("SavedSched Index: " + index);
+            if(index !== -1){
+                newArray.splice(index, 1);
+              }
+            
+            this.setState({savedScheds: newArray});
+
+            this.setState({saveButtonLabel: "Save Schedule"});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white", border: "none"};
+            this.setState({saveButtonStyle: styleChange});
+        }else{
+
+
+            this.setState(state=>{
+                const savedScheds = state.savedScheds.concat(state.currentContent);
+                console.log("No. of Saved Scheds: " + savedScheds.length);
+                return {savedScheds};
+                
+            })
+    
+            
+            this.setState({saveButtonLabel: "Saved"});
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
+            this.setState({saveButtonStyle: styleChange});
+            
+        }
+        
+
+    }
+
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
@@ -350,7 +403,7 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             <Row horizontal='center'>
-                                <button className={"schedButton"} style={{margin: "30px"}}>Save Schedule</button>
+                                <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button>
                             </Row>  
                         </div>
                     </Column>
