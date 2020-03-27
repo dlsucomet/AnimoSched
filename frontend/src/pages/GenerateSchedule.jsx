@@ -65,17 +65,18 @@ class GenerateSchedule extends Component {
                     if(preference.course_priority != null){
                         axios.get('http://localhost:8000/api/coursepriority/'+preference.course_priority+'/')
                         .then(res => {
+                            const id = res.data.id
                             const priority = res.data.priority
                             var newCourseList = []
                             this.state.courseList.map(course =>{
                                 if(course.id == res.data.courses){
                                     if(priority){
                                         var courses = this.state.highCourses;
-                                        courses.push(course.course_code)
+                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
                                         this.setState({highCourses: courses})
                                     }else{
                                         var courses = this.state.lowCourses;
-                                        courses.push(course.course_code)
+                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
                                         this.setState({lowCourses: courses})
                                     }
                                 }else{
@@ -88,6 +89,27 @@ class GenerateSchedule extends Component {
                 })
             });
         })
+    }
+
+    saveCourses = () => {
+        // const priority = res.data.priority
+        // var newCourseList = []
+        // this.state.courseList.map(course =>{
+        //     if(course.id == res.data.courses){
+        //         if(priority){
+        //             var courses = this.state.highCourses;
+        //             courses.push(course.course_code)
+        //             this.setState({highCourses: courses})
+        //         }else{
+        //             var courses = this.state.lowCourses;
+        //             courses.push(course.course_code)
+        //             this.setState({lowCourses: courses})
+        //         }
+        //     }else{
+        //         newCourseList.push(course)
+        //     }
+        // })
+        // this.setState({courseList:newCourseList})
     }
 
     componentDidMount(){
@@ -116,7 +138,7 @@ class GenerateSchedule extends Component {
     handleAutoCompleteChange = (e, val) => {
         val = val.course_code;
         if(val != undefined && val.trim() != ''){
-            const newCourse = val; 
+            const newCourse = {'id':0,'course_id':0,'data':val}; 
             this.setState(state =>{
                 const highCourses = state.highCourses.concat(newCourse);
                 return{highCourses};
@@ -174,16 +196,15 @@ class GenerateSchedule extends Component {
     updateHighPriorty(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
-            newArray.push(course.data);
+            newArray.push(course);
         })
         this.setState({highCourses: newArray})
-
     }
 
     updateLowPriority(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
-            newArray.push(course.data);
+            newArray.push(course);
         })
         this.setState({lowCourses: newArray})
     }
