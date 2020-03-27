@@ -169,18 +169,18 @@ class GenerateSchedule extends Component {
         if(this.state.savedScheds.includes(this.state.generatedContents[index])){
             console.log("Saved Scheds: " + this.state.savedScheds.length);
             this.setState({saveButtonLabel: "Saved"});
-            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
         }else{
             this.setState({saveButtonLabel: "Save Schedule"});
-            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white", border: "none"};
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
             this.setState({saveButtonStyle: styleChange});
         }
     }
 
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title}/>
 
         );
 
@@ -263,6 +263,7 @@ class GenerateSchedule extends Component {
         var jsonSample =[
             {
                 id: 1,
+                title: "Schedule 1",
                 scheduleContent: [
                     {
                       title: "HUMAART",
@@ -322,6 +323,7 @@ class GenerateSchedule extends Component {
 
             {
                 id: 2,
+                title: "Schedule 2",
                 scheduleContent: [
                     {
                         title: "CSSERVM",
@@ -439,7 +441,7 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
 
-                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} onChange={this.handleScrollToGen}>
+                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} >
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">
