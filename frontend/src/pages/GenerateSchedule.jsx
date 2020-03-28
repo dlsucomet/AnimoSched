@@ -150,7 +150,6 @@ class GenerateSchedule extends Component {
     
 
     handlePageChange = (e,index) => {
-        // e.preventDefault();
   
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
