@@ -22,6 +22,7 @@ class GenerateSchedule extends Component {
         this.generatedRef = React.createRef();
         this.handleScrollToGen = this.handleScrollToGen.bind(this);
         this.handleSaveChange = this.handleSaveChange.bind(this);
+        // this.updateSchedTitle = this.updateSchedTitle.bind(this);
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
@@ -180,7 +181,7 @@ class GenerateSchedule extends Component {
 
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title}/>
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
 
         );
 
@@ -209,6 +210,29 @@ class GenerateSchedule extends Component {
         this.setState({lowCourses: newArray})
     }
     
+    updateSchedTitle=(text)=>{
+         var newArray = [...this.state.generatedContents];
+         var updateElement = this.state.currentContent;
+        // var index = newArray.findIndex(this.state.currentContent);
+        console.log(this.state.currentContent)
+        console.log(newArray);
+        console.log(updateElement);
+        updateElement.titleName = text;
+
+        console.log(updateElement.title);
+        // newArray.map(value=>{
+        //     if(value.key == this.state.currentContent.key){
+        //         console.log(value);
+        //         console.log(value.props.titleName);
+        //         console.log(value.title);
+        //         value.props.titleName = text;
+        //         console.log(value.props.titleName);
+                
+        //     }
+        // })
+
+        this.setState({generatedContents: newArray});
+    }
     handleScrollToGen=()=>{
         console.log("I'm scrollinggg");
         window.scrollTo({
