@@ -211,25 +211,18 @@ class GenerateSchedule extends Component {
     }
     
     updateSchedTitle=(text)=>{
-         var newArray = [...this.state.generatedContents];
-         var updateElement = this.state.currentContent;
+         var newArray = [];
+         const currentContent = this.state.currentContent;
         // var index = newArray.findIndex(this.state.currentContent);
-        console.log(this.state.currentContent)
-        console.log(newArray);
-        console.log(updateElement);
-        updateElement.titleName = text;
+        const newContent = <GenSchedInfo key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
 
-        console.log(updateElement.title);
-        // newArray.map(value=>{
-        //     if(value.key == this.state.currentContent.key){
-        //         console.log(value);
-        //         console.log(value.props.titleName);
-        //         console.log(value.title);
-        //         value.props.titleName = text;
-        //         console.log(value.props.titleName);
-                
-        //     }
-        // })
+        this.state.generatedContents.map(value=>{
+            if(value.key == this.state.currentContent.key){
+                newArray.push(newContent)
+            }else{
+                newArray.push(value)
+            }
+        })
 
         this.setState({generatedContents: newArray});
     }
