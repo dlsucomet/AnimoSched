@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import ComboBox from '../components/ComboBox.jsx';
+import axios from 'axios';
 
 class SearchCourses extends Component {
     constructor(props){
@@ -25,8 +26,20 @@ class SearchCourses extends Component {
           this.createData(2043, 'TREDTRI', 'S17', 'TORRES, MARIA', 'TH', '14:30', '16:00', 'GK301', 30, 30),
           this.createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
         ],
-        siteData: []
+        siteData: [],
+        courseList: []
       }
+    }
+
+    componentWillMount(){
+        axios.get('http://localhost:8000/api/courses/')
+        .then(res => {
+            res.data.map(course => {
+                var courses = this.state.courseList;
+                courses.push(course.course_code)
+                this.setState({courseList: courses})
+            })
+        })
     }
 
     createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
@@ -113,7 +126,7 @@ class SearchCourses extends Component {
 
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
-                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleFilter.bind(this, "courses")} />
+                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleFilter.bind(this, "courses")} courseList={this.state.courseList} />
                 </div>
 
                 <div className="filters">

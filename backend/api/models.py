@@ -29,6 +29,25 @@ class Degree(models.Model):
         verbose_name = _('degree')
         verbose_name_plural = _('degrees')
 
+class Flowchart(models.Model):
+    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+    year = models.CharField(max_length=3)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('flowchart')
+        verbose_name_plural = _('flowcharts')
+
+class FlowchartTerm(models.Model):
+    flowchart = models.ForeignKey(Flowchart, on_delete=models.CASCADE)
+    year = models.IntegerField()
+    term = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('flowchart term')
+        verbose_name_plural = _('flowchart terms')
+
 class Course(models.Model):
     course_code = models.CharField(max_length=8)
     course_name = models.CharField(max_length=120)
@@ -178,21 +197,5 @@ class Preference(models.Model):
         verbose_name = _('preference')
         verbose_name_plural = _('preferences')
 
-class Flowchart(models.Model):
-    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
-    year = models.CharField(max_length=3)
-    timestamp = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        verbose_name = _('flowchart')
-        verbose_name_plural = _('flowcharts')
 
-class FlowchartTerm(models.Model):
-    flowchart = models.ForeignKey(Flowchart, on_delete=models.CASCADE)
-    year = models.IntegerField()
-    term = models.IntegerField()
-    timestamp = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = _('flowchart term')
-        verbose_name_plural = _('flowchart terms')

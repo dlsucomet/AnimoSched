@@ -29,10 +29,10 @@ class Profile extends Component {
         })
         .then(res => {
             this.setState({
-            email: res.data.email,
-            first_name: res.data.first_name,
-            last_name: res.data.last_name,
-            id_num: '', 
+                email: res.data.email,
+                first_name: res.data.first_name,
+                last_name: res.data.last_name,
+                id_num: '', 
             })
             const college = res.data.college;
             const degree = res.data.degree;
@@ -71,7 +71,7 @@ class Profile extends Component {
                     <br/>
                     {/* <input value={this.state.first_name}/><br/><br/> */}
                     <EditableLabel
-                        text='Juan'
+                        text={this.state.first_name}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
@@ -84,7 +84,7 @@ class Profile extends Component {
                     <br/>
                     {/* <input value={this.state.last_name}/><br/><br/> */}
                     <EditableLabel
-                        text='Dela Cruz'
+                        initialValue={this.state.last_name}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
@@ -97,7 +97,7 @@ class Profile extends Component {
                     <br/>
                     {/* <input value={this.state.id_num}/><br/><br/> */}
                     <EditableLabel
-                        text='11612345'
+                        text={this.state.id_num}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
@@ -118,7 +118,7 @@ class Profile extends Component {
                     <br/>
                     {/* <input value={this.state.email}/><br/><br/> */}
                     <EditableLabel
-                        text='juan_delacruz@dlsu.edu.ph'
+                        text={this.state.email}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
