@@ -10,6 +10,8 @@ https://pypi.org/project/pipenv/
 
 https://classic.yarnpkg.com/en/docs/install/
 
+http://www.mingw.org/
+
 ## Installation
 
 `pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions django-annoying djangorestframework-jwt z3-solver`

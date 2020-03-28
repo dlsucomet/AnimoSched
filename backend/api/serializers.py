@@ -3,15 +3,10 @@ from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
-from .models import User, Course, College, CoursePriority, Degree, Preference
+from .models import College, Degree, Course, Faculty, Section, Building, Room, Day, Timeslot, CourseOffering, CoursePriority, Schedule, User, Preference
 
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
-
-class UserSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = User
-    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'is_active')
 
 class CollegeSerializer(serializers.ModelSerializer):
   class Meta:
@@ -26,18 +21,62 @@ class DegreeSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:
     model = Course 
-    fields = ('id', 'college','course_code', 'course_name', 'course_desc', 'units')
+    fields = ('id', 'course_code', 'course_name', 'course_desc', 'college', 'units')
+
+class FacultySerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Faculty 
+    fields = ('id', 'last_name', 'first_name')
+
+class SectionSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Section 
+    fields = ('id', 'section_code')
+
+class BuildingSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Building 
+    fields = ('id', 'bldg_code', 'bldg_name')
+
+class RoomSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Room 
+    fields = ('id', 'building', 'room_type', 'room_capacity')
+
+class DaySerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Day 
+    fields = ('id','day_code', 'day_name')
+
+class TimeslotSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Timeslot 
+    fields = ('id', 'begin_time', 'end_time')
+
+class CourseOfferingSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = CourseOffering 
+    fields = ('id', 'faculty', 'course', 'section', 'day', 'timeslot', 'room', 'term', 'start_AY', 'end_AY', 'current_enrolled', 'max_enrolled', 'status')
 
 class CoursePrioritySerializer(serializers.ModelSerializer):
   class Meta:
     model = CoursePriority 
-    fields = ('id', 'courses')
+    fields = ('id', 'courses', 'priority')
+
+class CourseScheduleSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Schedule 
+    fields = ('id', 'courseOfferings')
 
 class PreferenceSerializer(serializers.ModelSerializer):
   class Meta:
     model = Preference
     fields = ('id', 'earliest_class_time', 'latest_class_time', 'preferred_days', 'break_length', 'min_courses', 'max_courses', 'preferred_faculty', 'preferred_buildings', 'preferred_sections', 'course_priority', 'user')
 
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'is_active')
 
 class CustomRegisterSerializer(RegisterSerializer):
     # username = serializers.CharField(required=True)

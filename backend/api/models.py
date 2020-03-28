@@ -31,11 +31,14 @@ class Degree(models.Model):
 
 class Course(models.Model):
     course_code = models.CharField(max_length=8)
-    college = models.ForeignKey(College, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=120)
     course_desc = models.TextField()
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     units = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
+    # flowchart information
+    flowchart_terms = models.ManyToManyField(FlowchartTerm)
+    prerequisites = models.ManyToManyField('self')
 
     class Meta:
         verbose_name = _('course')
@@ -44,25 +47,56 @@ class Course(models.Model):
 class Faculty(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('faculty member')
+        verbose_name_plural = _('faculty members')
 
 class Section(models.Model):
     section_code = models.CharField(max_length=3)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('section')
+        verbose_name_plural = _('sections')
 
 class Building(models.Model):
-    bldg_name = models.CharField(max_length=100)
     bldg_code = models.CharField(max_length=50)
+    bldg_name = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('building')
+        verbose_name_plural = _('buildings')
 
 class Room(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE)
     room_type = models.CharField(max_length=50)
     room_capacity = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('room')
+        verbose_name_plural = _('rooms')
 
 class Day(models.Model):
+    day_code = models.CharField(max_length=2)
     day_name = models.CharField(max_length=10)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('day')
+        verbose_name_plural = _('days')
 
 class Timeslot(models.Model): 
     begin_time = models.TimeField()
     end_time = models.TimeField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('timeslot')
+        verbose_name_plural = _('timeslots')
 
 class CourseOffering(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
@@ -77,13 +111,28 @@ class CourseOffering(models.Model):
     current_enrolled = models.IntegerField()
     max_enrolled = models.IntegerField()
     status = models.BooleanField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('course offering')
+        verbose_name_plural = _('course offerings')
 
 class CoursePriority(models.Model):
     courses = models.ForeignKey(Course,on_delete=models.CASCADE)
     priority = models.BooleanField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('course priority')
+        verbose_name_plural = _('course priorities')
 
 class Schedule(models.Model):
     courseOfferings = models.ManyToManyField(CourseOffering)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('schedule')
+        verbose_name_plural = _('schedules')
 
 class User(AbstractBaseUser):
     # username = models.CharField(max_length=9) 
@@ -97,6 +146,8 @@ class User(AbstractBaseUser):
     schedules = models.ManyToManyField(Schedule)
     is_active = models.BooleanField(default=True)
     objects = UserManager()
+    friends = models.ManyToManyField('self')
+    timestamp = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'college', 'degree']
@@ -121,7 +172,27 @@ class Preference(models.Model):
     preferred_sections = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
     course_priority = models.ForeignKey(CoursePriority, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _('preference')
         verbose_name_plural = _('preferences')
+
+class Flowchart(models.Model):
+    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+    year = models.CharField(max_length=3)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('flowchart')
+        verbose_name_plural = _('flowcharts')
+
+class FlowchartTerm(models.Model):
+    flowchart = models.ForeignKey(Flowchart, on_delete=models.CASCADE)
+    year = models.IntegerField()
+    term = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('flowchart term')
+        verbose_name_plural = _('flowchart terms')

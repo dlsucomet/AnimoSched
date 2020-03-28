@@ -3,6 +3,7 @@ import { Container, Draggable } from "react-smooth-dnd";
 import { applyDrag, generateItems } from '../components/ultils.jsx';
 import '../css/CourseDnD.css';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import axios from "axios";
 
 const groupStyle = {
     marginLeft: '50px',
@@ -18,12 +19,13 @@ class CourseDnD extends Component {
 
     this.state = {
         courses: this.props.courses,
+        idTag: this.props.idTag
     };
 
   }
 
 componentWillReceiveProps(props) {
-  console.log(props)
+  // console.log(props)
   this.refreshList(props);
 
 }
@@ -34,18 +36,19 @@ componentDidMount(){
 
 refreshList = (props) => {
     var newItems = props.courses;
-    this.state.courses = []
+    console.log(newItems)
+    this.setState({courses:[]})
 
     for(let i = 0; i < newItems.length; i++) {
         this.setState(state =>{
-            const oldItems = state.courses;
-            const courses = state.courses.concat({id: this.props.idTag + oldItems.length, data: newItems[i]});
+            const courses = state.courses.concat({id: newItems[i].id, course_id: newItems[i].course_id, data:newItems[i].data});
             return{courses};
         });
     }   
 }
 
 removeCourse = (index) =>{
+  this.props.handleCourseDelete(this.state.courses[index])
   var newCourses = [...this.state.courses];
   if(index !== -1){
     newCourses.splice(index, 1);
@@ -54,9 +57,33 @@ removeCourse = (index) =>{
 }
 
 triggerUpdate=(e)=>{
+  if(e.removedIndex == null){
+    if(e.addedIndex != null){
+      if(this.state.idTag == "1"){
+        axios.put('http://localhost:8000/api/coursepriority/'+e.payload.id+'/',{
+          'courses':e.payload.course_id,'priority':true
+        })
+      }else if(this.state.idTag == "2"){
+        axios.put('http://localhost:8000/api/coursepriority/'+e.payload.id+'/',{
+          'courses':e.payload.course_id,'priority':false
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+
+    }
+
+  }
+  // else if(e.addedIndex == null){
+  //   if(e.removedIndex != null){
+  //     console.log(e.payload)
+
+  //   }
+
+  // }
   this.setState({ courses: applyDrag(this.state.courses, e) })
   this.props.updateFunction(this.state.courses);
-  console.log(this.props.idTag + " course state contains: " +this.state.courses);
+  // console.log(this.props.idTag + " course state contains: " +this.state.courses);
 }
 
   render() {

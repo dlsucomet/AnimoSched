@@ -21,13 +21,14 @@ class GenerateSchedule extends Component {
         // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.generatedRef = React.createRef();
         this.handleScrollToGen = this.handleScrollToGen.bind(this);
+        this.handleSaveChange = this.handleSaveChange.bind(this);
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
             value: "",
-            highCourses: ['COMPRO1', 'COMPRO2'],
-            lowCourses: ['IPERSEF', 'SOCTEC1'],
-            courseList: ['HUMAART', 'GREATWK'],
+            highCourses: [],
+            lowCourses: [],
+            courseList: [],
             currentPage: 0,
             currentContent: "",
             generatedContents: [],
@@ -36,11 +37,79 @@ class GenerateSchedule extends Component {
             pagesCount: 1,
             searchedCourse: "",
             hideGenContent:true,
+            savedScheds: [],
+            saveButtonLabel: "Save Schedule",
+            saveButtonStyle: {margin: "30px"},
         
 
             
         };
 
+    }
+
+    componentWillMount(){
+        const id = localStorage.getItem('user_id');
+        axios.get('http://localhost:8000/api/courses/')
+        .then(res => {
+            console.log(res)
+            res.data.map(course => {
+                var courses = this.state.courseList;
+                var addCourse = {'id':course.id,'course_code':course.course_code}
+                courses.push(addCourse)
+                this.setState({courseList: courses})
+            })
+            axios.get('http://localhost:8000/api/courseprioritylist/'+id+'/')
+            .then(res => {
+                res.data.map(preference =>{
+                    console.log(preference)
+                    if(preference.course_priority != null){
+                        axios.get('http://localhost:8000/api/coursepriority/'+preference.course_priority+'/')
+                        .then(res => {
+                            const id = res.data.id
+                            const priority = res.data.priority
+                            var newCourseList = []
+                            this.state.courseList.map(course =>{
+                                if(course.id == res.data.courses){
+                                    if(priority){
+                                        var courses = this.state.highCourses;
+                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
+                                        this.setState({highCourses: courses})
+                                    }else{
+                                        var courses = this.state.lowCourses;
+                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
+                                        this.setState({lowCourses: courses})
+                                    }
+                                }else{
+                                    newCourseList.push(course)
+                                }
+                            })
+                            this.setState({courseList:newCourseList})
+                        })
+                    }
+                })
+            });
+        })
+    }
+
+    saveCourses = () => {
+        // const priority = res.data.priority
+        // var newCourseList = []
+        // this.state.courseList.map(course =>{
+        //     if(course.id == res.data.courses){
+        //         if(priority){
+        //             var courses = this.state.highCourses;
+        //             courses.push(course.course_code)
+        //             this.setState({highCourses: courses})
+        //         }else{
+        //             var courses = this.state.lowCourses;
+        //             courses.push(course.course_code)
+        //             this.setState({lowCourses: courses})
+        //         }
+        //     }else{
+        //         newCourseList.push(course)
+        //     }
+        // })
+        // this.setState({courseList:newCourseList})
     }
 
     componentDidMount(){
@@ -65,11 +134,30 @@ class GenerateSchedule extends Component {
     //         console.log(this.state.highCourses)
     //     }
     // }
+    handleCourseDelete = (course_id) => {
+        const newCourseList = [];
+        this.state.courseList.map(course => {
+            if(course.id != course_id){
+                console.log(course.course_code)
+                newCourseList.push(course)
+            }
+        })
+        this.setState({courseList:newCourseList})
+    }
 
     handleAutoCompleteChange = (e, val) => {
-        console.log(val)
-        if(val != undefined && val.trim() != ''){
-            const newCourse = val; 
+        const newCourseList = [];
+
+        this.state.courseList.map(course => {
+            if(course.id != val.id){
+                console.log(course.course_code)
+                newCourseList.push(course)
+            }
+        })
+        this.setState({courseList:newCourseList})
+        if(val != undefined && val.course_code != undefined && val.course_code.trim() != ''){
+            const newCourse = {'id':0,'course_id':val.id,'data':val.course_code}; 
+            console.log(newCourse)
             this.setState(state =>{
                 const highCourses = state.highCourses.concat(newCourse);
                 return{highCourses};
@@ -80,11 +168,12 @@ class GenerateSchedule extends Component {
     
 
     handlePageChange = (e,index) => {
-        e.preventDefault();
+        // e.preventDefault();
+  
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
             return {currentContent};
-            });
+        });
         
         this.setState({currentPage: index});
         this.setState(state =>{
@@ -95,11 +184,22 @@ class GenerateSchedule extends Component {
         console.log(this.state.generatedContents[index]);
 
         this.handleScrollToGen();
+
+        if(this.state.savedScheds.includes(this.state.generatedContents[index])){
+            console.log("Saved Scheds: " + this.state.savedScheds.length);
+            this.setState({saveButtonLabel: "Saved"});
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
+            this.setState({saveButtonStyle: styleChange});
+        }else{
+            this.setState({saveButtonLabel: "Save Schedule"});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
+            this.setState({saveButtonStyle: styleChange});
+        }
     }
 
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent}/>
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title}/>
 
         );
 
@@ -115,16 +215,15 @@ class GenerateSchedule extends Component {
     updateHighPriorty(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
-            newArray.push(course.data);
+            newArray.push(course);
         })
         this.setState({highCourses: newArray})
-
     }
 
     updateLowPriority(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
-            newArray.push(course.data);
+            newArray.push(course);
         })
         this.setState({lowCourses: newArray})
     }
@@ -136,6 +235,43 @@ class GenerateSchedule extends Component {
             behavior: "smooth"
         })
     }
+
+    handleSaveChange=()=>{
+
+        if(this.state.savedScheds.includes(this.state.currentContent)){
+            
+            var newArray = [...this.state.savedScheds];
+            var index = newArray.filter(value => value.id == this.state.currentContent.id); 
+            console.log("SavedSched Index: " + index);
+            if(index !== -1){
+                newArray.splice(index, 1);
+              }
+            
+            this.setState({savedScheds: newArray});
+
+            this.setState({saveButtonLabel: "Save Schedule"});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white", border: "none"};
+            this.setState({saveButtonStyle: styleChange});
+        }else{
+
+
+            this.setState(state=>{
+                const savedScheds = state.savedScheds.concat(state.currentContent);
+                console.log("No. of Saved Scheds: " + savedScheds.length);
+                return {savedScheds};
+                
+            })
+    
+            
+            this.setState({saveButtonLabel: "Saved"});
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
+            this.setState({saveButtonStyle: styleChange});
+            
+        }
+        
+
+    }
+
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
@@ -146,6 +282,7 @@ class GenerateSchedule extends Component {
         var jsonSample =[
             {
                 id: 1,
+                title: "Schedule 1",
                 scheduleContent: [
                     {
                       title: "HUMAART",
@@ -205,6 +342,7 @@ class GenerateSchedule extends Component {
 
             {
                 id: 2,
+                title: "Schedule 2",
                 scheduleContent: [
                     {
                         title: "CSSERVM",
@@ -297,7 +435,7 @@ class GenerateSchedule extends Component {
                                     /> */}
                                     <Autocomplete
                                     options={this.state.courseList}
-                                    // getOptionLabel={option => option.name}
+                                    getOptionLabel={option => option.course_code}
                                     style={{ width: 200 }}
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}
@@ -322,7 +460,7 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
 
-                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} onChange={this.handleScrollToGen}>
+                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} >
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">
@@ -350,7 +488,7 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             <Row horizontal='center'>
-                                <button className={"schedButton"} style={{margin: "30px"}}>Save Schedule</button>
+                                <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button>
                             </Row>  
                         </div>
                     </Column>
