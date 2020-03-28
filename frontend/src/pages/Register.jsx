@@ -188,7 +188,7 @@ class Register extends Component {
                         <span className="error">{this.state.errors["lastName"]}</span>
                         <br/><br/>
 
-                        Email
+                        Email Address
                         <br/>
                         <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}/>
                         <span className="error">{this.state.errors["email"]}</span>
