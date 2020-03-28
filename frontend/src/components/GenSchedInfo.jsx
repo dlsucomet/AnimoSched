@@ -19,7 +19,7 @@ class GenSchedInfo extends Component {
         conflictsContent: this.props.conflictsContent,
         prefContent: this.props.prefContent,
         id: this.props.id,
-        title: this.props.titleName,
+        schedTitle: this.props.titleName,
         boolEdit: false,
         
     }
@@ -30,7 +30,10 @@ class GenSchedInfo extends Component {
 
     _handleFocusOut=(text)=> {
         console.log('Left editor with text: ' + text);
-        this.setState({title: text});
+        this.setState({schedTitle: text});
+        console.log("this is props");
+        console.log(this.props);
+        this.props.updateSchedTitle(text);
     }
 
     handleKeyPress = (event) => {
@@ -49,7 +52,7 @@ class GenSchedInfo extends Component {
                 <Row verticle = 'center' className = "RowSchedInfoContainer">
                     <Column flexGrow={1} horizontal = 'center' >
                         <Row horizontal= 'start'>
-                            <EditableLabel text={this.state.title}
+                            <EditableLabel text={this.state.schedTitle}
                             labelClassName='myLabelClass'
                             inputClassName='myInputClass'
                             inputWidth='200px'

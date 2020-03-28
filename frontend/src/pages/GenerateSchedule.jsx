@@ -16,12 +16,13 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super(props);
-        this.updateHighPriorty = this.updateHighPriorty.bind(this);
+        this.updateHighPriority = this.updateHighPriority.bind(this);
         this.updateLowPriority = this.updateLowPriority.bind(this);
         // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.generatedRef = React.createRef();
         this.handleScrollToGen = this.handleScrollToGen.bind(this);
         this.handleSaveChange = this.handleSaveChange.bind(this);
+        // this.updateSchedTitle = this.updateSchedTitle.bind(this);
         this.state = {
             highPriorityId: "1",
             lowPriorityId: "2",
@@ -206,8 +207,7 @@ class GenerateSchedule extends Component {
 
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title}/>
-
+                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
         );
 
         this.setState({generatedContents});
@@ -219,7 +219,7 @@ class GenerateSchedule extends Component {
 
     }
 
-    updateHighPriorty(courseUpdate){
+    updateHighPriority(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
             newArray.push(course);
@@ -235,6 +235,22 @@ class GenerateSchedule extends Component {
         this.setState({lowCourses: newArray})
     }
     
+    updateSchedTitle=(text)=>{
+         var newArray = [];
+         const currentContent = this.state.currentContent;
+        // var index = newArray.findIndex(this.state.currentContent);
+        const newContent = <GenSchedInfo key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
+
+        this.state.generatedContents.map(value=>{
+            if(value.key == this.state.currentContent.key){
+                newArray.push(newContent)
+            }else{
+                newArray.push(value)
+            }
+        })
+
+        this.setState({generatedContents: newArray});
+    }
     handleScrollToGen=()=>{
         console.log("I'm scrollinggg");
         window.scrollTo({
