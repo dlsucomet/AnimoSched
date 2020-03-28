@@ -134,11 +134,30 @@ class GenerateSchedule extends Component {
     //         console.log(this.state.highCourses)
     //     }
     // }
+    handleCourseDelete = (course_id) => {
+        const newCourseList = [];
+        this.state.courseList.map(course => {
+            if(course.id != course_id){
+                console.log(course.course_code)
+                newCourseList.push(course)
+            }
+        })
+        this.setState({courseList:newCourseList})
+    }
 
     handleAutoCompleteChange = (e, val) => {
-        val = val.course_code;
-        if(val != undefined && val.trim() != ''){
-            const newCourse = {'id':0,'course_id':0,'data':val}; 
+        const newCourseList = [];
+
+        this.state.courseList.map(course => {
+            if(course.id != val.id){
+                console.log(course.course_code)
+                newCourseList.push(course)
+            }
+        })
+        this.setState({courseList:newCourseList})
+        if(val != undefined && val.course_code != undefined && val.course_code.trim() != ''){
+            const newCourse = {'id':0,'course_id':val.id,'data':val.course_code}; 
+            console.log(newCourse)
             this.setState(state =>{
                 const highCourses = state.highCourses.concat(newCourse);
                 return{highCourses};
@@ -154,7 +173,7 @@ class GenerateSchedule extends Component {
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
             return {currentContent};
-            });
+        });
         
         this.setState({currentPage: index});
         this.setState(state =>{

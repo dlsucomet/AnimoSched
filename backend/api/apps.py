@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 def startup():
     print("Hello world!")
-    from .models import College, Degree
+    from .models import College, Degree, Course
     try:
         ccs = College(college_code='CCS', college_name='College of Computer Studies')
         cla = College(college_code='CLA', college_name='College of Liberal Arts')
@@ -26,7 +26,16 @@ def startup():
         Degree(degree_code='AEI-ADV', degree_name='Bachelor of Science in Applied Economics, Major in Industrial Economics and Bachelor of Science in Advertising Management', college=soe).save()
     except Exception as e:
         pass
-
+    try:
+        Course(course_code='CCPROG1', course_name='', course_desc='', college=ccs, units=3).save()
+        Course(course_code='CCPROG2', course_name='', course_desc='', college=ccs, units=3).save()
+        Course(course_code='HUMAART', course_name='', course_desc='', college=ccs, units=3).save()
+        Course(course_code='GREATWK', course_name='', course_desc='', college=ccs, units=3).save()
+        Course(course_code='SCIMATP', course_name='', course_desc='', college=ccs, units=3).save()
+        Course(course_code='SCIMATC', course_name='', course_desc='', college=ccs, units=3).save()
+    except Exception as e:
+        pass
+        
 class ApiConfig(AppConfig):
     name = 'api'
     verbose_name = 'api'
