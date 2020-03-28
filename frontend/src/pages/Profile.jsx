@@ -4,6 +4,7 @@ import Menu from '../components/Menu.jsx';
 import '../css/Profile.css';
 import axios from 'axios';
 import ResetPassword from "./ResetPassword.jsx";
+import EditableLabel from 'react-inline-editing';
 
 class Profile extends Component {
     constructor(props){
@@ -49,6 +50,14 @@ class Profile extends Component {
         })
     }
 
+    handleFocus(text) {
+        console.log('Focused with text: ' + text);
+    }
+
+    handleFocusOut(text) {
+        console.log('Left editor with text: ' + text);
+    }
+
     render() {
       return (
           <div>
@@ -58,29 +67,65 @@ class Profile extends Component {
                 <h2>Account Profile</h2>
 
                 <div className="profile-category-content">
-                    First Name
+                    <b>First Name</b>
                     <br/>
-                    <input value={this.state.first_name}/><br/><br/>
-
-                    Last Name
+                    {/* <input value={this.state.first_name}/><br/><br/> */}
+                    <EditableLabel
+                        text='Juan'
+                        inputWidth='50%'
+                        inputHeight='25px'
+                        inputMaxLength='50'
+                        onFocus={this._handleFocus}
+                        onFocusOut={this._handleFocusOut}
+                    />
                     <br/>
-                    <input value={this.state.last_name}/><br/><br/>
-
-                    ID Number
+                    
+                    <b>Last Name</b>
                     <br/>
-                    <input value={this.state.id_num}/><br/><br/>
+                    {/* <input value={this.state.last_name}/><br/><br/> */}
+                    <EditableLabel
+                        text='Dela Cruz'
+                        inputWidth='50%'
+                        inputHeight='25px'
+                        inputMaxLength='50'
+                        onFocus={this._handleFocus}
+                        onFocusOut={this._handleFocusOut}
+                    />
+                    <br/>
 
-                    College
+                    <b>ID Number</b>
+                    <br/>
+                    {/* <input value={this.state.id_num}/><br/><br/> */}
+                    <EditableLabel
+                        text='11612345'
+                        inputWidth='50%'
+                        inputHeight='25px'
+                        inputMaxLength='50'
+                        onFocus={this._handleFocus}
+                        onFocusOut={this._handleFocusOut}
+                    />
+                    <br/>
+
+                    <b>College</b>
                     <br/>
                     <input value={this.state.college}/><br/><br/>
 
-                    Degree
+                    <b>Degree</b>
                     <br/>
                     <input value={this.state.degree}/><br/><br/>
 
-                    Email
+                    <b>Email Address</b>
                     <br/>
-                    <input value={this.state.email}/><br/><br/>
+                    {/* <input value={this.state.email}/><br/><br/> */}
+                    <EditableLabel
+                        text='juan_delacruz@dlsu.edu.ph'
+                        inputWidth='50%'
+                        inputHeight='25px'
+                        inputMaxLength='50'
+                        onFocus={this._handleFocus}
+                        onFocusOut={this._handleFocusOut}
+                    />
+                    <br/>
                 </div>
             </div>
 
