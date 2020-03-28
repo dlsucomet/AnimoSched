@@ -16,7 +16,7 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super(props);
-        this.updateHighPriorty = this.updateHighPriorty.bind(this);
+        this.updateHighPriority = this.updateHighPriority.bind(this);
         this.updateLowPriority = this.updateLowPriority.bind(this);
         // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.generatedRef = React.createRef();
@@ -182,7 +182,6 @@ class GenerateSchedule extends Component {
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
                 <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
-
         );
 
         this.setState({generatedContents});
@@ -194,7 +193,7 @@ class GenerateSchedule extends Component {
 
     }
 
-    updateHighPriorty(courseUpdate){
+    updateHighPriority(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
             newArray.push(course);
