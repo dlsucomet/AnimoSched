@@ -16,7 +16,7 @@ class GenerateSchedule extends Component {
 
     constructor(props) {
         super(props);
-        this.updateHighPriorty = this.updateHighPriorty.bind(this);
+        this.updateHighPriority = this.updateHighPriority.bind(this);
         this.updateLowPriority = this.updateLowPriority.bind(this);
         // this.handleKeyPress = this.handleKeyPress.bind(this);
         this.generatedRef = React.createRef();
@@ -41,6 +41,8 @@ class GenerateSchedule extends Component {
             savedScheds: [],
             saveButtonLabel: "Save Schedule",
             saveButtonStyle: {margin: "30px"},
+            //temp
+            id:0
         
 
             
@@ -135,16 +137,40 @@ class GenerateSchedule extends Component {
     //         console.log(this.state.highCourses)
     //     }
     // }
+    handleCourseDelete = (addCourse) => {
+        console.log(addCourse)
+        console.log(this.state.courseList)
+        const newCourseList = [];
+        this.state.courseList.map(course => {
+            newCourseList.push(course)
+        })
+        newCourseList.push({'id':addCourse.course_id, 'course_code':addCourse.data})
+        console.log(newCourseList)
+        this.setState({courseList:newCourseList})
+    }
 
     handleAutoCompleteChange = (e, val) => {
-        val = val.course_code;
-        if(val != undefined && val.trim() != ''){
-            const newCourse = {'id':0,'course_id':0,'data':val}; 
-            this.setState(state =>{
-                const highCourses = state.highCourses.concat(newCourse);
-                return{highCourses};
-            });
-            console.log(this.state.highCourses)
+        const newCourseList = [];
+
+        if(val != undefined){
+            this.state.courseList.map(course => {
+                if(course.id != val.id){
+                    console.log(course.course_code)
+                    newCourseList.push(course)
+                }
+            })
+            this.setState({courseList:newCourseList})
+            if(val.course_code != undefined && val.course_code.trim() != ''){
+                this.state.id = this.state.id + 1;
+                const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
+                console.log(newCourse)
+                this.setState(state =>{
+                    const highCourses = state.highCourses.concat(newCourse);
+                    return{highCourses};
+                });
+                console.log(this.state.highCourses)
+            }
+            console.log(e.target)
         }
     }
     
@@ -154,7 +180,7 @@ class GenerateSchedule extends Component {
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
             return {currentContent};
-            });
+        });
         
         this.setState({currentPage: index});
         this.setState(state =>{
@@ -181,7 +207,6 @@ class GenerateSchedule extends Component {
     createSchedInfo = (arrayGenSched)=>{
         var generatedContents = arrayGenSched.map((item, index) =>
                 <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
-
         );
 
         this.setState({generatedContents});
@@ -193,7 +218,7 @@ class GenerateSchedule extends Component {
 
     }
 
-    updateHighPriorty(courseUpdate){
+    updateHighPriority(courseUpdate){
         var newArray = [];
         courseUpdate.map(course=>{
             newArray.push(course);
@@ -443,12 +468,12 @@ class GenerateSchedule extends Component {
                                 <Row vertical = 'center'>
                                     <Column flexGrow={1} horizontal = 'center'>
                                         <h3 className='priortyTitle'>Highest Priority</h3>
-                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty}/>
+                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty} handleCourseDelete={this.handleCourseDelete}/>
 
                                     </Column>
                                     <Column flexGrow={1} horizontal = 'center'>
                                         <h3 className='priortyTitle'>Lowest Priority</h3>
-                                        <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority}/>
+                                        <CourseDnD idTag={this.state.lowPriorityId} courses={this.state.lowCourses} updateFunction={this.updateLowPriority} handleCourseDelete={this.handleCourseDelete}/>
                                     </Column>
                                 </Row>
                             </div>

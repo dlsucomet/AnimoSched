@@ -48,6 +48,7 @@ refreshList = (props) => {
 }
 
 removeCourse = (index) =>{
+  this.props.handleCourseDelete(this.state.courses[index])
   var newCourses = [...this.state.courses];
   if(index !== -1){
     newCourses.splice(index, 1);

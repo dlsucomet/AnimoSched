@@ -13,13 +13,37 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import ComboBox from '../components/ComboBox.jsx';
+import axios from 'axios';
 
 class SearchCourses extends Component {
     constructor(props){
       super(props);
       this.state = {
-        fields: {}
+        fields: {},
+        database: [
+          this.createData(2258, 'INOVATE', 'S17', 'DELA CRUZ, JUAN', 'TH', '12:45', '14:15', 'GK210', 45, 45),
+          this.createData(2259, 'INOVATE', 'S18', 'DELA CRUZ, JUAN', 'TH', '14:30', '16:00', 'GK210', 45, 40),
+          this.createData(2043, 'TREDTRI', 'S17', 'TORRES, MARIA', 'TH', '14:30', '16:00', 'GK301', 30, 30),
+          this.createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
+        ],
+        siteData: [],
+        courseList: []
       }
+    }
+
+    componentWillMount(){
+        axios.get('http://localhost:8000/api/courses/')
+        .then(res => {
+            res.data.map(course => {
+                var courses = this.state.courseList;
+                courses.push(course.course_code)
+                this.setState({courseList: courses})
+            })
+        })
+    }
+
+    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+      return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
     }
 
     handleChange = (field, e) => {
@@ -27,6 +51,52 @@ class SearchCourses extends Component {
       fields[field] = e.target.value;
       console.log(field);
       this.setState({fields});
+    }
+
+    handleFilter = (field, e) => {
+      let option = e.target.value;
+
+      let filteredList = [];
+
+      if(option == "all"){
+        console.log("all");
+        filteredList = this.state.database;
+
+        this.setState({siteData: filteredList});
+
+        console.log(filteredList);
+      }
+      else if(option == "open"){
+        console.log("open");
+
+        var i;
+        for(i = 0; i < this.state.database.length; i++) {
+          if(this.state.database[i].enrolled < this.state.database[i].capacity){
+            // console.log(this.state.database[i]);
+            filteredList.push(this.state.database[i]);
+          }
+        }
+
+        this.setState({siteData: filteredList});
+
+        console.log(filteredList);
+      }
+      else{
+        console.log("closed");
+
+        var i;
+        for(i = 0; i < this.state.database.length; i++) {
+          if(this.state.database[i].enrolled >= this.state.database[i].capacity){
+            // console.log(this.state.database[i]);
+            filteredList.push(this.state.database[i]);
+          }
+        }
+
+        this.setState({siteData: filteredList});
+
+        console.log(filteredList);
+      }
+
     }
 
     render() {
@@ -47,17 +117,6 @@ class SearchCourses extends Component {
           },
         },
       }))(TableRow);
-      
-      function createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
-        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
-      }
-      
-      const rows = [
-        createData(2258, 'INOVATE', 'S17', 'DELA CRUZ, JUAN', 'TH', '12:45', '14:15', 'GK210', 45, 45),
-        createData(2259, 'INOVATE', 'S18', 'DELA CRUZ, JUAN', 'TH', '14:30', '16:00', 'GK210', 45, 40),
-        createData(2043, 'TREDTRI', 'S17', 'TORRES, MARIA', 'TH', '14:30', '16:00', 'GK301', 30, 30),
-        createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
-      ];
 
       return (
           <div>
@@ -67,7 +126,7 @@ class SearchCourses extends Component {
 
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
-                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleChange.bind(this, "courses")} />
+                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleFilter.bind(this, "courses")} courseList={this.state.courseList} />
                 </div>
 
                 <div className="filters">
@@ -75,17 +134,17 @@ class SearchCourses extends Component {
                       <span className="filterLabel">Filters:</span>
                       
                       <label className="radio-description" for="all">
-                        <input type="radio" id="all" name="filter" value="all"/>
+                        <input type="radio" id="all" name="filter" value="all" onChange={this.handleFilter.bind(this, "filter")} />
                         All Sections
                       </label>
 
                       <label className="radio-description" for="open">
-                        <input type="radio" id="open" name="filter" value="open"/>
+                        <input type="radio" id="open" name="filter" value="open" onChange={this.handleFilter.bind(this, "filter")} />
                         Open Sections
                       </label>
 
                       <label className="radio-description" for="closed">
-                        <input type="radio" id="closed" name="filter" value="closed"/>
+                        <input type="radio" id="closed" name="filter" value="closed" onChange={this.handleFilter.bind(this, "filter")} />
                         Closed Sections
                       </label>
                     </center>
@@ -108,7 +167,7 @@ class SearchCourses extends Component {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {rows.map(row => (
+                        {this.state.siteData.map(row => (
                           <StyledTableRow key={row.classNmbr}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
                             <StyledTableCell> {row.course} </StyledTableCell>

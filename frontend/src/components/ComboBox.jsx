@@ -10,14 +10,17 @@ class ComboBox extends React.Component{
             college: '',
             programList: [],
             degrees: [],
-            courseList: ['INOVATE', 'TREDTRI']
+            courseList: this.props.courseList
         }
     }
 
     componentWillReceiveProps(props){
-        this.state.degrees = props.degrees;
-        this.state.college = props.college;
-        this.changeProgramList(props)
+        console.log('loading')
+        const courseList = [];
+        props.courseList.map(course =>{
+            courseList.push(course)
+        })
+        this.setState({courseList:courseList});
     }
 
     changeProgramList(props) {
