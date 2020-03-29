@@ -3,20 +3,12 @@ import { Column, Row } from 'simple-flexbox';
 import Menu from '../components/Menu.jsx';
 import axios from 'axios';
 import ReactDOM from "react-dom";
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import ScheduleView from '../components/ScheduleView';
+import { Pagination, PaginationItem, PaginationLink, Button } from 'reactstrap';
 import '../css/Index.css'
-import SavedSchedule from '../components/SavedSchedule';
 
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import SchedViewHome from '../components/SchedViewHome';
 
+// import { Container, Row, Col } from 'reactstrap';
 
 class Index extends Component {
     constructor(props){
@@ -24,104 +16,88 @@ class Index extends Component {
     }
 
     state={
-      
+      currentPage: 0,
+      currentContent: <SchedViewHome/>,
+      generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>]
     }
-    render() {
-      const StyledTableCell = withStyles(theme => ({
-        head: {
-          backgroundColor: '#006A4E',
-          color: theme.palette.common.white,
-        },
-        body: {
-          fontSize: 14,
-        },
-      }))(TableCell);
-      
-      const StyledTableRow = withStyles(theme => ({
-        root: {
-          '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-          },
-        },
-      }))(TableRow);
-      
-      function createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
-        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
-      }
-      
-      const rows = [
-        createData(2258, 'INOVATE', 'S17', 'DELA CRUZ, JUAN', 'TH', '12:45', '14:15', 'GK210', 45, 45),
-        createData(2259, 'INOVATE', 'S18', 'DELA CRUZ, JUAN', 'TH', '14:30', '16:00', 'GK210', 45, 40),
-        createData(2043, 'TREDTRI', 'S17', 'TORRES, MARIA', 'TH', '14:30', '16:00', 'GK301', 30, 30),
-        createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
-      ];
 
+    handlePageChange = (e,index) => {
+  
+      this.setState(state =>{
+          var currentContent = state.generatedContents[index];
+          return {currentContent};
+          });
+      
+      this.setState({currentPage: index});
+      this.setState(state =>{
+          var currentPage = index;
+          return {currentPage};
+          });
+      console.log("pressed page " + index);
+      console.log(this.state.generatedContents[index]);
+  }
+
+    render() {
+      this.state.pagesCount = this.state.generatedContents.length;
+        this.state.currentContent = this.state.generatedContents[this.state.currentPage];
       return (
         <div>
           {this.props.menu()}
 
           <div>
                 <center><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
-          
+              
               <Row horizontal="center">
-               
-                <Column >
+                <Column flexShrink={1}>
                   <div class="sidemenu">
                     <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
                     <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
                   </div>
                 </Column>
 
-                <Column >
-                  <div class='savedSchedContent'>
-                    <center><SavedSchedule/></center>
-                  </div>
-                  <Row horizontal='center'>
-                    <div className="viewCourses">
-                      <TableContainer component={Paper}>
-                        <Table aria-label="customized table">
-                          <TableHead>
-                            <TableRow>
-                              <StyledTableCell> Class Number </StyledTableCell>
-                              <StyledTableCell> Course </StyledTableCell>
-                              <StyledTableCell> Section </StyledTableCell>
-                              <StyledTableCell> Faculty </StyledTableCell>
-                              <StyledTableCell> Day </StyledTableCell>
-                              <StyledTableCell> Time </StyledTableCell>
-                              <StyledTableCell> Room </StyledTableCell>
-                              <StyledTableCell> Capacity </StyledTableCell>
-                              <StyledTableCell> Enrolled </StyledTableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {rows.map(row => (
-                              <StyledTableRow key={row.classNmbr}>
-                                <StyledTableCell> {row.classNmbr} </StyledTableCell>
-                                <StyledTableCell> {row.course} </StyledTableCell>
-                                <StyledTableCell> {row.section} </StyledTableCell>
-                                <StyledTableCell> {row.faculty} </StyledTableCell>
-                                <StyledTableCell> {row.day} </StyledTableCell>
-                                <StyledTableCell> {row.startTime} - {row.endTime} </StyledTableCell>
-                                <StyledTableCell> {row.room} </StyledTableCell>
-                                <StyledTableCell align="right"> {row.capacity} </StyledTableCell>
-                                <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
-                              </StyledTableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </div>
-                  </Row>
-                </Column>
+                <div className='savedContent'>
+                  <Column flexGrow={1}>
+                    <span>{this.state.currentContent}</span>
+                  </Column>
+                </div>
 
                 <Column >
                 <div class='optionList'>
-                    <center><input type="submit" class="btn btn-success option-choices" value="EDIT" /></center>
-                    <center><input type="submit" class="btn btn-success option-choices" value="CUSTOMIZE" /></center>
-                    <center><input type="submit" class="btn btn-success option-choices" value="IMPORT" /></center>
+                    <center><Button color="success" className="option-choices">EDIT</Button></center>
+                    <center> <Button color="success" className="option-choices">CUSTOMIZE</Button></center>
+                    <center><Button color="success" className="option-choices">EXPORT</Button></center>
+                    <center><Button color="secondary" className="option-choices">DELETE</Button></center>
                   </div>
                 </Column>
+
               </Row>
+
+              <Row horizontal='center'>
+              <div className = "paginationContainer">
+                <Row horizontal='center'>
+                    <Pagination aria-label="Page navigation example">
+                        <PaginationItem disabled={this.state.currentPage <= 0}>
+                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                previous/>
+                        </PaginationItem>
+                        {[...Array(this.state.pagesCount)].map((page, i) => 
+                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                {i + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                            )}
+                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                            <PaginationLink
+                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                next
+                            />
+                            
+                            </PaginationItem>
+                    </Pagination>
+                </Row>
+              </div>
+            </Row>
            
           </div>
   

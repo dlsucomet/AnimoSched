@@ -15,6 +15,9 @@ import Paper from '@material-ui/core/Paper';
 import ComboBox from '../components/ComboBox.jsx';
 import axios from 'axios';
 
+import SearchIcon from '@material-ui/icons/Search';
+import Button from '@material-ui/core/Button';
+
 class SearchCourses extends Component {
     constructor(props){
       super(props);
@@ -127,6 +130,12 @@ class SearchCourses extends Component {
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
                   <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleFilter.bind(this, "courses")} courseList={this.state.courseList} />
+                  <Button
+                      variant="contained"
+                      color = "Primary"
+                      style={{backgroundColor: "green", color:"white"}}>
+                      <SearchIcon/>  
+                  </Button>
                 </div>
 
                 <div className="filters">
