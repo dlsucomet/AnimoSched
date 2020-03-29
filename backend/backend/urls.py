@@ -15,12 +15,14 @@ router.register(r'sections', views.SectionViewSet)
 router.register(r'degrees', views.DegreeViewSet)     
 router.register(r'preferences', views.PreferenceViewSet)     
 router.register(r'coursepriority', views.CoursePriorityViewSet)     
+router.register(r'courseoffering', views.CourseOfferingViewSet)     
 router.register(r'colleges', views.CollegeViewSet)     
 
 urlpatterns = [
     path('api/', include(router.urls)),                
     path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
     path('api/courseprioritylist/<int:pk>/', views.CoursePriorityList.as_view()),     
+    path('api/courseofferingslist/<int:pk>/', views.CourseOfferingsList.as_view()),     
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
     path('api/refresh-token/', refresh_jwt_token),

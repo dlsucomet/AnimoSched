@@ -32,6 +32,7 @@ class GenerateSchedule extends Component {
             courseList: [],
             currentPage: 0,
             currentContent: "",
+            currentCourse: "",
             generatedContents: [],
             // generatedContents : ['Hello', 'There', 'Josh'],
             // currentContent: ['Hello'],
@@ -150,27 +151,34 @@ class GenerateSchedule extends Component {
     }
 
     handleAutoCompleteChange = (e, val) => {
-        const newCourseList = [];
+        this.setState({currentCourse: val});
+    }
 
-        if(val != undefined){
-            this.state.courseList.map(course => {
-                if(course.id != val.id){
-                    console.log(course.course_code)
-                    newCourseList.push(course)
+    handleAutoCompletePress = (e) => {
+        const val = this.state.currentCourse;
+        if(e.key === 'Enter'){
+            const newCourseList = [];
+
+            if(val != undefined){
+                this.state.courseList.map(course => {
+                    if(course.id != val.id){
+                        console.log(course.course_code)
+                        newCourseList.push(course)
+                    }
+                })
+                this.setState({courseList:newCourseList})
+                if(val.course_code != undefined && val.course_code.trim() != ''){
+                    this.state.id = this.state.id + 1;
+                    const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
+                    console.log(newCourse)
+                    this.setState(state =>{
+                        const highCourses = state.highCourses.concat(newCourse);
+                        return{highCourses};
+                    });
+                    console.log(this.state.highCourses)
                 }
-            })
-            this.setState({courseList:newCourseList})
-            if(val.course_code != undefined && val.course_code.trim() != ''){
-                this.state.id = this.state.id + 1;
-                const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
-                console.log(newCourse)
-                this.setState(state =>{
-                    const highCourses = state.highCourses.concat(newCourse);
-                    return{highCourses};
-                });
-                console.log(this.state.highCourses)
+                console.log(e.target)
             }
-            console.log(e.target)
         }
     }
     
@@ -460,8 +468,10 @@ class GenerateSchedule extends Component {
                                     options={this.state.courseList}
                                     getOptionLabel={option => option.course_code}
                                     style={{ width: 200 }}
+                                    filterSelectedOptions
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}
+                                    onKeyPress={this.handleAutoCompletePress}
                                     />
                                 </div>
                             </Row>
@@ -469,7 +479,7 @@ class GenerateSchedule extends Component {
                                 <Row vertical = 'center'>
                                     <Column flexGrow={1} horizontal = 'center'>
                                         <h3 className='priortyTitle'>Highest Priority</h3>
-                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriorty} handleCourseDelete={this.handleCourseDelete}/>
+                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriority} handleCourseDelete={this.handleCourseDelete}/>
 
                                     </Column>
                                     <Column flexGrow={1} horizontal = 'center'>

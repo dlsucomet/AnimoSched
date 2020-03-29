@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
-from .serializers import CustomRegisterSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
-from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section
+from .serializers import CustomRegisterSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
+from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering
 from .satsolver import solve
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -47,6 +47,10 @@ class PreferenceViewSet(viewsets.ModelViewSet):
   serializer_class = PreferenceSerializer 
   queryset = Preference.objects.all()              
 
+class CourseOfferingViewSet(viewsets.ModelViewSet):       
+  serializer_class = CourseOfferingSerializer 
+  queryset = CourseOffering.objects.all()              
+
 class PreferenceList(APIView):
     def get(self, request, pk, format=None):
         preferences = Preference.objects.filter(user=pk).filter(course_priority=None)
@@ -57,6 +61,12 @@ class CoursePriorityList(APIView):
     def get(self, request, pk, format=None):
         preferences = Preference.objects.filter(user=pk).exclude(course_priority=None)
         serializer = PreferenceSerializer(preferences, many=True)
+        return Response(serializer.data)
+
+class CourseOfferingsList(APIView):
+    def get(self, request, pk, format=None):
+        offerings = CourseOffering.objects.filter(course=pk)
+        serializer = CourseOfferingSerializer(offerings, many=True)
         return Response(serializer.data)
 
 

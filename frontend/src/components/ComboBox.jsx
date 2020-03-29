@@ -17,22 +17,27 @@ class ComboBox extends React.Component{
     componentWillReceiveProps(props){
         console.log('loading')
         const courseList = [];
-        props.courseList.map(course =>{
-            courseList.push(course)
-        })
+        if(props.courseList != undefined){
+            props.courseList.map(course =>{
+                courseList.push(course)
+            })
+        }
         this.setState({courseList:courseList});
+        this.changeProgramList(props);
     }
 
     changeProgramList(props) {
 
         var updatedProgramList = [];
         
-        props.degrees.map(degree => {
-            if(String(props.college) == String(degree.college)){
-                const program = {'id':degree.id, 'name':degree.degree_name};
-                updatedProgramList = updatedProgramList.concat(program);
-            }
-        })
+        if(props.degrees != undefined){
+            props.degrees.map(degree => {
+                if(String(props.college) == String(degree.college)){
+                    const program = {'id':degree.id, 'name':degree.degree_name};
+                    updatedProgramList = updatedProgramList.concat(program);
+                }
+            })
+        }
 
         this.state.programList = updatedProgramList;
 
