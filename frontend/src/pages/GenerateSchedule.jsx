@@ -7,9 +7,12 @@ import '../css/GenerateSchedule.css';
 import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
 import ReactDOM from "react-dom";
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import SearchIcon from '@material-ui/icons/Search';
+import Button from '@material-ui/core/Button';
 
 
 class GenerateSchedule extends Component {
@@ -462,6 +465,12 @@ class GenerateSchedule extends Component {
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}
                                     />
+                                     <Button
+                                        variant="contained"
+                                        color = "Primary"
+                                        style={{backgroundColor: "green", color:"white"}}>
+                                        <SearchIcon/>  
+                                    </Button>
                                 </div>
                             </Row>
                             <div className={"DnDContainer"}>

@@ -3,13 +3,12 @@ import { Column, Row } from 'simple-flexbox';
 import Menu from '../components/Menu.jsx';
 import axios from 'axios';
 import ReactDOM from "react-dom";
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import ScheduleView from '../components/ScheduleView';
+import { Pagination, PaginationItem, PaginationLink, Button } from 'reactstrap';
 import '../css/Index.css'
 
 import SchedViewHome from '../components/SchedViewHome';
 
-
+// import { Container, Row, Col } from 'reactstrap';
 
 class Index extends Component {
     constructor(props){
@@ -47,9 +46,8 @@ class Index extends Component {
 
           <div>
                 <center><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
-          
+              
               <Row horizontal="center">
-               
                 <Column flexShrink={1}>
                   <div class="sidemenu">
                     <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
@@ -65,9 +63,10 @@ class Index extends Component {
 
                 <Column >
                 <div class='optionList'>
-                    <center><input type="submit" class="btn btn-success option-choices" value="EDIT" /></center>
-                    <center><input type="submit" class="btn btn-success option-choices" value="CUSTOMIZE" /></center>
-                    <center><input type="submit" class="btn btn-success option-choices" value="EXPORT" /></center>
+                    <center><Button color="success" className="option-choices">EDIT</Button></center>
+                    <center> <Button color="success" className="option-choices">CUSTOMIZE</Button></center>
+                    <center><Button color="success" className="option-choices">EXPORT</Button></center>
+                    <center><Button color="secondary" className="option-choices">DELETE</Button></center>
                   </div>
                 </Column>
 

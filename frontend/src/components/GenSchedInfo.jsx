@@ -4,7 +4,11 @@ import ScheduleView from '../components/ScheduleView';
 import ClassesTable from '../components/ClassesTable';
 import BoxInfo from '../components/BoxInfo';
 import { Button } from 'reactstrap';
+
 import EditableLabel from 'react-inline-editing';
+
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
 
 class GenSchedInfo extends Component {
     constructor(props){
@@ -25,7 +29,9 @@ class GenSchedInfo extends Component {
     }
 
     _handleFocus=(text)=> {
+        this.setState({boolEdit: true});
         console.log('Focused with text: ' + text);
+        
     }
 
     _handleFocusOut=(text)=> {
@@ -34,6 +40,8 @@ class GenSchedInfo extends Component {
         console.log("this is props");
         console.log(this.props);
         this.props.updateSchedTitle(text);
+        this.setState({boolEdit: false});
+
     }
 
     handleKeyPress = (event) => {
@@ -43,6 +51,15 @@ class GenSchedInfo extends Component {
             console.log("isEditing: " + this.state.boolEdit);
 
         }
+    }
+
+    editButtonPress = () =>{
+        if(this.state.boolEdit === false){
+            this.setState({boolEdit: true});
+        }else if(this.state.boolEdit === true){
+            this.setState({boolEdit: false});
+        }
+        
     }
 
     render() { 
@@ -64,7 +81,11 @@ class GenSchedInfo extends Component {
                             onFocusOut={this._handleFocusOut}
                             onChange={this.handleKeyPress}
                             isEditing = {this.state.boolEdit}
-                            />
+                            /> 
+
+                            {this.state.boolEdit ? <DoneIcon fontSize="medium" style={{color: "green", marginLeft: "10px"}} onClick={this.editButtonPress}/> : <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/>}
+                            {/* <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/> */}
+                            {/* <DoneIcon fontSize="medium" style={{color: "green"}} /> */}
                         </Row>
                    
                         <ScheduleView content={this.state.scheduleContent}/>

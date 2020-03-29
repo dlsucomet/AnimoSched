@@ -1,6 +1,6 @@
-.sidemenu {
+.sidemenuHome {
     height: 600px;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
     padding-top: 10%;
 
     width: 13%;
@@ -11,10 +11,10 @@
 
     /* margin: 7px; */
 
-    background-color: white;
+    /* background-color: white; */
 }
 
-.sidemenu-main {
+.sidemenu-mainHome {
     margin-left: 23%;
     display: block;
 }
@@ -49,8 +49,8 @@
 .option-choices {
     margin-top: 3%;
     margin-bottom: 3%;
-    width: 150px;
-    
+    width: 160px;
+    border-radius: 20px; 
    
 }
 
@@ -76,4 +76,20 @@
 .page-item.active .page-link {
     background-color: #5b8c85;
     border-color: #5b8c85;
+}
+
+.gridLayoutContainer {
+    position: absolute;
+    /* width: 100%; */
+    height: 100%;
+    overflow-y: auto;
+    /* border: 1px solid #aaa; */
+    background-color: #B8D4CD;
+    top: 61%;
+    transform: translate(-50%, -50%);
+    left: 48%;
+}
+
+.savedContent{
+    height: 1200px;
 }

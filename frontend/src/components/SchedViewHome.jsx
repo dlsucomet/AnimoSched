@@ -60,7 +60,7 @@ class SchedViewHome extends Component {
                 <Column flexShrink={1}>
                   <div class='savedSchedContent' style={{block: "display"}}>
                     <center><SavedSchedule/></center>
-                  </div>
+                  
                   <Row horizontal='center' flexShrink={1}>
                     <div className="viewCoursesHome">
                       <TableContainer component={Paper}>
@@ -97,6 +97,7 @@ class SchedViewHome extends Component {
                       </TableContainer>
                     </div>
                   </Row>
+                </div>
                 </Column>
             </Row>
            
