@@ -62,7 +62,7 @@ class SchedViewHome extends Component {
                     <center><SavedSchedule/></center>
                   </div>
                   <Row horizontal='center' flexShrink={1}>
-                    <div className="viewCourses">
+                    <div className="viewCoursesHome">
                       <TableContainer component={Paper}>
                         <Table aria-label="customized table">
                           <TableHead>
