@@ -305,6 +305,10 @@ class GenerateSchedule extends Component {
 
     }
 
+    handleAddCoursePriority = () => {
+        console.log("Generated");
+    }
+
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
@@ -478,7 +482,8 @@ class GenerateSchedule extends Component {
                                      <Button
                                         variant="contained"
                                         color = "Primary"
-                                        style={{backgroundColor: "green", color:"white"}}>
+                                        style={{backgroundColor: "green", color:"white"}}
+                                        onClick={this.handleAddCoursePriority}>
                                         <SearchIcon/>  
                                     </Button>
                                 </div>

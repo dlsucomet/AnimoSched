@@ -30,7 +30,8 @@ class SearchCourses extends Component {
           this.createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
         ],
         siteData: [],
-        courseList: []
+        courseList: [],
+        selectedCourses: []
       }
     }
 
@@ -39,7 +40,7 @@ class SearchCourses extends Component {
         .then(res => {
             res.data.map(course => {
                 var courses = this.state.courseList;
-                courses.push(course.course_code)
+                courses.push({'id':course.id, 'course_code':course.course_code})
                 this.setState({courseList: courses})
             })
         })
@@ -102,6 +103,25 @@ class SearchCourses extends Component {
 
     }
 
+    searchCourses = () =>{
+      this.setState({siteData: []})
+      this.state.selectedCourses.map(course =>{
+        axios.get('http://localhost:8000/api/courseofferingslist/'+course.id+'/')
+        .then(res => {
+            res.data.map(offering => {
+                const newSiteData = this.state.siteData;
+                offering = this.createData(offering.id, offering.course, offering.section, offering.faculty, offering.day, offering.timeslot, offering.timeslot, offering.room, offering.max_enrolled, offering.current_enrolled);
+                newSiteData.push(offering)
+                this.setState({siteData: newSiteData})
+            })
+        })
+      })
+    }
+
+    handleSearch = (e, val) =>{
+      this.setState({selectedCourses: val})
+    }
+
     render() {
       const StyledTableCell = withStyles(theme => ({
         head: {
@@ -129,11 +149,13 @@ class SearchCourses extends Component {
 
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
-                  <ComboBox page="search" value={this.state.fields["courses"]} onChange={this.handleFilter.bind(this, "courses")} courseList={this.state.courseList} />
+                  <ComboBox page="search" onChange={this.handleSearch} courseList={this.state.courseList} />
                   <Button
                       variant="contained"
                       color = "Primary"
-                      style={{backgroundColor: "green", color:"white"}}>
+                      style={{backgroundColor: "green", color:"white"}}
+                      onClick={this.searchCourses}
+                      >
                       <SearchIcon/>  
                   </Button>
                 </div>

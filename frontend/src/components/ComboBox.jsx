@@ -66,9 +66,11 @@ class ComboBox extends React.Component{
                   multiple
                   id="tags-outlined"
                   options={this.state.courseList}
+                  getOptionLabel={option => option.course_code}
                 //   style={{ width: 500 }}
                   filterSelectedOptions
                   renderInput={params => <TextField {...params} label="Search Courses" variant="outlined" />}
+                  onChange={this.props.onChange}
                 />
             );
         }
