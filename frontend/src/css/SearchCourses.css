@@ -33,3 +33,7 @@
     width: 50%;
     margin: 0 auto;
 }
+
+.MuiAutocomplete-root{
+ width: -webkit-fill-available;
+}

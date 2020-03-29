@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
 
@@ -506,13 +507,17 @@ class GenerateSchedule extends Component {
                                     onKeyPress={this.handleAutoCompletePress}
                                     value={this.state.AutoCompleteValue}
                                     />
-                                     <Button
+                                     
+                                </div>
+                                <div>
+                                    <Button
                                         variant="contained"
                                         color = "Primary"
-                                        style={{backgroundColor: "green", color:"white"}}
+                                        style={{backgroundColor: "green", color:"white", height:"56px", marginLeft:"5px"}}
                                         onClick={this.handleAddCoursePriority}>
-                                        <SearchIcon/>  
+                                        <AddIcon fontSize="medium"/>  
                                     </Button>
+
                                 </div>
                             </Row>
                             <div className={"DnDContainer"}>
