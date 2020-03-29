@@ -20,6 +20,7 @@ router.register(r'colleges', views.CollegeViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),                
+    path('api/solve/', views.CallSolver),
     path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
     path('api/courseprioritylist/<int:pk>/', views.CoursePriorityList.as_view()),     
     path('api/courseofferingslist/<int:pk>/', views.CourseOfferingsList.as_view()),     

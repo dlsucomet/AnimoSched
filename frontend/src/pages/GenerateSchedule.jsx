@@ -45,6 +45,7 @@ class GenerateSchedule extends Component {
             savedScheds: [],
             saveButtonLabel: "Save Schedule",
             saveButtonStyle: {margin: "30px"},
+            AutoCompleteValue: [],
             //temp
             id:0
         
@@ -160,6 +161,8 @@ class GenerateSchedule extends Component {
     handleAutoCompletePress = (e) => {
         const val = this.state.currentCourse;
         if(e.key === 'Enter'){
+            this.setState({AutoCompleteValue: []})
+            const val = this.state.currentCourse;
             const newCourseList = [];
 
             if(val != undefined){
@@ -180,11 +183,36 @@ class GenerateSchedule extends Component {
                     });
                     console.log(this.state.highCourses)
                 }
-                console.log(e.target)
-            }
+            }       
         }
     }
-    
+
+    handleAddCoursePriority = () => {
+        console.log(this.state.AutoCompleteValue)
+        this.setState({AutoCompleteValue: []})
+        const val = this.state.currentCourse;
+        const newCourseList = [];
+
+        if(val != undefined){
+            this.state.courseList.map(course => {
+                if(course.id != val.id){
+                    console.log(course.course_code)
+                    newCourseList.push(course)
+                }
+            })
+            this.setState({courseList:newCourseList})
+            if(val.course_code != undefined && val.course_code.trim() != ''){
+                this.state.id = this.state.id + 1;
+                const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
+                console.log(newCourse)
+                this.setState(state =>{
+                    const highCourses = state.highCourses.concat(newCourse);
+                    return{highCourses};
+                });
+                console.log(this.state.highCourses)
+            }
+        }       
+    }
 
     handlePageChange = (e,index) => {
   
@@ -305,9 +333,7 @@ class GenerateSchedule extends Component {
 
     }
 
-    handleAddCoursePriority = () => {
-        console.log("Generated");
-    }
+
 
     render() { 
         let search_field = this.props.search_field;
@@ -478,6 +504,7 @@ class GenerateSchedule extends Component {
                                     renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
                                     onChange={this.handleAutoCompleteChange}
                                     onKeyPress={this.handleAutoCompletePress}
+                                    value={this.state.AutoCompleteValue}
                                     />
                                      <Button
                                         variant="contained"

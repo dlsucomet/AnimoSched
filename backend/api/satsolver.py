@@ -1,17 +1,35 @@
 import datetime
 from z3 import *
+from .models import CourseOffering
 
 
-def solve():
+def addHardConstraints(z3, courses):
+    for c in courses:
+        offerings = CourseOffering.objects.filter(course=c)
+        for o in offerings:
+            for o2 in offerings:
+                if(o != o2):
+                    a = Bool(str(o.id))
+                    b = Not(Bool(str(o2.id)))
+                    z3.add_soft(Implies(a,b))
+
+def addSoftConstraints(z3, courses):
+    for c in courses:
+        offerings = CourseOffering.objects.filter(course=c)
+        for o in offerings:
+            z3.add_soft(Bool(str(o.id)))
+
+def solve(courses):
     z3 = Optimize()
-    a = Bool('a')
-    b = Bool('b')
-    c = Bool('c')
-    z3.add_soft(a)
-    z3.add_soft(b)
-    z3.add_soft(c)
-    print(z3.check())
-    print(z3.model())
+
+    addHardConstraints(z3, courses)
+    addSoftConstraints(z3, courses)
+
+    z3.check()
+    offerings = []
+    for o in z3.model():
+        offerings.push(CourseOffering.objects.filter(id=o))
+    
 
 
 

@@ -71,5 +71,6 @@ class CourseOfferingsList(APIView):
 
 
 def CallSolver(request):
-  solve()
-  return HttpResponse()
+  courses = [1, 2]
+  offerings = CourseOffering.objects.all()
+  return HttpResponse(solve(courses))
