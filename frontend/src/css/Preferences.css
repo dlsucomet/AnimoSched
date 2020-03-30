@@ -114,3 +114,41 @@ body {
 .submit-form {
     margin-top: 3%;
 }
+
+.professor-preference{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.section-preference{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.days-preference{
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.timeContainer{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.building-preference{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.preference-category-content{
+    margin-top: 10px;
+    margin-bottom: 40px;
+
+}
+
+.workload-field{
+    width: 200px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
