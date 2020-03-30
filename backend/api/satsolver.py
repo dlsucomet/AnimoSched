@@ -21,14 +21,18 @@ def addSoftConstraints(z3, courses):
 
 def solve(courses):
     z3 = Optimize()
+    print(courses)
 
     addHardConstraints(z3, courses)
     addSoftConstraints(z3, courses)
 
     z3.check()
-    offerings = []
-    for o in z3.model():
-        offerings.push(CourseOffering.objects.filter(id=o))
+    model = z3.model()
+    offerings = CourseOffering.objects.none() 
+    for o in model:
+        if(model[o]):
+            offerings = offerings | CourseOffering.objects.filter(id=int(o.name()))
+    return offerings
     
 
 

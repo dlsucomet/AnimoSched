@@ -14,7 +14,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
-
 class GenerateSchedule extends Component {
 
     constructor(props) {
@@ -243,17 +242,124 @@ class GenerateSchedule extends Component {
         }
     }
 
-    createSchedInfo = (arrayGenSched)=>{
-        var generatedContents = arrayGenSched.map((item, index) =>
-                <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
-        );
+    createTimeslot = (day, hour, minute) =>{
+        if(day == 'M'){
+            return new Date(2018, 5, 25, hour, minute);
+        }else if(day == 'T'){
+            return new Date(2018, 5, 26, hour, minute);
+        }else if(day == 'W'){
+            return new Date(2018, 5, 27, hour, minute);
+        }else if(day == 'H'){
+            return new Date(2018, 5, 28, hour, minute);
+        }else if(day == 'F'){
+            return new Date(2018, 5, 29, hour, minute);
+        }else if(day == 'S'){
+            return new Date(2018, 5, 30, hour, minute);
+        }
+    }
 
-        this.setState({generatedContents});
-        var currentContent = generatedContents[0];
-        this.setState({currentContent});
-        this.setState({hideGenContent: false});
+    createSchedInfo = () =>{
+        console.log('MAKING THE SCHEDULE')
+        axios.post('http://localhost:8000/api/generateschedule/',
+        {
+            highCourses: this.state.highCourses, 
+            lowCourses: this.state.lowCourses
+        })
+        .then(res => {
+            const scheduleContent = [];
+            var count = 0;
+            res.data.map(offering =>{
+                var startTime = offering.timeslot_begin.split(':');
+                var endTime= offering.timeslot_end.split(':');
+                const newContent = {
+                    id: count,
+                    title: offering.course,
+                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                    location: "",
+                    source: "",
+                    description: ""
+                }
+                scheduleContent.push(newContent);
+                count += 1;
+            })
+            const schedules = [
+                {
+                    id: 1,
+                    title: "Schedule 1",
+                    scheduleContent: scheduleContent,
+                    tableContent: [
+                        {
+                            id: 1,
+                            classNmbr: 1230, 
+                            course: "LASARE2", 
+                            section:"S17", 
+                            faculty: "DELA CRUZ, JUAN", 
+                            day:"MAR 30", 
+                            startTime:"08:00",
+                            endTime : "15:30",
+                            room: "G310"
+                        },
+                        // {
+                        //     id: 2,
+                        //     classNmbr: 1405, 
+                        //     course: "IPERSEF", 
+                        //     section:"S15", 
+                        //     faculty: "DEL TORRE, MARIA", 
+                        //     day:"APR 05", 
+                        //     startTime:"08:00",
+                        //     endTime : "15:30",
+                        //     room: "G304"
+                        // }
+                    ],
+                    prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
+                    conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
+                },
+                {
+                    id: 2,
+                    title: "Schedule 1",
+                    scheduleContent: scheduleContent,
+                    tableContent: [
+                        {
+                            id: 1,
+                            classNmbr: 1230, 
+                            course: "LASARE2", 
+                            section:"S17", 
+                            faculty: "DELA CRUZ, JUAN", 
+                            day:"MAR 30", 
+                            startTime:"08:00",
+                            endTime : "15:30",
+                            room: "G310"
+                        },
+                        // {
+                        //     id: 2,
+                        //     classNmbr: 1405, 
+                        //     course: "IPERSEF", 
+                        //     section:"S15", 
+                        //     faculty: "DEL TORRE, MARIA", 
+                        //     day:"APR 05", 
+                        //     startTime:"08:00",
+                        //     endTime : "15:30",
+                        //     room: "G304"
+                        // }
+                    ],
+                    prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
+                    conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
+                }
+            ]              
+            var generatedContents = schedules.map((item, index) =>
+                    <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
+            );
 
-        this.handleScrollToGen();
+            var currentContent = generatedContents[0];
+            this.setState({currentContent});
+            this.setState({generatedContents});
+            this.setState({hideGenContent: false});
+
+            this.setState({});
+            this.handleScrollToGen();
+        })
+
 
     }
 
@@ -342,141 +448,6 @@ class GenerateSchedule extends Component {
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
         const style = this.state.hideGenContent ? {display: "none"} :  {margin: "40px"};
 
-        var jsonSample =[
-            {
-                id: 1,
-                title: "Schedule 1",
-                scheduleContent: [
-                    {
-                      title: "HUMAART",
-                      startDate: new Date(2018, 5, 25, 9, 30),
-                      endDate: new Date(2018, 5, 25, 11, 30),
-                      id: 0,
-                      location: "Room 1",
-                      source: "G302",
-                      description: "Professor lulu"
-                    },
-                    {
-                      title: "KASPIL2",
-                      startDate: new Date(2018, 5, 25, 12, 0),
-                      endDate: new Date(2018, 5, 25, 13, 0),
-                      id: 1,
-                      location: "Room 1"
-                    },
-                    {
-                      title: "TREDTRI",
-                      startDate: new Date(2018, 5, 25, 14, 30),
-                      endDate: new Date(2018, 5, 25, 15, 30),
-                      id: 2,
-                      location: "Room 2"
-                    }
-                ],
-                tableContent: [
-                    {
-                        id: 1,
-                        classNmbr: 1230, 
-                        course: "LASARE2", 
-                        section:"S17", 
-                        faculty: "DELA CRUZ, JUAN", 
-                        day:"MAR 30", 
-                        startTime:"08:00",
-                        endTime : "15:30",
-                        room: "G310"
-                    },
-                    {
-                        id: 2,
-                        classNmbr: 1405, 
-                        course: "IPERSEF", 
-                        section:"S15", 
-                        faculty: "DEL TORRE, MARIA", 
-                        day:"APR 05", 
-                        startTime:"08:00",
-                        endTime : "15:30",
-                        room: "G304"
-                    }
-        
-                ],
-                
-                prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
-                
-                conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
-
-            },
-
-            {
-                id: 2,
-                title: "Schedule 2",
-                scheduleContent: [
-                    {
-                        title: "CSSERVM",
-                        startDate: new Date(2018, 5, 26, 10, 0),
-                        endDate: new Date(2018, 5, 26, 11, 0),
-                        id: 3,
-                        location: "Room 2"
-                      },
-                      {
-                        title: "INOVATE",
-                        startDate: new Date(2018, 5, 26, 12, 0),
-                        endDate: new Date(2018, 5, 26, 13, 35),
-                        id: 4,
-                        location: "Room 2"
-                      },
-                      {
-                          title: "HUMAART",
-                          startDate: new Date(2018, 5, 27, 9, 30),
-                          endDate: new Date(2018, 5, 27, 11, 30),
-                          id: 0,
-                          location: "Room 1"
-                          },
-                          {
-                          title: "KASPIL2",
-                          startDate: new Date(2018, 5, 27, 12, 0),
-                          endDate: new Date(2018, 5, 27, 13, 0),
-                          id: 1,
-                          location: "Room 1"
-                          },
-                          {
-                          title: "TREDTRI",
-                          startDate: new Date(2018, 5, 27, 14, 30),
-                          endDate: new Date(2018, 5, 27, 15, 30),
-                          id: 2,
-                          location: "Room 2"
-                      },
-                ],
-                tableContent: [
-                    {
-                        id: 1, 
-                        classNmbr: 2394,
-                        course: "LASARE1", 
-                        section:"S16", 
-                        faculty: "DOE, JOHN", 
-                        day:"JAN 30", 
-                        startTime:"09:00",
-                        endTime : "16:30",
-                        room: "G301"
-                    },
-                    {
-                        id: 2, 
-                        classNmbr: 3048,
-                        course: "LASARE2", 
-                        section:"S17", 
-                        faculty: "THO, JANE", 
-                        day:"APR 12", 
-                        startTime:"11:00",
-                        endTime : "15:30",
-                        room: "G306"
-                    }
-        
-                ],
-                
-                prefContent: ['Match Preferences','> Earliest Start Time: 11:00 AM', '> Earliest End Time: 4:00 PM', ' ', 'Unmatched Preferences', '> Professor Fritz Flowers not included'],
-                
-                conflictsContent: ['> CSSERVM conflicts with with ClassB2', '> TREDTRI conflicts with with ClassC3'],    
-
-            }
-
-        ]
-
         return (
             <div>
                 {this.props.menu()}
@@ -529,7 +500,7 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
-                                <button className="schedButton" onClick={()=>this.createSchedInfo(jsonSample)} style={{marginTop: "20px"}}>Generate Schedule</button>
+                                <button className="schedButton" onClick={()=>this.createSchedInfo()} style={{marginTop: "20px"}}>Generate Schedule</button>
                             </Row>
                         </div>
 

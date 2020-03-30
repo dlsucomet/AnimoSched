@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
 from .serializers import CustomRegisterSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
-from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering
+from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room
 from .satsolver import solve
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -67,10 +67,48 @@ class CourseOfferingsList(APIView):
     def get(self, request, pk, format=None):
         offerings = CourseOffering.objects.filter(course=pk)
         serializer = CourseOfferingSerializer(offerings, many=True)
+        for d in serializer.data:
+          faculty = Faculty.objects.get(id=d['faculty'])
+          d['faculty'] = faculty.last_name + ', ' + faculty.first_name 
+          d['course'] = Course.objects.get(id=d['course']).course_code
+          d['section'] = Section.objects.get(id=d['section']).section_code  
+          d['day'] = Day.objects.get(id=d['day']).day_code  
+          d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
+          d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
+          d['room'] = Room.objects.get(id=d['room']).room_type 
         return Response(serializer.data)
 
 
-def CallSolver(request):
-  courses = [1, 2]
-  offerings = CourseOffering.objects.all()
-  return HttpResponse(solve(courses))
+class SchedulesList(APIView):
+  def get(self, request, format=None):
+    courses = [1, 2]
+    offerings = solve(courses)
+    serializer = CourseOfferingSerializer(offerings, many=True)
+    for d in serializer.data:
+      faculty = Faculty.objects.get(id=d['faculty'])
+      d['faculty'] = faculty.last_name + ', ' + faculty.first_name 
+      d['course'] = Course.objects.get(id=d['course']).course_code
+      d['section'] = Section.objects.get(id=d['section']).section_code  
+      d['day'] = Day.objects.get(id=d['day']).day_code  
+      d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
+      d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
+      d['room'] = Room.objects.get(id=d['room']).room_type
+    return Response(serializer.data)
+  
+  def post(self, request, format=None):
+    courses = []
+    for c in request.data['highCourses']:
+      courses.append(c['course_id'])
+
+    offerings = solve(courses)
+    serializer = CourseOfferingSerializer(offerings, many=True)
+    for d in serializer.data:
+      faculty = Faculty.objects.get(id=d['faculty'])
+      d['faculty'] = faculty.last_name + ', ' + faculty.first_name 
+      d['course'] = Course.objects.get(id=d['course']).course_code
+      d['section'] = Section.objects.get(id=d['section']).section_code  
+      d['day'] = Day.objects.get(id=d['day']).day_code  
+      d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
+      d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
+      d['room'] = Room.objects.get(id=d['room']).room_type
+    return Response(serializer.data)
