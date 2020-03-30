@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import '../css/Preferences.css';
 import axios from 'axios';
 
+import ComboBox from '../components/ComboBox.jsx';
+
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 class Preferences extends Component {
     constructor(props){
         super(props)
@@ -10,7 +15,19 @@ class Preferences extends Component {
             latest_class_time: null,
             break_length: null,
             min_courses: 0, 
-            max_courses: 0, 
+            max_courses: 0,
+            selectedProfs: [],
+            profList: [
+                {
+                    id:1,
+                    profName:'FLOWERS, FRITZ',}, 
+                {
+                    id: 2,
+                    profName: 'UY, BOB'}, 
+                {
+                    id:3,
+                    profName:'LOVELACE, ADA'}],
+
         }
     }
     
@@ -45,6 +62,29 @@ class Preferences extends Component {
                 }
             })
         });
+    }
+
+    handleProfPrefChange = (e, val) =>{
+        this.setState({selectedProfs: val})
+      }
+    
+
+
+    handleAutoCompletePress = (e) => {
+        const val = this.state.selectedProfs;
+        if(e.key === 'Enter'){
+            const newProfList = [];
+
+            if(val != undefined){
+                this.state.profList.map(prof => {
+                    if(prof.id != val.id){
+                        newProfList.push(prof)
+                    }
+                })
+                this.setState({profList:newProfList})
+                console.log(e.target)
+            }
+        }
     }
 
     render() {
@@ -123,9 +163,21 @@ class Preferences extends Component {
                         <h2>Class Details</h2>
                         
                         <div className="preference-category-content">
-                            Faculty Preferences
-                            <br/>
-                            <input/><br/><br/>
+                            {/* Faculty Preferences
+                            <br/> */}
+                            {/* <input/><br/><br/> */}
+                            <Autocomplete
+                                multiple
+                                id="tags-outlined"
+                                options={this.state.profList}
+                                getOptionLabel={option => option.profName}
+                                //   style={{ width: 500 }}
+                                filterSelectedOptions
+                                renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
+                                onChange={this.handleProfPrefChange}
+                                onKeyPress={this.handleAutoCompletePress}
+                                />
+                            
                             {/* change this input to multiple entries in one box */}
 
                             Building Preferences

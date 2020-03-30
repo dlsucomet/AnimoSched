@@ -149,15 +149,18 @@ class SearchCourses extends Component {
 
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
-                  <ComboBox page="search" onChange={this.handleSearch} courseList={this.state.courseList} />
-                  <Button
-                      variant="contained"
-                      color = "Primary"
-                      style={{backgroundColor: "green", color:"white"}}
-                      onClick={this.searchCourses}
-                      >
-                      <SearchIcon/>  
-                  </Button>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                      <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} courseList={this.state.courseList} />
+                      <Button
+                            variant="contained"
+                            color = "Primary"
+                            style={{backgroundColor: "green", color:"white"}}
+                            onClick={this.searchCourses}>
+                            <SearchIcon/>  
+                      </Button>
+                    </div>
+                    
+                  
                 </div>
 
                 <div className="filters">
