@@ -2,10 +2,22 @@ import React, { Component } from "react";
 import '../css/Preferences.css';
 import axios from 'axios';
 
-import ComboBox from '../components/ComboBox.jsx';
-
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import { DateTimePicker, KeyboardDateTimePicker, MuiPickersUtilsProvider, KeyboardTimePicker } from "@material-ui/pickers";
+// import { IconButton, InputAdornment } from "@material-ui/core";
+// import DateFnsUtils from '@date-io/date-fns';
+
+import { green } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import Grid from '@material-ui/core/Grid';
+
+import MenuItem from '@material-ui/core/MenuItem';
 
 class Preferences extends Component {
     constructor(props){
@@ -27,8 +39,142 @@ class Preferences extends Component {
                 {
                     id:3,
                     profName:'LOVELACE, ADA'}],
+            selectedSections: [],
+            sectionList: [{
+                id:1,
+                sectionName:'S',}, 
+            {
+                id: 2,
+                sectionName: 'A'}, 
+            {
+                id:3,
+                sectionName:'C'}, 
+            {
+                id:4,
+                sectionName:'EB'}],
+            
+            selectedDate: "",
+
+            daysList:[
+                {   id: 1,
+                    day: "Monday",
+                    checked: true,},
+                { 
+                    id: 2,
+                    day: "Tuesday",
+                    checked: true,},
+                {
+                    id: 3,
+                    day: "Wednesday",
+                    checked: true,},
+                {
+                    id: 4, 
+                    day: "Thursday",
+                    checked: true,},
+                {
+                    id: 5,
+                    day: "Friday",
+                    checked: false,},
+                { 
+                    id: 6,
+                    day: "Saturday",
+                    checked: false,},
+
+                ],
+            
+            buildingList:[{   
+                id: 1,
+                building: "St. La Salle Hall",
+                checked: false,},
+            { 
+                id: 2,
+                building: "Enrique Yuchengco Hall",
+                checked: false,},
+            {
+                id: 3,
+                building: "St. Joseph Hall",
+                checked: false,},
+            {
+                id: 4, 
+                building: "Velasco Hall",
+                checked: false,},
+            {
+                id: 5,
+                building: "St. Miguel Hall",
+                checked: false,},
+            { 
+                id: 6,
+                building: "St. Mutien Marie Hall",
+                checked: false,},
+            {
+                id: 7,
+                building: "Gokongwei Hall",
+                checked: false,},
+            { 
+                id: 8,
+                building: "Br. Andrew Gonzales Hall",
+                checked: false,},],
+
+            
+            breakOptions: [
+                {
+                    option: "None",
+                    value: 0
+                },
+                {
+                    option: "15 Minutes",
+                    value: 15
+                },
+                {
+                    option: "30 Minutes",
+                    value: 30
+                },
+                {
+                    option: "45 Minutes",
+                    value: 45
+                },
+                {
+                    option: "1 Hour",
+                    value: 60
+                },
+                {
+                    option: "2 Hour",
+                    value: 120
+                },
+                {
+                    option: "3 Hour",
+                    value: 180
+                },
+                {
+                    option: "4 Hour",
+                    value: 240
+                },
+                {
+                    option: "5 Hour",
+                    value: 300
+                },
+                {
+                    option: "6 Hour",
+                    value: 360
+                },
+                {
+                    option: "7 Hour",
+                    value: 420
+                },
+                {
+                    option: "8 Hour",
+                    value: 480
+                },
+                {
+                    option: "9 Hour",
+                    value: 540
+                },
+            ]
+
 
         }
+
+        
     }
     
     componentWillMount(){
@@ -70,7 +216,7 @@ class Preferences extends Component {
     
 
 
-    handleAutoCompletePress = (e) => {
+    handleProfPrefPress = (e) => {
         const val = this.state.selectedProfs;
         if(e.key === 'Enter'){
             const newProfList = [];
@@ -87,7 +233,70 @@ class Preferences extends Component {
         }
     }
 
+    handleSectionPrefChange = (e, val) =>{
+        this.setState({selectedProfs: val})
+      }
+    
+
+
+    handleSectionPrefPress = (e) => {
+        const val = this.state.selectedProfs;
+        if(e.key === 'Enter'){
+            const newProfList = [];
+
+            if(val != undefined){
+                this.state.profList.map(prof => {
+                    if(prof.id != val.id){
+                        newProfList.push(prof)
+                    }
+                })
+                this.setState({profList:newProfList})
+                console.log(e.target)
+            }
+        }
+    }
+
+    handleDateChange = (date) => {
+        this.setState({selectedDate: date})
+      };
+    
+    handleDayChange = (event) => {
+        var newDayList = [...this.state.daysList];
+        newDayList.map(value=>{
+            if(value.id === Number(event.target.id)){
+                value.checked = event.target.checked;
+            }
+        })
+        this.setState({daysList: newDayList});
+        // this.setState({[event.target.name]: event.target.checked });
+    };
+
+    handleBreakChange = (event) =>{
+        this.setState({break_length: event.target.value})
+    }
+    handleBuildingChange = (event) => {
+        var newBuildingList = [...this.state.buildingList];
+        newBuildingList.map(value=>{
+            if(value.id === Number(event.target.id)){
+                value.checked = event.target.checked;
+            }
+        })
+        this.setState({buildingList: newBuildingList});
+        // this.setState({[event.target.name]: event.target.checked });
+    };
+    
+    
     render() {
+        // const GreenCheckbox = withStyles({
+        //     root: {
+        //         color: green[400],
+        //         '&$checked': {
+        //         color: green[600],
+        //         },
+        //     },
+        //     checked: {},
+        //     })((props) => <Checkbox color="default" {...props} />);
+
       return (
         <div>
             <div class="prefIntro">
@@ -111,37 +320,109 @@ class Preferences extends Component {
                         <h2>Time Preferences</h2>
                         
                         <div className="preference-category-content">
-                            Earliest Time
+                            {/* Earliest Time
+                            <br/> */}
+                            
+                            {/* <input value={this.state.earliest_class_time} type="time"/><br/><br/> */}
+                            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+                            
+                                <KeyboardTimePicker
+                                    margin="normal"
+                                    id="time-picker"
+                                    label="Earliest Time"
+                                    value={this.selectedDate}
+                                    onChange={this.handleDateChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change time',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider> */}
+                                
+                                {/* <KeyboardDateTimePicker
+                                    value={this.selectedDate}
+                                    onChange={this.handleDateChange}
+                                    label="Earliest Time"
+                                    // onError={console.log}
+                                    // minDate={new Date("2020-01-01T00:00")}
+                                    format="hh:mm a"
+                                /> */}
+                            
+                            <form className={"timeContainer"} noValidate>
+                                <TextField
+                                    id="time"
+                                    label="Earliest Time"
+                                    type="time"
+                                    defaultValue="07:30"
+                                    className={"earliestTimeField"}
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    inputProps={{
+                                    step: 300, // 5 min
+                                    }}
+                                />
+                                </form>
+                           
+
+                            {/* Latest Time
                             <br/>
-                            <input value={this.state.earliest_class_time} type="time"/><br/><br/>
+                            <input value={this.state.latest_class_time} type="time"/><br/><br/> */}
+                            
+                            <form className={"timeContainer"} noValidate>
+                                <TextField
+                                    id="time"
+                                    label="Latest Time"
+                                    type="time"
+                                    defaultValue="21:00"
+                                    className={"lastestTimeField"}
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    inputProps={{
+                                    step: 300, // 5 min
+                                    }}
+                                />
+                                </form>
+                            
+                            <div className={'days-preference'}>
+                                Preferred Days
+                                <FormGroup row>
+                                    <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id = '1' color="primary"/>}label="M" />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id = '2' color="primary"/>}label="T" />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id = '3' color="primary"/>}label="W" />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id = '4' color="primary"/>}label="H" />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id = '5' color="primary"/>}label="F" />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id = '6' color="primary"/>}label="S" />
+                                </FormGroup>
+                            </div>
 
-                            Latest Time
+                            {/* Break Length */}
                             <br/>
-                            <input value={this.state.latest_class_time} type="time"/><br/><br/>
-
-                            Preferred Days
-                            <br/>
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> M </label><br/>
-
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> T </label><br/>
-
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> W </label><br/>
-
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> H </label><br/>
-
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> F </label><br/>
-
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> S </label><br/><br/>
-
-                            Break Length
-                            <br/>
-                            <input value={this.state.break_length} /><br/><br/>
+                            {/* <input value={this.state.break_length} /><br/><br/> */}
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Break Length"
+                                onChange={this.handleBreakChange}
+                                value = {this.state.break_length}
+                                helperText="Please select your preferred break length"
+                                variant="outlined"
+                                rows = "5"
+                                >
+                                
+                                {this.state.breakOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                    {option.option}
+                                    </MenuItem>
+                                        ))}
+                                </TextField>
                         </div>
                     </div>
 
@@ -149,13 +430,42 @@ class Preferences extends Component {
                         <h2>Workload Preferences</h2>
                         
                         <div className="preference-category-content">
-                            Minimum Courses per Day
+                            {/* Minimum Courses per Day */}
                             <br/>
-                            <input value={this.state.min_courses}/><br/><br/>
-
-                            Maximum Courses per Day
+                            {/* <input type = "number" /><br/><br/> */}
+                            <TextField
+                                className={'workload-field'}
+                                id="min-courses"
+                                label="Minimum Courses per Day"
+                                type="number"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                placeholder="0"
+                                size="medium"
+                                inputProps={{
+                                    min: 0,
+                                    max: 10,
+                                }}
+                            />
                             <br/>
-                            <input value={this.state.max_courses}/><br/><br/>
+                            {/* Maximum Courses per Day */}
+                            <br/>
+                            {/* <input type = "number" value={this.state.max_courses}/><br/><br/> */}
+                            <TextField
+                                className={'workload-field'}
+                                id="max-courses"
+                                label="Maximum Courses per Day"
+                                type="number"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                placeholder="0"
+                                inputProps={{
+                                    min: 0,
+                                    max: 10,
+                                }}
+                            />
                         </div>
                     </div>
 
@@ -163,26 +473,76 @@ class Preferences extends Component {
                         <h2>Class Details</h2>
                         
                         <div className="preference-category-content">
-                            {/* Faculty Preferences
-                            <br/> */}
-                            {/* <input/><br/><br/> */}
-                            <Autocomplete
-                                multiple
-                                id="tags-outlined"
-                                options={this.state.profList}
-                                getOptionLabel={option => option.profName}
-                                //   style={{ width: 500 }}
-                                filterSelectedOptions
-                                renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
-                                onChange={this.handleProfPrefChange}
-                                onKeyPress={this.handleAutoCompletePress}
-                                />
-                            
-                            {/* change this input to multiple entries in one box */}
+                            <div className="professor-preference">
+                                <Autocomplete
+                                    multiple
+                                    id="tags-outlined"
+                                    options={this.state.profList}
+                                    getOptionLabel={option => option.profName}
+                                    //   style={{ width: 500 }}
+                                    filterSelectedOptions
+                                    renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
+                                    onChange={this.handleProfPrefChange}
+                                    onKeyPress={this.handleProfPrefress}
+                                    />
+                            </div>
 
-                            Building Preferences
-                            <br/>
-                            <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
+
+                           
+                            <div className={'building-preference'}>
+                                Building Preferences
+                                <br/><br/>
+                                <Grid container spacing={6}>
+                                    <Grid item xs={6}>
+
+                                    <FormGroup>
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id = '1' color="primary"/>}label={this.state.buildingList[0].building} />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id = '2' color="primary"/>}label={this.state.buildingList[1].building} />
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id = '3' color="primary"/>}label={this.state.buildingList[2].building}/>
+                                        <FormControlLabel
+                                        control = {<Checkbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id = '4' color="primary"/>}label={this.state.buildingList[3].building} />
+                                    </FormGroup>
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+                                    <FormGroup>
+                                    <FormControlLabel
+                                    control = {<Checkbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id = '5' color="primary"/>}label={this.state.buildingList[4].building}/>
+                                    <FormControlLabel
+                                    control = {<Checkbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id = '6' color="primary"/>}label={this.state.buildingList[5].building} />
+                                        <FormControlLabel
+                                    control = {<Checkbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id = '7' color="primary"/>}label={this.state.buildingList[6].building}/>
+                                    <FormControlLabel
+                                    control = {<Checkbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id = '8' color="primary"/>}label={this.state.buildingList[7].building} />
+                                    </FormGroup>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                           
+                            {/* <FormGroup>
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id = '1' color="primary"/>}label={this.state.buildingList[0].building} />
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id = '2' color="primary"/>}label={this.state.buildingList[1].building} />
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id = '3' color="primary"/>}label={this.state.buildingList[2].building}/>
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id = '4' color="primary"/>}label={this.state.buildingList[3].building} />
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id = '5' color="primary"/>}label={this.state.buildingList[4].building}/>
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id = '6' color="primary"/>}label={this.state.buildingList[5].building} />
+                                    <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id = '7' color="primary"/>}label={this.state.buildingList[6].building}/>
+                                <FormControlLabel
+                                control = {<Checkbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id = '8' color="primary"/>}label={this.state.buildingList[7].building} />
+                                        
+                            </FormGroup> */}
+                                
+                            {/* <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
                             <label className="checkbox-description" for=""> St. La Salle Hall </label><br/>
 
                             <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
@@ -204,12 +564,21 @@ class Preferences extends Component {
                             <label className="checkbox-description" for=""> Gokongwei Hall </label><br/>
 
                             <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
-                            <label className="checkbox-description" for=""> Br. Andrew Gonzales Hall </label><br/><br/>
+                            <label className="checkbox-description" for=""> Br. Andrew Gonzales Hall </label><br/><br/> */}
 
-                            Section Preferences
-                            <br/>
-                            <input/><br/><br/>
-                            {/* change this input to multiple entries in one box */}
+                            <div className="section-preference">
+                                <Autocomplete
+                                    multiple
+                                    id="tags-outlined"
+                                    options={this.state.sectionList}
+                                    getOptionLabel={option => option.sectionName}
+                                    //   style={{ width: 500 }}
+                                    filterSelectedOptions
+                                    renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
+                                    onChange={this.handleSectionPrefChange}
+                                    onKeyPress={this.handleSectionPrefress}
+                                    />
+                            </div>
                         </div>
                     </div>
 
