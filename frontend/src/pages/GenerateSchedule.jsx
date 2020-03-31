@@ -46,6 +46,8 @@ class GenerateSchedule extends Component {
             saveButtonLabel: "Save Schedule",
             saveButtonStyle: {margin: "30px"},
             AutoCompleteValue: [],
+            schedules: [],
+     
             //temp
             id:0
         
@@ -259,8 +261,20 @@ class GenerateSchedule extends Component {
         }
     }
 
+    setSchedInfo = () => {
+        var generatedContents = this.state.schedules.map((item, index) =>
+            <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
+        );
+        this.setState({currentPage: 0})
+        this.setState({generatedContents});
+        this.setState({hideGenContent: false});
+        this.setState({pagesCount: generatedContents.length});
+        this.setState({currentContent: generatedContents[0]})
+
+        this.handleScrollToGen();
+    }
+
     createSchedInfo = () =>{
-        console.log('MAKING THE SCHEDULE')
         axios.post('http://localhost:8000/api/generateschedule/',
         {
             highCourses: this.state.highCourses, 
@@ -289,80 +303,17 @@ class GenerateSchedule extends Component {
                     id: 1,
                     title: "Schedule 1",
                     scheduleContent: scheduleContent,
-                    tableContent: [
-                        {
-                            id: 1,
-                            classNmbr: 1230, 
-                            course: "LASARE2", 
-                            section:"S17", 
-                            faculty: "DELA CRUZ, JUAN", 
-                            day:"MAR 30", 
-                            startTime:"08:00",
-                            endTime : "15:30",
-                            room: "G310"
-                        },
-                        // {
-                        //     id: 2,
-                        //     classNmbr: 1405, 
-                        //     course: "IPERSEF", 
-                        //     section:"S15", 
-                        //     faculty: "DEL TORRE, MARIA", 
-                        //     day:"APR 05", 
-                        //     startTime:"08:00",
-                        //     endTime : "15:30",
-                        //     room: "G304"
-                        // }
-                    ],
-                    prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
-                    conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
-                },
-                {
-                    id: 2,
-                    title: "Schedule 1",
-                    scheduleContent: scheduleContent,
-                    tableContent: [
-                        {
-                            id: 1,
-                            classNmbr: 1230, 
-                            course: "LASARE2", 
-                            section:"S17", 
-                            faculty: "DELA CRUZ, JUAN", 
-                            day:"MAR 30", 
-                            startTime:"08:00",
-                            endTime : "15:30",
-                            room: "G310"
-                        },
-                        // {
-                        //     id: 2,
-                        //     classNmbr: 1405, 
-                        //     course: "IPERSEF", 
-                        //     section:"S15", 
-                        //     faculty: "DEL TORRE, MARIA", 
-                        //     day:"APR 05", 
-                        //     startTime:"08:00",
-                        //     endTime : "15:30",
-                        //     room: "G304"
-                        // }
-                    ],
-                    prefContent: ['Match Preferences','> Earliest Start Time: 9:15 AM', '> earliest End Time: 2:15 PM', '> Break Preferences: 15 minutes', ' ', 'Unmatched Preferences', '> Professor Bob Uy not included'],
-                    conflictsContent: ['> HUMALIT conflicts with with ClassB2', '> KASPIL conflicts with with ClassC3'],    
+                    tableContent: [],
+                    prefContent: [],
+                    conflictsContent: [],
                 }
             ]              
-            var generatedContents = schedules.map((item, index) =>
-                    <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
-            );
-
-            var currentContent = generatedContents[0];
-            this.setState({currentContent});
-            this.setState({generatedContents});
-            this.setState({hideGenContent: false});
-
-            this.setState({});
-            this.handleScrollToGen();
+            this.setState({schedules});
+            this.setSchedInfo();
         })
-
-
     }
+
+
 
     updateHighPriority(courseUpdate){
         var newArray = [];
@@ -445,9 +396,6 @@ class GenerateSchedule extends Component {
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
-        this.state.pagesCount = this.state.generatedContents.length;
-        this.state.currentContent = this.state.generatedContents[this.state.currentPage];
-        const style = this.state.hideGenContent ? {display: "none"} :  {margin: "40px"};
 
         return (
             <div>
@@ -509,7 +457,7 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
 
-                        <div className = "genSchedInfoContainer" style={style} ref={this.generatedRef} >
+                        <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}} ref={this.generatedRef} >
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">

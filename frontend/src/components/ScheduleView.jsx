@@ -41,10 +41,17 @@ const formatDayScaleDate = (date, options) => {
 class ScheduleView extends Component {
     constructor(props){
       super(props);
-      
+      console.log(props)
+      this.state = {  
+        classes: props.content
+      }
     }
-    state = {  
-      classes: this.props.content
+
+    componentWillReceiveProps(props){
+      console.log(props)
+      this.setState({
+        classes: props.content
+      });
     }
     render() { 
         return (

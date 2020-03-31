@@ -16,16 +16,27 @@ class GenSchedInfo extends Component {
         this._handleFocus = this._handleFocus.bind(this);
         this._handleFocusOut = this._handleFocusOut.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.state = {  
+            scheduleContent: props.scheduleContent,
+            tableContent: props.tableContent,
+            conflictsContent: props.conflictsContent,
+            prefContent: props.prefContent,
+            id: props.id,
+            schedTitle: props.titleName,
+            boolEdit: false,
+        }
     }
-    state = {  
-        scheduleContent: this.props.scheduleContent,
-        tableContent: this.props.tableContent,
-        conflictsContent: this.props.conflictsContent,
-        prefContent: this.props.prefContent,
-        id: this.props.id,
-        schedTitle: this.props.titleName,
-        boolEdit: false,
-        
+
+    componentWillReceiveProps(props){
+        this.setState({
+            scheduleContent: props.scheduleContent,
+            tableContent: props.tableContent,
+            conflictsContent: props.conflictsContent,
+            prefContent: props.prefContent,
+            id: props.id,
+            schedTitle: props.titleName,
+        });
+
     }
 
     _handleFocus=(text)=> {
