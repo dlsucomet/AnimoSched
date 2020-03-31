@@ -460,24 +460,25 @@ class Preferences extends Component {
 
                             {/* Break Length */}
                             <br/>
-                            {/* <input value={this.state.break_length} /><br/><br/> */}
-                            <TextField
-                                id="outlined-select-currency"
-                                select
-                                label="Break Length"
-                                onChange={this.handleBreakChange}
-                                value = {this.state.break_length == null ? 15 : this.state.break_length}
-                                helperText="Please select your preferred break length"
-                                variant="outlined"
-                                rows = "5"
-                                >
-                                
-                                {this.state.breakOptions.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.option}
-                                    </MenuItem>
-                                        ))}
+                            <div className={'break-preference'}>
+                                <TextField
+                                    id="outlined-select-break"
+                                    select
+                                    label="Break Length"
+                                    onChange={this.handleBreakChange}
+                                    value = {this.state.break_length == null ? 15 : this.state.break_length}
+                                    helperText="Please select your preferred break length"
+                                    variant="outlined"
+                                    >
+                                    
+                                    {this.state.breakOptions.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                        {option.option}
+                                        </MenuItem>
+                                            ))}
                                 </TextField>
+                            </div>
+                            
                         </div>
                     </div>
 
