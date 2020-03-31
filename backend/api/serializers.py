@@ -61,7 +61,7 @@ class CourseOfferingSerializer(serializers.ModelSerializer):
 class CoursePrioritySerializer(serializers.ModelSerializer):
   class Meta:
     model = CoursePriority 
-    fields = ('id', 'courses', 'priority')
+    fields = ('id', 'courses', 'priority', 'user')
 
 class CourseScheduleSerializer(serializers.ModelSerializer):
   class Meta:
@@ -71,7 +71,7 @@ class CourseScheduleSerializer(serializers.ModelSerializer):
 class PreferenceSerializer(serializers.ModelSerializer):
   class Meta:
     model = Preference
-    fields = ('id', 'earliest_class_time', 'latest_class_time', 'preferred_days', 'break_length', 'min_courses', 'max_courses', 'preferred_faculty', 'preferred_buildings', 'preferred_sections', 'course_priority', 'user')
+    fields = ('id', 'earliest_class_time', 'latest_class_time', 'preferred_days', 'break_length', 'min_courses', 'max_courses', 'preferred_faculty', 'preferred_buildings', 'preferred_sections', 'user')
 
 class UserSerializer(serializers.ModelSerializer):
   class Meta:

@@ -53,14 +53,18 @@ class CourseOfferingViewSet(viewsets.ModelViewSet):
 
 class PreferenceList(APIView):
     def get(self, request, pk, format=None):
-        preferences = Preference.objects.filter(user=pk).filter(course_priority=None)
+        preferences = Preference.objects.filter(user=pk)
         serializer = PreferenceSerializer(preferences, many=True)
         return Response(serializer.data)
 
+    def delete(self, request, pk, format=None):
+        preferences = Preference.objects.filter(user=pk).filter(course_priority=None).delete()
+        return Response(None)
+
 class CoursePriorityList(APIView):
     def get(self, request, pk, format=None):
-        preferences = Preference.objects.filter(user=pk).exclude(course_priority=None)
-        serializer = PreferenceSerializer(preferences, many=True)
+        coursePriority = CoursePriority.objects.filter(user=pk)
+        serializer = CoursePrioritySerializer(coursePriority, many=True)
         return Response(serializer.data)
 
 class CourseOfferingsList(APIView):
@@ -80,27 +84,16 @@ class CourseOfferingsList(APIView):
 
 
 class SchedulesList(APIView):
-  def get(self, request, format=None):
-    courses = [1, 2]
-    offerings = solve(courses)
-    serializer = CourseOfferingSerializer(offerings, many=True)
-    for d in serializer.data:
-      faculty = Faculty.objects.get(id=d['faculty'])
-      d['faculty'] = faculty.last_name + ', ' + faculty.first_name 
-      d['course'] = Course.objects.get(id=d['course']).course_code
-      d['section'] = Section.objects.get(id=d['section']).section_code  
-      d['day'] = Day.objects.get(id=d['day']).day_code  
-      d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
-      d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
-      d['room'] = Room.objects.get(id=d['room']).room_type
-    return Response(serializer.data)
-  
   def post(self, request, format=None):
-    courses = []
+    highCourses = []
+    lowCourses = []
+    preferences = {} 
     for c in request.data['highCourses']:
-      courses.append(c['course_id'])
+      highCourses.append(c['course_id'])
+    for c in request.data['lowCourses']:
+      lowCourses.append(c['course_id'])
 
-    offerings = solve(courses)
+    offerings = solve(highCourses, lowCourses, preferences)
     serializer = CourseOfferingSerializer(offerings, many=True)
     for d in serializer.data:
       faculty = Faculty.objects.get(id=d['faculty'])

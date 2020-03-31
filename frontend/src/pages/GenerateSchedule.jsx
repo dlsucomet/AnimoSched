@@ -11,7 +11,6 @@ import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
@@ -47,6 +46,7 @@ class GenerateSchedule extends Component {
             saveButtonStyle: {margin: "30px"},
             AutoCompleteValue: [],
             schedules: [],
+            dataReceived: false,
      
             //temp
             id:0
@@ -57,11 +57,10 @@ class GenerateSchedule extends Component {
 
     }
 
-    componentWillMount(){
+    componentDidMount(){
         const id = localStorage.getItem('user_id');
         axios.get('http://localhost:8000/api/courses/')
         .then(res => {
-            console.log(res)
             res.data.map(course => {
                 var courses = this.state.courseList;
                 var addCourse = {'id':course.id,'course_code':course.course_code}
@@ -70,33 +69,29 @@ class GenerateSchedule extends Component {
             })
             axios.get('http://localhost:8000/api/courseprioritylist/'+id+'/')
             .then(res => {
-                res.data.map(preference =>{
-                    console.log(preference)
-                    if(preference.course_priority != null){
-                        axios.get('http://localhost:8000/api/coursepriority/'+preference.course_priority+'/')
-                        .then(res => {
-                            const id = res.data.id
-                            const priority = res.data.priority
-                            var newCourseList = []
-                            this.state.courseList.map(course =>{
-                                if(course.id == res.data.courses){
-                                    if(priority){
-                                        var courses = this.state.highCourses;
-                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
-                                        this.setState({highCourses: courses})
-                                    }else{
-                                        var courses = this.state.lowCourses;
-                                        courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
-                                        this.setState({lowCourses: courses})
-                                    }
-                                }else{
-                                    newCourseList.push(course)
-                                }
-                            })
-                            this.setState({courseList:newCourseList})
-                        })
-                    }
+                res.data.map(coursepriority => {
+                    const id = coursepriority.id
+                    const priority = coursepriority.priority
+                    var newCourseList = []
+                    this.state.courseList.map(course =>{
+                        if(course.id == res.data.courses){
+                            if(priority){
+                                var courses = this.state.highCourses;
+                                courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
+                                this.setState({highCourses: courses})
+                            }else{
+                                var courses = this.state.lowCourses;
+                                courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
+                                this.setState({lowCourses: courses})
+                            }
+                        }else{
+                            newCourseList.push(course)
+                        }
+
+                    })
+                    this.setState({courseList:newCourseList})
                 })
+                this.setState({dataReceived: true})
             });
         })
     }
@@ -122,10 +117,6 @@ class GenerateSchedule extends Component {
         // this.setState({courseList:newCourseList})
     }
 
-    componentDidMount(){
-        // this.handleScrollToGen();
-    }
-
     componentDidUpdate(prevProp, prevState){
         if(prevState.generatedContents !== this.state.generatedContents){
             this.handleScrollToGen();
@@ -145,14 +136,11 @@ class GenerateSchedule extends Component {
     //     }
     // }
     handleCourseDelete = (addCourse) => {
-        console.log(addCourse)
-        console.log(this.state.courseList)
         const newCourseList = [];
         this.state.courseList.map(course => {
             newCourseList.push(course)
         })
         newCourseList.push({'id':addCourse.course_id, 'course_code':addCourse.data})
-        console.log(newCourseList)
         this.setState({courseList:newCourseList})
     }
 
@@ -170,7 +158,6 @@ class GenerateSchedule extends Component {
             if(val != undefined){
                 this.state.courseList.map(course => {
                     if(course.id != val.id){
-                        console.log(course.course_code)
                         newCourseList.push(course)
                     }
                 })
@@ -178,40 +165,52 @@ class GenerateSchedule extends Component {
                 if(val.course_code != undefined && val.course_code.trim() != ''){
                     this.state.id = this.state.id + 1;
                     const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
-                    console.log(newCourse)
                     this.setState(state =>{
                         const highCourses = state.highCourses.concat(newCourse);
                         return{highCourses};
                     });
-                    console.log(this.state.highCourses)
                 }
             }       
         }
     }
 
     handleAddCoursePriority = () => {
-        console.log(this.state.AutoCompleteValue)
         this.setState({AutoCompleteValue: []})
         const val = this.state.currentCourse;
+        this.setState({currentCourse: undefined})
         const newCourseList = [];
 
         if(val != undefined){
             this.state.courseList.map(course => {
                 if(course.id != val.id){
-                    console.log(course.course_code)
                     newCourseList.push(course)
                 }
             })
             this.setState({courseList:newCourseList})
             if(val.course_code != undefined && val.course_code.trim() != ''){
-                this.state.id = this.state.id + 1;
-                const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
-                console.log(newCourse)
-                this.setState(state =>{
-                    const highCourses = state.highCourses.concat(newCourse);
-                    return{highCourses};
+                const id = localStorage.getItem('user_id');
+                const data = {
+                    courses: val.id,
+                    priority: true,
+                    user: id
+                }
+                axios.post('http://localhost:8000/api/coursepriority/', data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                    const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':val.course_code}; 
+                    this.setState(state =>{
+                        const highCourses = state.highCourses.concat(newCourse);
+                        return{highCourses};
+                    });
+                })
+                .catch(error => {
+                    console.log(error.response)
                 });
-                console.log(this.state.highCourses)
             }
         }       
     }
@@ -228,13 +227,10 @@ class GenerateSchedule extends Component {
             var currentPage = index;
             return {currentPage};
             });
-        console.log("pressed page " + index);
-        console.log(this.state.generatedContents[index]);
 
         this.handleScrollToGen();
 
         if(this.state.savedScheds.includes(this.state.generatedContents[index])){
-            console.log("Saved Scheds: " + this.state.savedScheds.length);
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
@@ -308,6 +304,7 @@ class GenerateSchedule extends Component {
                     conflictsContent: [],
                 }
             ]              
+            console.log(schedules)
             this.setState({schedules});
             this.setSchedInfo();
         })
@@ -348,7 +345,6 @@ class GenerateSchedule extends Component {
         this.setState({generatedContents: newArray});
     }
     handleScrollToGen=()=>{
-        console.log("I'm scrollinggg");
         window.scrollTo({
             top: this.generatedRef.current.offsetTop,
             behavior: "smooth"
@@ -361,7 +357,6 @@ class GenerateSchedule extends Component {
             
             var newArray = [...this.state.savedScheds];
             var index = newArray.filter(value => value.id == this.state.currentContent.id); 
-            console.log("SavedSched Index: " + index);
             if(index !== -1){
                 newArray.splice(index, 1);
               }
@@ -376,7 +371,6 @@ class GenerateSchedule extends Component {
 
             this.setState(state=>{
                 const savedScheds = state.savedScheds.concat(state.currentContent);
-                console.log("No. of Saved Scheds: " + savedScheds.length);
                 return {savedScheds};
                 
             })
@@ -400,6 +394,7 @@ class GenerateSchedule extends Component {
         return (
             <div>
                 {this.props.menu()}
+                {this.state.dataReceived ?
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>
                         <div className="courseInputContainer">
@@ -490,6 +485,7 @@ class GenerateSchedule extends Component {
                         </div>
                     </Column>
                 </div>
+                : null }
             </div>  
         );
     }

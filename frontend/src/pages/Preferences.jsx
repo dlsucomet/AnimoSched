@@ -23,35 +23,17 @@ class Preferences extends Component {
     constructor(props){
         super(props)
         this.state = {
-            earliest_class_time: null,
-            latest_class_time: null,
-            break_length: null,
+            earliest_class_time: '07:30',
+            latest_class_time: '21:00',
+            break_length: 15,
             min_courses: 0, 
-            max_courses: 0,
+            max_courses: 10,
+            dataReceived: false,
+            dataSaved: false,
             selectedProfs: [],
-            profList: [
-                {
-                    id:1,
-                    profName:'FLOWERS, FRITZ',}, 
-                {
-                    id: 2,
-                    profName: 'UY, BOB'}, 
-                {
-                    id:3,
-                    profName:'LOVELACE, ADA'}],
+            profList: [],
             selectedSections: [],
-            sectionList: [{
-                id:1,
-                sectionName:'S',}, 
-            {
-                id: 2,
-                sectionName: 'A'}, 
-            {
-                id:3,
-                sectionName:'C'}, 
-            {
-                id:4,
-                sectionName:'EB'}],
+            sectionList: [],
             
             selectedDate: "",
 
@@ -74,11 +56,11 @@ class Preferences extends Component {
                 {
                     id: 5,
                     day: "Friday",
-                    checked: false,},
+                    checked: true,},
                 { 
                     id: 6,
                     day: "Saturday",
-                    checked: false,},
+                    checked: true,},
 
                 ],
             
@@ -177,42 +159,66 @@ class Preferences extends Component {
         
     }
     
-    componentWillMount(){
+    componentDidMount(){
         const id = localStorage.getItem('user_id');
-        axios.get('http://localhost:8000/api/preferencelist/'+id+'/')
+        axios.get('http://localhost:8000/api/faculty/')
         .then(res => {
-            res.data.map(preference =>{
-                console.log(preference)
-                if(preference.earliest_class_time != null){
-                    this.setState({earliest_class_time:preference.earliest_class_time})
-                }
-                if(preference.latest_class_time != null){
-                    this.setState({latest_class_time:preference.latest_class_time})
-                }
-                if(preference.preferred_days != null){
-                }
-                if(preference.break_length != null){
-                    this.setState({break_length:preference.break_length})
-                }
-                if(preference.min_courses != null){
-                    this.setState({min_courses:preference.min_courses})
-                }
-                if(preference.max_courses != null){
-                    this.setState({max_courses:preference.max_courses})
-                }
-                if(preference.preferred_faculty != null){
-                }
-                if(preference.preferred_buildings != null){
-                }
-                if(preference.preferred_sections != null){
-                }
+            res.data.map(faculty => {
+                var prof = {'id': faculty.id, 'profName': faculty.first_name+', '+faculty.last_name} 
+                this.setState(state =>{
+                    const profList = state.profList;
+                    profList.push(prof);
+                    return {profList}
+                })
             })
         });
+        axios.get('http://localhost:8000/api/sections/')
+        .then(res => {
+            res.data.map(section => {
+                var section = {'id': section.id, 'sectionName': section.section_code} 
+                this.setState(state =>{
+                    const sectionList = state.sectionList;
+                    sectionList.push(section);
+                    return {sectionList}
+                })
+            })
+        });
+            axios.get('http://localhost:8000/api/preferencelist/'+id+'/')
+            .then(res => {
+                console.log(res.data)
+                res.data.map(preference =>{
+                    console.log(preference)
+                    if(preference.earliest_class_time != null){
+                        this.setState({earliest_class_time:preference.earliest_class_time})
+                    }
+                    if(preference.latest_class_time != null){
+                        this.setState({latest_class_time:preference.latest_class_time})
+                    }
+                    if(preference.preferred_days != null){
+                    }
+                    if(preference.break_length != null){
+                        this.setState({break_length:preference.break_length})
+                    }
+                    if(preference.min_courses != null){
+                        this.setState({min_courses:preference.min_courses})
+                    }
+                    if(preference.max_courses != null){
+                        this.setState({max_courses:preference.max_courses})
+                    }
+                    if(preference.preferred_faculty != null){
+                    }
+                    if(preference.preferred_buildings != null){
+                    }
+                    if(preference.preferred_sections != null){
+                    }
+                })
+                this.setState({dataReceived: true})
+            });
     }
 
     handleProfPrefChange = (e, val) =>{
         this.setState({selectedProfs: val})
-      }
+    }
     
 
 
@@ -284,7 +290,49 @@ class Preferences extends Component {
         this.setState({buildingList: newBuildingList});
         // this.setState({[event.target.name]: event.target.checked });
     };
-    
+
+    handleEarliestChange = (event) => {
+        this.setState({earliest_class_time: event.target.value})
+        console.log(this.state)
+    }
+
+    handleLatestChange = (event) => {
+        this.setState({latest_class_time: event.target.value})
+    }
+
+    handleMinCourseChange = (event) => {
+        this.setState({min_courses: event.target.value})
+    }
+
+    handleMaxCourseChange = (event) => {
+        this.setState({max_courses: event.target.value})
+    }
+
+    handleSave = () => {
+        this.setState({dataSaved: true})
+        const id = localStorage.getItem('user_id');
+        axios.delete('http://localhost:8000/api/preferencelist/'+id+'/')
+        .then(res => {
+            const data = {
+                earliest_class_time: this.state.earliest_class_time,
+                latest_class_time: this.state.latest_class_time,
+                // break_length: '0'+this.state.break_length.toString(),
+                min_courses: this.state.min_courses,
+                max_courses: this.state.max_courses,
+                user: id
+            }
+            axios.post('http://localhost:8000/api/preferences/', data,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                this.setState({dataSaved: false})
+            }).catch(err => {
+                console.log(err.response)
+            })
+        });
+    }
     
     render() {
         // const GreenCheckbox = withStyles({
@@ -310,11 +358,16 @@ class Preferences extends Component {
                 <div class="introduction">
                     <h2>Preferences</h2>
                     <p>Disclaimer: Adding your preferences will help filter out the schedules that best suits you from among the available choices. However, it cannot assure you that all your preferences will be satisfied because taking into account the courses you need is of upmost priority.</p>
-                    <center><input type="submit" class="btn btn-success change-flowchart" value="Save" /></center>
+                    {this.state.dataSaved ?
+                    <center><button onClick={this.handleSave} class="btn btn-success change-flowchart" disabled>Save</button></center>
+                    :
+                    <center><button onClick={this.handleSave} class="btn btn-success change-flowchart">Save</button></center>
+                    }
                 </div>
             </div>
 
             <div class="prefIntro-main">
+                {this.state.dataReceived ? 
                 <div className="preference-category">
                     <div className="timePreferences">
                         <h2>Time Preferences</h2>
@@ -353,8 +406,9 @@ class Preferences extends Component {
                                     id="time"
                                     label="Earliest Time"
                                     type="time"
-                                    defaultValue="07:30"
+                                    value={this.state.earliest_class_time}
                                     className={"earliestTimeField"}
+                                    onChange={this.handleEarliestChange}
                                     InputLabelProps={{
                                     shrink: true,
                                     }}
@@ -374,8 +428,9 @@ class Preferences extends Component {
                                     id="time"
                                     label="Latest Time"
                                     type="time"
-                                    defaultValue="21:00"
+                                    value={this.state.latest_class_time}
                                     className={"lastestTimeField"}
+                                    onChange={this.handleLatestChange}
                                     InputLabelProps={{
                                     shrink: true,
                                     }}
@@ -411,7 +466,7 @@ class Preferences extends Component {
                                 select
                                 label="Break Length"
                                 onChange={this.handleBreakChange}
-                                value = {this.state.break_length}
+                                value = {this.state.break_length == null ? 15 : this.state.break_length}
                                 helperText="Please select your preferred break length"
                                 variant="outlined"
                                 rows = "5"
@@ -436,7 +491,9 @@ class Preferences extends Component {
                             <TextField
                                 className={'workload-field'}
                                 id="min-courses"
+                                value={this.state.min_courses}
                                 label="Minimum Courses per Day"
+                                onChange={this.handleMinCourseChange}
                                 type="number"
                                 InputLabelProps={{
                                     shrink: true,
@@ -455,7 +512,9 @@ class Preferences extends Component {
                             <TextField
                                 className={'workload-field'}
                                 id="max-courses"
+                                value={this.state.max_courses}
                                 label="Maximum Courses per Day"
+                                onChange={this.handleMaxCourseChange}
                                 type="number"
                                 InputLabelProps={{
                                     shrink: true,
@@ -584,6 +643,7 @@ class Preferences extends Component {
 
 
                 </div>
+                : null }
             </div>
         </div>        
       );

@@ -136,15 +136,6 @@ class CourseOffering(models.Model):
         verbose_name = _('course offering')
         verbose_name_plural = _('course offerings')
 
-class CoursePriority(models.Model):
-    courses = models.ForeignKey(Course,on_delete=models.CASCADE)
-    priority = models.BooleanField()
-    timestamp = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = _('course priority')
-        verbose_name_plural = _('course priorities')
-
 class Schedule(models.Model):
     courseOfferings = models.ManyToManyField(CourseOffering)
     timestamp = models.DateTimeField(auto_now=True)
@@ -179,6 +170,16 @@ class User(AbstractBaseUser):
     def __str__(self):              
         return self.email
 
+class CoursePriority(models.Model):
+    courses = models.ForeignKey(Course,on_delete=models.CASCADE)
+    priority = models.BooleanField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('course priority')
+        verbose_name_plural = _('course priorities')
+
 class Preference(models.Model):
     earliest_class_time = models.TimeField(_('earliest class time'), null=True)
     latest_class_time = models.TimeField(_('latest class time'), null=True)
@@ -189,7 +190,7 @@ class Preference(models.Model):
     preferred_faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, null=True) 
     preferred_buildings = models.ForeignKey(Building, on_delete=models.CASCADE, null=True)
     preferred_sections = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
-    course_priority = models.ForeignKey(CoursePriority, on_delete=models.CASCADE, null=True)
+    # course_priority = models.ForeignKey(CoursePriority, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
 

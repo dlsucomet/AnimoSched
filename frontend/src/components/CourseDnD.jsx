@@ -25,7 +25,6 @@ class CourseDnD extends Component {
   }
 
 componentWillReceiveProps(props) {
-  // console.log(props)
   this.refreshList(props);
 
 }
@@ -36,7 +35,6 @@ componentDidMount(){
 
 refreshList = (props) => {
     var newItems = props.courses;
-    console.log(newItems)
     this.setState({courses:[]})
 
     for(let i = 0; i < newItems.length; i++) {

@@ -3,28 +3,49 @@ from z3 import *
 from .models import CourseOffering
 
 
-def addHardConstraints(z3, courses):
-    for c in courses:
+def addHardConstraints(z3, highCourses, lowCourses):
+    allOfferings = CourseOffering.objects.none()
+    for c in highCourses:
         offerings = CourseOffering.objects.filter(course=c)
+        allOfferings = allOfferings | offerings
         for o in offerings:
             for o2 in offerings:
-                if(o != o2):
+                if(o.section != o2.section):
                     a = Bool(str(o.id))
                     b = Not(Bool(str(o2.id)))
-                    z3.add_soft(Implies(a,b))
+                    z3.add(Implies(a,b))
+    for c in lowCourses:
+        offerings = CourseOffering.objects.filter(course=c)
+        allOfferings = allOfferings | offerings
+        for o in offerings:
+            for o2 in offerings:
+                if(o.section != o2.section):
+                    a = Bool(str(o.id))
+                    b = Not(Bool(str(o2.id)))
+                    z3.add(Implies(a,b))
+    for o in allOfferings:
+        for o2 in allOfferings:
+            if(o.section != o2.section or o.course != o2.course):
+                if(o.timeslot == o2.timeslot and o.day == o2.day):
+                    a = Bool(str(o.id))
+                    b = Not(Bool(str(o2.id)))
+                    z3.add(Implies(a,b))
 
-def addSoftConstraints(z3, courses):
-    for c in courses:
+def addSoftConstraints(z3, highCourses, lowCourses):
+    for c in highCourses:
         offerings = CourseOffering.objects.filter(course=c)
         for o in offerings:
-            z3.add_soft(Bool(str(o.id)))
+            z3.add_soft(Bool(str(o.id)), 10)
+    for c in lowCourses:
+        offerings = CourseOffering.objects.filter(course=c)
+        for o in offerings:
+            z3.add_soft(Bool(str(o.id)), 1)
 
-def solve(courses):
+def solve(highCourses, lowCourses, preferences):
     z3 = Optimize()
-    print(courses)
 
-    addHardConstraints(z3, courses)
-    addSoftConstraints(z3, courses)
+    addHardConstraints(z3, highCourses, lowCourses)
+    addSoftConstraints(z3, highCourses, lowCourses)
 
     z3.check()
     model = z3.model()
