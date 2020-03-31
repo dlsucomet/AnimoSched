@@ -6,6 +6,9 @@ import { Redirect } from "react-router-dom";
 import ComboBox from '../components/ComboBox.jsx';
 import axios from 'axios';
 
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+
 class Register extends Component {
     constructor(props){
         super(props);
@@ -176,55 +179,78 @@ class Register extends Component {
                 
                 <div id="signup-form">
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        First Name
+                        {/* First Name */}
                         <br/>
-                        <input name="firstName" placeholder="John" value={this.state.fields["firstName"]} onChange={this.handleChange.bind(this, "firstName")}/>
+                        {/* <input name="firstName" placeholder="John" value={this.state.fields["firstName"]} onChange={this.handleChange.bind(this, "firstName")}/> */}
+                        <TextField id="outlined-basic" label="First Name" variant="outlined" name="firstName" placeholder="John" value={this.state.fields["firstName"]} onChange={this.handleChange.bind(this, "firstName")}></TextField>
                         <span className="error">{this.state.errors["firstName"]}</span>
                         <br/><br/>
 
-                        Last Name
+                        {/* Last Name */}
                         <br/>
-                        <input name="lastName" placeholder="Dela Cruz" value={this.state.fields["lastName"]} onChange={this.handleChange.bind(this, "lastName")}/>
+                        <TextField id="outlined-basic" label="Last Name" variant="outlined" name="lastName" placeholder="Dela Cruz" value={this.state.fields["lastName"]} onChange={this.handleChange.bind(this, "lastName")}></TextField>
+                        {/* <input name="lastName" placeholder="Dela Cruz" value={this.state.fields["lastName"]} onChange={this.handleChange.bind(this, "lastName")}/> */}
                         <span className="error">{this.state.errors["lastName"]}</span>
                         <br/><br/>
 
-                        Email Address
+                        {/* Email Address */}
                         <br/>
-                        <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}/>
+                        <TextField id="outlined-basic" helperText="Please use your DLSU email address" label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")}></TextField>
+                        {/* <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}/> */}
                         <span className="error">{this.state.errors["email"]}</span>
                         <br/><br/>
 
-                        ID Number
+                        {/* ID Number */}
                         <br/>
-                        <input name="idNo" placeholder="11612345" onChange={this.handleChange.bind(this, "idNo")} value={this.state.fields["idNo"]}/>
+                        <TextField id="outlined-basic" label="ID Number" variant="outlined" name="idNo" placeholder="11612345" value={this.state.fields["idNo"]} onChange={this.handleChange.bind(this, "idNo")}/>
+                        {/* <input name="idNo" placeholder="11612345" onChange={this.handleChange.bind(this, "idNo")} value={this.state.fields["idNo"]}/> */}
                         <span className="error">{this.state.errors["idNo"]}</span>
                         <br/><br/>
 
-                        College
+                        {/* College */}
                         <br/>
-                        <select id="college" name="college" value={this.state.fields["college"]} onChange={this.handleChange.bind(this, "college")} >
+                        <div className="collegeField">
+                            <TextField
+                                id="outlined-select-college"
+                                select
+                                label="College"
+                                onChange={this.handleChange.bind(this, "college")}
+                                value = {this.state.fields["college"]}
+                                style={{width:"300px"}}
+                                variant="outlined">
+                                {this.state.colleges.map(college => (
+                                    <MenuItem key={college.id} value={college.id}>
+                                    {college.college_name}
+                                    </MenuItem>
+                                    
+                                ))}
+                            </TextField>
+                        </div>
+                        {/* <select id="college" name="college" value={this.state.fields["college"]} onChange={this.handleChange.bind(this, "college")} >
                             <>
                             
                             {this.state.colleges.map(college => (
                                 <option value={college.id}>{college.college_name}</option>
                             ))}
                             </>
-                        </select>
+                        </select> */}
                         <br/><br/>
 
-                        <br/>
+                        {/* <br/> */}
 
                         <ComboBox page="register" name="degree" value={this.state.fields["degree"]} onChange={this.handleAutoCompleteChange} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
-                        Password
+                        {/* Password */}
                         <br/>
-                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}/>
+                        <TextField type="password" helperText="Must be a minimum of 8 characters" id="outlined-basic" label="Password" variant="outlined" name="pass" placeholder="●●●●●●●●" value={this.state.fields["pass"]} onChange={this.handleChange.bind(this, "pass")}/>
+                        {/* <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}/> */}
                         <span className="error">{this.state.errors["pass"]}</span>
                         <br/><br/>
 
-                        Confirm Password
+                        {/* Confirm Password */}
                         <br/>
-                        <input type="password" name="passCon" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "passCon")} value={this.state.fields["passCon"]}/>
+                        <TextField type="password" helperText="Re-type your password here" id="outlined-basic" label="Confirm Password" variant="outlined" name="passCon" placeholder="●●●●●●●●" value={this.state.fields["pasCon"]} onChange={this.handleChange.bind(this, "passCon")}/>
+                        {/* <input type="password" name="passCon" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "passCon")} value={this.state.fields["passCon"]}/> */}
                         <span className="error">{this.state.errors["passCon"]}</span>
                         <br/><br/>
 
