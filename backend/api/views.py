@@ -58,7 +58,7 @@ class PreferenceList(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk, format=None):
-        preferences = Preference.objects.filter(user=pk).filter(course_priority=None).delete()
+        preferences = Preference.objects.filter(user=pk).delete()
         return Response(None)
 
 class CoursePriorityList(APIView):
@@ -66,6 +66,10 @@ class CoursePriorityList(APIView):
         coursePriority = CoursePriority.objects.filter(user=pk)
         serializer = CoursePrioritySerializer(coursePriority, many=True)
         return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        coursePriority = CoursePriority.objects.filter(id=pk).delete()
+        return Response(None)
 
 class CourseOfferingsList(APIView):
     def get(self, request, pk, format=None):

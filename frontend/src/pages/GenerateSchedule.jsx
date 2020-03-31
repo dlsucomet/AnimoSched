@@ -69,12 +69,13 @@ class GenerateSchedule extends Component {
             })
             axios.get('http://localhost:8000/api/courseprioritylist/'+id+'/')
             .then(res => {
+                console.log(res.data)
                 res.data.map(coursepriority => {
                     const id = coursepriority.id
                     const priority = coursepriority.priority
                     var newCourseList = []
                     this.state.courseList.map(course =>{
-                        if(course.id == res.data.courses){
+                        if(course.id == coursepriority.courses){
                             if(priority){
                                 var courses = this.state.highCourses;
                                 courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
@@ -91,6 +92,8 @@ class GenerateSchedule extends Component {
                     })
                     this.setState({courseList:newCourseList})
                 })
+                console.log(this.state.highCourses)
+                console.log(this.state.lowCourses)
                 this.setState({dataReceived: true})
             });
         })
@@ -136,12 +139,18 @@ class GenerateSchedule extends Component {
     //     }
     // }
     handleCourseDelete = (addCourse) => {
-        const newCourseList = [];
-        this.state.courseList.map(course => {
-            newCourseList.push(course)
+        axios.delete('http://localhost:8000/api/courseprioritylist/'+addCourse.id+'/')
+        .then(res => {
+            console.log("deleted "+addCourse.id)
+            const newCourseList = [];
+            this.state.courseList.map(course => {
+                newCourseList.push(course)
+            })
+            newCourseList.push({'id':addCourse.course_id, 'course_code':addCourse.data})
+            this.setState({courseList:newCourseList})
+        }).catch(error =>{
+            console.log(error.response)
         })
-        newCourseList.push({'id':addCourse.course_id, 'course_code':addCourse.data})
-        this.setState({courseList:newCourseList})
     }
 
     handleAutoCompleteChange = (e, val) => {
