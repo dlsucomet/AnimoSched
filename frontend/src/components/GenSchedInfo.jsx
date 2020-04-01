@@ -25,6 +25,7 @@ class GenSchedInfo extends Component {
             schedTitle: props.titleName,
             boolEdit: false,
         }
+        this.editableLabel = React.createRef();
     }
 
     componentWillReceiveProps(props){
@@ -67,11 +68,12 @@ class GenSchedInfo extends Component {
     editButtonPress = () =>{
         if(this.state.boolEdit === false){
             this.setState({boolEdit: true});
+            this.editableLabel.current.setState({isEditing: true});
         }else if(this.state.boolEdit === true){
             this.setState({boolEdit: false});
         }
-        
     }
+
 
     render() { 
  
@@ -80,7 +82,7 @@ class GenSchedInfo extends Component {
                 <Row verticle = 'center' className = "RowSchedInfoContainer">
                     <Column flexGrow={1} horizontal = 'center' >
                         <Row horizontal= 'start'>
-                            <EditableLabel text={this.state.schedTitle}
+                            <EditableLabel ref={this.editableLabel} text={this.state.schedTitle}
                             labelClassName='myLabelClass'
                             inputClassName='myInputClass'
                             inputWidth='200px'
@@ -91,7 +93,6 @@ class GenSchedInfo extends Component {
                             onFocus={this._handleFocus}
                             onFocusOut={this._handleFocusOut}
                             onChange={this.handleKeyPress}
-                            isEditing = {this.state.boolEdit}
                             /> 
 
                             {this.state.boolEdit ? <DoneIcon fontSize="medium" style={{color: "green", marginLeft: "10px"}} onClick={this.editButtonPress}/> : <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/>}
