@@ -19,10 +19,20 @@ import Grid from '@material-ui/core/Grid';
 
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+import HomeIcon from '@material-ui/icons/Home';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 class Preferences extends Component {
     constructor(props){
         super(props)
         this.state = {
+            savedPrefBar: false,
             earliest_class_time: '07:30',
             latest_class_time: '21:00',
             break_length: 15,
@@ -219,8 +229,6 @@ class Preferences extends Component {
     handleProfPrefChange = (e, val) =>{
         this.setState({selectedProfs: val})
     }
-    
-
 
     handleProfPrefPress = (e) => {
         const val = this.state.selectedProfs;
@@ -334,6 +342,18 @@ class Preferences extends Component {
         }).catch(err => {
             console.log(err.response)
         });
+
+        this.setState({savedPrefBar: true});
+        console.log(this.state.savedPrefBar);
+
+    }
+
+    handleCloseSaveBar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({savedPrefBar: false});
     }
     
     render() {
@@ -366,6 +386,11 @@ class Preferences extends Component {
                     <center><button onClick={this.handleSave} class="btn btn-success change-flowchart">Save</button></center>
                     }
                 </div>
+                <Snackbar open={this.state.savedPrefBar} autoHideDuration={4000} onClose={this.handleCloseSaveBar}>
+                    <Alert onClose={this.handleCloseSaveBar} severity="success">
+                    Your preferences have been successfully saved!
+                    </Alert>
+                </Snackbar>
             </div>
 
             <div class="prefIntro-main">

@@ -3,13 +3,70 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import CheckIcon from '@material-ui/icons/Check';
+import SaveIcon from '@material-ui/icons/Save';
+import PropTypes from 'prop-types';
+
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  },
+  fabProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: -6,
+    left: -6,
+    zIndex: 1,
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+});
+
 class Login extends Component {
     constructor(props){
         super();
 
         this.state = {
             fields: {},
-            errors: {}
+            errors: {},
+            snackBar: false,
+            loading: false,
+            success: false,
+     
         }
 
     }
@@ -77,6 +134,9 @@ class Login extends Component {
         this.setState({
           redirect: true
         })
+        this.setState({loading:false});
+        this.setState({success:true});
+        
       }
 
       renderRedirect = () => {
@@ -87,6 +147,16 @@ class Login extends Component {
 
       handleSubmit = (event) => {
         event.preventDefault();
+        if(!this.state.loading){
+          this.setState({loading: true});
+          this.setState({success: false});
+        }else{
+          this.setState({success: true});
+            this.setState({loading: false});
+        } 
+            
+
+        
         if(this.handleValidation()){
           const data = {
               email: this.state.fields["email"],
@@ -99,10 +169,23 @@ class Login extends Component {
           });
         }
         else{
-          alert("Form has invalid input.");
+          // alert("Form has invalid input.");
+          this.setState({snackBar: true});
+          this.setState({loading:false});
+          
         }
       }
+    
+    handleCloseSnackBar = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      this.setState({snackBar: false});
+    }
+
     render() {
+      const { classes } = this.props;
       return (
         <div>
             <div class="sidenav">
@@ -123,26 +206,48 @@ class Login extends Component {
                 
                 <div id="signup-form">
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        Email
+                        {/* Email */}
                         <br/>
-                        <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
+                        <TextField id="outlined-basic" helperText="Please use your DLSU email address" label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")}/>
+                        {/* <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input> */}
                         <span className="error">{this.state.errors["email"]}</span>
 
                         <br/>
                         <br/>
 
-                        Password
+                        {/* Password */}
                         <br/>
-                        <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}></input>
+                        <TextField type="password" helperText="Must be a minimum of 8 characters" id="outlined-basic" label="Password" variant="outlined" name="pass" placeholder="●●●●●●●●" value={this.state.fields["pass"]} onChange={this.handleChange.bind(this, "pass")}/>
+                        {/* <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}></input> */}
                         <span className="error">{this.state.errors["pass"]}</span>
 
                         <br/>
                         <br/>
 
                         {this.renderRedirect()}
-                        <input type="submit" class="btn btn-success" value="Login" />
+                        {/* <input type="submit" class="btn btn-success" value="Login" /> */}
+                        <div className={classes.root}>
+                          <div className={classes.wrapper}> 
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={"buttonClassname"}
+                              disabled={this.state.loading}
+                              onClick={this.handleSubmit}
+                            >
+                              Login
+                            </Button>
+                            {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                          </div>
+                        </div>
+
+                        
                     </form>
-                    
+                    <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
+                      <Alert onClose={this.handleCloseSnackBar} severity="error">
+                      Failed to login
+                      </Alert>
+                    </Snackbar>
                     <br/>
                     
                     <p><a href="/password_reset">Forgot your password?</a></p>
@@ -152,4 +257,8 @@ class Login extends Component {
       );
     }
   }
-  export default Login;
+
+Login.propTypes={
+  classes: PropTypes.object.isRequired,
+};
+  export default withStyles(styles)(Login);

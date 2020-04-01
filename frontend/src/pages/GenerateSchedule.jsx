@@ -442,7 +442,7 @@ class GenerateSchedule extends Component {
                                     <Button
                                         variant="contained"
                                         color = "Primary"
-                                        style={{backgroundColor: "green", color:"white", height:"56px", marginLeft:"5px"}}
+                                        style={{backgroundColor: "green", color:"white", height:"56px"}}
                                         onClick={this.handleAddCoursePriority}>
                                         <AddIcon fontSize="medium"/>  
                                     </Button>
