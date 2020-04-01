@@ -22,6 +22,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import HomeIcon from '@material-ui/icons/Home';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -227,8 +229,6 @@ class Preferences extends Component {
     handleProfPrefChange = (e, val) =>{
         this.setState({selectedProfs: val})
     }
-    
-
 
     handleProfPrefPress = (e) => {
         const val = this.state.selectedProfs;
