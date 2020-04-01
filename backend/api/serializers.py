@@ -26,7 +26,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class FacultySerializer(serializers.ModelSerializer):
   class Meta:
     model = Faculty 
-    fields = ('id', 'last_name', 'first_name')
+    fields = ('id', 'full_name')
 
 class SectionSerializer(serializers.ModelSerializer):
   class Meta:

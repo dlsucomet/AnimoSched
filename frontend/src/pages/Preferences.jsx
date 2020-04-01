@@ -174,7 +174,7 @@ class Preferences extends Component {
         axios.get('http://localhost:8000/api/faculty/')
         .then(res => {
             res.data.map(faculty => {
-                var prof = {'id': faculty.id, 'profName': faculty.first_name+', '+faculty.last_name} 
+                var prof = {'id': faculty.id, 'profName': faculty.full_name} 
                 this.setState(state =>{
                     const profList = state.profList;
                     profList.push(prof);
@@ -344,7 +344,6 @@ class Preferences extends Component {
         });
 
         this.setState({savedPrefBar: true});
-        console.log(this.state.savedPrefBar);
 
     }
 

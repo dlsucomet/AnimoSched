@@ -64,8 +64,7 @@ class Course(models.Model):
         verbose_name_plural = _('courses')
 
 class Faculty(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -91,7 +90,8 @@ class Building(models.Model):
 
 class Room(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE)
-    room_type = models.CharField(max_length=50)
+    room_name = models.CharField(max_length=50)
+    room_type = models.CharField(max_length=50, blank=True)
     room_capacity = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
 
@@ -118,6 +118,7 @@ class Timeslot(models.Model):
         verbose_name_plural = _('timeslots')
 
 class CourseOffering(models.Model):
+    classnumber = models.IntegerField()
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)

@@ -289,9 +289,8 @@ class GenerateSchedule extends Component {
         .then(res => {
             console.log(res)
             const schedules = []
+            var schedCount = 0;
             res.data.map(newSchedule =>{
-                console.log(newSchedule)
-                var schedCount = 0;
                 var count = 0;
                 const scheduleContent = []
                 newSchedule.map(offering=>{

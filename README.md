@@ -14,7 +14,7 @@ http://www.mingw.org/
 
 ## Installation
 
-`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions django-annoying djangorestframework-jwt z3-solver`
+`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions django-annoying djangorestframework-jwt z3-solver requests html5lib bs4`
 
 Then go to the frontend directory to install react dependencies:
 

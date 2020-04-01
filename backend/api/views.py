@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
-from .serializers import CustomRegisterSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
+from .serializers import CustomRegisterSerializer, TimeslotSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
 from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room
 from .satsolver import solve
 from rest_framework.response import Response
@@ -34,6 +34,10 @@ class FacultyViewSet(viewsets.ModelViewSet):
 class DayViewSet(viewsets.ModelViewSet):       
   serializer_class = DaySerializer
   queryset = Day.objects.all()              
+
+class TimeslotViewSet(viewsets.ModelViewSet):       
+  serializer_class = TimeslotSerializer 
+  queryset = Timeslot.objects.all()              
 
 class BuildingViewSet(viewsets.ModelViewSet):       
   serializer_class = BuildingSerializer 
