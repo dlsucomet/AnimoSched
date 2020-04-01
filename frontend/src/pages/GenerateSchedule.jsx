@@ -267,6 +267,7 @@ class GenerateSchedule extends Component {
     }
 
     setSchedInfo = () => {
+        console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
             <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
         );
@@ -286,40 +287,45 @@ class GenerateSchedule extends Component {
             lowCourses: this.state.lowCourses
         })
         .then(res => {
-            const scheduleContent = [];
-            var count = 0;
-            res.data.map(offering =>{
-                var startTime = offering.timeslot_begin.split(':');
-                var endTime= offering.timeslot_end.split(':');
-                const newContent = {
+            console.log(res)
+            const schedules = []
+            res.data.map(newSchedule =>{
+                console.log(newSchedule)
+                var schedCount = 0;
+                var count = 0;
+                const scheduleContent = []
+                newSchedule.map(offering=>{
+                    console.log("offering")
+                    console.log(offering)
+                    var startTime = offering.timeslot_begin.split(':');
+                    var endTime = offering.timeslot_end.split(':');
+                    scheduleContent.push({
+                        id: count,
+                        title: offering.course,
+                        startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                        endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                        location: "",
+                        source: "",
+                        description: ""
+                    });
+                    count += 1;
+                })
+                schedCount += 1;
+                schedules.push({
                     id: count,
-                    title: offering.course,
-                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                    location: "",
-                    source: "",
-                    description: ""
-                }
-                scheduleContent.push(newContent);
-                count += 1;
-            })
-            const schedules = [
-                {
-                    id: 1,
-                    title: "Schedule 1",
+                    title: "Schedule "+schedCount.toString(),
                     scheduleContent: scheduleContent,
                     tableContent: [],
                     prefContent: [],
                     conflictsContent: [],
-                }
-            ]              
-            console.log(schedules)
+                });
+            })
             this.setState({schedules});
             this.setSchedInfo();
+        }).catch(error => {
+            console.log(error.response)
         })
     }
-
-
 
     updateHighPriority(courseUpdate){
         var newArray = [];

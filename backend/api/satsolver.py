@@ -41,19 +41,31 @@ def addSoftConstraints(z3, highCourses, lowCourses):
         for o in offerings:
             z3.add_soft(Bool(str(o.id)), 1)
 
+def addExtraConstraints(z3, model):
+    for o in model:
+        if(model[o]):
+            print(model[o], o)
+            z3.add((Not(Bool(str(o)))))
+
 def solve(highCourses, lowCourses, preferences):
     z3 = Optimize()
 
     addHardConstraints(z3, highCourses, lowCourses)
     addSoftConstraints(z3, highCourses, lowCourses)
 
-    z3.check()
-    model = z3.model()
-    offerings = CourseOffering.objects.none() 
-    for o in model:
-        if(model[o]):
-            offerings = offerings | CourseOffering.objects.filter(id=int(o.name()))
-    return offerings
+    schedules = []
+
+    while(str(z3.check()) == 'sat'):
+        model = z3.model()
+        offerings = CourseOffering.objects.none() 
+        for o in model:
+            if(model[o]):
+                offerings = offerings | CourseOffering.objects.filter(id=int(o.name()))
+        if(len(offerings) == 0):
+            break
+        schedules.append(offerings)
+        addExtraConstraints(z3, model)
+    return schedules 
     
 
 
