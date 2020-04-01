@@ -3,6 +3,8 @@ import '../css/Forms.css';
 import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
+import TextField from '@material-ui/core/TextField';
+
 class ResetPassword extends Component {
     constructor(props) {
         super();
@@ -100,9 +102,10 @@ class ResetPassword extends Component {
                 
                 <div id="reset-form">
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        Email
+                        {/* Email */}
                         <br/>
-                        <input name="email" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input>
+                        <TextField id="outlined-basic" helperText="Please use your DLSU email address" label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")}/>
+                        {/* <input name="email" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input> */}
                         <span className="error">{this.state.errors["email"]}</span>
                         <br/>
                         <br/>

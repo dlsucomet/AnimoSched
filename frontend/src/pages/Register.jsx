@@ -9,6 +9,37 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: 'relative',
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+    },
+  });
+
 class Register extends Component {
     constructor(props){
         super(props);
@@ -18,6 +49,8 @@ class Register extends Component {
             errors: {},
             colleges: [],
             degrees: [],
+            loading: false,
+            success: false,
         }
 
     }
@@ -131,6 +164,13 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        if(!this.state.loading){
+            this.setState({loading: true});
+            this.setState({success: false});
+          }else{
+            this.setState({success: true});
+            this.setState({loading: false});
+          } 
 
         if(this.handleValidation()){
             const data = {
@@ -149,16 +189,21 @@ class Register extends Component {
             console.log(data);
             this.props.handle_register(data, (res) => {
                 if(res){
+                    this.setState({success: true});
+                    this.setState({loading: false});
                     this.setRedirect();
                 }else{
                 }
             });
         }else{
             alert("Form has invalid input.");
+            this.setState({success: false});
+            this.setState({loading: false});
         }
     }
 
     render() {
+        const { classes } = this.props;
       return (
         <div>
             <div class="sidenav">
@@ -255,7 +300,22 @@ class Register extends Component {
                         <br/><br/>
 
                         {this.renderRedirect()}
-                        <input type="submit" class="btn btn-success" value="Register" />
+                        {/* <input type="submit" class="btn btn-success" value="Register" /> */}
+                        <div className={classes.root}>
+                          <div className={classes.wrapper}> 
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={"buttonClassname"}
+                              disabled={this.state.loading}
+                              onClick={this.handleSubmit}
+                              style={{backgroundColor: "green"}}
+                            >
+                              Register
+                            </Button>
+                            {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                          </div>
+                        </div>
                     </form>
                     
                     <br/>
@@ -266,4 +326,9 @@ class Register extends Component {
       );
     }
   }
-  export default Register;
+
+  Register.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+
+  export default withStyles(styles)(Register);

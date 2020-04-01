@@ -45,9 +45,13 @@ class Index extends Component {
           {this.props.menu()}
 
           <div>
-                <center><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
-              
               <Row horizontal="center">
+                  <div style={{paddingTop:"20px"}}>
+                    <center ><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
+                  </div>
+                </Row>
+              <Row horizontal="center">
+               
                 <Column flexShrink={1}>
                   <div class="sidemenu">
                     <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>

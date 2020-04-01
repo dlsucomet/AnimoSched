@@ -14,6 +14,53 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: 'relative',
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+    buttonProgress: {
+    //   color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+    },
+    schedButton:{
+        borderRadius: "25px",
+        padding: "10px",
+        paddingLeft: "30px",
+        paddingRight: "30px",
+        backgroundColor: "#16775D",
+        border: "none",
+        color: "white",
+        boxShadow: "6px 5px #e8f4ea",
+        borderStyle: "solid",
+        borderColor: "#16775D",
+        marginTop: "20px",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "#16775D"
+          },
+    }
+  });
+
 class GenerateSchedule extends Component {
 
     constructor(props) {
@@ -47,6 +94,9 @@ class GenerateSchedule extends Component {
             AutoCompleteValue: [],
             schedules: [],
             dataReceived: false,
+
+            loading: false,
+            success: false,
      
             //temp
             id:0
@@ -281,6 +331,14 @@ class GenerateSchedule extends Component {
     }
 
     createSchedInfo = () =>{
+        if(!this.state.loading){
+            this.setState({loading: true});
+            this.setState({success: false});
+          }else{
+            this.setState({success: true});
+            this.setState({loading: false});
+          } 
+
         axios.post('http://localhost:8000/api/generateschedule/',
         {
             highCourses: this.state.highCourses, 
@@ -322,8 +380,12 @@ class GenerateSchedule extends Component {
             })
             this.setState({schedules});
             this.setSchedInfo();
+            this.setState({success: true});
+            this.setState({loading: false});
         }).catch(error => {
             console.log(error.response)
+            this.setState({success: false});
+            this.setState({loading: false});
         })
     }
 
@@ -405,6 +467,7 @@ class GenerateSchedule extends Component {
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
+        const { classes } = this.props;
 
         return (
             <div>
@@ -463,7 +526,21 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
-                                <button className="schedButton" onClick={()=>this.createSchedInfo()} style={{marginTop: "20px"}}>Generate Schedule</button>
+                                <div className={classes.root}>
+                                    <div className={classes.wrapper}> 
+                                        <Button
+                                        variant="contained"
+                                        className={classes.schedButton}
+                                        disabled={this.state.loading}
+                                        onClick={()=>this.createSchedInfo()}
+                                        // style={{backgroundColor: "green"}}
+                                        >
+                                        Generate Schedule
+                                        </Button>
+                                        {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                                    </div>
+                                </div>
+                                {/* <button className="schedButton" onClick={()=>this.createSchedInfo()} style={{marginTop: "20px"}}>Generate Schedule</button> */}
                             </Row>
                         </div>
 
@@ -506,7 +583,9 @@ class GenerateSchedule extends Component {
     }
 }
 
+GenerateSchedule.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
 
 
-
-export default GenerateSchedule;
+export default withStyles(styles)(GenerateSchedule);
