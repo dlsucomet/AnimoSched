@@ -1,7 +1,7 @@
 from django.apps import AppConfig
-import requests
-import html5lib
-from bs4 import BeautifulSoup
+# import requests
+# import html5lib
+# from bs4 import BeautifulSoup
 
 def startup():
     print("Hello world!")
@@ -47,6 +47,19 @@ def startup():
         miguel.save()
         mutien.save()
         andrew.save()
+        # Days
+        monday = Day(day_code='M', day_name='Monday')
+        tuesday = Day(day_code='T', day_name='Tuesday')
+        wednesday = Day(day_code='W', day_name='Wednesday')
+        thursday = Day(day_code='H', day_name='Thursday')
+        friday = Day(day_code='F', day_name='Friday')
+        saturday = Day(day_code='S', day_name='Saturday')
+        monday.save()
+        tuesday.save()
+        wednesday.save()
+        thursday.save()
+        friday.save()
+        saturday.save()
 
     except Exception as e:
         print(e)
