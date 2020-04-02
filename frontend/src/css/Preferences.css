@@ -156,5 +156,9 @@ body {
 .break-preference{
     margin-right: 20px;
     margin-left: 20px;
-    width: 484px;
+    width: 460px;
+}
+
+.homeIcon{
+    margin-left: 20px;
 }

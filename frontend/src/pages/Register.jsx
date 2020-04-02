@@ -9,6 +9,39 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
+const styles = theme => ({
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: 'relative',
+    },
+    buttonSuccess: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+    },
+  });
+
 class Register extends Component {
     constructor(props){
         super(props);
@@ -18,6 +51,8 @@ class Register extends Component {
             errors: {},
             colleges: [],
             degrees: [],
+            loading: false,
+            success: false,
         }
 
     }
@@ -131,6 +166,13 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        if(!this.state.loading){
+            this.setState({loading: true});
+            this.setState({success: false});
+          }else{
+            this.setState({success: true});
+            this.setState({loading: false});
+          } 
 
         if(this.handleValidation()){
             const data = {
@@ -149,25 +191,32 @@ class Register extends Component {
             console.log(data);
             this.props.handle_register(data, (res) => {
                 if(res){
+                    this.setState({success: true});
+                    this.setState({loading: false});
                     this.setRedirect();
                 }else{
                 }
             });
         }else{
             alert("Form has invalid input.");
+            this.setState({success: false});
+            this.setState({loading: false});
         }
     }
 
     render() {
+        const { classes } = this.props;
       return (
         <div>
             <div class="sidenav">
-                <a href="/">
-                    <svg class="bi bi-backspace" width="3em" height="3em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <a className="backBtn" href="/">
+                  <div className={"backBtn"}></div>
+                  <ArrowBackIosIcon fontSize="large" style={{color: "white", marginLeft: "5px"}} viewBox="0 0 1 24"/> <span className="backBtn">Back</span>
+                    {/* <svg class="bi bi-backspace" width="3em" height="3em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8.603 4h7.08a1 1 0 011 1v10a1 1 0 01-1 1h-7.08a1 1 0 01-.76-.35L3 10l4.844-5.65A1 1 0 018.603 4zm7.08-1a2 2 0 012 2v10a2 2 0 01-2 2h-7.08a2 2 0 01-1.519-.698L2.241 10.65a1 1 0 010-1.302L7.084 3.7A2 2 0 018.603 3h7.08z" clip-rule="evenodd"></path>
                         <path fill-rule="evenodd" d="M7.83 7.146a.5.5 0 000 .708l5 5a.5.5 0 00.707-.708l-5-5a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
                         <path fill-rule="evenodd" d="M13.537 7.146a.5.5 0 010 .708l-5 5a.5.5 0 01-.708-.708l5-5a.5.5 0 01.707 0z" clip-rule="evenodd"></path>
-                    </svg>
+                    </svg> */}
                 </a>
                 <img class='img-responsive' id='lower' src={SidebarIMG}/>
             </div>
@@ -255,7 +304,22 @@ class Register extends Component {
                         <br/><br/>
 
                         {this.renderRedirect()}
-                        <input type="submit" class="btn btn-success" value="Register" />
+                        {/* <input type="submit" class="btn btn-success" value="Register" /> */}
+                        <div className={classes.root}>
+                          <div className={classes.wrapper}> 
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={"buttonClassname"}
+                              disabled={this.state.loading}
+                              onClick={this.handleSubmit}
+                              style={{backgroundColor: "green"}}
+                            >
+                              Register
+                            </Button>
+                            {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                          </div>
+                        </div>
                     </form>
                     
                     <br/>
@@ -266,4 +330,9 @@ class Register extends Component {
       );
     }
   }
-  export default Register;
+
+  Register.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+
+  export default withStyles(styles)(Register);
