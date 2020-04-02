@@ -6,17 +6,62 @@ import axios from 'axios';
 import ResetPassword from "./ResetPassword.jsx";
 import EditableLabel from 'react-inline-editing';
 
+
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
+
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+    pencilIcon:{ 
+        marginLeft: "10px",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "gray"
+          },
+    },
+    checkIcon:{
+        color: "green", 
+        marginLeft: "10px",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "#79c879"
+          },
+    }
+  });
+
 class Profile extends Component {
     constructor(props){
       super(props);
       this.state = {
-          email: '',
-          first_name: '',
-          last_name: '',
+          email: 'mark_ruffalo@dlsu.edu.ph',
+          first_name: 'Mark',
+          last_name: 'Ruffalo',
           college: '',
           degree: '',
-          id_num: '',
+          id_num: '11613351',
+          emailBool: false,
+        //   firstNameBool: false,
+        //   lastNameBool: false,
+        //   collegeBool: false,
+        //   degreeBool: false,
+        //   idNoBool: false,
+          ldsBofieol: {
+            emailBool: false,
+            firstNameBool: false,
+            lastNameBool: false,
+            collegeBool: false,
+            degreeBool: false,
+            idNoBool: false
+        }
       }
+      this.editFirstName = React.createRef();
+      this.editLastName = React.createRef();
+      this.editEmail = React.createRef();
+      this.editIdNo = React.createRef();
+      this.editCollege = React.createRef();
+      this.editDegree = React.createRef();
     }
 
     componentWillMount(){
@@ -58,7 +103,42 @@ class Profile extends Component {
         console.log('Left editor with text: ' + text);
     }
 
+
+    _handleFocus=(text, iconBool)=> {
+        let fieldsBool = this.state.fieldsBool;
+        fieldsBool[iconBool] = true;
+        this.setState({fieldsBool});
+        console.log('Focused with text: ' + text);
+        
+    }
+
+    _handleFocusOut=(text, iconBool)=> {
+        console.log('Left editor with text: ' + text);
+        // this.setState({schedTitle: text});
+        // this.props.updateSchedTitle(text);
+        // this.setState({boolEdit: false});
+        let fieldsBool = this.state.fieldsBool;
+         fieldsBool[iconBool] = false;
+
+    }
+
+    editButtonPress = (iconBool, editRef) =>{
+        let fieldsBool = this.state.fieldsBool;
+        if(fieldsBool[iconBool] === false){
+            fieldsBool[iconBool] = true;
+            this.setState({fieldsBool});
+            // this.setState({boolEdit: true});
+            editRef.current.setState({isEditing: true});
+            // this.editableLabel.current.setState({isEditing: true});
+        }else if(fieldsBool[iconBool] === true){
+            fieldsBool[iconBool] = false;
+            this.setState({fieldsBool});
+            // this.setState({boolEdit: false});
+        }
+    }
+
     render() {
+        const { classes } = this.props;
       return (
           <div>
             {this.props.menu()}
@@ -70,14 +150,19 @@ class Profile extends Component {
                     <b>First Name</b>
                     <br/>
                     {/* <input value={this.state.first_name}/><br/><br/> */}
-                    <EditableLabel
-                        text={this.state.first_name}
-                        inputWidth='50%'
-                        inputHeight='25px'
-                        inputMaxLength='50'
-                        onFocus={this._handleFocus}
-                        onFocusOut={this._handleFocusOut}
-                    />
+                    <div>
+                        <EditableLabel
+                            ref={this.editFirstName}
+                            text={this.state.first_name}
+                            inputWidth='30%'
+                            inputHeight='25px'
+                            inputMaxLength='50'
+                            onFocus={()=>this._handleFocus('firstNameBool')}
+                            onFocusOut={()=>this._handleFocusOut('firstNameBool')}
+                        />
+                        {this.state.fieldsBool['firstNameBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/>}
+                    </div>
+                    
                     <br/>
                     
                     <b>Last Name</b>
@@ -179,4 +264,8 @@ class Profile extends Component {
       );
     }
   }
-  export default Profile;
+
+  Profile.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+  export default withStyles(styles)(Profile);

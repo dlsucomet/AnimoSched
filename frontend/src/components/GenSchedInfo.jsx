@@ -10,6 +10,27 @@ import EditableLabel from 'react-inline-editing';
 import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+    pencilIcon:{ 
+        marginLeft: "10px",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "gray"
+          },
+    },
+    checkIcon:{
+        color: "green", 
+        marginLeft: "10px",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "#79c879"
+          },
+    }
+  });
+
 class GenSchedInfo extends Component {
     constructor(props){
         super(props);
@@ -76,7 +97,7 @@ class GenSchedInfo extends Component {
 
 
     render() { 
- 
+        const { classes } = this.props;
         return (
             <Column>
                 <Row verticle = 'center' className = "RowSchedInfoContainer">
@@ -95,7 +116,7 @@ class GenSchedInfo extends Component {
                             onChange={this.handleKeyPress}
                             /> 
 
-                            {this.state.boolEdit ? <DoneIcon fontSize="medium" style={{color: "green", marginLeft: "10px"}} onClick={this.editButtonPress}/> : <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/>}
+                            {this.state.boolEdit ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={this.editButtonPress}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={this.editButtonPress}/>}
                             {/* <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/> */}
                             {/* <DoneIcon fontSize="medium" style={{color: "green"}} /> */}
                         </Row>
@@ -132,5 +153,8 @@ class GenSchedInfo extends Component {
           );
     }
 }
- 
-export default GenSchedInfo;
+
+GenSchedInfo.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+export default withStyles(styles)(GenSchedInfo);
