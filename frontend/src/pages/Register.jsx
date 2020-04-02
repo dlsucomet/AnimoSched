@@ -304,7 +304,7 @@ class Register extends Component {
                         <br/><br/>
 
                         {this.renderRedirect()}
-                        {/* <input type="submit" class="btn btn-success" value="Register" /> */}
+                        <input type="submit" style={{height: 0, width: 0, padding: 0, border: 0}} />
                         <div className={classes.root}>
                           <div className={classes.wrapper}> 
                             <Button

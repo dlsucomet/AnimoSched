@@ -49,26 +49,32 @@ class Preferences extends Component {
 
             daysList:[
                 {   id: 1,
+                    day_code: "M",
                     day: "Monday",
                     checked: true,},
                 { 
                     id: 2,
+                    day_code: "T",
                     day: "Tuesday",
                     checked: true,},
                 {
                     id: 3,
+                    day_code: "W",
                     day: "Wednesday",
                     checked: true,},
                 {
                     id: 4, 
+                    day_code: "H",
                     day: "Thursday",
                     checked: true,},
                 {
                     id: 5,
+                    day_code: "F",
                     day: "Friday",
                     checked: true,},
                 { 
                     id: 6,
+                    day_code: "S",
                     day: "Saturday",
                     checked: true,},
 
@@ -76,34 +82,42 @@ class Preferences extends Component {
             
             buildingList:[{   
                 id: 1,
+                bldg_code: "LS",
                 building: "St. La Salle Hall",
                 checked: false,},
             { 
                 id: 2,
+                bldg_code: "Y",
                 building: "Enrique Yuchengco Hall",
                 checked: false,},
             {
                 id: 3,
+                bldg_code: "J",
                 building: "St. Joseph Hall",
                 checked: false,},
             {
                 id: 4, 
+                bldg_code: "V",
                 building: "Velasco Hall",
                 checked: false,},
             {
                 id: 5,
+                bldg_code: "M",
                 building: "St. Miguel Hall",
                 checked: false,},
             { 
                 id: 6,
+                bldg_code: "MU",
                 building: "St. Mutien Marie Hall",
                 checked: false,},
             {
                 id: 7,
+                bldg_code: "GK",
                 building: "Gokongwei Hall",
                 checked: false,},
             { 
                 id: 8,
+                bldg_code: "A",
                 building: "Br. Andrew Gonzales Hall",
                 checked: false,},],
 
@@ -216,10 +230,18 @@ class Preferences extends Component {
                         this.setState({max_courses:preference.max_courses})
                     }
                     if(preference.preferred_faculty != null){
+                        const selectedProfs = this.state.selectedProfs;
+                        var prof = {'id': preference.preferred_faculty.id, 'profName': preference.preferred_faculty.full_name} 
+                        selectedProfs.push(prof);
+                        this.setState({selectedProfs})
                     }
                     if(preference.preferred_buildings != null){
                     }
                     if(preference.preferred_sections != null){
+                        const selectedSections = this.state.selectedSections;
+                        var section = {'id': preference.preferred_sections.id, 'sectionName': preference.preferred_sections.section_code} 
+                        selectedSections.push(section);
+                        this.setState({selectedSections})
                     }
                 })
                 this.setState({dataReceived: true})
@@ -248,7 +270,7 @@ class Preferences extends Component {
     }
 
     handleSectionPrefChange = (e, val) =>{
-        this.setState({selectedProfs: val})
+        this.setState({selectedSections: val})
       }
     
 
@@ -321,10 +343,42 @@ class Preferences extends Component {
         const id = localStorage.getItem('user_id');
         axios.delete('http://localhost:8000/api/preferencelist/'+id+'/')
         .then(res => {
+            this.state.daysList.map(day =>{
+                if(day.checked){
+
+                }
+            });
+            this.state.buildingList.map(bldg =>{
+                if(bldg.checked){
+
+                }
+            });
+            this.state.selectedProfs.map(prof =>{
+                console.log(prof)
+                axios.post('http://localhost:8000/api/preferences/', {preferred_faculty: prof.id, user: id},
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).catch(err => {
+                    console.log(err.response)
+                })
+            });
+            this.state.selectedSections.map(section =>{
+                console.log(section)
+                axios.post('http://localhost:8000/api/preferences/', {preferred_sections: section.id, user: id},
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).catch(err => {
+                    console.log(err.response)
+                })
+            });
             const data = {
                 earliest_class_time: this.state.earliest_class_time,
                 latest_class_time: this.state.latest_class_time,
-                // break_length: '0'+this.state.break_length.toString(),
+                break_length: this.state.break_length,
                 min_courses: this.state.min_courses,
                 max_courses: this.state.max_courses,
                 user: id
@@ -565,12 +619,13 @@ class Preferences extends Component {
                                     multiple
                                     id="tags-outlined"
                                     options={this.state.profList}
+                                    defaultValue={this.state.selectedProfs}
                                     getOptionLabel={option => option.profName}
                                     //   style={{ width: 500 }}
                                     filterSelectedOptions
                                     renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
                                     onChange={this.handleProfPrefChange}
-                                    onKeyPress={this.handleProfPrefress}
+                                    // onKeyPress={this.handleProfPrefress}
                                     />
                             </div>
 
@@ -658,12 +713,13 @@ class Preferences extends Component {
                                     multiple
                                     id="tags-outlined"
                                     options={this.state.sectionList}
+                                    defaultValue={this.state.selectedSections}
                                     getOptionLabel={option => option.sectionName}
                                     //   style={{ width: 500 }}
                                     filterSelectedOptions
                                     renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
                                     onChange={this.handleSectionPrefChange}
-                                    onKeyPress={this.handleSectionPrefress}
+                                    // onKeyPress={this.handleSectionPrefress}
                                     />
                             </div>
                         </div>

@@ -185,7 +185,7 @@ class Preference(models.Model):
     earliest_class_time = models.TimeField(_('earliest class time'), null=True)
     latest_class_time = models.TimeField(_('latest class time'), null=True)
     preferred_days = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)
-    break_length = models.TimeField(_('break length'), null=True)
+    break_length = models.IntegerField(_('break length'), null=True)
     min_courses = models.IntegerField(_('min courses per day'), null=True)
     max_courses = models.IntegerField(_('max courses per day'), null=True)
     preferred_faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, null=True) 

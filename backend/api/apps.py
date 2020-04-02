@@ -99,9 +99,9 @@ def startup():
     # except Exception as e:
     #     print(e)
 
-    count = 0
     try:
         with open('ccs_offerings.tsv','r') as ccs_details:
+            count = 1
             for l in ccs_details:
                 print(l)
                 details = l.split('\t')
@@ -138,7 +138,7 @@ def startup():
                     max_enrolled = 40
                     status = True
                     CourseOffering.objects.get_or_create(classnumber=classnumber, faculty=faculty, course=course, section=section, day=day, timeslot=timeslot,room=room, current_enrolled=current_enrolled,max_enrolled=max_enrolled, status=status)
-                    print(course_code, section_code)
+                    print(course_code, section_code, classnumber)
                 count += 1
     except Exception as e:
         print(e)

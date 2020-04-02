@@ -4,6 +4,7 @@ import SidebarIMG from '../images/Login.svg';
 import { Redirect } from "react-router-dom";
 
 import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Snackbar from '@material-ui/core/Snackbar';
@@ -217,7 +218,7 @@ class Login extends Component {
                         <br/>
 
                         {this.renderRedirect()}
-                        {/* <input type="submit" class="btn btn-success" value="Login" /> */}
+                        <input type="submit" style={{height: 0, width: 0, padding: 0, border: 0}} />
                         <div className={classes.root}>
                           <div className={classes.wrapper}> 
                             <Button

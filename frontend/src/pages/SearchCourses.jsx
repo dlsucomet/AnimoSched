@@ -105,7 +105,7 @@ class SearchCourses extends Component {
         .then(res => {
             res.data.map(offering => {
                 const newSiteData = this.state.siteData;
-                offering = this.createData(offering.id, offering.course, offering.section, offering.faculty, offering.day, offering.timeslot_begin, offering.timeslot_end, offering.room, offering.max_enrolled, offering.current_enrolled);
+                offering = this.createData(offering.classnumber, offering.course, offering.section, offering.faculty, offering.day, offering.timeslot_begin, offering.timeslot_end, offering.room, offering.max_enrolled, offering.current_enrolled);
                 newSiteData.push(offering)
                 this.setState({siteData: newSiteData})
             })
