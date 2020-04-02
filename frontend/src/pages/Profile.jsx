@@ -13,6 +13,9 @@ import DoneIcon from '@material-ui/icons/Done';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -23,7 +26,6 @@ const styles = theme => ({
     },
     checkIcon:{
         color: "green", 
-        marginLeft: "10px",
         '&:hover': {
             backgroundColor: "white",
             color: "#79c879"
@@ -39,7 +41,7 @@ class Profile extends Component {
           first_name: 'Mark',
           last_name: 'Ruffalo',
           college: '',
-          degree: '',
+          degree: 'Bachelor of Science in Computer Science',
           id_num: '11613351',
           emailBool: false,
         //   firstNameBool: false,
@@ -47,7 +49,7 @@ class Profile extends Component {
         //   collegeBool: false,
         //   degreeBool: false,
         //   idNoBool: false,
-          ldsBofieol: {
+          fieldsBool: {
             emailBool: false,
             firstNameBool: false,
             lastNameBool: false,
@@ -116,7 +118,7 @@ class Profile extends Component {
         console.log('Left editor with text: ' + text);
         // this.setState({schedTitle: text});
         // this.props.updateSchedTitle(text);
-        // this.setState({boolEdit: false});
+        this.setState({boolEdit: false});
         let fieldsBool = this.state.fieldsBool;
          fieldsBool[iconBool] = false;
 
@@ -150,66 +152,120 @@ class Profile extends Component {
                     <b>First Name</b>
                     <br/>
                     {/* <input value={this.state.first_name}/><br/><br/> */}
-                    <div>
-                        <EditableLabel
-                            ref={this.editFirstName}
-                            text={this.state.first_name}
-                            inputWidth='30%'
-                            inputHeight='25px'
-                            inputMaxLength='50'
-                            onFocus={()=>this._handleFocus('firstNameBool')}
-                            onFocusOut={()=>this._handleFocusOut('firstNameBool')}
-                        />
-                        {this.state.fieldsBool['firstNameBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/>}
-                    </div>
+                    
+                    <Row horizontal= 'start'>
+                    <EditableLabel
+                        ref={this.editFirstName}
+                        text={this.state.first_name}
+                        inputWidth='150px'
+                        inputHeight='25px'
+                        inputMaxLength='30'
+                        onFocus={(text)=>this._handleFocus(text, 'firstNameBool')}
+                        onFocusOut={(text)=>this._handleFocusOut(text, 'firstNameBool')}
+                    />
+                    {this.state.fieldsBool['firstNameBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('firstNameBool',this.editFirstName)}/>}
+                    </Row>
+                
                     
                     <br/>
                     
                     <b>Last Name</b>
                     <br/>
                     {/* <input value={this.state.last_name}/><br/><br/> */}
+                    <Row horizontal= 'start'>
                     <EditableLabel
+                        ref={this.editLastName}
+                        text={this.state.last_name}
+                        inputWidth='150px'
+                        inputHeight='25px'
+                        inputMaxLength='30'
+                        onFocus={(text)=>this._handleFocus(text, 'lastNameBool')}
+                        onFocusOut={(text)=>this._handleFocusOut(text, 'lastNameBool')}
+                    />
+                    {this.state.fieldsBool['lastNameBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('lastNameBool',this.editLastName)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('lastNameBool',this.editLastName)}/>}
+                    </Row>
+                    {/* <EditableLabel
                         initialValue={this.state.last_name}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
-                        onFocus={this._handleFocus}
+                        onFocus={(text)=>this._handleFocus(text, 'lastNameBool')}
                         onFocusOut={this._handleFocusOut}
-                    />
+                    /> */}
                     <br/>
 
                     <b>ID Number</b>
                     <br/>
                     {/* <input value={this.state.id_num}/><br/><br/> */}
-                    <EditableLabel
+                    <Row horizontal= 'start'>
+                        <EditableLabel
+                            ref={this.editIdNo}
+                            text={this.state.id_num}
+                            inputWidth='90px'
+                            inputHeight='25px'
+                            inputMaxLength='30'
+                            onFocus={(text)=>this._handleFocus(text, 'idNoBool')}
+                            onFocusOut={(text)=>this._handleFocusOut(text, 'idNoBool')}
+                        />
+                        {this.state.fieldsBool['idNoBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/>}
+                    </Row>
+                    {/* <EditableLabel
                         text={this.state.id_num}
                         inputWidth='50%'
                         inputHeight='25px'
                         inputMaxLength='50'
                         onFocus={this._handleFocus}
                         onFocusOut={this._handleFocusOut}
-                    />
+                    /> */}
                     <br/>
 
                     <b>College</b>
                     <br/>
-                    <input value={this.state.college}/><br/><br/>
-
+                    {/* <input value={this.state.college}/><br/><br/> */}
+                    <Row horizontal= 'start'>
+                        <EditableLabel
+                            ref={this.editCollege}
+                            text={"this.state.college"}
+                            inputWidth='250px'
+                            inputHeight='25px'
+                            inputMaxLength='30'
+                            onFocus={(text)=>this._handleFocus(text, 'collegeBool')}
+                            onFocusOut={(text)=>this._handleFocusOut(text, 'collegeBool')}
+                        />
+                        {this.state.fieldsBool['collegeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/>}
+                    </Row>
+                    <br/>
                     <b>Degree</b>
                     <br/>
-                    <input value={this.state.degree}/><br/><br/>
-
+                    {/* <input value={this.state.degree}/><br/><br/> */}
+                    <Row horizontal= 'start'>
+                        <EditableLabel
+                            ref={this.editDegree}
+                            text={"this.state.degree"}
+                            inputWidth='250px'
+                            inputHeight='25px'
+                            inputMaxLength='30'
+                            onFocus={(text)=>this._handleFocus(text, 'degreeBool')}
+                            onFocusOut={(text)=>this._handleFocusOut(text, 'degreeBool')}
+                        />
+                        {this.state.fieldsBool['degreeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/>}
+                    </Row>
+                    <br/>
                     <b>Email Address</b>
                     <br/>
                     {/* <input value={this.state.email}/><br/><br/> */}
-                    <EditableLabel
-                        text={this.state.email}
-                        inputWidth='50%'
-                        inputHeight='25px'
-                        inputMaxLength='50'
-                        onFocus={this._handleFocus}
-                        onFocusOut={this._handleFocusOut}
-                    />
+                    <Row horizontal= 'start'>
+                        <EditableLabel
+                            ref={this.editEmail}
+                            text={this.state.email}
+                            inputWidth='250px'
+                            inputHeight='25px'
+                            inputMaxLength='30'
+                            onFocus={(text)=>this._handleFocus(text, 'emailBool')}
+                            onFocusOut={(text)=>this._handleFocusOut(text, 'emailBool')}
+                        />
+                        {this.state.fieldsBool['emailBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/>}
+                    </Row>
                     <br/>
                 </div>
             </div>
