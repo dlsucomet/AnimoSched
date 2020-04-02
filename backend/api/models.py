@@ -49,10 +49,10 @@ class FlowchartTerm(models.Model):
         verbose_name_plural = _('flowchart terms')
 
 class Course(models.Model):
-    course_code = models.CharField(max_length=8)
+    course_code = models.CharField(max_length=8, unique=True)
     course_name = models.CharField(max_length=120)
     course_desc = models.TextField()
-    college = models.ForeignKey(College, on_delete=models.CASCADE)
+    college = models.ForeignKey(College, on_delete=models.CASCADE, null=True)
     units = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
     # flowchart information
@@ -64,7 +64,7 @@ class Course(models.Model):
         verbose_name_plural = _('courses')
 
 class Faculty(models.Model):
-    full_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100, unique=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -72,7 +72,7 @@ class Faculty(models.Model):
         verbose_name_plural = _('faculty members')
 
 class Section(models.Model):
-    section_code = models.CharField(max_length=3)
+    section_code = models.CharField(max_length=3, unique=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -80,7 +80,7 @@ class Section(models.Model):
         verbose_name_plural = _('sections')
 
 class Building(models.Model):
-    bldg_code = models.CharField(max_length=50)
+    bldg_code = models.CharField(max_length=50, unique=True)
     bldg_name = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now=True)
 
@@ -90,7 +90,7 @@ class Building(models.Model):
 
 class Room(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE)
-    room_name = models.CharField(max_length=50)
+    room_name = models.CharField(max_length=50, unique=True)
     room_type = models.CharField(max_length=50, blank=True)
     room_capacity = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
@@ -100,8 +100,8 @@ class Room(models.Model):
         verbose_name_plural = _('rooms')
 
 class Day(models.Model):
-    day_code = models.CharField(max_length=2)
-    day_name = models.CharField(max_length=10)
+    day_code = models.CharField(max_length=2, unique=True)
+    day_name = models.CharField(max_length=10, unique=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -119,15 +119,15 @@ class Timeslot(models.Model):
 
 class CourseOffering(models.Model):
     classnumber = models.IntegerField()
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
     timeslot = models.ForeignKey(Timeslot, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    term = models.IntegerField()
-    start_AY = models.IntegerField()
-    end_AY = models.IntegerField()
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    # term = models.IntegerField()
+    # start_AY = models.IntegerField()
+    # end_AY = models.IntegerField()
     current_enrolled = models.IntegerField()
     max_enrolled = models.IntegerField()
     status = models.BooleanField()

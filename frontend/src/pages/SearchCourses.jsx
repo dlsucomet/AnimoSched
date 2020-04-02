@@ -23,12 +23,7 @@ class SearchCourses extends Component {
       super(props);
       this.state = {
         fields: {},
-        database: [
-          this.createData(2258, 'INOVATE', 'S17', 'DELA CRUZ, JUAN', 'TH', '12:45', '14:15', 'GK210', 45, 45),
-          this.createData(2259, 'INOVATE', 'S18', 'DELA CRUZ, JUAN', 'TH', '14:30', '16:00', 'GK210', 45, 40),
-          this.createData(2043, 'TREDTRI', 'S17', 'TORRES, MARIA', 'TH', '14:30', '16:00', 'GK301', 30, 30),
-          this.createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
-        ],
+        database: [],
         siteData: [],
         courseList: [],
         selectedCourses: []

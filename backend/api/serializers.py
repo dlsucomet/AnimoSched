@@ -56,7 +56,7 @@ class TimeslotSerializer(serializers.ModelSerializer):
 class CourseOfferingSerializer(serializers.ModelSerializer):
   class Meta:
     model = CourseOffering 
-    fields = ('id', 'faculty', 'course', 'section', 'day', 'timeslot', 'room', 'term', 'start_AY', 'end_AY', 'current_enrolled', 'max_enrolled', 'status')
+    fields = ('id', 'faculty', 'course', 'section', 'day', 'timeslot', 'room', 'current_enrolled', 'max_enrolled', 'status')
 
 class CoursePrioritySerializer(serializers.ModelSerializer):
   class Meta:
