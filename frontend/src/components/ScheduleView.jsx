@@ -137,7 +137,6 @@ class ScheduleView extends Component {
                   contentComponent={Content}
                   // commandButtonComponent={CommandButton}
                   showCloseButton
-                  onAppointmentMetaChange
                 />
                 </Scheduler>
             </Paper>

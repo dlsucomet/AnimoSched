@@ -8,7 +8,14 @@ import '../css/Index.css'
 
 import SchedViewHome from '../components/SchedViewHome';
 
+import Background from '../assets/Gradient_BG.png'
 // import { Container, Row, Col } from 'reactstrap';
+
+var sectionStyle = {
+  width: "100%",
+  height: "400px",
+  backgroundImage:  "url(" + Background + ")"
+};
 
 class Index extends Component {
     constructor(props){
@@ -18,7 +25,7 @@ class Index extends Component {
     state={
       currentPage: 0,
       currentContent: <SchedViewHome/>,
-      generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>]
+      generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
     }
 
     handlePageChange = (e,index) => {
@@ -44,7 +51,7 @@ class Index extends Component {
         <div>
           {this.props.menu()}
 
-          <div>
+          <div className={"homepage"} style={this.props.logged_in ? {} : {display: "none"}}>
               <Row horizontal="center">
                   <div style={{paddingTop:"20px"}}>
                     <center ><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
@@ -104,8 +111,8 @@ class Index extends Component {
             </Row>
            
           </div>
-          <div>
-            {/* <Column flexGrow={1}>
+          <div className={"ladingpage"} style={!this.props.logged_in? {sectionStyle} : {display: "none"}}>
+            <Column flexGrow={1}>
     
               <Row vertical='center'>
                 <Column flexGrow={1}>
@@ -148,25 +155,24 @@ class Index extends Component {
                     </Column>
     
                     {/* CHANGE THIS DESCRIPTION SINCE WE CHANGED THIS FUNCTIONALITY. */}
-                    {/* <Column flexGrow={1}>
+                    <Column flexGrow={1}>
                       <span> <b>Collaborate</b> with friends </span>
                       <span> and create schedules </span>
                       <span> as a group. </span>
                     </Column>
                   </Row>
-                </Column> */}
-                
-                {/* <Column flexGrow={1} horizontal='center'>
+                </Column>                 
+                 <Column flexGrow={1} horizontal='center'>
                   <button type="button" class="btn btn-success">Create Schedule</button>
                   <br/>
-                  OR */}
+                  OR
                   {/* IS IT ADVISEABLE TO USE BREAK POINTS */}
-                  {/* <br/>
+                  {/* <br/> */}
                   <br/>
                   <button type="button" class="btn btn-success">Check Flowchart</button>
                 </Column>
               </Row>
-            </Column> */}
+            </Column>
           </div>
         </div>        
       );

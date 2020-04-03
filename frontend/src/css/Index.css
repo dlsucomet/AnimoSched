@@ -93,3 +93,11 @@
 .savedContent{
     height: 1200px;
 }
+
+.landingpage{
+    background-image: url(../assets/Gradient_BG.png);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
