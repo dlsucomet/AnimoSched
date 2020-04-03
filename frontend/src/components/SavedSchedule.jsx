@@ -18,25 +18,43 @@ class SavedSchedule extends Component {
     state = {
         scheduleContent: [
             {
+                id: 3,
                 title: "CSSERVM",
+                section: "S15",
                 startDate: new Date(2018, 5, 26, 10, 0),
                 endDate: new Date(2018, 5, 26, 11, 0),
-                id: 3,
-                location: "Room 2"
+                location: "G302",
+                professor: "Flowers, Fritz",
+                startTime: "09:30AM",
+                endTime: "11:30AM",
+                days: ['T', 'H'],
+                classCode: "2453"
               },
               {
                 title: "INOVATE",
+                section: "EB14",
                 startDate: new Date(2018, 5, 26, 12, 0),
-                endDate: new Date(2018, 5, 26, 13, 35),
+                endDate: new Date(2018, 5, 26, 13, 30),
                 id: 4,
-                location: "Room 2"
+                location: "G305",
+                professor: "Tuazon, James Dean",
+                startTime: "12:00PM",
+                endTime: "01:30PM",
+                days: ['T', 'H'],
+                classCode: "2453"
               },
               {
                   title: "HUMAART",
+                  section: "S17",
                   startDate: new Date(2018, 5, 27, 9, 30),
                   endDate: new Date(2018, 5, 27, 11, 30),
                   id: 0,
-                  location: "Room 1"
+                  location: "G302",
+                  professor: "Sangi, April",
+                  startTime: "09:30AM",
+                  endTime: "11:30AM",
+                  days: ['M', 'W'],
+                  classCode: "2453"
                   },
           ],
         //tableContent: this.props.tableContent,

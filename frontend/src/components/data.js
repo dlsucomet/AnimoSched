@@ -1,12 +1,17 @@
 export const appointments = [
     {
+      
+      id: 0,
       title: "HUMAART",
+      section: "S17",
       startDate: new Date(2018, 5, 25, 9, 30),
       endDate: new Date(2018, 5, 25, 11, 30),
-      id: 0,
-      location: "Room 1",
-      source: "G302",
-      description: "Professor lulu"
+      location: "G302",
+      professor: "Flowers, Fritz",
+      startTime: "09:30AM",
+      endTime: "11:30AM",
+      days: ['T', 'H'],
+      classCode: "2453"
     },
     {
       title: "KASPIL2",
