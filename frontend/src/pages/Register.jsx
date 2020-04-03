@@ -15,7 +15,13 @@ import { green } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const styles = theme => ({
     root: {
@@ -51,6 +57,7 @@ class Register extends Component {
             errors: {},
             colleges: [],
             degrees: [],
+            snackBar: false,
             loading: false,
             success: false,
         }
@@ -195,13 +202,24 @@ class Register extends Component {
                     this.setState({loading: false});
                     this.setRedirect();
                 }else{
+                  this.setState({success: false});
+                  this.setState({loading: false});
+                  this.setState({snackBar: true})
                 }
             });
         }else{
-            alert("Form has invalid input.");
             this.setState({success: false});
             this.setState({loading: false});
+            this.setState({snackBar: true});
         }
+    }
+
+    handleCloseSnackBar = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      this.setState({snackBar: false});
     }
 
     render() {
@@ -321,7 +339,11 @@ class Register extends Component {
                           </div>
                         </div>
                     </form>
-                    
+                    <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
+                      <Alert onClose={this.handleCloseSnackBar} severity="error">
+                      Failed to register 
+                      </Alert>
+                    </Snackbar>
                     <br/>
                     
                 </div>
