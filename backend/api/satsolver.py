@@ -41,10 +41,46 @@ def addSoftConstraints(z3, highCourses, lowCourses):
         for o in offerings:
             z3.add_soft(Bool(str(o.id)), 1)
 
+def addPreferences(z3, highCourses, lowCourses, preferences):
+    allOfferings = CourseOffering.objects.none()
+    for c in highCourses:
+        offerings = CourseOffering.objects.filter(course=c)
+        allOfferings = allOfferings | offerings
+    for c in lowCourses:
+        offerings = CourseOffering.objects.filter(course=c)
+        allOfferings = allOfferings | offerings
+    for p in preferences:
+        if(p.earliest_class_time != None):
+            print(p.earliest_class_time)
+        if(p.latest_class_time != None):
+            print(p.latest_class_time)
+        if(p.preferred_days != None):
+            day_id = p.preferred_days.id
+            for o in allOfferings:
+                if(day_id == o.day.id):
+                    z3.add_soft(Bool(str(o.id)))
+        if(p.preferred_buildings != None):
+            print(p.preferred_buildings)
+        if(p.preferred_sections != None):
+            section_id = p.preferred_sections.id
+            for o in allOfferings:
+                if(section_id == o.section.id):
+                    z3.add_soft(Bool(str(o.id)))
+        if(p.preferred_faculty != None):
+            faculty_id = p.preferred_faculty.id
+            for o in allOfferings:
+                if(faculty_id == o.faculty.id):
+                    z3.add_soft(Bool(str(o.id)))
+        if(p.min_courses != None):
+            print(p.min_courses)
+        if(p.max_courses != None):
+            print(p.max_courses)
+        if(p.break_length != None):
+            print(p.break_length)
+
 def addExtraConstraints(z3, model):
     for o in model:
         if(model[o]):
-            print(model[o], o)
             z3.add((Not(Bool(str(o)))))
 
 def solve(highCourses, lowCourses, preferences):
@@ -52,6 +88,7 @@ def solve(highCourses, lowCourses, preferences):
 
     addHardConstraints(z3, highCourses, lowCourses)
     addSoftConstraints(z3, highCourses, lowCourses)
+    addPreferences(z3, highCourses, lowCourses, preferences)
 
     schedules = []
 

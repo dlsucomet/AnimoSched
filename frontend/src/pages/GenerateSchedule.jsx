@@ -342,7 +342,8 @@ class GenerateSchedule extends Component {
         axios.post('http://localhost:8000/api/generateschedule/',
         {
             highCourses: this.state.highCourses, 
-            lowCourses: this.state.lowCourses
+            lowCourses: this.state.lowCourses,
+            user_id: localStorage.getItem('user_id')
         })
         .then(res => {
             console.log(res)

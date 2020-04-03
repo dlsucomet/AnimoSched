@@ -103,11 +103,12 @@ class SchedulesList(APIView):
   def post(self, request, format=None):
     highCourses = []
     lowCourses = []
-    preferences = {} 
     for c in request.data['highCourses']:
       highCourses.append(c['course_id'])
     for c in request.data['lowCourses']:
       lowCourses.append(c['course_id'])
+    user = request.data['user_id']
+    preferences = Preference.objects.filter(user=user)
 
     serializedSchedules = []
     schedules = solve(highCourses, lowCourses, preferences)
@@ -124,5 +125,4 @@ class SchedulesList(APIView):
         if(d['room'] != None):
           d['room'] = Room.objects.get(id=d['room']).room_name
       serializedSchedules.append(serializer.data)
-    print(serializedSchedules)
     return Response(serializedSchedules)
