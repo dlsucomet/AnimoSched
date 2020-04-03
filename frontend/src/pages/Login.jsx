@@ -163,6 +163,9 @@ class Login extends Component {
           this.props.handle_login(data, (res) => {
             if(res){
               this.setRedirect();
+            }else{
+              this.setState({snackBar: true})
+              this.setState({loading: false})
             }
           });
         }
