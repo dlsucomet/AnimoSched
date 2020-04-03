@@ -356,15 +356,21 @@ class GenerateSchedule extends Component {
                     console.log(offering)
                     var startTime = offering.timeslot_begin.split(':');
                     var endTime = offering.timeslot_end.split(':');
-                    scheduleContent.push({
+                    const newContent = 
+                    {
                         id: count,
-                        title: offering.course,
+                        title: offering.course + ' ' + offering.section,
+                        section: offering.section,
                         startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
                         endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                        location: "",
-                        source: "",
-                        description: ""
-                    });
+                        location: offering.room,
+                        professor: offering.faculty,
+                        startTime: offering.timeslot_begin,
+                        endTime: offering.timeslot_end,
+                        days: offering.day,
+                        classCode: offering.classnumber 
+                    }
+                    scheduleContent.push(newContent);
                     count += 1;
                 })
                 schedCount += 1;
