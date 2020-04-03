@@ -219,6 +219,7 @@ class App extends Component {
     return (
       <MainPage
         menu={this.menu}
+        logged_in={this.state.logged_in}
       />
     )
   }
