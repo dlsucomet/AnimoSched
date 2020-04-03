@@ -124,12 +124,10 @@ class Index extends Component {
             <Grid container spacing={2}>
               
               <Grid item xs={12} sm container>
-                <Grid item>
+                <Grid item xs container direction="column" spacing={2} style={{padding:"20px", margin: "20px"}}>
                 <Grid item xs={6}>
                         <img src={calendarIcon} className={"iconStyle"}/>
                       </Grid>
-                </Grid>
-                <Grid item xs container direction="column" spacing={2} style={{padding:"20px", margin: "20px"}}>
                   <Grid item xs>
                     <Typography gutterBottom variant="h3" align="center">
                       Create your schedule!
