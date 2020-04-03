@@ -101,3 +101,8 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.iconStyle{
+    height: 70px;
+    width: 70px;
+}

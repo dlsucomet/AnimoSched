@@ -15,6 +15,7 @@ import laughIcon from '../assets/laugh.png'
 // import { Container, Row, Col } from 'reactstrap';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 var sectionStyle = {
   // width: "100%",
@@ -120,12 +121,51 @@ class Index extends Component {
            
           </div>
           <div className={"ladingpage"} style={!this.props.logged_in? sectionStyle : {display: "none"}}>
-            {/* <Grid container alignItems="center">
-              <Grid>
-
+            <Grid container spacing={2}>
+              
+              <Grid item xs={12} sm container>
+                <Grid item>
+                <Grid item xs={6}>
+                        <img src={calendarIcon} className={"iconStyle"}/>
+                      </Grid>
+                </Grid>
+                <Grid item xs container direction="column" spacing={2} style={{padding:"20px", margin: "20px"}}>
+                  <Grid item xs>
+                    <Typography gutterBottom variant="h3" align="center">
+                      Create your schedule!
+                    </Typography>
+                    {/* <Grid item xs={12} sm={6}> */}
+                      
+                      <Grid item xs={6}>
+                        <Typography variant="body1" gutterBottom>
+                          Enter your courses, 
+                          set your schedule, 
+                          and choose your schedule, 
+                          generate automatically
+                      </Typography>
+                      </Grid>
+                    {/* </Grid> */}
+                    
+                    <Typography variant="body1" color="textSecondary">
+                    Customize the look of your
+                    schedule and save it aS an image.
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="body1">
+                    collaborate with friends
+                    and create schedules
+                    as a group.
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid> */}
-            <Column flexGrow={1}>
+              
+              <Grid item >
+                <h1>Buttons here</h1>
+              </Grid>
+            </Grid>
+            {/* <Column flexGrow={1}>
               <Row vertical='center'>
                 <Column flexGrow={1}>
                   <Row horizontal='center'>
@@ -164,10 +204,10 @@ class Index extends Component {
                   <Row>
                     <Column flexGrow={1}>
                       <h3> Icon 3 </h3>
-                    </Column>
+                    </Column> */}
     
                     {/* CHANGE THIS DESCRIPTION SINCE WE CHANGED THIS FUNCTIONALITY. */}
-                    <Column flexGrow={1}>
+                    {/* <Column flexGrow={1}>
                       <span> <b>Collaborate</b> with friends </span>
                       <span> and create schedules </span>
                       <span> as a group. </span>
@@ -177,14 +217,14 @@ class Index extends Component {
                  <Column flexGrow={1} horizontal='center'>
                   <button type="button" class="btn btn-success">Create Schedule</button>
                   <br/>
-                  OR
+                  OR */}
                   {/* IS IT ADVISEABLE TO USE BREAK POINTS */}
-                  <br/>
+                  {/* <br/>
                   <br/>
                   <button type="button" class="btn btn-success">Check Flowchart</button>
                 </Column>
               </Row>
-            </Column>
+            </Column> */}
           </div>
         </div>        
       );
