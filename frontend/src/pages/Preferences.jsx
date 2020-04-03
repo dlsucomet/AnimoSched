@@ -62,67 +62,67 @@ class Preferences extends Component {
                 {   id: 1,
                     day_code: "M",
                     day: "Monday",
-                    checked: true,},
+                    checked: false,},
                 { 
                     id: 2,
                     day_code: "T",
                     day: "Tuesday",
-                    checked: true,},
+                    checked: false,},
                 {
                     id: 3,
                     day_code: "W",
                     day: "Wednesday",
-                    checked: true,},
+                    checked: false,},
                 {
                     id: 4, 
                     day_code: "H",
                     day: "Thursday",
-                    checked: true,},
+                    checked: false,},
                 {
                     id: 5,
                     day_code: "F",
                     day: "Friday",
-                    checked: true,},
+                    checked: false,},
                 { 
                     id: 6,
                     day_code: "S",
                     day: "Saturday",
-                    checked: true,},
+                    checked: false,},
 
                 ],
             
             buildingList:[{   
-                id: 1,
+                id: 2,
                 bldg_code: "LS",
                 building: "St. La Salle Hall",
                 checked: false,},
             { 
-                id: 2,
+                id: 3,
                 bldg_code: "Y",
                 building: "Enrique Yuchengco Hall",
                 checked: false,},
             {
-                id: 3,
+                id: 4,
                 bldg_code: "J",
                 building: "St. Joseph Hall",
                 checked: false,},
             {
-                id: 4, 
+                id: 5, 
                 bldg_code: "V",
                 building: "Velasco Hall",
                 checked: false,},
             {
-                id: 5,
+                id: 6,
                 bldg_code: "M",
                 building: "St. Miguel Hall",
                 checked: false,},
             { 
-                id: 6,
+                id: 7,
                 bldg_code: "MU",
                 building: "St. Mutien Marie Hall",
                 checked: false,},
             {
-                id: 7,
+                id: 1,
                 bldg_code: "GK",
                 building: "Gokongwei Hall",
                 checked: false,},
@@ -222,7 +222,6 @@ class Preferences extends Component {
             .then(res => {
                 console.log(res.data)
                 res.data.map(preference =>{
-                    console.log(preference)
                     if(preference.earliest_class_time != null){
                         this.setState({earliest_class_time:preference.earliest_class_time})
                     }
@@ -230,6 +229,15 @@ class Preferences extends Component {
                         this.setState({latest_class_time:preference.latest_class_time})
                     }
                     if(preference.preferred_days != null){
+                        const newDaysList = [];
+                        this.state.daysList.map(day => {
+                            if(preference.preferred_days == day.id){
+                                newDaysList.push({'id':day.id, 'day_code':day.day_code, 'day':day.day, 'checked':true})
+                            }else{
+                                newDaysList.push(day);
+                            }
+                        })
+                        this.setState({daysList: newDaysList})
                     }
                     if(preference.break_length != null){
                         this.setState({break_length:preference.break_length})
@@ -247,6 +255,15 @@ class Preferences extends Component {
                         this.setState({selectedProfs})
                     }
                     if(preference.preferred_buildings != null){
+                        const newBuildingList = [];
+                        this.state.buildingList.map(bldg => {
+                            if(preference.preferred_buildings == bldg.id){
+                                newBuildingList.push({'id':bldg.id, 'bldg_code':bldg.bldg_code, 'building':bldg.building, 'checked':true})
+                            }else{
+                                newBuildingList.push(bldg);
+                            }
+                        })
+                        this.setState({buildingList: newBuildingList})
                     }
                     if(preference.preferred_sections != null){
                         const selectedSections = this.state.selectedSections;
@@ -354,14 +371,30 @@ class Preferences extends Component {
         const id = localStorage.getItem('user_id');
         axios.delete('http://localhost:8000/api/preferencelist/'+id+'/')
         .then(res => {
+            console.log(this.state.daysList)
             this.state.daysList.map(day =>{
                 if(day.checked){
-
+                    axios.post('http://localhost:8000/api/preferences/', {preferred_days: day.id, user: id},
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).catch(err => {
+                        console.log(err.response)
+                    })
                 }
             });
+            console.log(this.state.buildingList)
             this.state.buildingList.map(bldg =>{
                 if(bldg.checked){
-
+                    axios.post('http://localhost:8000/api/preferences/', {preferred_buildings: bldg.id, user: id},
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).catch(err => {
+                        console.log(err.response)
+                    })
                 }
             });
             this.state.selectedProfs.map(prof =>{
@@ -527,17 +560,17 @@ class Preferences extends Component {
                                 Preferred Days
                                 <FormGroup row>
                                     <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id = '1' color="primary"/>}label="M" />
+                                        control = {<Checkbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id={this.state.daysList[0].id} color="primary"/>}label="M" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id = '2' color="primary"/>}label="T" />
+                                        control = {<Checkbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id={this.state.daysList[1].id} color="primary"/>}label="T" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id = '3' color="primary"/>}label="W" />
+                                        control = {<Checkbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id={this.state.daysList[2].id} color="primary"/>}label="W" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id = '4' color="primary"/>}label="H" />
+                                        control = {<Checkbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id={this.state.daysList[3].id} color="primary"/>}label="H" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id = '5' color="primary"/>}label="F" />
+                                        control = {<Checkbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id={this.state.daysList[4].id} color="primary"/>}label="F" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id = '6' color="primary"/>}label="S" />
+                                        control = {<Checkbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id={this.state.daysList[5].id} color="primary"/>}label="S" />
                                 </FormGroup>
                             </div>
 
@@ -641,26 +674,26 @@ class Preferences extends Component {
 
                                     <FormGroup>
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id = '1' color="primary"/>}label={this.state.buildingList[0].building} />
+                                        control = {<Checkbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[0].id}  color="primary"/>}label={this.state.buildingList[0].building} />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id = '2' color="primary"/>}label={this.state.buildingList[1].building} />
+                                        control = {<Checkbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[1].id} color="primary"/>}label={this.state.buildingList[1].building} />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id = '3' color="primary"/>}label={this.state.buildingList[2].building}/>
+                                        control = {<Checkbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[2].id} color="primary"/>}label={this.state.buildingList[2].building}/>
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id = '4' color="primary"/>}label={this.state.buildingList[3].building} />
+                                        control = {<Checkbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[3].id} color="primary"/>}label={this.state.buildingList[3].building} />
                                     </FormGroup>
                                     </Grid>
 
                                     <Grid item xs={6}>
                                     <FormGroup>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id = '5' color="primary"/>}label={this.state.buildingList[4].building}/>
+                                    control = {<Checkbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[4].id} color="primary"/>}label={this.state.buildingList[4].building}/>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id = '6' color="primary"/>}label={this.state.buildingList[5].building} />
+                                    control = {<Checkbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[5].id} color="primary"/>}label={this.state.buildingList[5].building} />
                                         <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id = '7' color="primary"/>}label={this.state.buildingList[6].building}/>
+                                    control = {<Checkbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[6].id} color="primary"/>}label={this.state.buildingList[6].building}/>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id = '8' color="primary"/>}label={this.state.buildingList[7].building} />
+                                    control = {<Checkbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[7].id} color="primary"/>}label={this.state.buildingList[7].building} />
                                     </FormGroup>
                                     </Grid>
                                 </Grid>
