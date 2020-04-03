@@ -120,7 +120,7 @@ class Index extends Component {
             </Row>
            
           </div>
-          <div className={"ladingpage"} style={!this.props.logged_in? sectionStyle : {display: "none"}}>
+          <div className={"landingpage"} style={!this.props.logged_in? {} : {display: "none"}}>
           <Grid container spacing={3}>
         <Grid item xs={6}>
               <Typography gutterBottom variant="h3" align="center">
@@ -131,17 +131,45 @@ class Index extends Component {
         </Grid>
         <Grid item xs={3}>
         </Grid>
-        <Grid item xs={1}>
-        </Grid>
+       
         <Grid item xs={1}>
           <img src={calendarIcon} className={"iconStyle"}/>
         </Grid>
+        {/* <Grid item xs={1}>
+        </Grid> */}
         <Grid item xs={3}>
                         <Typography variant="body1" gutterBottom>
                           Enter your courses, 
                           set your schedule, 
                           and choose your schedule, 
                           generate automatically
+                      </Typography>
+        </Grid>
+        <Grid item xs={8}>
+        </Grid>
+        <Grid item xs={1}>
+          <img src={attachIcon} className={"iconStyle"}/>
+        </Grid>
+        {/* <Grid item xs={1}>
+        </Grid> */}
+        <Grid item xs={3}>
+                        <Typography variant="body1" gutterBottom>
+                        Customize the look of your
+                        schedule and save it aS an image.
+                      </Typography>
+        </Grid>
+        <Grid item xs={8}>
+        </Grid>
+        <Grid item xs={1}>
+          <img src={laughIcon} className={"iconStyle"}/>
+        </Grid>
+        {/* <Grid item xs={1}>
+        </Grid> */}
+        <Grid item xs={3}>
+                        <Typography variant="body1" gutterBottom>
+                        collaborate with friends
+                        and create schedules
+                        as a group.
                       </Typography>
         </Grid>
       </Grid>

@@ -95,11 +95,16 @@
 }
 
 .landingpage{
-    background-image: url(../assets/Gradient_BG.png);
-    height: 100%;
+    /* background-image: url(../assets/Gradient_BG.png); */
+    /* height: 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-top: 30px;
+    color: white;
+    margin-bottom: auto;
 }
 
 .iconStyle{
