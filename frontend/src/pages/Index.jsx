@@ -9,11 +9,19 @@ import '../css/Index.css'
 import SchedViewHome from '../components/SchedViewHome';
 
 import Background from '../assets/Gradient_BG.png'
+import calendarIcon from '../assets/calendar.png'
+import attachIcon from '../assets/attach.png'
+import laughIcon from '../assets/laugh.png'
 // import { Container, Row, Col } from 'reactstrap';
 
+import Grid from '@material-ui/core/Grid';
+
 var sectionStyle = {
-  width: "100%",
-  height: "400px",
+  // width: "100%",
+  height: "100%",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
   backgroundImage:  "url(" + Background + ")"
 };
 
@@ -48,7 +56,7 @@ class Index extends Component {
       this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
       return (
-        <div>
+        <div style={!this.props.logged_in? sectionStyle : {}}>
           {this.props.menu()}
 
           <div className={"homepage"} style={this.props.logged_in ? {} : {display: "none"}}>
@@ -111,9 +119,13 @@ class Index extends Component {
             </Row>
            
           </div>
-          <div className={"ladingpage"} style={!this.props.logged_in? {sectionStyle} : {display: "none"}}>
+          <div className={"ladingpage"} style={!this.props.logged_in? sectionStyle : {display: "none"}}>
+            {/* <Grid container alignItems="center">
+              <Grid>
+
+              </Grid>
+            </Grid> */}
             <Column flexGrow={1}>
-    
               <Row vertical='center'>
                 <Column flexGrow={1}>
                   <Row horizontal='center'>
@@ -167,7 +179,7 @@ class Index extends Component {
                   <br/>
                   OR
                   {/* IS IT ADVISEABLE TO USE BREAK POINTS */}
-                  {/* <br/> */}
+                  <br/>
                   <br/>
                   <button type="button" class="btn btn-success">Check Flowchart</button>
                 </Column>
