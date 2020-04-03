@@ -95,7 +95,7 @@ class CourseOfferingsList(APIView):
           d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
           d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
           if(d['room'] != None):
-            d['room'] = Room.objects.get(id=d['room']).room_type 
+            d['room'] = Room.objects.get(id=d['room']).room_name
         return Response(serializer.data)
 
 
@@ -122,7 +122,7 @@ class SchedulesList(APIView):
         d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
         d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
         if(d['room'] != None):
-          d['room'] = Room.objects.get(id=d['room']).room_type
+          d['room'] = Room.objects.get(id=d['room']).room_name
       serializedSchedules.append(serializer.data)
     print(serializedSchedules)
     return Response(serializedSchedules)
