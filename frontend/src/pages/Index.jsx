@@ -121,18 +121,42 @@ class Index extends Component {
            
           </div>
           <div className={"ladingpage"} style={!this.props.logged_in? sectionStyle : {display: "none"}}>
-            <Grid container spacing={2}>
+          <Grid container spacing={3}>
+        <Grid item xs={6}>
+              <Typography gutterBottom variant="h3" align="center">
+                Create your schedule!
+              </Typography>
+        </Grid>
+        <Grid item xs={3}>
+        </Grid>
+        <Grid item xs={3}>
+        </Grid>
+        <Grid item xs={1}>
+        </Grid>
+        <Grid item xs={1}>
+          <img src={calendarIcon} className={"iconStyle"}/>
+        </Grid>
+        <Grid item xs={3}>
+                        <Typography variant="body1" gutterBottom>
+                          Enter your courses, 
+                          set your schedule, 
+                          and choose your schedule, 
+                          generate automatically
+                      </Typography>
+        </Grid>
+      </Grid>
+            {/* <Grid container spacing={2}>
               
               <Grid item xs={12} sm container>
                 <Grid item xs container direction="column" spacing={2} style={{padding:"20px", margin: "20px"}}>
                 <Grid item xs={6}>
-                        <img src={calendarIcon} className={"iconStyle"}/>
-                      </Grid>
+                  <img src={calendarIcon} className={"iconStyle"}/>
+                </Grid>
                   <Grid item xs>
                     <Typography gutterBottom variant="h3" align="center">
                       Create your schedule!
                     </Typography>
-                    {/* <Grid item xs={12} sm={6}> */}
+                    <Grid item xs={12} sm={6}>
                       
                       <Grid item xs={6}>
                         <Typography variant="body1" gutterBottom>
@@ -142,7 +166,7 @@ class Index extends Component {
                           generate automatically
                       </Typography>
                       </Grid>
-                    {/* </Grid> */}
+                    </Grid>
                     
                     <Typography variant="body1" color="textSecondary">
                     Customize the look of your
@@ -162,7 +186,7 @@ class Index extends Component {
               <Grid item >
                 <h1>Buttons here</h1>
               </Grid>
-            </Grid>
+            </Grid> */}
             {/* <Column flexGrow={1}>
               <Row vertical='center'>
                 <Column flexGrow={1}>
