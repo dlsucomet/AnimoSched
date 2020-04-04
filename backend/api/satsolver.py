@@ -1,6 +1,6 @@
 import datetime
 from z3 import *
-from .models import CourseOffering, Course
+from .models import CourseOffering, Course, Timeslot
 
 
 def addHardConstraints(z3, highCourses, lowCourses):
@@ -26,10 +26,27 @@ def addHardConstraints(z3, highCourses, lowCourses):
     for o in allOfferings:
         for o2 in allOfferings:
             if(o.section != o2.section or o.course != o2.course):
-                if(o.timeslot == o2.timeslot and o.day == o2.day):
-                    a = Bool(str(o.classnumber))
-                    b = Not(Bool(str(o2.classnumber)))
-                    z3.add(Implies(a,b))
+                if(o.day == o2.day):
+                    if(o.timeslot == o2.timeslot):
+                        a = Bool(str(o.classnumber))
+                        b = Not(Bool(str(o2.classnumber)))
+                        z3.add(Implies(a,b))
+                    else:
+                        firstTime = o.timeslot
+                        secondTime = o2.timeslot
+                        if(firstTime.begin_time >= secondTime.begin_time and firstTime.begin_time <= secondTime.end_time):
+                            a = Bool(str(o.classnumber))
+                            b = Not(Bool(str(o2.classnumber)))
+                            z3.add(Implies(a,b))
+                        elif(firstTime.end_time >= secondTime.begin_time and firstTime.end_time <= secondTime.end_time):
+                            a = Bool(str(o.classnumber))
+                            b = Not(Bool(str(o2.classnumber)))
+                            z3.add(Implies(a,b))
+                        elif(firstTime.end_time >= secondTime.end_time and firstTime.begin_time <= secondTime.end_time):
+                            a = Bool(str(o.classnumber))
+                            b = Not(Bool(str(o2.classnumber)))
+                            z3.add(Implies(a,b))
+
 
 def addSoftConstraints(z3, highCourses, lowCourses):
     for c in highCourses:

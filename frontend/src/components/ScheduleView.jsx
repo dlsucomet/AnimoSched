@@ -114,14 +114,34 @@ const formatDayScaleDate = (date, options) => {
 class ScheduleView extends Component {
     constructor(props){
       super(props);
+      var earliest = 9;
+      if(props.earliest != undefined){
+        earliest = props.earliest;
+      }
+      var latest = 17;
+      if(props.latest != undefined){
+        latest = props.latest;
+      }
       this.state = {  
-        classes: props.content
+        classes: props.content,
+        latest: latest,
+        earliest: earliest
       }
     }
 
     componentWillReceiveProps(props){
+      var earliest = 9;
+      if(props.earliest != undefined){
+        earliest = props.earliest;
+      }
+      var latest = 17;
+      if(props.latest != undefined){
+        latest = props.latest;
+      }
       this.setState({
-        classes: props.content
+        classes: props.content,
+        latest: latest,
+        earliest: earliest
       });
     }
     render() { 
@@ -130,7 +150,7 @@ class ScheduleView extends Component {
             <Paper>
                 <Scheduler data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
-                <WeekView startDayHour={9} endDayHour={17} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
+                <WeekView startDayHour={this.state.earliest} endDayHour={this.state.latest} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
                 <Appointments />
                 <AppointmentTooltip
                   // headerComponent={Header}

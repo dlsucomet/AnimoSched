@@ -319,7 +319,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
+            <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -352,9 +352,9 @@ class GenerateSchedule extends Component {
             res.data.map(newSchedule =>{
                 var count = 0;
                 const scheduleContent = []
+                var earliest = 9
+                var latest = 17
                 newSchedule.offerings.map(offering=>{
-                    console.log("offering")
-                    console.log(offering)
                     var startTime = offering.timeslot_begin.split(':');
                     var endTime = offering.timeslot_end.split(':');
                     const newContent = 
@@ -371,19 +371,28 @@ class GenerateSchedule extends Component {
                         days: offering.day,
                         classCode: offering.classnumber 
                     }
+                    if(earliest > Number(startTime[0])){
+                        earliest = Number(startTime[0])
+                    }
+                    if(latest < Number(endTime[0])){
+                        latest = Number(endTime[0])
+                    }
                     scheduleContent.push(newContent);
                     count += 1;
                 })
                 schedCount += 1;
                 schedules.push({
-                    id: count,
+                    id: schedCount,
                     title: "Schedule "+schedCount.toString(),
                     scheduleContent: scheduleContent,
                     tableContent: [],
                     prefContent: [],
                     conflictsContent: newSchedule.information,
+                    earliest: 9,
+                    latest: 18 
                 });
             })
+            console.log(schedules)
             this.setState({schedules});
             this.setSchedInfo();
             this.setState({success: true});

@@ -44,6 +44,8 @@ class GenSchedInfo extends Component {
             prefContent: props.prefContent,
             id: props.id,
             schedTitle: props.titleName,
+            earliest: props.earliest,
+            latest: props.latest,
             boolEdit: false,
         }
         this.editableLabel = React.createRef();
@@ -57,8 +59,9 @@ class GenSchedInfo extends Component {
             prefContent: props.prefContent,
             id: props.id,
             schedTitle: props.titleName,
+            earliest: props.earliest,
+            latest: props.latest,
         });
-
     }
 
     _handleFocus=(text)=> {
@@ -121,7 +124,7 @@ class GenSchedInfo extends Component {
                             {/* <DoneIcon fontSize="medium" style={{color: "green"}} /> */}
                         </Row>
                    
-                        <ScheduleView content={this.state.scheduleContent}/>
+                        <ScheduleView content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest}/>
                     </Column>
                     <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "40px"}} >
                         <Row horizontal = 'center'>
