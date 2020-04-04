@@ -43,6 +43,7 @@ const styles = theme => ({
       marginLeft: -12,
     },
     schedButton:{
+        textTransform: "none",
         borderRadius: "25px",
         padding: "10px",
         paddingLeft: "30px",
