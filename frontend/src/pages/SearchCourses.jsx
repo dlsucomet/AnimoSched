@@ -17,6 +17,7 @@ import axios from 'axios';
 
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
+import groupArray from 'group-array';
 
 class SearchCourses extends Component {
     constructor(props){
@@ -103,12 +104,41 @@ class SearchCourses extends Component {
       this.state.selectedCourses.map(course =>{
         axios.get('http://localhost:8000/api/courseofferingslist/'+course.id+'/')
         .then(res => {
-            res.data.map(offering => {
-                const newSiteData = this.state.siteData;
-                offering = this.createData(offering.classnumber, offering.course, offering.section, offering.faculty, offering.day, offering.timeslot_begin, offering.timeslot_end, offering.room, offering.max_enrolled, offering.current_enrolled);
-                newSiteData.push(offering)
-                this.setState({siteData: newSiteData})
-            })
+            var arranged = groupArray(res.data, 'classnumber');
+            console.log(arranged)
+            for (let key in arranged) {
+              console.log(key, arranged[key]);
+              var days = []
+              var day = ''
+              var classnumber = ''
+              var course = ''
+              var section = ''
+              var faculty = ''
+              var timeslot_begin = ''
+              var timeslot_end = ''
+              var room = ''
+              var max_enrolled = ''
+              var current_enrolled = ''
+              arranged[key].map(offering => {
+                days.push(offering.day)
+                classnumber = offering.classnumber
+                course = offering.course
+                section = offering.section
+                faculty = offering.faculty
+                timeslot_begin = offering.timeslot_begin
+                timeslot_end = offering.timeslot_end
+                room = offering.room
+                max_enrolled = offering.max_enrolled
+                current_enrolled = offering.current_enrolled
+              })
+              days.map(day_code => {
+                day += day_code;
+              })
+              const newSiteData = this.state.siteData;
+              const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+              newSiteData.push(offering)
+              this.setState({siteData: newSiteData})
+            }
         })
       })
     }
