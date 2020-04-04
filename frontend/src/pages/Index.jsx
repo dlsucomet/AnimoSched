@@ -3,7 +3,7 @@ import { Column, Row } from 'simple-flexbox';
 import Menu from '../components/Menu.jsx';
 import axios from 'axios';
 import ReactDOM from "react-dom";
-import { Pagination, PaginationItem, PaginationLink, Button } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 import '../css/Index.css'
 
 import SchedViewHome from '../components/SchedViewHome';
@@ -12,17 +12,48 @@ import Background from '../assets/Gradient_BG.png'
 import calendarIcon from '../assets/calendar.png'
 import attachIcon from '../assets/attach.png'
 import laughIcon from '../assets/laugh.png'
+import whiteBlob from '../assets/whiteBlob.png'
 // import { Container, Row, Col } from 'reactstrap';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import Button from '@material-ui/core/Button';
+
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+  buttonStyle:{
+      textTransform: "none",
+      width: "190px",
+      borderRadius: "25px",
+      padding: "10px",
+      paddingLeft: "30px",
+      paddingRight: "30px",
+      backgroundColor: "#16775D",
+      border: "none",
+      color: "white",
+      boxShadow: "6px 5px #e8f4ea",
+      borderStyle: "solid",
+      borderColor: "#16775D",
+      marginTop: "20px",
+      '&:hover': {
+          backgroundColor: "white",
+          color: "#16775D"
+        },
+  }
+});
+
 var sectionStyle = {
   // width: "100%",
-  height: "100%",
+  minHeight: "100vh",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
+  overflow: "hidden",
   backgroundImage:  "url(" + Background + ")"
 };
 
@@ -54,8 +85,11 @@ class Index extends Component {
   }
 
     render() {
-      this.state.pagesCount = this.state.generatedContents.length;
+        this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
+
+        const { classes } = this.props;
+
       return (
         <div style={!this.props.logged_in? sectionStyle : {}}>
           {this.props.menu()}
@@ -83,10 +117,10 @@ class Index extends Component {
 
                 <Column >
                 <div class='optionList'>
-                    <center><Button color="success" className="option-choices">EDIT</Button></center>
+                    {/* <center><Button color="success" className="option-choices">EDIT</Button></center>
                     <center> <Button color="success" className="option-choices">CUSTOMIZE</Button></center>
                     <center><Button color="success" className="option-choices">EXPORT</Button></center>
-                    <center><Button color="secondary" className="option-choices">DELETE</Button></center>
+                    <center><Button color="secondary" className="option-choices">DELETE</Button></center> */}
                   </div>
                 </Column>
 
@@ -120,51 +154,103 @@ class Index extends Component {
             </Row>
            
           </div>
-          <div className={"ladingpage"} style={!this.props.logged_in? sectionStyle : {display: "none"}}>
-            <Grid container spacing={2}>
-              
-              <Grid item xs={12} sm container>
-                <Grid item>
-                <Grid item xs={6}>
-                        <img src={calendarIcon} className={"iconStyle"}/>
-                      </Grid>
-                </Grid>
-                <Grid item xs container direction="column" spacing={2} style={{padding:"20px", margin: "20px"}}>
-                  <Grid item xs>
-                    <Typography gutterBottom variant="h3" align="center">
-                      Create your schedule!
-                    </Typography>
-                    {/* <Grid item xs={12} sm={6}> */}
-                      
-                      <Grid item xs={6}>
-                        <Typography variant="body1" gutterBottom>
-                          Enter your courses, 
-                          set your schedule, 
-                          and choose your schedule, 
-                          generate automatically
-                      </Typography>
-                      </Grid>
-                    {/* </Grid> */}
-                    
-                    <Typography variant="body1" color="textSecondary">
-                    Customize the look of your
-                    schedule and save it aS an image.
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="body1">
-                    collaborate with friends
-                    and create schedules
-                    as a group.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              
-              <Grid item >
-                <h1>Buttons here</h1>
-              </Grid>
+          <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
+          
+          <img src={whiteBlob} className={"whiteBlob"}/>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+                  <Typography gutterBottom variant="h3" align="center">
+                    Create your schedule!
+                  </Typography>
             </Grid>
+            <Grid item xs={6}>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+              <img src={calendarIcon} className={"iconStyle"}/>
+            </Grid>
+            <Grid item xs={3}>
+                            <Typography variant="body1" gutterBottom>
+                              Enter your courses, 
+                              set your schedule, 
+                              and choose your schedule, 
+                              generate automatically
+                          </Typography>
+            </Grid>
+            <Grid item xs={4}>
+            </Grid>
+            <Grid item xs={2} style={{zIndex:"100"}}>
+              {/* <center><button type="button" class="btn btn-success">Create Schedule</button></center> */}
+              <center>
+                <Button
+                  variant="contained"
+                  className={classes.buttonStyle}
+     
+                  // style={{backgroundColor: "green"}}
+                  >
+                  Create Schedule
+                </Button>
+              </center>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+              <img src={attachIcon} className={"iconStyle"}/>
+            </Grid>
+            <Grid item xs={3}>
+                            <Typography variant="body1" gutterBottom>
+                            Customize the look of your
+                            schedule and save it as an image.
+                          </Typography>
+            </Grid>
+            <Grid item xs={4}>
+            </Grid>
+            <Grid item xs={2} style={{zIndex:"100"}}>
+              <br></br>
+              <Typography variant="body1" gutterBottom align="center" style={{color:"gray"}}>
+                OR
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+              <img src={laughIcon} className={"iconStyle"}/>
+            </Grid>
+        
+            <Grid item xs={3}>
+                            <Typography variant="body1" gutterBottom>
+                            Share your schedules,
+                            view your friends' schedules, 
+                            making schedule coordination easier
+                            {/* collaborate with friends
+                            and create schedules
+                            as a group. */}
+                          </Typography>
+            </Grid>
+            <Grid item xs={4}>
+            </Grid>
+            <Grid item xs={2} style={{zIndex:"100"}}>
+              {/* <center><button type="button" class="btn btn-success">Check Flowchart</button></center> */}
+              <center>
+                <Button
+                  variant="contained"
+                  className={classes.buttonStyle}
+     
+                  // style={{backgroundColor: "green"}}
+                  >
+                  Check Flowchart
+                </Button>
+              </center>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+          </Grid>
+
             {/* <Column flexGrow={1}>
               <Row vertical='center'>
                 <Column flexGrow={1}>
@@ -230,4 +316,10 @@ class Index extends Component {
       );
     }
   }
-  export default Index;
+
+  Index.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+
+
+export default withStyles(styles)(Index);

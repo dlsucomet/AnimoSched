@@ -95,14 +95,36 @@
 }
 
 .landingpage{
-    background-image: url(../assets/Gradient_BG.png);
-    height: 100%;
+    /* background-image: url(../assets/Gradient_BG.png); */
+    /* height: 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-top: 30px;
+    color: white;
+    margin-bottom: auto;
 }
 
 .iconStyle{
     height: 70px;
     width: 70px;
+}
+
+.whiteBlob{
+    background-image: url(../assets/whiteBlob.png);
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    background-size: cover;
+}
+
+.sectionStyle{
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
