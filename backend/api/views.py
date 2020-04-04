@@ -113,7 +113,8 @@ class SchedulesList(APIView):
     serializedSchedules = []
     schedules = solve(highCourses, lowCourses, preferences)
     for s in schedules:
-      serializer = CourseOfferingSerializer(s, many=True)
+      serializedSchedule = {}
+      serializer = CourseOfferingSerializer(s['offerings'], many=True)
       for d in serializer.data:
         if(d['faculty'] != None):
           d['faculty'] = Faculty.objects.get(id=d['faculty']).full_name
@@ -124,5 +125,7 @@ class SchedulesList(APIView):
         d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
         if(d['room'] != None):
           d['room'] = Room.objects.get(id=d['room']).room_name
-      serializedSchedules.append(serializer.data)
+      serializedSchedule['offerings'] = serializer.data
+      serializedSchedule['information'] = s['information']
+      serializedSchedules.append(serializedSchedule)
     return Response(serializedSchedules)

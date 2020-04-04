@@ -1,6 +1,6 @@
 import datetime
 from z3 import *
-from .models import CourseOffering
+from .models import CourseOffering, Course
 
 
 def addHardConstraints(z3, highCourses, lowCourses):
@@ -95,15 +95,33 @@ def solve(highCourses, lowCourses, preferences):
 
     schedules = []
 
-    while(str(z3.check()) == 'sat'):
+    for i in range(0, 10):
+        z3.check()
         model = z3.model()
+        schedule = {}
+        information = []
+        selectedCourses = []
         offerings = CourseOffering.objects.none() 
         for o in model:
             if(model[o]):
                 offerings = offerings | CourseOffering.objects.filter(classnumber=int(o.name()))
         if(len(offerings) == 0):
             break
-        schedules.append(offerings)
+        for o in offerings:
+            selectedCourses.append(o.course.course_code)
+        selectedCourses = set(selectedCourses)
+        for c in highCourses:
+            course = Course.objects.get(id=c)
+            if not (course.course_code in selectedCourses):
+                information.append(course.course_code)
+        for c in lowCourses:
+            if not (course.course_code in selectedCourses):
+                information.append(course.course_code)
+            
+        print(information)
+        schedule['offerings'] = offerings
+        schedule['information'] = set(information)
+        schedules.append(schedule)
         addExtraConstraints(z3, model)
     return schedules 
     

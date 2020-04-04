@@ -352,7 +352,7 @@ class GenerateSchedule extends Component {
             res.data.map(newSchedule =>{
                 var count = 0;
                 const scheduleContent = []
-                newSchedule.map(offering=>{
+                newSchedule.offerings.map(offering=>{
                     console.log("offering")
                     console.log(offering)
                     var startTime = offering.timeslot_begin.split(':');
@@ -381,7 +381,7 @@ class GenerateSchedule extends Component {
                     scheduleContent: scheduleContent,
                     tableContent: [],
                     prefContent: [],
-                    conflictsContent: [],
+                    conflictsContent: newSchedule.information,
                 });
             })
             this.setState({schedules});
