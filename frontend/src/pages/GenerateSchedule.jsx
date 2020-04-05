@@ -374,8 +374,8 @@ class GenerateSchedule extends Component {
                     if(earliest > Number(startTime[0])){
                         earliest = Number(startTime[0])
                     }
-                    if(latest < Number(endTime[0])){
-                        latest = Number(endTime[0])
+                    if(latest < Number(endTime[0]) + 1){
+                        latest = Number(endTime[0]) + 1
                     }
                     scheduleContent.push(newContent);
                     count += 1;
@@ -388,8 +388,8 @@ class GenerateSchedule extends Component {
                     tableContent: [],
                     prefContent: [],
                     conflictsContent: newSchedule.information,
-                    earliest: 9,
-                    latest: 18 
+                    earliest: earliest,
+                    latest: latest 
                 });
             })
             console.log(schedules)

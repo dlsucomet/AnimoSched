@@ -127,13 +127,15 @@ def solve(highCourses, lowCourses, preferences):
         for o in offerings:
             selectedCourses.append(o.course.course_code)
         selectedCourses = set(selectedCourses)
+        allCourses = []
         for c in highCourses:
-            course = Course.objects.get(id=c)
-            if not (course.course_code in selectedCourses):
-                information.append(course.course_code)
+            allCourses.append(Course.objects.get(id=c).course_code)
         for c in lowCourses:
-            if not (course.course_code in selectedCourses):
-                information.append(course.course_code)
+            allCourses.append(Course.objects.get(id=c).course_code)
+            
+        for c in allCourses:
+            if not (c in selectedCourses):
+                information.append(c)
             
         print(information)
         schedule['offerings'] = offerings
