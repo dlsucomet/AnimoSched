@@ -66,6 +66,7 @@ class Index extends Component {
       currentPage: 0,
       currentContent: <SchedViewHome/>,
       generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+      // generatedContents: [],
     }
 
     handlePageChange = (e,index) => {
@@ -95,17 +96,20 @@ class Index extends Component {
           {this.props.menu()}
 
           <div className={"homepage"} style={this.props.logged_in ? {} : {display: "none"}}>
+            <div className={"hasContent"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
               <Row horizontal="center">
-                  <div style={{paddingTop:"20px"}}>
+                  <div style={(this.state.generatedContents != null) ? {paddingTop:"20px"} : {display: "none"}}>
                     <center ><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
                   </div>
                 </Row>
               <Row horizontal="center">
                
-                <Column flexShrink={1}>
-                  <div class="sidemenu">
-                    <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
-                    <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
+                <Column flexShrink={1} >
+                  <div class="sidemenu" >
+                    <div style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
+                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
+                    </div>
                   </div>
                 </Column>
 
@@ -126,8 +130,8 @@ class Index extends Component {
 
               </Row>
 
-              <Row horizontal='center'>
-              <div className = "paginationContainer">
+              {/* <Row horizontal='center'>
+              <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
                 <Row horizontal='center'>
                     <Pagination aria-label="Page navigation example">
                         <PaginationItem disabled={this.state.currentPage <= 0}>
@@ -151,9 +155,28 @@ class Index extends Component {
                     </Pagination>
                 </Row>
               </div>
-            </Row>
-           
+            </Row> */}
+            </div>
+                          
+                        
+            <div className={"hasNotContent"} style={(this.state.generatedContents.length <= 0) ? {} : {display: "none"}}>
+              <Typography gutterBottom variant="h4" align="center" style={{marginTop: "30px"}}>
+                    You haven't made any schedules yet!
+              </Typography>
+                <center>
+                  <a href="/generateSchedule" style={{textDecoration: "none"}}>
+                  <Button
+                    variant="contained"
+                    className={classes.buttonStyle}
+                    >
+                    Create Schedule
+                  </Button>
+                </a>
+              </center>
+            </div>
+
           </div>
+
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           
           <img src={whiteBlob} className={"whiteBlob"}/>
