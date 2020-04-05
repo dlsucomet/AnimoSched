@@ -51,7 +51,7 @@ def addSoftConstraints(z3, highCourses, lowCourses):
     for c in highCourses:
         offerings = CourseOffering.objects.filter(course=c)
         for o in offerings:
-            z3.add_soft(Bool(str(o.classnumber)), 10) 
+            z3.add_soft(Bool(str(o.classnumber)), 2) 
     for c in lowCourses:
         offerings = CourseOffering.objects.filter(course=c)
         for o in offerings:
@@ -59,6 +59,7 @@ def addSoftConstraints(z3, highCourses, lowCourses):
 
 def addPreferences(z3, highCourses, lowCourses, preferences):
     allOfferings = CourseOffering.objects.none()
+    otherPreferences = {}
     for c in highCourses:
         offerings = CourseOffering.objects.filter(course=c)
         allOfferings = allOfferings | offerings
@@ -67,9 +68,15 @@ def addPreferences(z3, highCourses, lowCourses, preferences):
         allOfferings = allOfferings | offerings
     for p in preferences:
         if(p.earliest_class_time != None):
-            print(p.earliest_class_time)
+            earliest = p.earliest_class_time
+            for o in allOfferings:
+                if(earliest > o.timeslot.begin_time):
+                    z3.add_soft(Not(Bool(str(o.classnumber))))
         if(p.latest_class_time != None):
-            print(p.latest_class_time)
+            latest = p.latest_class_time
+            for o in allOfferings:
+                if(latest < o.timeslot.end_time):
+                    z3.add_soft(Not(Bool(str(o.classnumber))))
         if(p.preferred_days != None):
             day_id = p.preferred_days.id
             for o in allOfferings:
@@ -89,11 +96,12 @@ def addPreferences(z3, highCourses, lowCourses, preferences):
                     if(faculty_id == o.faculty.id):
                         z3.add_soft(Bool(str(o.classnumber)))
         if(p.min_courses != None):
-            print(p.min_courses)
+            otherPreferences['min_courses'] = p.min_courses
         if(p.max_courses != None):
-            print(p.max_courses)
+            otherPreferences['max_courses'] = p.max_courses
         if(p.break_length != None):
-            print(p.break_length)
+            otherPreferences['break_length'] = p.break_length
+    return otherPreferences
 
 def addExtraConstraints(z3, model):
     current = []
@@ -107,7 +115,7 @@ def solve(highCourses, lowCourses, preferences):
 
     addHardConstraints(z3, highCourses, lowCourses)
     addSoftConstraints(z3, highCourses, lowCourses)
-    addPreferences(z3, highCourses, lowCourses, preferences)
+    prefernces = addPreferences(z3, highCourses, lowCourses, preferences)
 
     schedules = []
 
