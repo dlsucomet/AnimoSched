@@ -47,16 +47,15 @@ def addHardConstraints(z3, highCourses, lowCourses):
                             b = Not(Bool(str(o2.classnumber)))
                             z3.add(Implies(a,b))
 
-
 def addSoftConstraints(z3, highCourses, lowCourses):
     for c in highCourses:
         offerings = CourseOffering.objects.filter(course=c)
         for o in offerings:
-            z3.add_soft(Bool(str(o.classnumber)), 10)
+            z3.add_soft(Bool(str(o.classnumber)), 10) 
     for c in lowCourses:
         offerings = CourseOffering.objects.filter(course=c)
         for o in offerings:
-            z3.add_soft(Bool(str(o.classnumber)), 1)
+            z3.add_soft(Bool(str(o.classnumber)))
 
 def addPreferences(z3, highCourses, lowCourses, preferences):
     allOfferings = CourseOffering.objects.none()
@@ -86,8 +85,9 @@ def addPreferences(z3, highCourses, lowCourses, preferences):
         if(p.preferred_faculty != None):
             faculty_id = p.preferred_faculty.id
             for o in allOfferings:
-                if(faculty_id == o.faculty.id):
-                    z3.add_soft(Bool(str(o.classnumber)))
+                if(o.faculty != None):
+                    if(faculty_id == o.faculty.id):
+                        z3.add_soft(Bool(str(o.classnumber)))
         if(p.min_courses != None):
             print(p.min_courses)
         if(p.max_courses != None):

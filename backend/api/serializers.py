@@ -63,10 +63,10 @@ class CoursePrioritySerializer(serializers.ModelSerializer):
     model = CoursePriority 
     fields = ('id', 'courses', 'priority', 'user')
 
-class CourseScheduleSerializer(serializers.ModelSerializer):
+class ScheduleSerializer(serializers.ModelSerializer):
   class Meta:
     model = Schedule 
-    fields = ('id', 'courseOfferings')
+    fields = ('id', 'courseOfferings', 'user')
 
 class PreferenceSerializer(serializers.ModelSerializer):
   class Meta:
@@ -76,7 +76,7 @@ class PreferenceSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'is_active')
+    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'friends', 'is_active')
 
 class CustomRegisterSerializer(RegisterSerializer):
     # username = serializers.CharField(required=True)

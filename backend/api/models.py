@@ -137,14 +137,6 @@ class CourseOffering(models.Model):
         verbose_name = _('course offering')
         verbose_name_plural = _('course offerings')
 
-class Schedule(models.Model):
-    courseOfferings = models.ManyToManyField(CourseOffering)
-    timestamp = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = _('schedule')
-        verbose_name_plural = _('schedules')
-
 class User(AbstractBaseUser):
     # username = models.CharField(max_length=9) 
     username = None
@@ -154,7 +146,7 @@ class User(AbstractBaseUser):
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
-    schedules = models.ManyToManyField(Schedule)
+    # schedules = models.ManyToManyField(Schedule)
     is_active = models.BooleanField(default=True)
     objects = UserManager()
     friends = models.ManyToManyField('self')
@@ -170,6 +162,15 @@ class User(AbstractBaseUser):
 
     def __str__(self):              
         return self.email
+
+class Schedule(models.Model):
+    courseOfferings = models.ManyToManyField(CourseOffering)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('schedule')
+        verbose_name_plural = _('schedules')
 
 class CoursePriority(models.Model):
     courses = models.ForeignKey(Course,on_delete=models.CASCADE)

@@ -288,9 +288,9 @@ class GenerateSchedule extends Component {
             return {currentPage};
             });
 
-        this.handleScrollToGen();
+        // this.handleScrollToGen();
 
-        if(this.state.savedScheds.includes(this.state.generatedContents[index])){
+        if(this.state.savedScheds.includes(this.state.generatedContents[index].key)){
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
@@ -320,7 +320,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -390,7 +390,8 @@ class GenerateSchedule extends Component {
                     prefContent: [],
                     conflictsContent: newSchedule.information,
                     earliest: earliest,
-                    latest: latest 
+                    latest: latest,
+                    offerings: newSchedule.offerings
                 });
             })
             console.log(schedules)
@@ -446,33 +447,50 @@ class GenerateSchedule extends Component {
 
     handleSaveChange=()=>{
 
-        if(this.state.savedScheds.includes(this.state.currentContent)){
-            
+        if(this.state.savedScheds.includes(this.state.currentContent.key)){
             var newArray = [...this.state.savedScheds];
-            var index = newArray.filter(value => value.id == this.state.currentContent.id); 
-            if(index !== -1){
-                newArray.splice(index, 1);
-              }
+            const index = newArray.indexOf(this.state.currentContent.key);
+            if (index > -1) {
+            newArray.splice(index, 1);
+            }
             
             this.setState({savedScheds: newArray});
 
             this.setState({saveButtonLabel: "Save Schedule"});
-            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white", border: "none"};
-            this.setState({saveButtonStyle: styleChange});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
+            this.setState({saveButtonStyle: styleChange})
         }else{
-
-
-            this.setState(state=>{
-                const savedScheds = state.savedScheds.concat(state.currentContent);
-                return {savedScheds};
-                
+            const courseOfferings = []
+            const user_id = localStorage.getItem('user_id')
+            this.state.currentContent.props.offerings.map(offering => {
+                courseOfferings.push(offering.id)
             })
-    
-            
+            axios.post('http://localhost:8000/api/schedules/',{
+                courseOfferings: courseOfferings,
+                user: user_id
+            }).then(res => {
+                // axios.get('http://localhost:8000/api/users/'+user_id+'/')
+                // .then(res => {
+                //     const schedules = res.data.schedules;
+                //     schedules.push(sched_id);
+                //     axios.patch('http://localhost:8000/api/users/'+user_id+'/',{
+                //         schedules: schedules
+                //     }).then(res => {
+                //         console.log(res)
+                        
+                //     }).catch(err => {
+                //         console.log(err.response)
+                //     })
+                // })
+            })
+            this.setState(state=>{
+                const savedScheds = state.savedScheds.concat(state.currentContent.key);
+                return {savedScheds};
+            })
+
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
-            
         }
         
 

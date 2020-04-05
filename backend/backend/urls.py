@@ -6,6 +6,7 @@ from api import views
 
 router = routers.DefaultRouter()                      
 router.register(r'users', views.UserViewSet)
+router.register(r'schedules', views.ScheduleViewSet)
 router.register(r'courses', views.CourseViewSet)     
 router.register(r'degrees', views.DegreeViewSet)     
 router.register(r'faculty', views.FacultyViewSet)     

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
-from .serializers import CustomRegisterSerializer, TimeslotSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
-from .models import User, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room
+from .serializers import CustomRegisterSerializer, ScheduleSerializer, TimeslotSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
+from .models import User, Schedule, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room
 from .satsolver import solve
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -54,6 +54,10 @@ class PreferenceViewSet(viewsets.ModelViewSet):
 class CourseOfferingViewSet(viewsets.ModelViewSet):       
   serializer_class = CourseOfferingSerializer 
   queryset = CourseOffering.objects.all()              
+
+class ScheduleViewSet(viewsets.ModelViewSet):       
+  serializer_class = ScheduleSerializer 
+  queryset = Schedule.objects.all()              
 
 class PreferenceList(APIView):
     def get(self, request, pk, format=None):
