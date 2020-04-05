@@ -100,7 +100,6 @@ def addExtraConstraints(z3, model):
     for o in model:
         if(model[o]):
             current.append((Not(Bool(str(o)))))
-    print(current)
     z3.add(Or(tuple(current)))
 
 def solve(highCourses, lowCourses, preferences):
@@ -137,11 +136,11 @@ def solve(highCourses, lowCourses, preferences):
             if not (c in selectedCourses):
                 information.append(c)
             
-        print(information)
         schedule['offerings'] = offerings
         schedule['information'] = set(information)
         schedules.append(schedule)
         addExtraConstraints(z3, model)
+        addPreferences(z3, highCourses, lowCourses, preferences)
     return schedules 
     
 
