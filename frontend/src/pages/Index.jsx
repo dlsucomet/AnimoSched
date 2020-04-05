@@ -121,6 +121,30 @@ class Index extends Component {
 
                 <Column >
                 <div class='optionList'>
+                  {/* <Button
+                      variant="contained"
+                      className={classes.buttonStyle}
+                      >
+                      Edit
+                    </Button>
+                    <Button
+                    variant="contained"
+                    className={classes.buttonStyle}
+                    >
+                    Customize
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.buttonStyle}
+                    >
+                    Export
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.buttonStyle}
+                    >
+                    Delete
+                  </Button> */}
                     {/* <center><Button color="success" className="option-choices">EDIT</Button></center>
                     <center> <Button color="success" className="option-choices">CUSTOMIZE</Button></center>
                     <center><Button color="success" className="option-choices">EXPORT</Button></center>
@@ -130,7 +154,7 @@ class Index extends Component {
 
               </Row>
 
-              {/* <Row horizontal='center'>
+              <Row horizontal='center'>
               <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
                 <Row horizontal='center'>
                     <Pagination aria-label="Page navigation example">
@@ -155,11 +179,11 @@ class Index extends Component {
                     </Pagination>
                 </Row>
               </div>
-            </Row> */}
+            </Row>
             </div>
                           
                         
-            <div className={"hasNotContent"} style={(this.state.generatedContents.length <= 0) ? {} : {display: "none"}}>
+            <div className={"hasNoContent"} style={(this.state.generatedContents.length <= 0) ? {} : {display: "none"}}>
               <Typography gutterBottom variant="h4" align="center" style={{marginTop: "30px"}}>
                     You haven't made any schedules yet!
               </Typography>

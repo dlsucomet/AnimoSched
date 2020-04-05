@@ -128,3 +128,8 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.MuiGrid-root makeStyles-container-31 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-wrap-xs-nowrap{
+    width: 500px;
+    height: 500px;
+}

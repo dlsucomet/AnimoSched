@@ -22,6 +22,8 @@ import Room from '@material-ui/icons/Room';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ClassIcon from '@material-ui/icons/Class';
 
+import '../css/ScheduleView.css';
+
 const theme = createMuiTheme({ palette: { type: "light", primary: blue } });
 
 const styles = {
@@ -148,7 +150,7 @@ class ScheduleView extends Component {
         return (
             <MuiThemeProvider theme={theme}>
             <Paper>
-                <Scheduler data={this.state.classes}>
+                <Scheduler id='scheduleView' data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
                 <WeekView startDayHour={this.state.earliest} endDayHour={this.state.latest} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
                 <Appointments />

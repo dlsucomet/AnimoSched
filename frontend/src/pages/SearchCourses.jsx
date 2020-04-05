@@ -19,6 +19,34 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import groupArray from 'group-array';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    
+  },
+  wrapper: {
+    // margin: theme.spacing(1),
+    position: 'relative',
+    
+
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+    paddingTop: '5px',
+    paddingBottom: '5px',
+  },
+});
+
 class SearchCourses extends Component {
     constructor(props){
       super(props);
@@ -27,7 +55,8 @@ class SearchCourses extends Component {
         database: [],
         siteData: [],
         courseList: [],
-        selectedCourses: []
+        selectedCourses: [],
+        loading: false,
       }
     }
 
@@ -100,6 +129,11 @@ class SearchCourses extends Component {
     }
 
     searchCourses = () =>{
+      //start loading
+      if(this.state.selectedCourses.length > 0){
+        this.setState({loading: true});
+      }
+     
       this.setState({siteData: []})
       this.state.selectedCourses.map(course =>{
         axios.get('http://localhost:8000/api/courseofferingslist/'+course.id+'/')
@@ -138,6 +172,8 @@ class SearchCourses extends Component {
               const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
               newSiteData.push(offering)
               this.setState({siteData: newSiteData})
+              //Finish Loading
+              this.setState({loading: false});
             }
         })
       })
@@ -148,6 +184,8 @@ class SearchCourses extends Component {
     }
 
     render() {
+      const { classes } = this.props;
+
       const StyledTableCell = withStyles(theme => ({
         head: {
           backgroundColor: '#006A4E',
@@ -176,13 +214,20 @@ class SearchCourses extends Component {
                   <h2>Search all your courses in one go!</h2>
                     <div style={{display: "flex", justifyContent: "center"}}>
                       <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} courseList={this.state.courseList} />
-                      <Button
-                            variant="contained"
-                            color = "Primary"
-                            style={{backgroundColor: "green", color:"white"}}
-                            onClick={this.searchCourses}>
-                            <SearchIcon/>  
-                      </Button>
+                      <div className={classes.root}>
+                          <div className={classes.wrapper} >
+                            <Button
+                                  variant="contained"
+                                  color = "Primary"
+                                  disabled={this.state.loading}
+                                  style={{backgroundColor: "green", color:"white", height:"55px"}}
+                                  onClick={this.searchCourses}>
+                                  <SearchIcon/>  
+                            </Button>
+                            {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+                          </div>
+                      </div>
+                      
                     </div>
                     
                   
@@ -248,4 +293,8 @@ class SearchCourses extends Component {
       );
     }
   }
-  export default SearchCourses;
+
+  SearchCourses.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+    export default withStyles(styles)(SearchCourses);
