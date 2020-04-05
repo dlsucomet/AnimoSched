@@ -17,6 +17,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import Button from '@material-ui/core/Button';
+
 class SchedViewHome extends Component {
     state = {  }
     render() { const StyledTableCell = withStyles(theme => ({
@@ -48,15 +53,56 @@ class SchedViewHome extends Component {
         createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
       ];
         return (
-            <Row horizontal="center">
-               
-                <Column flexShrink={1}>
-                  <div class="sidemenu">
-                    <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
-                    <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
-                  </div>
-                </Column>
+          // <div class='savedSchedContent' style={{block: "display"}}>
+          //   <Grid container spacing={3}>
+          //   </Grid>
+          //     <Grid item xs={1}>
+          //     <Grid item xs={10}>
+          //       <center><SavedSchedule/></center>
+          //     </Grid>
+          //     <Grid item xs={1}>
+                
 
+          //     </Grid>
+          //     <Grid item xs={12}>
+          //     <div className="viewCoursesHome">
+          //               <TableContainer component={Paper}>
+          //                 <Table aria-label="customized table">
+          //                   <TableHead>
+          //                     <TableRow>
+          //                       <StyledTableCell> Class Number </StyledTableCell>
+          //                       <StyledTableCell> Course </StyledTableCell>
+          //                       <StyledTableCell> Section </StyledTableCell>
+          //                       <StyledTableCell> Faculty </StyledTableCell>
+          //                       <StyledTableCell> Day </StyledTableCell>
+          //                       <StyledTableCell> Time </StyledTableCell>
+          //                       <StyledTableCell> Room </StyledTableCell>
+          //                       <StyledTableCell> Capacity </StyledTableCell>
+          //                       <StyledTableCell> Enrolled </StyledTableCell>
+          //                     </TableRow>
+          //                   </TableHead>
+          //                   <TableBody>
+          //                     {rows.map(row => (
+          //                       <StyledTableRow key={row.classNmbr}>
+          //                         <StyledTableCell> {row.classNmbr} </StyledTableCell>
+          //                         <StyledTableCell> {row.course} </StyledTableCell>
+          //                         <StyledTableCell> {row.section} </StyledTableCell>
+          //                         <StyledTableCell> {row.faculty} </StyledTableCell>
+          //                         <StyledTableCell> {row.day} </StyledTableCell>
+          //                         <StyledTableCell> {row.startTime} - {row.endTime} </StyledTableCell>
+          //                         <StyledTableCell> {row.room} </StyledTableCell>
+          //                         <StyledTableCell align="right"> {row.capacity} </StyledTableCell>
+          //                         <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
+          //                       </StyledTableRow>
+          //                     ))}
+          //                   </TableBody>
+          //                 </Table>
+          //               </TableContainer>
+          //             </div>
+          //     </Grid>
+          //   </Grid>
+          // </div>
+            <Row horizontal="center">
                 <Column flexShrink={1}>
                   <div class='savedSchedContent' style={{block: "display"}}>
                     <center><SavedSchedule/></center>

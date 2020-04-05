@@ -107,7 +107,7 @@ class SavedSchedule extends Component {
         return (  
             
             <Row vertical='center'>
-                <ScheduleView content={this.state.scheduleContent}/>
+                <ScheduleView height='300px' content={this.state.scheduleContent}/>
             </Row>
 
             
