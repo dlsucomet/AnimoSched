@@ -211,26 +211,7 @@ class GenerateSchedule extends Component {
     handleAutoCompletePress = (e) => {
         const val = this.state.currentCourse;
         if(e.key === 'Enter'){
-            this.setState({AutoCompleteValue: []})
-            const val = this.state.currentCourse;
-            const newCourseList = [];
-
-            if(val != undefined){
-                this.state.courseList.map(course => {
-                    if(course.id != val.id){
-                        newCourseList.push(course)
-                    }
-                })
-                this.setState({courseList:newCourseList})
-                if(val.course_code != undefined && val.course_code.trim() != ''){
-                    this.state.id = this.state.id + 1;
-                    const newCourse = {'id':this.state.id,'course_id':val.id,'data':val.course_code}; 
-                    this.setState(state =>{
-                        const highCourses = state.highCourses.concat(newCourse);
-                        return{highCourses};
-                    });
-                }
-            }       
+            this.handleAddCoursePriority();
         }
     }
 
