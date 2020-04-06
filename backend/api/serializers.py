@@ -66,7 +66,7 @@ class CoursePrioritySerializer(serializers.ModelSerializer):
 class ScheduleSerializer(serializers.ModelSerializer):
   class Meta:
     model = Schedule 
-    fields = ('id', 'courseOfferings', 'user')
+    fields = ('id', 'title', 'courseOfferings', 'user')
 
 class PreferenceSerializer(serializers.ModelSerializer):
   class Meta:

@@ -164,6 +164,7 @@ class User(AbstractBaseUser):
         return self.email
 
 class Schedule(models.Model):
+    title = models.CharField(max_length=50)
     courseOfferings = models.ManyToManyField(CourseOffering)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)

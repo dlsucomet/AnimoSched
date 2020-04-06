@@ -426,7 +426,7 @@ class GenerateSchedule extends Component {
          var newArray = [];
          const currentContent = this.state.currentContent;
         // var index = newArray.findIndex(this.state.currentContent);
-        const newContent = <GenSchedInfo key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
+        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
 
         this.state.generatedContents.map(value=>{
             if(value.key == this.state.currentContent.key){
@@ -437,6 +437,7 @@ class GenerateSchedule extends Component {
         })
 
         this.setState({generatedContents: newArray});
+        this.setState({currentContent: newContent})
     }
     handleScrollToGen=()=>{
         window.scrollTo({
@@ -462,10 +463,12 @@ class GenerateSchedule extends Component {
         }else{
             const courseOfferings = []
             const user_id = localStorage.getItem('user_id')
+            console.log(this.state.currentContent)
             this.state.currentContent.props.offerings.map(offering => {
                 courseOfferings.push(offering.id)
             })
             axios.post('http://localhost:8000/api/schedules/',{
+                title: this.state.currentContent.props.titleName,
                 courseOfferings: courseOfferings,
                 user: user_id
             }).then(res => {
@@ -482,6 +485,9 @@ class GenerateSchedule extends Component {
                 //         console.log(err.response)
                 //     })
                 // })
+            }).catch(err => {
+                console.log(err.response)
+
             })
             this.setState(state=>{
                 const savedScheds = state.savedScheds.concat(state.currentContent.key);
