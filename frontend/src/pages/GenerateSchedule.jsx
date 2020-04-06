@@ -37,11 +37,19 @@ const styles = theme => ({
     buttonProgress: {
     //   color: green[500],
       position: 'absolute',
-      top: '50%',
+      top: '65%',
       left: '50%',
       marginTop: -12,
       marginLeft: -12,
     },
+    buttonProgressSave: {
+        //   color: green[500],
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          marginTop: -12,
+          marginLeft: -12,
+        },
     schedButton:{
         textTransform: "none",
         borderRadius: "25px",
@@ -446,7 +454,7 @@ class GenerateSchedule extends Component {
     }
 
     handleSaveChange=()=>{
-
+        this.setState({loading: true});
         if(this.state.savedScheds.includes(this.state.currentContent.key)){
             var newArray = [...this.state.savedScheds];
             const index = newArray.indexOf(this.state.currentContent.key);
@@ -459,6 +467,7 @@ class GenerateSchedule extends Component {
             this.setState({saveButtonLabel: "Save Schedule"});
             const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
             this.setState({saveButtonStyle: styleChange})
+            this.setState({loading: false});
         }else{
             const courseOfferings = []
             const user_id = localStorage.getItem('user_id')
@@ -487,7 +496,7 @@ class GenerateSchedule extends Component {
                 const savedScheds = state.savedScheds.concat(state.currentContent.key);
                 return {savedScheds};
             })
-
+            this.setState({loading: false});
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
@@ -606,7 +615,21 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             <Row horizontal='center'>
-                                <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button>
+                                <div className={classes.root}>
+                                        <div className={classes.wrapper}> 
+                                            <Button
+                                            variant="contained"
+                                            className={classes.schedButton}
+                                            disabled={this.state.loading}
+                                            onClick={this.handleSaveChange}
+                                            style={this.state.saveButtonStyle}
+                                            >
+                                            {this.state.saveButtonLabel}
+                                            </Button>
+                                            {this.state.loading && <CircularProgress size={24} className={classes.buttonProgressSave}/>}
+                                        </div>
+                                    </div>
+                                {/* <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button> */}
                             </Row>  
                         </div>
                     </Column>
