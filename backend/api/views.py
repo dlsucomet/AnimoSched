@@ -59,6 +59,30 @@ class ScheduleViewSet(viewsets.ModelViewSet):
   serializer_class = ScheduleSerializer 
   queryset = Schedule.objects.all()              
 
+class SavedScheduleList(APIView):
+    def get(self, request, pk, format=None):
+        schedules = Schedule.objects.filter(user=pk)
+        serializer = ScheduleSerializer(schedules, many=True)
+        for d in serializer.data:
+          courseOfferings = []
+          for o in d['courseOfferings']:
+            offering = CourseOffering.objects.get(id=o) 
+            offeringSerializer = CourseOfferingSerializer(offering)
+            d2 = offeringSerializer.data
+            print(d2)
+            if(d2['faculty'] != None):
+              d2['faculty'] = Faculty.objects.get(id=d2['faculty']).full_name
+            d2['course'] = Course.objects.get(id=d2['course']).course_code
+            d2['section'] = Section.objects.get(id=d2['section']).section_code  
+            d2['day'] = Day.objects.get(id=d2['day']).day_code  
+            d2['timeslot_begin'] = Timeslot.objects.get(id=d2['timeslot']).begin_time  
+            d2['timeslot_end'] = Timeslot.objects.get(id=d2['timeslot']).end_time
+            if(d2['room'] != None):
+              d2['room'] = Room.objects.get(id=d2['room']).room_name
+            courseOfferings.append(d2)
+          d['courseOfferings'] = courseOfferings
+        return Response(serializer.data)
+
 class PreferenceList(APIView):
     def get(self, request, pk, format=None):
         preferences = Preference.objects.filter(user=pk)

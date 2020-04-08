@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/', include(router.urls)),                
     path('api/generateschedule/', views.SchedulesList.as_view()),
     path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
+    path('api/schedulelist/<int:pk>/', views.SavedScheduleList.as_view()),     
     path('api/courseprioritylist/<int:pk>/', views.CoursePriorityList.as_view()),     
     path('api/courseofferingslist/', views.CourseOfferingsList.as_view()),     
     path('api/auth/', include('rest_auth.urls')),                

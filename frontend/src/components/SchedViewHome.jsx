@@ -62,6 +62,7 @@ class SchedViewHome extends Component {
         boolEdit: false,
       }
       this.editableLabel = React.createRef();
+      console.log(props.tableContent)
     }
     
 

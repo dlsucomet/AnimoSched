@@ -309,7 +309,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={ item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -318,6 +318,10 @@ class GenerateSchedule extends Component {
         this.setState({currentContent: generatedContents[0]})
 
         this.handleScrollToGen();
+    }
+
+    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
     }
 
     createSchedInfo = () =>{
@@ -342,8 +346,11 @@ class GenerateSchedule extends Component {
             res.data.map(newSchedule =>{
                 var count = 0;
                 const scheduleContent = []
+                const tableContent = []
                 var earliest = 9
                 var latest = 17
+
+
                 newSchedule.offerings.map(offering=>{
                     var startTime = offering.timeslot_begin.split(':');
                     var endTime = offering.timeslot_end.split(':');
@@ -368,6 +375,29 @@ class GenerateSchedule extends Component {
                         latest = Number(endTime[0]) + 1
                     }
                     scheduleContent.push(newContent);
+                    var day = ''
+                    var classnumber = ''
+                    var course = ''
+                    var section = ''
+                    var faculty = ''
+                    var timeslot_begin = ''
+                    var timeslot_end = ''
+                    var room = ''
+                    var max_enrolled = ''
+                    var current_enrolled = ''
+
+                    day = offering.day
+                    classnumber = offering.classnumber
+                    course = offering.course
+                    section = offering.section
+                    faculty = offering.faculty
+                    timeslot_begin = offering.timeslot_begin
+                    timeslot_end = offering.timeslot_end
+                    room = offering.room
+                    max_enrolled = offering.max_enrolled
+                    current_enrolled = offering.current_enrolled
+                    const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                    tableContent.push(newTableContent)
                     count += 1;
                 })
                 schedCount += 1;
@@ -375,7 +405,7 @@ class GenerateSchedule extends Component {
                     id: schedCount,
                     title: "Schedule "+schedCount.toString(),
                     scheduleContent: scheduleContent,
-                    tableContent: [],
+                    tableContent: tableContent,
                     prefContent: [],
                     conflictsContent: newSchedule.information,
                     earliest: earliest,

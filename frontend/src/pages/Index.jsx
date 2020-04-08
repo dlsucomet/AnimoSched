@@ -25,6 +25,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 import { isThisMonth } from "date-fns/esm";
+import groupArray from 'group-array';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -109,231 +110,8 @@ class Index extends Component {
       // currentContent: <SchedViewHome/>,
       // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
       pagesCount: 1,
-      schedules: [{
-          id: 1,
-          title: "Best Schedule",
-          scheduleContent: [
-            {
-                id: 3,
-                title: "CSSERVM",
-                section: "S15",
-                startDate: new Date(2018, 5, 26, 10, 0),
-                endDate: new Date(2018, 5, 26, 11, 0),
-                location: "G302",
-                professor: "Flowers, Fritz",
-                startTime: "09:30AM",
-                endTime: "11:30AM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                title: "INOVATE",
-                section: "EB14",
-                startDate: new Date(2018, 5, 26, 12, 0),
-                endDate: new Date(2018, 5, 26, 13, 30),
-                id: 4,
-                location: "G305",
-                professor: "Tuazon, James Dean",
-                startTime: "12:00PM",
-                endTime: "01:30PM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                  title: "HUMAART",
-                  section: "S17",
-                  startDate: new Date(2018, 5, 27, 9, 30),
-                  endDate: new Date(2018, 5, 27, 11, 30),
-                  id: 0,
-                  location: "G302",
-                  professor: "Sangi, April",
-                  startTime: "09:30AM",
-                  endTime: "11:30AM",
-                  days: ['M', 'W'],
-                  classCode: "2453"
-                  },
-          ],
-
-          tableContent:[
-            {
-              id: 3, 
-              classNmbr: '2345',
-              course: "DUMMY1", 
-              section:"S17", 
-              faculty: "DELA CRUZ, JUAN", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          },
-          {
-              id: 4, 
-              classNmbr: '2425',
-              course: "DUMMY2", 
-              section:"S15", 
-              faculty: "DEL TORRE, MARIA", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          }
-          ]
-        },
-        {
-          id: 2,
-          title: "Meh Schedule",
-          scheduleContent: [
-            {
-                id: 10,
-                title: "CSSERVM",
-                section: "S15",
-                startDate: new Date(2018, 5, 26, 13, 0),
-                endDate: new Date(2018, 5, 26, 14, 30),
-                location: "G302",
-                professor: "Flowers, Fritz",
-                startTime: "09:30AM",
-                endTime: "11:30AM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                title: "INOVATE",
-                section: "EB14",
-                startDate: new Date(2018, 5, 26, 11, 0),
-                endDate: new Date(2018, 5, 26, 12, 30),
-                id: 11,
-                location: "G305",
-                professor: "Tuazon, James Dean",
-                startTime: "12:00PM",
-                endTime: "01:30PM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                  title: "HUMAART",
-                  section: "S17",
-                  startDate: new Date(2018, 5, 27, 16, 30),
-                  endDate: new Date(2018, 5, 27, 18, 30),
-                  id: 12,
-                  location: "G302",
-                  professor: "Sangi, April",
-                  startTime: "09:30AM",
-                  endTime: "11:30AM",
-                  days: ['M', 'W'],
-                  classCode: "2453"
-                  },
-          ],
-
-          tableContent:[
-            {
-              id: 3, 
-              classNmbr: '2345',
-              course: "CSSERVM", 
-              section:"S17", 
-              faculty: "DELA CRUZ, JUAN", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          },
-          {
-              id: 4, 
-              classNmbr: '2425',
-              course: "HUMAART", 
-              section:"S15", 
-              faculty: "DEL TORRE, MARIA", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          }
-          ]
-        },
-        {
-          id: 3,
-          title: "Merp Schedule",
-          scheduleContent: [
-            {
-                id: 10,
-                title: "CSSERVM",
-                section: "S15",
-                startDate: new Date(2018, 5, 26, 13, 0),
-                endDate: new Date(2018, 5, 26, 14, 30),
-                location: "G302",
-                professor: "Flowers, Fritz",
-                startTime: "09:30AM",
-                endTime: "11:30AM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                title: "INOVATE",
-                section: "EB14",
-                startDate: new Date(2018, 5, 26, 11, 0),
-                endDate: new Date(2018, 5, 26, 12, 30),
-                id: 11,
-                location: "G305",
-                professor: "Tuazon, James Dean",
-                startTime: "12:00PM",
-                endTime: "01:30PM",
-                days: ['T', 'H'],
-                classCode: "2453"
-              },
-              {
-                  title: "HUMAART",
-                  section: "S17",
-                  startDate: new Date(2018, 5, 27, 16, 30),
-                  endDate: new Date(2018, 5, 27, 18, 30),
-                  id: 12,
-                  location: "G302",
-                  professor: "Sangi, April",
-                  startTime: "09:30AM",
-                  endTime: "11:30AM",
-                  days: ['M', 'W'],
-                  classCode: "2453"
-                  },
-          ],
-
-          tableContent:[
-            {
-              id: 3, 
-              classNmbr: '2345',
-              course: "CSSERVM", 
-              section:"S17", 
-              faculty: "DELA CRUZ, JUAN", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          },
-          {
-              id: 4, 
-              classNmbr: '2425',
-              course: "HUMAART", 
-              section:"S15", 
-              faculty: "DEL TORRE, MARIA", 
-              day:"TH",
-              startTime: "08:00AM", 
-              endTime:"05:00PM",
-              room: "G310",
-              capacity: "40",
-              enrolled: "30"
-          }
-          ]
-        }
-      ]
-
-      // generatedContents: [],
+      dataReceived: false,
+      schedules: []
     }
 
     handlePageChange = (e,index) => {
@@ -352,14 +130,125 @@ class Index extends Component {
       console.log(this.state.generatedContents[index]);
   }
 
+  createTimeslot = (day, hour, minute) =>{
+      if(day == 'M'){
+          return new Date(2018, 5, 25, hour, minute);
+      }else if(day == 'T'){
+          return new Date(2018, 5, 26, hour, minute);
+      }else if(day == 'W'){
+          return new Date(2018, 5, 27, hour, minute);
+      }else if(day == 'H'){
+          return new Date(2018, 5, 28, hour, minute);
+      }else if(day == 'F'){
+          return new Date(2018, 5, 29, hour, minute);
+      }else if(day == 'S'){
+          return new Date(2018, 5, 30, hour, minute);
+      }
+  }
+
+  createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+    return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
+  }
+
   componentWillMount(){
-    this.setSchedInfo();
+    axios.get('http://localhost:8000/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+    .then(res => {
+        const schedules = []
+        var schedCount = 0;
+        res.data.map(newSchedule =>{
+            var count = 0;
+            const scheduleContent = []
+            const tableContent = []
+            var earliest = 9
+            var latest = 17
+            var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+            for (let key in arranged) {
+              var days = []
+              var day = ''
+              var classnumber = ''
+              var course = ''
+              var section = ''
+              var faculty = ''
+              var timeslot_begin = ''
+              var timeslot_end = ''
+              var room = ''
+              var max_enrolled = ''
+              var current_enrolled = ''
+              arranged[key].map(offering => {
+                days.push(offering.day)
+                classnumber = offering.classnumber
+                course = offering.course
+                section = offering.section
+                faculty = offering.faculty
+                timeslot_begin = offering.timeslot_begin
+                timeslot_end = offering.timeslot_end
+                room = offering.room
+                max_enrolled = offering.max_enrolled
+                current_enrolled = offering.current_enrolled
+              })
+              days.map(day_code => {
+                day += day_code;
+              })
+              const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+              tableContent.push(newTableContent)
+            }
+            newSchedule.courseOfferings.map(offering=>{
+                var startTime = offering.timeslot_begin.split(':');
+                var endTime = offering.timeslot_end.split(':');
+                const newContent = 
+                {
+                    id: count,
+                    title: offering.course + ' ' + offering.section,
+                    section: offering.section,
+                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                    location: offering.room,
+                    professor: offering.faculty,
+                    startTime: offering.timeslot_begin,
+                    endTime: offering.timeslot_end,
+                    days: offering.day,
+                    classCode: offering.classnumber 
+                }
+                if(earliest > Number(startTime[0])){
+                    earliest = Number(startTime[0])
+                }
+                if(latest < Number(endTime[0]) + 1){
+                    latest = Number(endTime[0]) + 1
+                }
+                scheduleContent.push(newContent);
+
+                count += 1;
+            })
+            schedCount += 1;
+            schedules.push({
+                id: schedCount,
+                title: "Schedule "+schedCount.toString(),
+                scheduleContent: scheduleContent,
+                tableContent: tableContent, 
+                prefContent: [],
+                conflictsContent: newSchedule.information,
+                earliest: earliest,
+                latest: latest,
+                offerings: newSchedule.courseOfferings
+            });
+        })
+        console.log(schedules)
+        this.setState({schedules});
+        this.setSchedInfo();
+        this.setState({success: true});
+        this.setState({loading: false});
+        this.setState({dataReceived: true})
+    }).catch(error => {
+        console.log(error)
+        this.setState({success: false});
+        this.setState({loading: false});
+    })
   }
 
   setSchedInfo = () => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} /*offerings={item.offerings}*/ tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
@@ -447,6 +336,7 @@ class Index extends Component {
         <div style={!this.props.logged_in? sectionStyle : {}}>
           {this.props.menu()}
 
+          {this.state.dataReceived ? 
           <div className={"homepage"} style={this.props.logged_in ? {} : {display: "none"}}>
             <div className={"hasContent"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
 
@@ -507,7 +397,7 @@ class Index extends Component {
                       <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
                       <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                          Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
+                          {/* Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules? */}
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
@@ -664,6 +554,7 @@ class Index extends Component {
             </div>
 
           </div>
+          : null }
 
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           
