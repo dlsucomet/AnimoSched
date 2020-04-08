@@ -22,9 +22,88 @@ import Typography from '@material-ui/core/Typography';
 
 import Button from '@material-ui/core/Button';
 
+import EditableLabel from 'react-inline-editing';
+
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
+
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+  pencilIcon:{ 
+      marginLeft: "10px",
+      '&:hover': {
+          backgroundColor: "white",
+          color: "gray"
+        },
+  },
+  checkIcon:{
+      color: "green", 
+      marginLeft: "10px",
+      '&:hover': {
+          backgroundColor: "white",
+          color: "#79c879"
+        },
+  }
+});
+
 class SchedViewHome extends Component {
-    state = {  }
-    render() { const StyledTableCell = withStyles(theme => ({
+    constructor(props){
+      super(props);
+      this._handleFocus = this._handleFocus.bind(this);
+      this._handleFocusOut = this._handleFocusOut.bind(this);
+      this.handleKeyPress = this.handleKeyPress.bind(this);
+
+      this.state = {  
+        scheduleContent: props.scheduleContent,
+        tableContent: props.tableContent,
+        id: props.id,
+        schedTitle: props.titleName,
+        boolEdit: false,
+      }
+      this.editableLabel = React.createRef();
+    }
+    
+
+    _handleFocus=(text)=> {
+      this.setState({boolEdit: true});
+      console.log('Focused with text: ' + text);
+      
+  }
+
+  _handleFocusOut=(text)=> {
+      console.log('Left editor with text: ' + text);
+      this.setState({schedTitle: text});
+      console.log("this is props");
+      console.log(this.props);
+      this.props.updateSchedTitle(text);
+      this.setState({boolEdit: false});
+
+  }
+
+  handleKeyPress = (event) => {
+      console.log("event: " + event);
+      if(event.key === 'Enter'){
+          this.setState({boolEdit: false});
+          console.log("isEditing: " + this.state.boolEdit);
+
+      }
+  }
+
+  editButtonPress = () =>{
+      if(this.state.boolEdit === false){
+          this.setState({boolEdit: true});
+          this.editableLabel.current.setState({isEditing: true});
+      }else if(this.state.boolEdit === true){
+          this.setState({boolEdit: false});
+      }
+  }
+
+    render() { 
+      
+      const { classes } = this.props;
+      
+      const StyledTableCell = withStyles(theme => ({
         head: {
           backgroundColor: '#006A4E',
           color: theme.palette.common.white,
@@ -105,7 +184,26 @@ class SchedViewHome extends Component {
             <Row horizontal="center">
                 <Column flexShrink={1}>
                   <div class='savedSchedContent' style={{block: "display"}}>
-                    <center><SavedSchedule/></center>
+                    
+                  <Row horizontal= 'center'>
+                      <EditableLabel ref={this.editableLabel} text={this.state.schedTitle}
+                      labelClassName='myLabelClass'
+                      inputClassName='myInputClass'
+                      inputWidth='200px'
+                      inputHeight='25px'
+                      inputMaxLength='50'
+                      labelFontWeight='bold'
+                      inputFontWeight='bold'
+                      onFocus={this._handleFocus}
+                      onFocusOut={this._handleFocusOut}
+                      onChange={this.handleKeyPress}
+                      /> 
+
+                      {this.state.boolEdit ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={this.editButtonPress}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={this.editButtonPress}/>}
+                    </Row>
+                    <center>
+                      <ScheduleView height='300px' content={this.state.scheduleContent}/>
+                    </center>
                   
                   <Row horizontal='center' flexShrink={1}>
                     <div className="viewCoursesHome">
@@ -125,7 +223,7 @@ class SchedViewHome extends Component {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {rows.map(row => (
+                            {this.state.tableContent.map(row => (
                               <StyledTableRow key={row.classNmbr}>
                                 <StyledTableCell> {row.classNmbr} </StyledTableCell>
                                 <StyledTableCell> {row.course} </StyledTableCell>
@@ -152,4 +250,7 @@ class SchedViewHome extends Component {
     }
 }
  
-export default SchedViewHome;
+SchedViewHome.propTypes={
+  classes: PropTypes.object.isRequired,
+};
+export default withStyles(styles)(SchedViewHome);

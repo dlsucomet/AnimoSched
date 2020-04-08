@@ -50,3 +50,8 @@
     border-color: #16775D;
     margin-top: 20px;
 }
+
+.schedButton:hover{
+    background-color: white;
+    color: #16775D;
+}
