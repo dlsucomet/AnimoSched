@@ -25,7 +25,7 @@ urlpatterns = [
     path('api/generateschedule/', views.SchedulesList.as_view()),
     path('api/preferencelist/<int:pk>/', views.PreferenceList.as_view()),     
     path('api/courseprioritylist/<int:pk>/', views.CoursePriorityList.as_view()),     
-    path('api/courseofferingslist/<int:pk>/', views.CourseOfferingsList.as_view()),     
+    path('api/courseofferingslist/', views.CourseOfferingsList.as_view()),     
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
     path('api/refresh-token/', refresh_jwt_token),

@@ -78,7 +78,6 @@ class SearchCourses extends Component {
     handleChange = (field, e) => {
       let fields = this.state.fields;
       fields[field] = e.target.value;
-      console.log(field);
       this.setState({fields});
     }
 
@@ -131,14 +130,24 @@ class SearchCourses extends Component {
     searchCourses = () =>{
       //start loading
       if(this.state.selectedCourses.length > 0){
+        this.setState({siteData: []})
         this.setState({loading: true});
       }
+
+
+      const selectedCourses = []
+      this.state.selectedCourses.map(course => {
+        selectedCourses.push(course.id)
+      })
      
-      this.setState({siteData: []})
-      this.state.selectedCourses.map(course =>{
-        axios.get('http://localhost:8000/api/courseofferingslist/'+course.id+'/')
-        .then(res => {
-            var arranged = groupArray(res.data, 'classnumber');
+      axios.post('http://localhost:8000/api/courseofferingslist/',{
+        courses: selectedCourses
+      })
+      .then(res => {
+          const newSiteData = [];
+          console.log(res.data)
+          res.data.map(bundle => {
+            var arranged = groupArray(bundle, 'classnumber');
             console.log(arranged)
             for (let key in arranged) {
               console.log(key, arranged[key]);
@@ -168,14 +177,15 @@ class SearchCourses extends Component {
               days.map(day_code => {
                 day += day_code;
               })
-              const newSiteData = this.state.siteData;
               const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-              newSiteData.push(offering)
-              this.setState({siteData: newSiteData})
-              //Finish Loading
-              this.setState({loading: false});
+              newSiteData.push(offering);
             }
-        })
+          })
+        this.setState({siteData: newSiteData})
+        //Finish Loading
+        this.setState({loading: false});
+      }).catch(err => {
+        console.log(err.response)
       })
     }
 

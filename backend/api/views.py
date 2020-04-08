@@ -87,20 +87,23 @@ class CoursePriorityList(APIView):
         return Response(None)
 
 class CourseOfferingsList(APIView):
-    def get(self, request, pk, format=None):
-        offerings = CourseOffering.objects.filter(course=pk)
-        serializer = CourseOfferingSerializer(offerings, many=True)
-        for d in serializer.data:
-          if(d['faculty'] != None):
-            d['faculty'] = Faculty.objects.get(id=d['faculty']).full_name
-          d['course'] = Course.objects.get(id=d['course']).course_code
-          d['section'] = Section.objects.get(id=d['section']).section_code  
-          d['day'] = Day.objects.get(id=d['day']).day_code  
-          d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
-          d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
-          if(d['room'] != None):
-            d['room'] = Room.objects.get(id=d['room']).room_name
-        return Response(serializer.data)
+    def post(self, request, format=None):
+        courseData = []
+        for c in request.data['courses']:
+          offerings = CourseOffering.objects.filter(course=c)
+          serializer = CourseOfferingSerializer(offerings, many=True)
+          for d in serializer.data:
+            if(d['faculty'] != None):
+              d['faculty'] = Faculty.objects.get(id=d['faculty']).full_name
+            d['course'] = Course.objects.get(id=d['course']).course_code
+            d['section'] = Section.objects.get(id=d['section']).section_code  
+            d['day'] = Day.objects.get(id=d['day']).day_code  
+            d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
+            d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
+            if(d['room'] != None):
+              d['room'] = Room.objects.get(id=d['room']).room_name
+          courseData.append(serializer.data)
+        return Response(courseData)
 
 
 class SchedulesList(APIView):
