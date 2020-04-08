@@ -24,6 +24,20 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
+import { isThisMonth } from "date-fns/esm";
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const styles = theme => ({
   buttonStyle:{
@@ -84,9 +98,16 @@ class Index extends Component {
     }
 
     state={
+      openAlert: false,
+      snackBarVariables: [
+        {snackBarDelete: false}, {snackBarFailedDelete: false}],
+      // snackBarDelete: false,
+      // snackBarFailedDelete: false,
       currentPage: 0,
-      currentContent: <SchedViewHome/>,
-      generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+      currentContent: "",
+      generatedContents: [],
+      // currentContent: <SchedViewHome/>,
+      // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
       pagesCount: 1,
       schedules: [{
           id: 1,
@@ -235,6 +256,80 @@ class Index extends Component {
               enrolled: "30"
           }
           ]
+        },
+        {
+          id: 3,
+          title: "Merp Schedule",
+          scheduleContent: [
+            {
+                id: 10,
+                title: "CSSERVM",
+                section: "S15",
+                startDate: new Date(2018, 5, 26, 13, 0),
+                endDate: new Date(2018, 5, 26, 14, 30),
+                location: "G302",
+                professor: "Flowers, Fritz",
+                startTime: "09:30AM",
+                endTime: "11:30AM",
+                days: ['T', 'H'],
+                classCode: "2453"
+              },
+              {
+                title: "INOVATE",
+                section: "EB14",
+                startDate: new Date(2018, 5, 26, 11, 0),
+                endDate: new Date(2018, 5, 26, 12, 30),
+                id: 11,
+                location: "G305",
+                professor: "Tuazon, James Dean",
+                startTime: "12:00PM",
+                endTime: "01:30PM",
+                days: ['T', 'H'],
+                classCode: "2453"
+              },
+              {
+                  title: "HUMAART",
+                  section: "S17",
+                  startDate: new Date(2018, 5, 27, 16, 30),
+                  endDate: new Date(2018, 5, 27, 18, 30),
+                  id: 12,
+                  location: "G302",
+                  professor: "Sangi, April",
+                  startTime: "09:30AM",
+                  endTime: "11:30AM",
+                  days: ['M', 'W'],
+                  classCode: "2453"
+                  },
+          ],
+
+          tableContent:[
+            {
+              id: 3, 
+              classNmbr: '2345',
+              course: "CSSERVM", 
+              section:"S17", 
+              faculty: "DELA CRUZ, JUAN", 
+              day:"TH",
+              startTime: "08:00AM", 
+              endTime:"05:00PM",
+              room: "G310",
+              capacity: "40",
+              enrolled: "30"
+          },
+          {
+              id: 4, 
+              classNmbr: '2425',
+              course: "HUMAART", 
+              section:"S15", 
+              faculty: "DEL TORRE, MARIA", 
+              day:"TH",
+              startTime: "08:00AM", 
+              endTime:"05:00PM",
+              room: "G310",
+              capacity: "40",
+              enrolled: "30"
+          }
+          ]
         }
       ]
 
@@ -290,6 +385,57 @@ class Index extends Component {
 
      this.setState({generatedContents: newArray});
  }
+
+ deleteSchedule=()=>{
+  var newSchedule = [...this.state.generatedContents];
+  var currentPage = this.state.currentPage;
+  var index = currentPage;
+  
+  if(index !== -1){
+    newSchedule.splice(index, 1);
+  }
+  this.setState({generatedContents: newSchedule})
+
+  if(currentPage == this.state.generatedContents.length - 1){
+    currentPage = currentPage - 1;
+    this.setState({currentPage});
+    this.setState({currentContent: this.state.generatedContents[currentPage-1]});
+
+  }
+    this.setState({openAlert: false});
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    snackBarVariables[0].snackBarDelete = true;
+    // snackBarVariables[1].snackBarFailedDelete = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
+ }
+
+ handleClickOpenAlert = () => {
+   this.setState({openAlert: true});
+  }
+
+  handleCloseAlert = () => {
+    this.setState({openAlert: false});
+  }
+
+  handleCloseSnackBar = (event, reason, snackBarIndex) => {
+    console.log(event);
+    console.log(reason);
+
+    if (reason === 'clickaway') {
+      return;
+    }
+    
+  
+    let snackBarVariables = [...this.state.snackBarVariables];
+    if(snackBarIndex == 0){
+      snackBarVariables[0].snackBarDelete = false;
+    }else if(snackBarIndex == 1){
+      snackBarVariables[1].snackBarFailedDelete = false;
+    }
+    this.setState({snackBarVariables});
+}
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -348,9 +494,43 @@ class Index extends Component {
                   <Button
                     variant="contained"
                     className={classes.deleteButtonStyle}
+                    onClick={this.handleClickOpenAlert}
                     >
                     Delete
                   </Button>
+                    <Dialog
+                      open={this.state.openAlert}
+                      onClose={this.handleCloseAlert}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                          Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleCloseAlert} color="primary">
+                          Cancel
+                        </Button>
+                        <Button onClick={this.deleteSchedule} color="primary" autoFocus>
+                          Delete
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+
+                    <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
+                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
+                        Your schedule has been successfully discarded!
+                      </Alert>
+                    </Snackbar>
+
+                    <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
+                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
+                      Delete failed
+                      </Alert>
+                    </Snackbar>
                   </div>
               </Grid>
 

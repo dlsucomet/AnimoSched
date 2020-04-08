@@ -9,7 +9,7 @@ import {
   AppointmentTooltip,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { blue, purple } from "@material-ui/core/colors";
+import { blue, purple, green } from "@material-ui/core/colors";
 // import { appointments } from "./data";
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
@@ -24,7 +24,7 @@ import ClassIcon from '@material-ui/icons/Class';
 
 import '../css/ScheduleView.css';
 
-const theme = createMuiTheme({ palette: { type: "light", primary: blue } });
+const theme = createMuiTheme({ palette: { type: "light", primary: green } });
 
 const styles = {
     dayScaleCell: {
