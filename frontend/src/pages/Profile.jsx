@@ -37,26 +37,27 @@ class Profile extends Component {
     constructor(props){
       super(props);
       this.state = {
-          email: 'mark_ruffalo@dlsu.edu.ph',
-          first_name: 'Mark',
-          last_name: 'Ruffalo',
+          email: '',
+          first_name: '',
+          last_name: '',
           college: '',
-          degree: 'Bachelor of Science in Computer Science',
-          id_num: '11613351',
+          degree: '',
+          id_num: '',
           emailBool: false,
         //   firstNameBool: false,
         //   lastNameBool: false,
         //   collegeBool: false,
         //   degreeBool: false,
         //   idNoBool: false,
-          fieldsBool: {
+        fieldsBool: {
             emailBool: false,
             firstNameBool: false,
             lastNameBool: false,
             collegeBool: false,
             degreeBool: false,
             idNoBool: false
-        }
+        },
+        dataReceived: false
       }
       this.editFirstName = React.createRef();
       this.editLastName = React.createRef();
@@ -75,6 +76,7 @@ class Profile extends Component {
             withCredentials: true
         })
         .then(res => {
+            console.log(res.data)
             this.setState({
                 email: res.data.email,
                 first_name: res.data.first_name,
@@ -89,6 +91,7 @@ class Profile extends Component {
               axios.get('http://localhost:8000/api/degrees/'+degree+'/')
               .then(res => {
                 this.setState({degree: res.data.degree_name});
+                this.setState({dataReceived: true})
               })
             })
         })
@@ -115,12 +118,56 @@ class Profile extends Component {
     }
 
     _handleFocusOut=(text, iconBool)=> {
-        console.log('Left editor with text: ' + text);
-        // this.setState({schedTitle: text});
-        // this.props.updateSchedTitle(text);
         this.setState({boolEdit: false});
         let fieldsBool = this.state.fieldsBool;
          fieldsBool[iconBool] = false;
+        if(iconBool == 'firstNameBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'first_name': text
+            }).then(res => {
+                localStorage.setItem('first_name',text)
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }else if(iconBool == 'lastNameBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'last_name': text
+            }).then(res => {
+                localStorage.setItem('last_name',text)
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }else if(iconBool == 'idNoBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'id_num': text
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }else if(iconBool == 'collegeBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'college': text
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }else if(iconBool == 'degreeBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'degree': text
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }else if(iconBool == 'emailBool'){
+            axios.patch('http://localhost:8000/api/users/'+localStorage.getItem('user_id')+'/',{
+                'email': text
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+        }
 
     }
 
@@ -129,13 +176,10 @@ class Profile extends Component {
         if(fieldsBool[iconBool] === false){
             fieldsBool[iconBool] = true;
             this.setState({fieldsBool});
-            // this.setState({boolEdit: true});
             editRef.current.setState({isEditing: true});
-            // this.editableLabel.current.setState({isEditing: true});
         }else if(fieldsBool[iconBool] === true){
             fieldsBool[iconBool] = false;
             this.setState({fieldsBool});
-            // this.setState({boolEdit: false});
         }
     }
 
@@ -145,6 +189,8 @@ class Profile extends Component {
           <div>
             {this.props.menu()}
 
+            {this.state.dataReceived ? 
+            <div>
             <div className="profile-category">
                 <h2>Account Profile</h2>
 
@@ -204,10 +250,10 @@ class Profile extends Component {
                             inputWidth='90px'
                             inputHeight='25px'
                             inputMaxLength='30'
-                            onFocus={(text)=>this._handleFocus(text, 'idNoBool')}
-                            onFocusOut={(text)=>this._handleFocusOut(text, 'idNoBool')}
+                            // onFocus={(text)=>this._handleFocus(text, 'idNoBool')}
+                            // onFocusOut={(text)=>this._handleFocusOut(text, 'idNoBool')}
                         />
-                        {this.state.fieldsBool['idNoBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/>}
+                        {/* {this.state.fieldsBool['idNoBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('idNoBool',this.editIdNo)}/>} */}
                     </Row>
                     {/* <EditableLabel
                         text={this.state.id_num}
@@ -225,14 +271,14 @@ class Profile extends Component {
                     <Row horizontal= 'start'>
                         <EditableLabel
                             ref={this.editCollege}
-                            text={"this.state.college"}
+                            text={this.state.college}
                             inputWidth='250px'
                             inputHeight='25px'
                             inputMaxLength='30'
-                            onFocus={(text)=>this._handleFocus(text, 'collegeBool')}
-                            onFocusOut={(text)=>this._handleFocusOut(text, 'collegeBool')}
+                            // onFocus={(text)=>this._handleFocus(text, 'collegeBool')}
+                            // onFocusOut={(text)=>this._handleFocusOut(text, 'collegeBool')}
                         />
-                        {this.state.fieldsBool['collegeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/>}
+                        {/* {this.state.fieldsBool['collegeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('collegeBool',this.editCollege)}/>} */}
                     </Row>
                     <br/>
                     <b>Degree</b>
@@ -241,14 +287,14 @@ class Profile extends Component {
                     <Row horizontal= 'start'>
                         <EditableLabel
                             ref={this.editDegree}
-                            text={"this.state.degree"}
+                            text={this.state.degree}
                             inputWidth='250px'
                             inputHeight='25px'
                             inputMaxLength='30'
-                            onFocus={(text)=>this._handleFocus(text, 'degreeBool')}
-                            onFocusOut={(text)=>this._handleFocusOut(text, 'degreeBool')}
+                            // onFocus={(text)=>this._handleFocus(text, 'degreeBool')}
+                            // onFocusOut={(text)=>this._handleFocusOut(text, 'degreeBool')}
                         />
-                        {this.state.fieldsBool['degreeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/>}
+                        {/* {this.state.fieldsBool['degreeBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('degreeBool',this.editDegree)}/>} */}
                     </Row>
                     <br/>
                     <b>Email Address</b>
@@ -261,10 +307,10 @@ class Profile extends Component {
                             inputWidth='250px'
                             inputHeight='25px'
                             inputMaxLength='30'
-                            onFocus={(text)=>this._handleFocus(text, 'emailBool')}
-                            onFocusOut={(text)=>this._handleFocusOut(text, 'emailBool')}
+                            // onFocus={(text)=>this._handleFocus(text, 'emailBool')}
+                            // onFocusOut={(text)=>this._handleFocusOut(text, 'emailBool')}
                         />
-                        {this.state.fieldsBool['emailBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/>}
+                        {/* {this.state.fieldsBool['emailBool'] ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={()=>this.editButtonPress('emailBool',this.editEmail)}/>} */}
                     </Row>
                     <br/>
                 </div>
@@ -316,6 +362,7 @@ class Profile extends Component {
                     </form>
                 </div>
             </div>
+            </div> : null }
         </div>        
       );
     }

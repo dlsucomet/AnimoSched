@@ -112,10 +112,10 @@ def addPreferences(z3, highCourses, lowCourses, preferences):
                                     firstEnd = datetime.datetime.combine(datetime.date.today(), firstTime.end_time)
                                     secondBegin = datetime.datetime.combine(datetime.date.today(), secondTime.begin_time)
                                     difference = (secondBegin - firstEnd).total_seconds() / 60
-                                    if(abs(difference - break_length) > 60):
+                                    if(abs(difference - break_length) <= 60):
                                         a = Bool(str(o.classnumber))
-                                        b = Not(Bool(str(o2.classnumber)))
-                                        z3.add(Implies(a,b))
+                                        b = Bool(str(o2.classnumber))
+                                        # z3.add(Implies(a,b))
                                         
 
     return otherPreferences
@@ -166,10 +166,8 @@ def solve(highCourses, lowCourses, preferences):
         schedules.append(schedule)
         addExtraConstraints(z3, model)
         addPreferences(z3, highCourses, lowCourses, preferences)
+
     return schedules 
-    
-
-
 
 # def start(inputCourses, inputProfs, inputNotSections, inputNotRooms, inputNotBefore, inputNotAfter, inputNotDays, inputCheckFull, num):
 
