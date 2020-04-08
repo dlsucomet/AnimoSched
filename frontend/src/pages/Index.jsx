@@ -349,7 +349,7 @@ class Index extends Component {
                     </Typography>
               </Grid>
 
-              <Grid item xs={2}>
+              <Grid item xs={1}>
               </Grid>
 
               <Grid item xs={7}>
@@ -361,7 +361,7 @@ class Index extends Component {
               {/* <Grid item xs={1}>
               </Grid> */}
 
-              <Grid item xs={3} align="center">
+              <Grid item xs={4} align="center" direction="column">
                 <div class='optionList'>
                   <Button
                       variant="contained"
