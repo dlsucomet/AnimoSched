@@ -154,7 +154,6 @@ class Index extends Component {
     axios.get('http://localhost:8000/api/schedulelist/'+localStorage.getItem('user_id')+'/')
     .then(res => {
         const schedules = []
-        var schedCount = 0;
         res.data.map(newSchedule =>{
             var count = 0;
             const scheduleContent = []
@@ -219,10 +218,9 @@ class Index extends Component {
 
                 count += 1;
             })
-            schedCount += 1;
             schedules.push({
-                id: schedCount,
-                title: "Schedule "+schedCount.toString(),
+                id: newSchedule.id,
+                title: newSchedule.title,
                 scheduleContent: scheduleContent,
                 tableContent: tableContent, 
                 prefContent: [],
@@ -256,29 +254,39 @@ class Index extends Component {
     this.setState({pagesCount: generatedContents.length});
     this.setState({currentContent: generatedContents[0]})
 
-    }
+  }
 
-    updateSchedTitle=(text)=>{
-      var newArray = [];
-      const currentContent = this.state.currentContent;
-     // var index = newArray.findIndex(this.state.currentContent);
-     const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
+  updateSchedTitle=(text)=>{
+    var newArray = [];
+    const currentContent = this.state.currentContent;
+    // var index = newArray.findIndex(this.state.currentContent);
+    axios.patch('http://localhost:8000/api/schedules/'+currentContent.props.id+'/',{
+      title: text
+    }).catch(err => {
+      console.log(err.response)
+    })
+    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
 
-     this.state.generatedContents.map(value=>{
-         if(value.key == this.state.currentContent.key){
-             newArray.push(newContent)
-         }else{
-             newArray.push(value)
-         }
-     })
+    this.state.generatedContents.map(value=>{
+        if(value.key == this.state.currentContent.key){
+            newArray.push(newContent)
+        }else{
+            newArray.push(value)
+        }
+    })
 
-     this.setState({generatedContents: newArray});
- }
+    this.setState({generatedContents: newArray});
+  }
 
  deleteSchedule=()=>{
   var newSchedule = [...this.state.generatedContents];
   var currentPage = this.state.currentPage;
   var index = currentPage;
+
+  axios.delete('http://localhost:8000/api/schedules/'+this.state.currentContent.props.id+'/')
+  .catch(err => {
+    console.log(err.response)
+  })
   
   if(index !== -1){
     newSchedule.splice(index, 1);
@@ -388,6 +396,7 @@ class Index extends Component {
                     >
                     Delete
                   </Button>
+                    {this.state.currentContent != null ?
                     <Dialog
                       open={this.state.openAlert}
                       onClose={this.handleCloseAlert}
@@ -397,7 +406,7 @@ class Index extends Component {
                       <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
                       <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                          {/* Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules? */}
+                          Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
@@ -409,6 +418,7 @@ class Index extends Component {
                         </Button>
                       </DialogActions>
                     </Dialog>
+                    : null }
 
                     <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
                       <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
