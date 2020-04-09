@@ -397,7 +397,7 @@ class GenerateSchedule extends Component {
                     max_enrolled = offering.max_enrolled
                     current_enrolled = offering.current_enrolled
                     const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                    tableContent.push(newTableContent)
+                    // tableContent.push(newTableContent)
                     count += 1;
                 })
                 schedCount += 1;
@@ -407,6 +407,7 @@ class GenerateSchedule extends Component {
                     scheduleContent: scheduleContent,
                     tableContent: tableContent,
                     prefContent: [],
+                    prefContent: newSchedule.preferences,
                     conflictsContent: newSchedule.information,
                     earliest: earliest,
                     latest: latest,
