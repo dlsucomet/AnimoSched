@@ -361,6 +361,7 @@ class GenerateSchedule extends Component {
                         section: offering.section,
                         startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
                         endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                        priorityId: 3,
                         location: offering.room,
                         professor: offering.faculty,
                         startTime: offering.timeslot_begin,

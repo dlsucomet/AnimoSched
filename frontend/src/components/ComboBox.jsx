@@ -10,7 +10,8 @@ class ComboBox extends React.Component{
             college: '',
             programList: [],
             degrees: [],
-            courseList: this.props.courseList
+            courseList: this.props.courseList,
+            value: this.props.value
         }
     }
 
@@ -22,7 +23,11 @@ class ComboBox extends React.Component{
                 courseList.push(course)
             })
         }
-        this.setState({courseList:courseList});
+        console.log(props.value)
+        this.setState({
+            courseList:courseList,
+            value: props.value
+        });
         this.changeProgramList(props);
     }
 
@@ -55,7 +60,7 @@ class ComboBox extends React.Component{
                   getOptionLabel={option => option.name}
                   style={{ width: 500 }}
                   renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
-                  value={this.props.value}
+                  value={this.state.value}
                   onChange={this.props.onChange}
                 />
             );

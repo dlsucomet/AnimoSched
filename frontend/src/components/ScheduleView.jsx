@@ -7,9 +7,9 @@ import {
   WeekView,
   Appointments,
   AppointmentTooltip,
+  Resources,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { blue, purple, green } from "@material-ui/core/colors";
 // import { appointments } from "./data";
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
@@ -21,6 +21,8 @@ import Room from '@material-ui/icons/Room';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ClassIcon from '@material-ui/icons/Class';
+import { blue, purple } from "@material-ui/core/colors";
+import { green, deepOrange, lightBlue } from '@material-ui/core/colors';
 
 import '../css/ScheduleView.css';
 
@@ -129,6 +131,16 @@ class ScheduleView extends Component {
         latest: latest,
         earliest: earliest
       }
+      const priorities = [
+        { id: 1, text: 'Low Priority', color: green },
+        { id: 2, text: 'Medium Priority', color: lightBlue },
+        { id: 3, text: 'High Priority', color: deepOrange },
+      ];
+      this.resources = [{
+        fieldName: 'priorityId',
+        title: 'Priority',
+        instances: priorities,
+      }]
     }
 
     componentWillReceiveProps(props){
@@ -146,6 +158,7 @@ class ScheduleView extends Component {
         earliest: earliest
       });
     }
+    
     render() { 
         return (
             <MuiThemeProvider theme={theme}>
@@ -159,6 +172,9 @@ class ScheduleView extends Component {
                   contentComponent={Content}
                   // commandButtonComponent={CommandButton}
                   showCloseButton
+                />
+                <Resources
+                  data={this.resources}
                 />
                 </Scheduler>
             </Paper>

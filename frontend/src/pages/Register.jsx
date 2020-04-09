@@ -52,6 +52,8 @@ class Register extends Component {
     constructor(props){
         super(props);
 
+        this.degreeRef = React.createRef();
+
         this.state = {
             fields: {},
             errors: {},
@@ -90,14 +92,23 @@ class Register extends Component {
 
         let fields = this.state.fields;
         fields[field] = e.target.value;        
+        if(field == 'college'){
+          console.log('it is college')
+          fields['degree'] = ''
+          this.degreeRef.current.setState({value: 1})
+          console.log(this.degreeRef.current.state.value)
+        }
         this.setState({fields});
+
     }
 
     handleAutoCompleteChange = (e, val) => {
-        let fields = this.state.fields;
-        fields['degree'] = val.id;
-        console.log(val.id);
-        this.setState({fields});
+        if(val != undefined){
+          let fields = this.state.fields;
+          fields['degree'] = val.id;
+          console.log(val.id);
+          this.setState({fields});
+        }
     }
 
     handleValidation = () => {
@@ -305,7 +316,7 @@ class Register extends Component {
 
                         {/* <br/> */}
 
-                        <ComboBox page="register" name="degree" value={this.state.fields["degree"]} onChange={this.handleAutoCompleteChange} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
+                        <ComboBox ref={this.degreeRef} page="register" name="degree" value={this.state.fields["degree"]} onChange={this.handleAutoCompleteChange} college={this.state.fields["college"]} degrees={this.state.degrees}/><br/>
 
                         {/* Password */}
                         <br/>
