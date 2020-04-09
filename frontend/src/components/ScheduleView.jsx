@@ -7,7 +7,7 @@ import {
   WeekView,
   Appointments,
   AppointmentTooltip,
-  Resources,
+  Resources
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 // import { appointments } from "./data";

@@ -36,6 +36,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import html2canvas from 'html2canvas';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -332,7 +334,13 @@ class Index extends Component {
       snackBarVariables[1].snackBarFailedDelete = false;
     }
     this.setState({snackBarVariables});
-}
+  }
+
+  exportSched = () => {
+    html2canvas(document.querySelector("#savedSchedContent")).then(canvas => {
+      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+    });
+  }
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -361,7 +369,7 @@ class Index extends Component {
               </Grid>
 
               <Grid item xs={7}>
-                <div className='savedContent'>
+                <div id='savedContent' className='savedContent'>
                     <span>{this.state.currentContent}</span>
                 </div>
               </Grid>
@@ -386,6 +394,7 @@ class Index extends Component {
                   <Button
                     variant="contained"
                     className={classes.buttonStyle}
+                    onClick={this.exportSched}
                     >
                     Export
                   </Button>
