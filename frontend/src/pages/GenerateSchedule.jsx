@@ -361,6 +361,7 @@ class GenerateSchedule extends Component {
                         section: offering.section,
                         startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
                         endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                        priorityId: 3,
                         location: offering.room,
                         professor: offering.faculty,
                         startTime: offering.timeslot_begin,
@@ -397,7 +398,7 @@ class GenerateSchedule extends Component {
                     max_enrolled = offering.max_enrolled
                     current_enrolled = offering.current_enrolled
                     const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                    tableContent.push(newTableContent)
+                    // tableContent.push(newTableContent)
                     count += 1;
                 })
                 schedCount += 1;
@@ -407,6 +408,7 @@ class GenerateSchedule extends Component {
                     scheduleContent: scheduleContent,
                     tableContent: tableContent,
                     prefContent: [],
+                    prefContent: newSchedule.preferences,
                     conflictsContent: newSchedule.information,
                     earliest: earliest,
                     latest: latest,

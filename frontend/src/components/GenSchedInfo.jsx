@@ -124,7 +124,7 @@ class GenSchedInfo extends Component {
                             {/* <DoneIcon fontSize="medium" style={{color: "green"}} /> */}
                         </Row>
                    
-                        <ScheduleView content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest}/>
+                        <ScheduleView id='scheduleView' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest}/>
                     </Column>
                     <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "40px"}} >
                         <Row horizontal = 'center'>

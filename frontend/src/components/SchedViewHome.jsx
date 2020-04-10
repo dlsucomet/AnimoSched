@@ -184,7 +184,7 @@ class SchedViewHome extends Component {
           // </div>
             <Row horizontal="center">
                 <Column flexShrink={1}>
-                  <div class='savedSchedContent' style={{block: "display"}}>
+                  <div id='savedSchedContent' class='savedSchedContent' style={{block: "display"}}>
                     
                   <Row horizontal= 'center'>
                       <EditableLabel ref={this.editableLabel} text={this.state.schedTitle}

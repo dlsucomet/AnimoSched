@@ -7,9 +7,9 @@ import {
   WeekView,
   Appointments,
   AppointmentTooltip,
+  Resources
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { blue, purple, green } from "@material-ui/core/colors";
 // import { appointments } from "./data";
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
@@ -21,8 +21,12 @@ import Room from '@material-ui/icons/Room';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ClassIcon from '@material-ui/icons/Class';
+import { blue, purple } from "@material-ui/core/colors";
+import { green, deepOrange, lightBlue } from '@material-ui/core/colors';
 
 import '../css/ScheduleView.css';
+
+import Typography from '@material-ui/core/Typography';
 
 const theme = createMuiTheme({ palette: { type: "light", primary: green } });
 
@@ -31,7 +35,10 @@ const styles = {
       overflow: "hidden",
       textOverflow: "ellipsis"
     }
+    
+
   };
+
 
   const style = ({ palette }) => ({
     icon: {
@@ -112,6 +119,49 @@ const formatDayScaleDate = (date, options) => {
     </AppointmentTooltip.Content>
   ));
 
+  const AppointmentContent = ({ style, ...restProps }) => {
+    return (
+      <Appointments.AppointmentContent {...restProps}>
+        <div className={restProps.container}>
+          <div>{restProps.data.title}</div>
+          {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
+          <div>{restProps.data.location}</div>
+          <div>{restProps.data.startTime} - {restProps.data.endTime}</div>
+          <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
+                {restProps.data.professor}
+          </Typography>
+        </div>
+      </Appointments.AppointmentContent>
+    );
+  };
+
+  const CustomAppointment = ({ style, ...restProps }) => {
+  
+    if (restProps.data.location === "Room 1")
+      return (
+        <Appointments.Appointment
+          {...restProps}
+          style={{ ...style, backgroundColor: "blue"}}
+          className="CLASS_ROOM1"
+          data={restProps.data.location}
+        />
+      );
+    if (restProps.data.location === "Room 2")
+      return (
+        <Appointments.Appointment
+          {...restProps}
+          style={{ ...style, backgroundColor: "green" }}
+          className="CLASS_ROOM2"
+        />
+      );
+    return (
+      <Appointments.Appointment
+        {...restProps}
+        style={style}
+        className="CLASS_ROOM3"
+      />
+    );
+  };
 
 class ScheduleView extends Component {
     constructor(props){
@@ -127,8 +177,19 @@ class ScheduleView extends Component {
       this.state = {  
         classes: props.content,
         latest: latest,
-        earliest: earliest
+        earliest: earliest,
+        palette: ['#324856', '#4A746A', '#D18237', 'D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
       }
+      const priorities = [
+        { id: 1, text: 'Low Priority', color: green },
+        { id: 2, text: 'Medium Priority', color: lightBlue },
+        { id: 3, text: 'High Priority', color: deepOrange },
+      ];
+      this.resources = [{
+        fieldName: 'priorityId',
+        title: 'Priority',
+        instances: priorities,
+      }]
     }
 
     componentWillReceiveProps(props){
@@ -143,9 +204,11 @@ class ScheduleView extends Component {
       this.setState({
         classes: props.content,
         latest: latest,
-        earliest: earliest
+        earliest: earliest,
+        palette: [],
       });
     }
+    
     render() { 
         return (
             <MuiThemeProvider theme={theme}>
@@ -153,12 +216,18 @@ class ScheduleView extends Component {
                 <Scheduler id='scheduleView' data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
                 <WeekView startDayHour={this.state.earliest} endDayHour={this.state.latest} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
-                <Appointments />
+                <Appointments 
+                appointmentContentComponent={AppointmentContent}
+                appointmentComponent={CustomAppointment}
+                />
                 <AppointmentTooltip
                   // headerComponent={Header}
                   contentComponent={Content}
                   // commandButtonComponent={CommandButton}
                   showCloseButton
+                />
+                <Resources
+                  data={this.resources}
                 />
                 </Scheduler>
             </Paper>

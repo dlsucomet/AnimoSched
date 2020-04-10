@@ -161,6 +161,7 @@ class SchedulesList(APIView):
           d['room'] = Room.objects.get(id=d['room']).room_name
       serializedSchedule['offerings'] = serializer.data
       serializedSchedule['information'] = s['information']
+      serializedSchedule['preferences'] = s['preferences']
       serializedSchedules.append(serializedSchedule)
     return Response(serializedSchedules)
 
