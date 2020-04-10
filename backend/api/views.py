@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import viewsets          
-from .serializers import CustomRegisterSerializer, ScheduleSerializer, TimeslotSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer
-from .models import User, Schedule, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room
+from .serializers import CustomRegisterSerializer, ScheduleSerializer, TimeslotSerializer, CourseOfferingSerializer, PreferenceSerializer, UserSerializer, CourseSerializer, DegreeSerializer, CollegeSerializer, CoursePrioritySerializer, DaySerializer, FacultySerializer, BuildingSerializer, SectionSerializer, FlowchartTermSerializer
+from .models import User, Schedule, Course, Degree, College, CoursePriority, Preference, Day, Faculty, Building, Section, CourseOffering, Timeslot, Room, FlowchartTerm
 from .satsolver import solve
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,6 +18,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 class DegreeViewSet(viewsets.ModelViewSet):       
   serializer_class = DegreeSerializer 
   queryset = Degree.objects.all()              
+
+class FlowchartTermViewSet(viewsets.ModelViewSet):       
+  serializer_class = FlowchartTermSerializer 
+  queryset = FlowchartTerm.objects.all()              
 
 class CoursePriorityViewSet(viewsets.ModelViewSet):       
   serializer_class = CoursePrioritySerializer 
@@ -129,7 +133,6 @@ class CourseOfferingsList(APIView):
           courseData.append(serializer.data)
         return Response(courseData)
 
-
 class SchedulesList(APIView):
   def post(self, request, format=None):
     highCourses = []
@@ -160,3 +163,19 @@ class SchedulesList(APIView):
       serializedSchedule['information'] = s['information']
       serializedSchedules.append(serializedSchedule)
     return Response(serializedSchedules)
+
+class FlowchartTermsList(APIView):
+    def get(self, request, pk, pk2, format=None):
+        flowchartTerms = FlowchartTerm.objects.filter(degree=pk, batch=pk2)
+        serializer = FlowchartTermSerializer(flowchartTerms, many=True)
+        for d in serializer.data:
+          courses = []
+          for o in d['courses']:
+            course = Course.objects.get(id=o)
+            courseSerializer = CourseSerializer(course)
+            d2 = courseSerializer.data
+            print(d2)
+            d2['college'] = College.objects.get(id=d2['college']).college_code
+            courses.append(d2)
+          d['courses'] = courses
+        return Response(serializer.data)

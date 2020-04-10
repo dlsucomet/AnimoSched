@@ -3,11 +3,84 @@ import '../css/Flowchart.css';
 import SidebarIMG from '../images/Login.svg';
 import Menu from '../components/Menu.jsx';
 
+import { Flowpoint, Flowspace } from 'flowpoints';
+import axios from 'axios';
+
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+const styles = theme => ({
+  flowchartText:{
+      fontSize: "0.7rem",
+      // color: "green", 
+      '&:hover': {
+          color: "green"
+        },
+  }
+});
+
 class Flowchart extends Component {
     constructor(props){
       super(props);
+      this.state = {
+        terms: [],
+        courses: [],
+        flowpoints: [],
+        degreekey: '1',
+        batchkey: '116',
+      }
     }
+
+    componentDidMount() {
+      // const degreekey = '1';
+      // const batchkey = '116';
+      axios.get('http://localhost:8000/api/flowcharttermslist/'+this.state.degreekey+'/'+this.state.batchkey+'/')
+      .then(res => {
+        res.data.map((term, i) => {
+                var termsList = this.state.terms;
+                var coursesList = this.state.courses;
+                var flowpointsList = this.state.flowpoints;
+                var newTerm = {'id':term.id, 'degree':term.degree, 'batch': term.batch, 'courses': term.courses, 'year': term.year, 'term': term.term} 
+                termsList.push(newTerm);
+                term.courses.map((course, j) => {
+                  var outputsList = [];
+                  coursesList.push(course);
+                  console.log(course);
+                  course.prerequisite_to.map((prereq_to) => {
+                      outputsList.push(prereq_to)
+                  })                  
+                  console.log(outputsList);
+                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:i*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
+                })
+                this.setState({terms: termsList})
+                this.setState({courses: coursesList})
+                this.setState({flowpoints: flowpointsList})                
+        })
+      })
+    
+  // console.log(this.state.flowpoints)
+  // console.log(this.state.terms)
+    }
+
     render() {
+      const { classes } = this.props;
+      // console.log(this.state.terms)
+    //   const flowchartCells = this.state.terms.map((item, i) => {
+    //     return (
+    //         <Flowspace theme="green" variant="outlined">
+    //           {item.courses.map((course, j) => {
+    //             // console.log(course.course_code)
+    //             return (
+    //               <Flowpoint key={course.course_code} startPosition={{ x:i*180, y:j*70 }} dragX={false} dragY={false}>
+    //                 {course.course_code}
+    //               </Flowpoint>
+    //             )
+    //           })}            
+    //         </Flowspace>
+    //        );
+    // });
+    // outputs={{"point_b": {input: "left", output: "right", outputColor:"green", inputColor:"green",},}}
+
       return (
         <div>
             {this.props.menu()}
@@ -19,15 +92,56 @@ class Flowchart extends Component {
             </div>
 
             <div class="sidemenu-main">
-
-                <center><h2>TITLE</h2></center>
-
+                <center><h2>YOUR FLOWCHART</h2></center>
                 <div>
-                    INSERT FLOWCHART HERE
+                    {/* {flowchartCells} */}
+                    {/* headers */}
+                    <Flowspace theme="green" variant="paper" background="white" style={{ height:"100vh", width:"100vw" }}>
+                      {
+                        Object.keys(this.state.flowpoints).map(key => {
+                          const point = this.state.flowpoints[key]
+                          return (
+                            <Flowpoint
+                              key={point.key}
+                              startPosition={point.startPosition} 
+                              width={point.width} 
+                              height={point.height} 
+                              dragX={point.dragX} 
+                              dragY={point.dragY} 
+                              outputs={point.outputs}>
+                              <div className={classes.flowchartText}><center>{point.name}<br />{point.units}</center></div>
+                            </Flowpoint>
+
+                            // <Flowpoint
+                            //   key={key}
+                            //   startPosition={point.pos}
+                            //   onClick={() => {
+                            //     var selected_point = this.state.selected_point
+                            //     if (selected_point === key) {
+                            //       selected_point = null
+                            //     } else {
+                            //       selected_point = key
+                            //     }
+                            //     this.setState({selected_point})
+                            //   }}
+                            //   onDrag={position => {
+                            //     var flowpoints = this.state.flowpoints
+                            //     flowpoints[key].position = position
+                            //     this.setState({flowpoints})
+                            //   }}>                                
+                            // </Flowpoint>
+                          )
+                        })
+                      }
+                   </Flowspace>
                 </div>
             </div>
         </div>        
       );
     }
   }
-  export default Flowchart;
+
+  Flowchart.propTypes={
+    classes: PropTypes.object.isRequired,
+  };
+  export default withStyles(styles)(Flowchart);

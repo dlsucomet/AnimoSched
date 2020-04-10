@@ -18,7 +18,8 @@ router.register(r'preferences', views.PreferenceViewSet)
 router.register(r'timeslots', views.TimeslotViewSet)     
 router.register(r'coursepriority', views.CoursePriorityViewSet)     
 router.register(r'courseoffering', views.CourseOfferingViewSet)     
-router.register(r'colleges', views.CollegeViewSet)     
+router.register(r'colleges', views.CollegeViewSet)    
+router.register(r'flowchartterms', views.FlowchartTermViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),                
@@ -27,6 +28,7 @@ urlpatterns = [
     path('api/schedulelist/<int:pk>/', views.SavedScheduleList.as_view()),     
     path('api/courseprioritylist/<int:pk>/', views.CoursePriorityList.as_view()),     
     path('api/courseofferingslist/', views.CourseOfferingsList.as_view()),     
+    path('api/flowcharttermslist/<int:pk>/<int:pk2>/', views.FlowchartTermsList.as_view()),    
     path('api/auth/', include('rest_auth.urls')),                
     path('api/auth/registration/', include('rest_auth.registration.urls')),                
     path('api/refresh-token/', refresh_jwt_token),

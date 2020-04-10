@@ -29,25 +29,6 @@ class Degree(models.Model):
         verbose_name = _('degree')
         verbose_name_plural = _('degrees')
 
-class Flowchart(models.Model):
-    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
-    year = models.CharField(max_length=3)
-    timestamp = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = _('flowchart')
-        verbose_name_plural = _('flowcharts')
-
-class FlowchartTerm(models.Model):
-    flowchart = models.ForeignKey(Flowchart, on_delete=models.CASCADE)
-    year = models.IntegerField()
-    term = models.IntegerField()
-    timestamp = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = _('flowchart term')
-        verbose_name_plural = _('flowchart terms')
-
 class Course(models.Model):
     course_code = models.CharField(max_length=8, unique=True)
     course_name = models.CharField(max_length=120)
@@ -56,12 +37,34 @@ class Course(models.Model):
     units = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
     # flowchart information
-    flowchart_terms = models.ManyToManyField(FlowchartTerm)
-    prerequisites = models.ManyToManyField('self')
+    # flowchart_terms = models.ManyToManyField(FlowchartTerm)
+    prerequisite_to = models.ManyToManyField('self', symmetrical=False, null=True)
 
     class Meta:
         verbose_name = _('course')
         verbose_name_plural = _('courses')
+
+class FlowchartTerm(models.Model):
+    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+    batch = models.CharField(max_length=3)
+    courses = models.ManyToManyField(Course)
+    year = models.IntegerField()
+    term = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('flowchart term')
+        verbose_name_plural = _('flowchart terms')
+
+# class Flowchart(models.Model):
+#     degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+#     year = models.CharField(max_length=3)
+#     terms = models.ManyToManyField(FlowchartTerm)
+#     timestamp = models.DateTimeField(auto_now=True)
+
+#     class Meta:
+#         verbose_name = _('flowchart')
+#         verbose_name_plural = _('flowcharts')
 
 class Faculty(models.Model):
     full_name = models.CharField(max_length=100, unique=True)

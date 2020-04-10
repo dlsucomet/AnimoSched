@@ -3,7 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
-from .models import College, Degree, Course, Faculty, Section, Building, Room, Day, Timeslot, CourseOffering, CoursePriority, Schedule, User, Preference
+from .models import College, Degree, Course, Faculty, FlowchartTerm, Section, Building, Room, Day, Timeslot, CourseOffering, CoursePriority, Schedule, User, Preference
 
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
@@ -21,12 +21,22 @@ class DegreeSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:
     model = Course 
-    fields = ('id', 'course_code', 'course_name', 'course_desc', 'college', 'units')
+    fields = ('id', 'course_code', 'course_name', 'course_desc', 'college', 'units', 'prerequisite_to')
 
 class FacultySerializer(serializers.ModelSerializer):
   class Meta:
     model = Faculty 
     fields = ('id', 'full_name')
+
+# class FlowchartSerializer(serializers.ModelSerializer):
+#   class Meta:
+#     model = Flowchart 
+#     fields = ('id', 'degree', 'year', 'terms')
+
+class FlowchartTermSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = FlowchartTerm 
+    fields = ('id', 'degree', 'batch', 'courses', 'year', 'term')
 
 class SectionSerializer(serializers.ModelSerializer):
   class Meta:
