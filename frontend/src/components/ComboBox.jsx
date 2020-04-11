@@ -23,6 +23,7 @@ class ComboBox extends React.Component{
                 courseList.push(course)
             })
         }
+        console.log('props val')
         console.log(props.value)
         this.setState({
             courseList:courseList,
@@ -61,6 +62,8 @@ class ComboBox extends React.Component{
                   style={{ width: 500 }}
                   renderInput={params => <TextField {...params} label="Degree Program" variant="outlined" />}
                   value={this.state.value}
+                  inputValue={this.state.value}
+                  searchText={this.state.value}
                   onChange={this.props.onChange}
                 />
             );

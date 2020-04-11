@@ -270,7 +270,9 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" render={this.mainPage} />
+          {!this.state.logged_in &&
           <Route exact path="/login" component={this.loginPage}/>
+          }
           <Route exact path="/register" component={this.registerPage} />
           <Route exact path="/password_reset" component={this.resetPasswordPage} />
           <Route exact path="/password_reset_done" component={this.resetPasswordDonePage} />
@@ -292,7 +294,10 @@ class App extends Component {
           <Route exact path="/search_courses" component={this.searchCoursesPage} />
           }
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
-          <Redirect to="/login" />
+          {this.state.logged_in
+          ? <Redirect to="/" />
+          : <Redirect to="/login" />
+          }
         </Switch>
       </Router>
     );

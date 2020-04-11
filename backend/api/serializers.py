@@ -86,11 +86,12 @@ class PreferenceSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ('id', 'email', 'first_name', 'last_name', 'college', 'degree', 'friends', 'is_active')
+    fields = ('id', 'email', 'id_num', 'first_name', 'last_name', 'college', 'degree', 'friends', 'is_active')
 
 class CustomRegisterSerializer(RegisterSerializer):
     # username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
+    id_num = serializers.IntegerField(required=True)
     password1 = serializers.CharField(write_only=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
@@ -110,6 +111,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             # 'username': self.validated_data.get('username', ''),
             'password1': self.validated_data.get('password1',''),
             'email': self.validated_data.get('email', ''),
+            'id_num': self.validated_data.get('id_num', ''),
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'college': self.validated_data.get('college',''),
@@ -121,6 +123,7 @@ class CustomRegisterSerializer(RegisterSerializer):
       self.cleaned_data = self.get_cleaned_data()
       user.college = self.get_cleaned_data().get('college')
       user.degree = self.get_cleaned_data().get('degree')
+      user.id_num = self.get_cleaned_data().get('id_num')
       adapter.save_user(request, user, self)
       self.custom_signup(request, user)
       setup_user_email(request, user, [])
