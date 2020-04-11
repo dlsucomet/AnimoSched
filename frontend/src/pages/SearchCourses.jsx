@@ -22,6 +22,10 @@ import groupArray from 'group-array';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
@@ -47,6 +51,15 @@ const styles = theme => ({
   },
 });
 
+const GreenRadio = withStyles({
+  root: {
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Radio color="default" {...props} />);
+
 class SearchCourses extends Component {
     constructor(props){
       super(props);
@@ -54,10 +67,13 @@ class SearchCourses extends Component {
         fields: {},
         database: [],
         siteData: [],
+        allSiteData: [],
         courseList: [],
         selectedCourses: [],
         loading: false,
+        radioVal: ''
       }
+      this.radioRef = React.createRef()
     }
 
     componentWillMount(){
@@ -83,12 +99,13 @@ class SearchCourses extends Component {
 
     handleFilter = (field, e) => {
       let option = e.target.value;
+      this.setState({radioVal: option})
 
       let filteredList = [];
 
       if(option == "all"){
         console.log("all");
-        filteredList = this.state.database;
+        filteredList = this.state.allSiteData;
 
         this.setState({siteData: filteredList});
 
@@ -98,10 +115,10 @@ class SearchCourses extends Component {
         console.log("open");
 
         var i;
-        for(i = 0; i < this.state.database.length; i++) {
-          if(this.state.database[i].enrolled < this.state.database[i].capacity){
+        for(i = 0; i < this.state.allSiteData.length; i++) {
+          if(this.state.allSiteData[i].enrolled < this.state.allSiteData[i].capacity){
             // console.log(this.state.database[i]);
-            filteredList.push(this.state.database[i]);
+            filteredList.push(this.state.allSiteData[i]);
           }
         }
 
@@ -113,10 +130,10 @@ class SearchCourses extends Component {
         console.log("closed");
 
         var i;
-        for(i = 0; i < this.state.database.length; i++) {
-          if(this.state.database[i].enrolled >= this.state.database[i].capacity){
+        for(i = 0; i < this.state.allSiteData.length; i++) {
+          if(this.state.allSiteData[i].enrolled >= this.state.allSiteData[i].capacity){
             // console.log(this.state.database[i]);
-            filteredList.push(this.state.database[i]);
+            filteredList.push(this.state.allSiteData[i]);
           }
         }
 
@@ -129,6 +146,7 @@ class SearchCourses extends Component {
 
     searchCourses = () =>{
       //start loading
+      this.setState({radioVal: ''})
       if(this.state.selectedCourses.length > 0){
         this.setState({siteData: []})
         this.setState({loading: true});
@@ -182,6 +200,7 @@ class SearchCourses extends Component {
             }
           })
         this.setState({siteData: newSiteData})
+        this.setState({allSiteData: newSiteData})
         //Finish Loading
         this.setState({loading: false});
       }).catch(err => {
@@ -245,22 +264,14 @@ class SearchCourses extends Component {
 
                 <div className="filters">
                     <center>
-                      <span className="filterLabel">Filters:</span>
-                      
-                      <label className="radio-description" for="all">
-                        <input type="radio" id="all" name="filter" value="all" onChange={this.handleFilter.bind(this, "filter")} />
-                        All Sections
-                      </label>
-
-                      <label className="radio-description" for="open">
-                        <input type="radio" id="open" name="filter" value="open" onChange={this.handleFilter.bind(this, "filter")} />
-                        Open Sections
-                      </label>
-
-                      <label className="radio-description" for="closed">
-                        <input type="radio" id="closed" name="filter" value="closed" onChange={this.handleFilter.bind(this, "filter")} />
-                        Closed Sections
-                      </label>
+                      {/* <span className="filterLabel">Filters:</span> */}
+                  <FormControl component="fieldset">
+                    <RadioGroup ref={this.radioRef} row aria-label="filter" name="filter" onChange={this.handleFilter.bind(this, "filter")} value={this.state.radioVal}>
+                      <FormControlLabel value="all" control={<GreenRadio />} label="All Sections" />
+                      <FormControlLabel value="open" control={<GreenRadio />} label="Open Sections" />
+                      <FormControlLabel value="closed" control={<GreenRadio />} label="Closed Sections" />
+                    </RadioGroup>
+                  </FormControl>
                     </center>
                 </div>
 

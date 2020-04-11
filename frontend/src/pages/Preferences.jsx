@@ -253,6 +253,13 @@ class Preferences extends Component {
                         var prof = {'id': preference.preferred_faculty.id, 'profName': preference.preferred_faculty.full_name} 
                         selectedProfs.push(prof);
                         this.setState({selectedProfs})
+                        const profList = [];
+                        this.state.profList.map(prof2 => {
+                            if(prof2.profName != prof.profName){
+                                profList.push(prof2);
+                            }
+                        })
+                        this.setState({profList})
                     }
                     if(preference.preferred_buildings != null){
                         const newBuildingList = [];
@@ -270,6 +277,13 @@ class Preferences extends Component {
                         var section = {'id': preference.preferred_sections.id, 'sectionName': preference.preferred_sections.section_code} 
                         selectedSections.push(section);
                         this.setState({selectedSections})
+                        const sectionList = [];
+                        this.state.sectionList.map(section2 => {
+                            if(section2.sectionName != section.sectionName){
+                                sectionList.push(section2);
+                            }
+                        })
+                        this.setState({sectionList})
                     }
                 })
                 this.setState({dataReceived: true})
@@ -277,7 +291,13 @@ class Preferences extends Component {
     }
 
     handleProfPrefChange = (e, val) =>{
-        this.setState({selectedProfs: val})
+        const profList = this.state.profList
+        this.state.selectedProfs.map(prof => {
+            if(!(val.includes(prof))){
+                profList.push(prof)
+            }
+        })
+        this.setState({selectedProfs: val, profList: profList})
     }
 
     handleProfPrefPress = (e) => {
@@ -298,7 +318,13 @@ class Preferences extends Component {
     }
 
     handleSectionPrefChange = (e, val) =>{
-        this.setState({selectedSections: val})
+        const sectionList = this.state.sectionList
+        this.state.selectedSections.map(section => {
+            if(!(val.includes(section))){
+                sectionList.push(section)
+            }
+        })
+        this.setState({selectedSections: val, sectionList: sectionList})
       }
     
 

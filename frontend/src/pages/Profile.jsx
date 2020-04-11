@@ -81,7 +81,7 @@ class Profile extends Component {
                 email: res.data.email,
                 first_name: res.data.first_name,
                 last_name: res.data.last_name,
-                id_num: '', 
+                id_num: res.data.id_num, 
             })
             const college = res.data.college;
             const degree = res.data.degree;
