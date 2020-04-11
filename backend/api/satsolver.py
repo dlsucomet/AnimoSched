@@ -123,6 +123,8 @@ def addPreferences(z3, highCourses, lowCourses, preferences):
 def checkPreferences(z3, model, preferences):
     unsatisfied = []
     offerings = None
+    min_courses = None
+    max_courses = None
     allOfferings = CourseOffering.objects.none()
     for o in model:
         if(model[o]):
@@ -158,15 +160,14 @@ def checkPreferences(z3, model, preferences):
                     for o in offerings:
                         if(o.faculty != None):
                             if(faculty_id != o.faculty.id):
-                                unsatisfied.append('faculty')
+                                pass
+                                # unsatisfied.append('faculty')
                 if(p.min_courses != None):
                     min_courses = p.min_courses
                 if(p.max_courses != None):
                     max_courses = p.max_courses
                 if(p.break_length != None):
                     break_length = p.break_length
-    print(len(allOfferings), min_courses)
-    print(len(allOfferings), max_courses)
     if(min_courses != None):
         if(int(min_courses) > len(allOfferings)/2):
             print("boop")
