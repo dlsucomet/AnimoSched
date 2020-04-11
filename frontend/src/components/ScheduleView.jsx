@@ -280,12 +280,12 @@ class ScheduleView extends Component {
                 appointmentContentComponent={AppointmentContent}
                 appointmentComponent={this.CustomAppointment}
                 />
-                <AppointmentTooltip
+                {/* <AppointmentTooltip
                   // headerComponent={Header}
                   contentComponent={Content}
                   // commandButtonComponent={CommandButton}
                   showCloseButton
-                />
+                /> */}
                 <Resources
                   data={this.resources}
                 />

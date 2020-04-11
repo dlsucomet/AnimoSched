@@ -38,6 +38,20 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import html2canvas from 'html2canvas';
 
+// import Modal from '@material-ui/core/Modal';
+
+import GetAppIcon from '@material-ui/icons/GetApp';
+import PaletteIcon from '@material-ui/icons/Palette';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+
+import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
+import Paper from '@material-ui/core/Paper';
+
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -78,11 +92,35 @@ const styles = theme => ({
       borderColor: "#D3D3D3",
       marginTop: "20px",
       '&:hover': {
-          backgroundColor: "white",
+          backgroundColor: "#d11a2a",
           borderStyle: "solid",
-          borderColor: "#D3D3D3",
+          color: "white",
+          // borderColor: "#D3D3D3",
         },
-  }
+    },
+    
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      // transform: 'translate(-50px, -50px)',
+      backgroundColor: "white",
+      top:"50%",
+      left:"50%",
+      transform: "translate(-50%,-50%)",
+
+    },
+    
+    paper: {
+      position: 'absolute',
+      width: "400px",
+      height: "300px",
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+
 });
 
 var sectionStyle = {
@@ -98,6 +136,7 @@ var sectionStyle = {
 class Index extends Component {
     constructor(props){
       super(props);
+      
     }
 
     state={
@@ -113,7 +152,10 @@ class Index extends Component {
       // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
       pagesCount: 1,
       dataReceived: false,
-      schedules: []
+      schedules: [],
+      openModal: false,
+      paletteChoices: [],
+      chosenPalette: '',
     }
 
     handlePageChange = (e,index) => {
@@ -342,11 +384,77 @@ class Index extends Component {
     });
   }
 
+  handleCloseModal = ()=>{
+    this.setState({openModal: false})
+  }
+
+  handleOpenModal = ()=>{
+    console.log("Hello opening modal");
+    this.setState({openModal: true})
+    console.log(this.state.openModal);
+  }
+
+  toggleModal = () => {
+    var openModalVar = this.state.openModal;
+    this.setState({openModal: !openModalVar});
+  }
+
+  processPaletteChoices = (title, paletteArray) => {
+    const colorDiv = paletteArray.map(function(palColor, index){
+                      return(
+                        <div key={index} style= {{backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          {palColor}
+                        </div>
+                      )
+                    });
+
+      const paletteDiv = <div className={"colorContainer"} style={{width: "50%", display: "table"}}> {colorDiv}</div>
+
+      var paletteChoices = this.state.paletteChoices;
+      paletteChoices.push({id: this.state.paletteChoices.length, title: title, paletteDiv: paletteDiv, paletteArray: paletteArray});
+      console.log(paletteChoices);
+      this.setState({paletteChoices});
+  }
+  
+  componentDidMount=()=>{
+    var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
+    var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
+    this.processPaletteChoices('Pastel Blossoms', pal1);
+    this.processPaletteChoices('Halographic', pal2);
+  }
+
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
 
         const { classes } = this.props;
+
+        const trycolor = <div className={"colorContainer"} style={{width: "100%", display: "table"}}>
+        <div style= {{backgroundColor:'#EAC9C0', color: '#EAC9C0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px"}}>
+          #EAC9C0
+        </div>
+        <div style= {{backgroundColor:'#DAB2D3', color: '#DAB2D3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+          #DAB2D3
+        </div>
+        <div style= {{backgroundColor:'#9EDAE3', color: '#9EDAE3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+        #9EDAE3
+        </div>
+        <div style= {{backgroundColor:'#65C4D8', color: '#65C4D8', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+          #65C4D8
+        </div>
+        <div style= {{backgroundColor:'#FFD0D6', color: '#FFD0D6', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+          #FFD0D6
+        </div>
+        <div style= {{backgroundColor:'#B7DDE0', color: '#B7DDE0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+          #B7DDE0
+        </div>
+        <div style= {{backgroundColor:'#FEE19F', color: '#FEE19F', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+          #FEE19F
+        </div>
+        <div style= {{backgroundColor:'#735b69', color: '#735b69', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px"}}>
+          #735b69
+        </div>
+      </div>;
 
       return (
         <div style={!this.props.logged_in? sectionStyle : {}}>
@@ -382,26 +490,97 @@ class Index extends Component {
                   <Button
                       variant="contained"
                       className={classes.buttonStyle}
+                      endIcon={<DateRangeIcon/>}
                       >
                       Edit
                     </Button>
                     <Button
                     variant="contained"
                     className={classes.buttonStyle}
+                    onClick={this.handleOpenModal}
+                    endIcon={<PaletteIcon/>}
                     >
                     Customize
                   </Button>
+                  <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                    <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
+                    <ModalBody>
+                      Select class box color palette
+                      <div>
+                      <TextField
+                          id="outlined-select-break"
+                          select
+                          label="class box color palette"
+                          onChange={this.handleBreakChange}
+                        
+                          helperText="Choose a color palette"
+                          variant="outlined"
+                          style={{width: "100%"}}
+                          >
+                          
+                          {/* <MenuItem key={1} value={"option.value"}>
+                              {trycolor}
+                          </MenuItem> */}
+                                 
+                          {this.state.paletteChoices.map((option) => (
+                              <MenuItem key={option.title} value={option.paletteArray}>
+                              {option.paletteDiv}
+                              </MenuItem>
+                                  ))}
+                      </TextField>
+                      </div>
+                      
+
+                      <div className={"colorContainer"} style={{width: "100%", display: "table"}}>
+                        <div style= {{backgroundColor:'#EAC9C0', color: '#EAC9C0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px"}}>
+                          #EAC9C0
+                        </div>
+                        <div style= {{backgroundColor:'#DAB2D3', color: '#DAB2D3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          #DAB2D3
+                        </div>
+                        <div style= {{backgroundColor:'#9EDAE3', color: '#9EDAE3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                        #9EDAE3
+                        </div>
+                        <div style= {{backgroundColor:'#65C4D8', color: '#65C4D8', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          #65C4D8
+                        </div>
+                        <div style= {{backgroundColor:'#FFD0D6', color: '#FFD0D6', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          #FFD0D6
+                        </div>
+                        <div style= {{backgroundColor:'#B7DDE0', color: '#B7DDE0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          #B7DDE0
+                        </div>
+                        <div style= {{backgroundColor:'#FEE19F', color: '#FEE19F', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                          #FEE19F
+                        </div>
+                        <div style= {{backgroundColor:'#735b69', color: '#735b69', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px"}}>
+                          #735b69
+                        </div>
+
+                      </div>
+                     
+                   
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et 
+                    </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
+                    <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
                   <Button
                     variant="contained"
                     className={classes.buttonStyle}
                     onClick={this.exportSched}
+                    endIcon={ <GetAppIcon/>}
                     >
                     Export
                   </Button>
+                 
                   <Button
                     variant="contained"
                     className={classes.deleteButtonStyle}
                     onClick={this.handleClickOpenAlert}
+                    endIcon={<DeleteIcon/>}
                     >
                     Delete
                   </Button>
