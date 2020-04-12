@@ -55,6 +55,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import ReactLoading from 'react-loading';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -887,7 +888,9 @@ class Index extends Component {
             </div>
 
           </div>
-          : null }
+          :
+          <ReactLoading type={'balls'} color={'#9BCFB8'} height={'20%'} width={'20%'} />
+          }
 
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           

@@ -14,7 +14,7 @@ http://www.mingw.org/
 
 ## Installation
 
-`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth django-extensions django-annoying djangorestframework-jwt z3-solver requests html5lib bs4`
+`pip install django djangorestframework django-cors-headers django-cors-middleware django-rest-auth django-allauth djangorestframework-jwt z3-solver requests html5lib bs4`
 
 Then go to the frontend directory to install react dependencies:
 
@@ -26,7 +26,7 @@ Then go to the frontend directory to install react dependencies:
 
 Additional packages that need to be installed:
 
-`yarn add simple-flexbox react-smooth-dnd react-router @devexpress/dx-react-core @devexpress/dx-react-scheduler @material-ui/core @material-ui/icons @devexpress/dx-react-scheduler-material-ui group-array react-window html2canvas`
+`yarn add simple-flexbox react-smooth-dnd react-router @devexpress/dx-react-core @devexpress/dx-react-scheduler @material-ui/core @material-ui/icons @devexpress/dx-react-scheduler-material-ui group-array react-window html2canvas flowpoints react-loading`
 
 ## Usage
 
