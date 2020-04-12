@@ -44,6 +44,7 @@ class Flowchart extends Component {
                 var coursesList = this.state.courses;
                 var flowpointsList = this.state.flowpoints;
                 var newTerm = {'id':term.id, 'degree':term.degree, 'batch': term.batch, 'courses': term.courses, 'year': term.year, 'term': term.term} 
+                var currentTerm = term.term + 3 * (term.year - 1);
                 termsList.push(newTerm);
                 term.courses.map((course, j) => {
                   var outputsList = [];
@@ -53,7 +54,7 @@ class Flowchart extends Component {
                       outputsList.push(prereq_to)
                   })                  
                   console.log(outputsList);
-                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:i*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
+                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:(currentTerm-1)*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
                 })
                 this.setState({terms: termsList})
                 this.setState({courses: coursesList})
@@ -134,7 +135,7 @@ class Flowchart extends Component {
                   </div>
                     {/* {flowchartCells} */}
                     {/* headers */}
-                    <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'hidden', height:"100%", width:"100%" }}>
+                    <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
                       {
                         Object.keys(this.state.flowpoints).map(key => {
                           const point = this.state.flowpoints[key]
