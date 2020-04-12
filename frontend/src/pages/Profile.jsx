@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+import ReactLoading from 'react-loading';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -362,7 +364,11 @@ class Profile extends Component {
                     </form>
                 </div>
             </div>
-            </div> : null }
+            </div> : 
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+              </div>
+            }
         </div>        
       );
     }

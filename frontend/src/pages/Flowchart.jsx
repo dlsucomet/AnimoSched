@@ -9,6 +9,8 @@ import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import ReactLoading from 'react-loading';
+
 const styles = theme => ({
   flowchartText:{
       overflow: 'hidden',
@@ -180,7 +182,11 @@ class Flowchart extends Component {
                   </div>
               </div>
             </div>
-            : null }
+            : 
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+              <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+            </div>
+           }
         </div>        
       );
     }
