@@ -196,7 +196,7 @@ class Preferences extends Component {
     
     componentDidMount(){
         const id = localStorage.getItem('user_id');
-        axios.get('http://localhost:8000/api/faculty/')
+        axios.get('https://archerone-backend.herokuapp.com/api/faculty/')
         .then(res => {
             res.data.map(faculty => {
                 var prof = {'id': faculty.id, 'profName': faculty.full_name} 
@@ -207,7 +207,7 @@ class Preferences extends Component {
                 })
             })
         });
-        axios.get('http://localhost:8000/api/sections/')
+        axios.get('https://archerone-backend.herokuapp.com/api/sections/')
         .then(res => {
             res.data.map(section => {
                 var section = {'id': section.id, 'sectionName': section.section_code} 
@@ -218,7 +218,7 @@ class Preferences extends Component {
                 })
             })
         });
-            axios.get('http://localhost:8000/api/preferencelist/'+id+'/')
+            axios.get('https://archerone-backend.herokuapp.com/api/preferencelist/'+id+'/')
             .then(res => {
                 console.log(res.data)
                 res.data.map(preference =>{
@@ -395,12 +395,12 @@ class Preferences extends Component {
     handleSave = () => {
         this.setState({dataSaved: true})
         const id = localStorage.getItem('user_id');
-        axios.delete('http://localhost:8000/api/preferencelist/'+id+'/')
+        axios.delete('https://archerone-backend.herokuapp.com/api/preferencelist/'+id+'/')
         .then(res => {
             console.log(this.state.daysList)
             this.state.daysList.map(day =>{
                 if(day.checked){
-                    axios.post('http://localhost:8000/api/preferences/', {preferred_days: day.id, user: id},
+                    axios.post('https://archerone-backend.herokuapp.com/api/preferences/', {preferred_days: day.id, user: id},
                     {
                         headers: {
                             'Content-Type': 'application/json'
@@ -413,7 +413,7 @@ class Preferences extends Component {
             console.log(this.state.buildingList)
             this.state.buildingList.map(bldg =>{
                 if(bldg.checked){
-                    axios.post('http://localhost:8000/api/preferences/', {preferred_buildings: bldg.id, user: id},
+                    axios.post('https://archerone-backend.herokuapp.com/api/preferences/', {preferred_buildings: bldg.id, user: id},
                     {
                         headers: {
                             'Content-Type': 'application/json'
@@ -425,7 +425,7 @@ class Preferences extends Component {
             });
             this.state.selectedProfs.map(prof =>{
                 console.log(prof)
-                axios.post('http://localhost:8000/api/preferences/', {preferred_faculty: prof.id, user: id},
+                axios.post('https://archerone-backend.herokuapp.com/api/preferences/', {preferred_faculty: prof.id, user: id},
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -436,7 +436,7 @@ class Preferences extends Component {
             });
             this.state.selectedSections.map(section =>{
                 console.log(section)
-                axios.post('http://localhost:8000/api/preferences/', {preferred_sections: section.id, user: id},
+                axios.post('https://archerone-backend.herokuapp.com/api/preferences/', {preferred_sections: section.id, user: id},
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -453,7 +453,7 @@ class Preferences extends Component {
                 max_courses: this.state.max_courses,
                 user: id
             }
-            axios.post('http://localhost:8000/api/preferences/', data,
+            axios.post('https://archerone-backend.herokuapp.com/api/preferences/', data,
             {
                 headers: {
                     'Content-Type': 'application/json'

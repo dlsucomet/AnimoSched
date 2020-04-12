@@ -34,7 +34,7 @@ class Flowchart extends Component {
     componentDidMount() {
       // const degreekey = '1';
       // const batchkey = '116';
-      axios.get('http://localhost:8000/api/flowcharttermslist/'+this.state.degreekey+'/'+this.state.batchkey+'/')
+      axios.get('https://archerone-backend.herokuapp.com/api/flowcharttermslist/'+this.state.degreekey+'/'+this.state.batchkey+'/')
       .then(res => {
         res.data.map((term, i) => {
                 var termsList = this.state.terms;

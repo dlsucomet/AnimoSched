@@ -77,7 +77,7 @@ class SearchCourses extends Component {
     }
 
     componentWillMount(){
-        axios.get('http://localhost:8000/api/courses/')
+        axios.get('https://archerone-backend.herokuapp.com/api/courses/')
         .then(res => {
             res.data.map(course => {
                 var courses = this.state.courseList;
@@ -158,7 +158,7 @@ class SearchCourses extends Component {
         selectedCourses.push(course.id)
       })
      
-      axios.post('http://localhost:8000/api/courseofferingslist/',{
+      axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
         courses: selectedCourses
       })
       .then(res => {

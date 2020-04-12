@@ -195,7 +195,7 @@ class Index extends Component {
   }
 
   componentWillMount(){
-    axios.get('http://localhost:8000/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+    axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
     .then(res => {
         const schedules = []
         res.data.map(newSchedule =>{
@@ -304,7 +304,7 @@ class Index extends Component {
     var newArray = [];
     const currentContent = this.state.currentContent;
     // var index = newArray.findIndex(this.state.currentContent);
-    axios.patch('http://localhost:8000/api/schedules/'+currentContent.props.id+'/',{
+    axios.patch('https://archerone-backend.herokuapp.com/api/schedules/'+currentContent.props.id+'/',{
       title: text
     }).catch(err => {
       console.log(err.response)
@@ -327,7 +327,7 @@ class Index extends Component {
   var currentPage = this.state.currentPage;
   var index = currentPage;
 
-  axios.delete('http://localhost:8000/api/schedules/'+this.state.currentContent.props.id+'/')
+  axios.delete('https://archerone-backend.herokuapp.com/api/schedules/'+this.state.currentContent.props.id+'/')
   .catch(err => {
     console.log(err.response)
   })
