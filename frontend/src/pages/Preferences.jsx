@@ -35,6 +35,16 @@ const styles = theme => ({
           },
     }
   });
+
+const GreenCheckbox = withStyles({
+    root: {
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -586,17 +596,17 @@ class Preferences extends Component {
                                 Preferred Days
                                 <FormGroup row>
                                     <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id={this.state.daysList[0].id} color="primary"/>}label="M" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id={this.state.daysList[0].id} color="primary"/>}label="M" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id={this.state.daysList[1].id} color="primary"/>}label="T" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id={this.state.daysList[1].id} color="primary"/>}label="T" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id={this.state.daysList[2].id} color="primary"/>}label="W" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id={this.state.daysList[2].id} color="primary"/>}label="W" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id={this.state.daysList[3].id} color="primary"/>}label="H" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id={this.state.daysList[3].id} color="primary"/>}label="H" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id={this.state.daysList[4].id} color="primary"/>}label="F" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id={this.state.daysList[4].id} color="primary"/>}label="F" />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id={this.state.daysList[5].id} color="primary"/>}label="S" />
+                                        control = {<GreenCheckbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id={this.state.daysList[5].id} color="primary"/>}label="S" />
                                 </FormGroup>
                             </div>
 
@@ -700,26 +710,26 @@ class Preferences extends Component {
 
                                     <FormGroup>
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[0].id}  color="primary"/>}label={this.state.buildingList[0].building} />
+                                        control = {<GreenCheckbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[0].id}  color="primary"/>}label={this.state.buildingList[0].building} />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[1].id} color="primary"/>}label={this.state.buildingList[1].building} />
+                                        control = {<GreenCheckbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[1].id} color="primary"/>}label={this.state.buildingList[1].building} />
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[2].id} color="primary"/>}label={this.state.buildingList[2].building}/>
+                                        control = {<GreenCheckbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[2].id} color="primary"/>}label={this.state.buildingList[2].building}/>
                                         <FormControlLabel
-                                        control = {<Checkbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[3].id} color="primary"/>}label={this.state.buildingList[3].building} />
+                                        control = {<GreenCheckbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[3].id} color="primary"/>}label={this.state.buildingList[3].building} />
                                     </FormGroup>
                                     </Grid>
 
                                     <Grid item xs={6}>
                                     <FormGroup>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[4].id} color="primary"/>}label={this.state.buildingList[4].building}/>
+                                    control = {<GreenCheckbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[4].id} color="primary"/>}label={this.state.buildingList[4].building}/>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[5].id} color="primary"/>}label={this.state.buildingList[5].building} />
+                                    control = {<GreenCheckbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[5].id} color="primary"/>}label={this.state.buildingList[5].building} />
                                         <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[6].id} color="primary"/>}label={this.state.buildingList[6].building}/>
+                                    control = {<GreenCheckbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[6].id} color="primary"/>}label={this.state.buildingList[6].building}/>
                                     <FormControlLabel
-                                    control = {<Checkbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[7].id} color="primary"/>}label={this.state.buildingList[7].building} />
+                                    control = {<GreenCheckbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[7].id} color="primary"/>}label={this.state.buildingList[7].building} />
                                     </FormGroup>
                                     </Grid>
                                 </Grid>

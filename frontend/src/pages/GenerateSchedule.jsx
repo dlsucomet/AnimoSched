@@ -19,6 +19,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
 const styles = theme => ({
     root: {
       display: 'flex',
@@ -104,6 +111,7 @@ class GenerateSchedule extends Component {
             schedules: [],
             dataReceived: false,
 
+            snackBar: false,
             loading: false,
             success: false,
      
@@ -519,12 +527,19 @@ class GenerateSchedule extends Component {
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
+            this.setState({snackBar: true});
         }
         
 
     }
 
-
+    handleCloseSnackBar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({snackBar: false});
+      }
 
     render() { 
         let search_field = this.props.search_field;
@@ -647,6 +662,11 @@ class GenerateSchedule extends Component {
                                             </Button>
                                             {this.state.loading && <CircularProgress size={24} className={classes.buttonProgressSave}/>}
                                         </div>
+                                        <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
+                                            <Alert onClose={this.handleCloseSnackBar} severity="success">
+                                            Your schedule have been successfully saved! View in <a href="/" style={{color:"#D3D3D3"}}>homepage</a>
+                                            </Alert>
+                                        </Snackbar>
                                     </div>
                                 {/* <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button> */}
                             </Row>  

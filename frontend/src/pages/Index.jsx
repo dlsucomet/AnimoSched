@@ -52,9 +52,22 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+
+const GreenCheckbox = withStyles({
+  root: {
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 const styles = theme => ({
   buttonStyle:{
@@ -155,7 +168,12 @@ class Index extends Component {
       schedules: [],
       openModal: false,
       paletteChoices: [],
-      chosenPalette: '',
+      chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+      classboxDetailsList: [
+        {id: 1, title: "showFaculty", checked: true},
+        {id: 2, title: "showTime", checked: true},
+        {id: 3, title: "showRoom", checked: true}
+      ]
     }
 
     handlePageChange = (e,index) => {
@@ -290,7 +308,7 @@ class Index extends Component {
   setSchedInfo = () => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle} palette={this.state.chosenPalette}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
@@ -401,8 +419,14 @@ class Index extends Component {
 
   processPaletteChoices = (title, paletteArray) => {
     const colorDiv = paletteArray.map(function(palColor, index){
+                        var newstyle = {backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"};
+                        if(index == 0){
+                          newstyle = {backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px" };
+                        }else if(index == paletteArray.length - 1){
+                          newstyle = {backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px" };
+                        }
                       return(
-                        <div key={index} style= {{backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
+                        <div key={index} style= {newstyle}>
                           {palColor}
                         </div>
                       )
@@ -419,9 +443,28 @@ class Index extends Component {
   componentDidMount=()=>{
     var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
     var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
+    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42', ];
     this.processPaletteChoices('Pastel Blossoms', pal1);
     this.processPaletteChoices('Halographic', pal2);
+    this.processPaletteChoices('Plantita', pal3);
   }
+
+  handlePaletteChange=(event)=>{
+    var chosenPalette = event.target.value;
+    this.setState({chosenPalette});
+    console.log(chosenPalette);
+  }
+
+  handleClassBoxChange = (event) => {
+    var newDetailsList = [...this.state.classboxDetailsList];
+    newDetailsList.map(value=>{
+        if(value.id === Number(event.target.id)){
+            value.checked = event.target.checked;
+        }
+    })
+    this.setState({classboxDetailsList: newDetailsList});
+    // this.setState({[event.target.name]: event.target.checked });
+  };
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -473,10 +516,10 @@ class Index extends Component {
                     </Typography>
               </Grid>
 
-              <Grid item xs={1}>
+              <Grid item xs={2}>
               </Grid>
 
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <div id='savedContent' className='savedContent'>
                     <span>{this.state.currentContent}</span>
                 </div>
@@ -484,43 +527,166 @@ class Index extends Component {
 
               {/* <Grid item xs={1}>
               </Grid> */}
-
-              <Grid item xs={4} align="center" direction="column">
+       
+              <Grid item xs={4} align="center" alignItems="center" alignContent="center" direction="column">
                 <div class='optionList'>
-                  <Button
+                  <Grid item xs={1} direction="column" align="center">
+                    <Button
                       variant="contained"
                       className={classes.buttonStyle}
                       endIcon={<DateRangeIcon/>}
                       >
                       Edit
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={1} direction="column" align="center">
                     <Button
                     variant="contained"
                     className={classes.buttonStyle}
                     onClick={this.handleOpenModal}
                     endIcon={<PaletteIcon/>}
                     >
+                      Customize
+                    </Button>
+                    <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                      <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
+                      <ModalBody>
+                        <h4>Color Palette</h4>
+                        Select a class box color palette
+                  
+                        <div>
+                        <TextField
+                            id="outlined-select-break"
+                            select
+                            label="class box color palette"
+                            onChange={this.handlePaletteChange}
+                            
+                            helperText="Choose a color palette"
+                            variant="outlined"
+                            style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
+                            >
+                            
+                            {/* <MenuItem key={1} value={"option.value"}>
+                                {trycolor}
+                            </MenuItem> */}
+                                  
+                            {this.state.paletteChoices.map((option) => (
+                                <MenuItem key={option.title} value={option.paletteArray}>
+                                {option.paletteDiv}
+                                </MenuItem>
+                                    ))}
+                        </TextField>
+                        </div>
+                        
+                        <h4>Class Box Details</h4>
+                        <div>
+                          <FormGroup>
+                              <FormControlLabel
+                              control = {<GreenCheckbox checked={this.state.classboxDetailsList[0].checked} onChange={this.handleClassBoxChange} id={this.state.classboxDetailsList[0].id} color="primary"/>}label="Show name of faculty" />
+                              <FormControlLabel
+                              control = {<GreenCheckbox checked={this.state.classboxDetailsList[1].checked} onChange={this.handleClassBoxChange} id={this.state.classboxDetailsList[1].id} color="primary"/>}label="Show start and end time" />
+                              <FormControlLabel
+                              control = {<GreenCheckbox checked={this.state.classboxDetailsList[2].checked} onChange={this.handleClassBoxChange} id={this.state.classboxDetailsList[2].id} color="primary"/>}label="Show room assigned" />
+                          </FormGroup>
+                        </div>
+                      </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
+                      <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+                    </ModalFooter>
+                  </Modal>    
+                  </Grid>
+
+                  <Grid item xs={1} direction="column" align="center">
+                    <Button
+                      variant="contained"
+                      className={classes.buttonStyle}
+                      onClick={this.exportSched}
+                      endIcon={ <GetAppIcon/>}
+                      >
+                      Export
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={1} direction="column" align="center">
+                    <Button
+                      variant="contained"
+                      className={classes.deleteButtonStyle}
+                      onClick={this.handleClickOpenAlert}
+                      endIcon={<DeleteIcon/>}
+                      >
+                      Delete
+                    </Button>
+                      {this.state.currentContent != null ?
+                      <Dialog
+                        open={this.state.openAlert}
+                        onClose={this.handleCloseAlert}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={this.handleCloseAlert} color="primary">
+                            Cancel
+                          </Button>
+                          <Button onClick={this.deleteSchedule} color="primary" autoFocus>
+                            Delete
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      : null }
+
+                      <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
+                        <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
+                          Your schedule has been successfully discarded!
+                        </Alert>
+                      </Snackbar>
+
+                      <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
+                        <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
+                        Delete failed
+                        </Alert>
+                      </Snackbar> 
+                  </Grid>
+
+                  {/* <Button
+                    variant="contained"
+                    className={classes.buttonStyle}
+                    endIcon={<DateRangeIcon/>}
+                    >
+                    Edit
+                  </Button>
+
+                  <Button
+                  variant="contained"
+                  className={classes.buttonStyle}
+                  onClick={this.handleOpenModal}
+                  endIcon={<PaletteIcon/>}
+                  >
                     Customize
                   </Button>
                   <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
                     <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
                     <ModalBody>
-                      Select class box color palette
+                      Select a class box color palette
+                
                       <div>
                       <TextField
                           id="outlined-select-break"
                           select
                           label="class box color palette"
-                          onChange={this.handleBreakChange}
-                        
+                          onChange={this.handlePaletteChange}
+                          
                           helperText="Choose a color palette"
                           variant="outlined"
-                          style={{width: "100%"}}
+                          style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
                           >
-                          
-                          {/* <MenuItem key={1} value={"option.value"}>
-                              {trycolor}
-                          </MenuItem> */}
                                  
                           {this.state.paletteChoices.map((option) => (
                               <MenuItem key={option.title} value={option.paletteArray}>
@@ -530,37 +696,6 @@ class Index extends Component {
                       </TextField>
                       </div>
                       
-
-                      <div className={"colorContainer"} style={{width: "100%", display: "table"}}>
-                        <div style= {{backgroundColor:'#EAC9C0', color: '#EAC9C0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px"}}>
-                          #EAC9C0
-                        </div>
-                        <div style= {{backgroundColor:'#DAB2D3', color: '#DAB2D3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                          #DAB2D3
-                        </div>
-                        <div style= {{backgroundColor:'#9EDAE3', color: '#9EDAE3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                        #9EDAE3
-                        </div>
-                        <div style= {{backgroundColor:'#65C4D8', color: '#65C4D8', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                          #65C4D8
-                        </div>
-                        <div style= {{backgroundColor:'#FFD0D6', color: '#FFD0D6', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                          #FFD0D6
-                        </div>
-                        <div style= {{backgroundColor:'#B7DDE0', color: '#B7DDE0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                          #B7DDE0
-                        </div>
-                        <div style= {{backgroundColor:'#FEE19F', color: '#FEE19F', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-                          #FEE19F
-                        </div>
-                        <div style= {{backgroundColor:'#735b69', color: '#735b69', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px"}}>
-                          #735b69
-                        </div>
-
-                      </div>
-                     
-                   
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et 
                     </ModalBody>
                   <ModalFooter>
                     <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
@@ -618,7 +753,7 @@ class Index extends Component {
                       <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
                       Delete failed
                       </Alert>
-                    </Snackbar>
+                    </Snackbar> */}
                   </div>
               </Grid>
 
