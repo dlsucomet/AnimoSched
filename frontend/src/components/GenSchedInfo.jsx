@@ -121,13 +121,11 @@ class GenSchedInfo extends Component {
                             /> 
 
                             {this.state.boolEdit ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={this.editButtonPress}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={this.editButtonPress}/>}
-                            {/* <EditIcon fontSize="small" style={{marginLeft: "10px"}} onClick={this.editButtonPress}/> */}
-                            {/* <DoneIcon fontSize="medium" style={{color: "green"}} /> */}
                         </Row>
                    
                         <ScheduleView id='scheduleView' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest} palette={this.state.defPalette} />
                     </Column>
-                    <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "40px"}} >
+                    <Column flexGrow={1} horizontal = 'center'style={{marginLeft: "20px"}} >
                         <Row horizontal = 'center'>
                             <ClassesTable content={this.state.tableContent} />
                         </Row>
@@ -138,7 +136,7 @@ class GenSchedInfo extends Component {
                                 <BoxInfo content={this.state.prefContent } id={1+this.state.id}/>
     
                             </Column>
-                            <Column horizontal = 'center' style={{marginLeft: "40px"}}>
+                            <Column horizontal = 'center' style={{marginLeft: "20px"}}>
                                 Course Conflict
                                 <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/>
                             </Column>

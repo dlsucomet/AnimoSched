@@ -32,8 +32,10 @@ const theme = createMuiTheme({ palette: { type: "light", primary: green } });
 
 const styles = {
     dayScaleCell: {
-      overflow: "hidden",
-      textOverflow: "ellipsis"
+      overflow: "visible",
+      // textOverflow: "ellipsis"
+      wordWrap: "break-word",
+      flexWrap: 'wrap',
     }
     
 
@@ -45,16 +47,8 @@ const styles = {
       color: palette.action.active,
     },
     textCenter: {
-      textAlign: 'center',
-    },
-    firstRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/Lobby-4.jpg)',
-    },
-    secondRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-4.jpg)',
-    },
-    thirdRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-0.jpg)',
+      textAlign: 'left',
+      wordWrap: "break-word",
     },
     header: {
       height: '260px',
@@ -127,10 +121,13 @@ const formatDayScaleDate = (date, options) => {
           {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
           <div>{restProps.data.location}</div>
           <div>{restProps.data.startTime} - {restProps.data.endTime}</div>
-          <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
-                {restProps.data.professor}
-          </Typography>
+          <div>
+            <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
+                  {restProps.data.professor}
+            </Typography>
+          </div>
         </div>
+        
       </Appointments.AppointmentContent>
     );
   };
