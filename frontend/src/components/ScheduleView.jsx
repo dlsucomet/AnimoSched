@@ -34,8 +34,7 @@ const styles = {
     dayScaleCell: {
       overflow: "visible",
       // textOverflow: "ellipsis"
-      wordWrap: "break-word",
-      flexWrap: 'wrap',
+      whiteSpace: "normal",
     }
     
 
@@ -120,9 +119,9 @@ const formatDayScaleDate = (date, options) => {
           <div>{restProps.data.title}</div>
           {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
           <div>{restProps.data.location}</div>
-          <div>{restProps.data.startTime} - {restProps.data.endTime}</div>
+          <div style={{fontSize: "11px"}} >{restProps.data.startTime} - {restProps.data.endTime}</div>
           <div>
-            <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
+            <Typography gutterBottom variant="body2" style={{fontSize: "8px", wordWrap: "break-word"}}>
                   {restProps.data.professor}
             </Typography>
           </div>
