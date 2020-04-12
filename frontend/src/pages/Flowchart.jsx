@@ -31,6 +31,7 @@ class Flowchart extends Component {
         flowpoints: [],
         degreekey: '1',
         batchkey: '116',
+        dataReceived: false
       }
     }
 
@@ -60,6 +61,7 @@ class Flowchart extends Component {
                 this.setState({courses: coursesList})
                 this.setState({flowpoints: flowpointsList})                
         })
+        this.setState({dataReceived: true})
       })
     
   // console.log(this.state.flowpoints)
@@ -89,92 +91,96 @@ class Flowchart extends Component {
         <div>
             {this.props.menu()}
 
-            <div class="sidemenu">
-                <center><input type="submit" class="btn btn-success change-flowchart" value="CCS 116 CS" /></center>
-                {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
-                {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
-            </div>
+            {this.state.dataReceived ? 
+            <div>
+              <div class="sidemenu">
+                  <center><input type="submit" class="btn btn-success change-flowchart" value="CCS 116 CS" /></center>
+                  {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
+                  {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
+              </div>
 
-            <div class="sidemenu-main">
-              <br/>
-                <center><h2>YOUR FLOWCHART</h2></center>
-                <div class="flowchart-area">
-                  <div class="flowchart-header-parent">
-                    <div class="header-year-parent">
-                      <div class="header-year">Year 1</div>
-                      <div class="header-term-parent">
-                        <div class="header-term">Term 1</div>
-                        <div class="header-term">Term 2</div>
-                        <div class="header-term">Term 3</div>
+              <div class="sidemenu-main">
+                <br/>
+                  <center><h2>YOUR FLOWCHART</h2></center>
+                  <div class="flowchart-area">
+                    <div class="flowchart-header-parent">
+                      <div class="header-year-parent">
+                        <div class="header-year">Year 1</div>
+                        <div class="header-term-parent">
+                          <div class="header-term">Term 1</div>
+                          <div class="header-term">Term 2</div>
+                          <div class="header-term">Term 3</div>
+                        </div>
+                      </div>
+                      <div class="header-year-parent">
+                        <div class="header-year">Year 2</div>
+                        <div class="header-term-parent">
+                          <div class="header-term">Term 1</div>
+                          <div class="header-term">Term 2</div>
+                          <div class="header-term">Term 3</div>
+                        </div>
+                      </div>
+                      <div class="header-year-parent">
+                        <div class="header-year">Year 3</div>
+                        <div class="header-term-parent">
+                          <div class="header-term">Term 1</div>
+                          <div class="header-term">Term 2</div>
+                          <div class="header-term">Term 3</div>
+                        </div>
+                      </div>
+                      <div class="header-year-parent">
+                        <div class="header-year">Year 4</div>
+                        <div class="header-term-parent">
+                          <div class="header-term">Term 1</div>
+                          <div class="header-term">Term 2</div>
+                          <div class="header-term">Term 3</div>
+                        </div>
                       </div>
                     </div>
-                    <div class="header-year-parent">
-                      <div class="header-year">Year 2</div>
-                      <div class="header-term-parent">
-                        <div class="header-term">Term 1</div>
-                        <div class="header-term">Term 2</div>
-                        <div class="header-term">Term 3</div>
-                      </div>
-                    </div>
-                    <div class="header-year-parent">
-                      <div class="header-year">Year 3</div>
-                      <div class="header-term-parent">
-                        <div class="header-term">Term 1</div>
-                        <div class="header-term">Term 2</div>
-                        <div class="header-term">Term 3</div>
-                      </div>
-                    </div>
-                    <div class="header-year-parent">
-                      <div class="header-year">Year 4</div>
-                      <div class="header-term-parent">
-                        <div class="header-term">Term 1</div>
-                        <div class="header-term">Term 2</div>
-                        <div class="header-term">Term 3</div>
-                      </div>
-                    </div>
+                      {/* {flowchartCells} */}
+                      {/* headers */}
+                      <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
+                        {
+                          Object.keys(this.state.flowpoints).map(key => {
+                            const point = this.state.flowpoints[key]
+                            return (
+                              <Flowpoint
+                                key={point.key}
+                                startPosition={point.startPosition} 
+                                width={point.width} 
+                                height={point.height} 
+                                dragX={point.dragX} 
+                                dragY={point.dragY} 
+                                outputs={point.outputs}>
+                                <div className={classes.flowchartText}>{point.name}<br />{point.units}</div>
+                              </Flowpoint>
+
+                              // <Flowpoint
+                              //   key={key}
+                              //   startPosition={point.pos}
+                              //   onClick={() => {
+                              //     var selected_point = this.state.selected_point
+                              //     if (selected_point === key) {
+                              //       selected_point = null
+                              //     } else {
+                              //       selected_point = key
+                              //     }
+                              //     this.setState({selected_point})
+                              //   }}
+                              //   onDrag={position => {
+                              //     var flowpoints = this.state.flowpoints
+                              //     flowpoints[key].position = position
+                              //     this.setState({flowpoints})
+                              //   }}>                                
+                              // </Flowpoint>
+                            )
+                          })
+                        }
+                    </Flowspace>
                   </div>
-                    {/* {flowchartCells} */}
-                    {/* headers */}
-                    <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
-                      {
-                        Object.keys(this.state.flowpoints).map(key => {
-                          const point = this.state.flowpoints[key]
-                          return (
-                            <Flowpoint
-                              key={point.key}
-                              startPosition={point.startPosition} 
-                              width={point.width} 
-                              height={point.height} 
-                              dragX={point.dragX} 
-                              dragY={point.dragY} 
-                              outputs={point.outputs}>
-                              <div className={classes.flowchartText}>{point.name}<br />{point.units}</div>
-                            </Flowpoint>
-
-                            // <Flowpoint
-                            //   key={key}
-                            //   startPosition={point.pos}
-                            //   onClick={() => {
-                            //     var selected_point = this.state.selected_point
-                            //     if (selected_point === key) {
-                            //       selected_point = null
-                            //     } else {
-                            //       selected_point = key
-                            //     }
-                            //     this.setState({selected_point})
-                            //   }}
-                            //   onDrag={position => {
-                            //     var flowpoints = this.state.flowpoints
-                            //     flowpoints[key].position = position
-                            //     this.setState({flowpoints})
-                            //   }}>                                
-                            // </Flowpoint>
-                          )
-                        })
-                      }
-                   </Flowspace>
-                </div>
+              </div>
             </div>
+            : null }
         </div>        
       );
     }

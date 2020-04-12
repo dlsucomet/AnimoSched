@@ -71,18 +71,19 @@ class SearchCourses extends Component {
         courseList: [],
         selectedCourses: [],
         loading: false,
-        radioVal: ''
+        radioVal: '',
+        dataReceived: false,
       }
       this.radioRef = React.createRef()
     }
 
-    componentWillMount(){
+    componentDidMount(){
         axios.get('https://archerone-backend.herokuapp.com/api/courses/')
         .then(res => {
             res.data.map(course => {
                 var courses = this.state.courseList;
                 courses.push({'id':course.id, 'course_code':course.course_code})
-                this.setState({courseList: courses})
+                this.setState({courseList: courses, dataReceived: true})
             })
         })
     }
@@ -237,6 +238,7 @@ class SearchCourses extends Component {
           <div>
             {this.props.menu()}
 
+            {this.state.dataReceived ? 
             <div className="search-container">
 
                 <div className="searchBar">
@@ -310,6 +312,7 @@ class SearchCourses extends Component {
                   </TableContainer>
                 </div>
             </div>
+            : null }
         </div>        
       );
     }
