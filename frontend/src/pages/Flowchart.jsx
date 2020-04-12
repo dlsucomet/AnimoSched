@@ -11,6 +11,9 @@ import PropTypes from 'prop-types';
 
 const styles = theme => ({
   flowchartText:{
+      overflow: 'hidden',
+      textOverflow: "ellipsis",
+      textAlign: "center",
       fontSize: "0.7rem",
       // color: "green", 
       '&:hover': {
@@ -41,6 +44,7 @@ class Flowchart extends Component {
                 var coursesList = this.state.courses;
                 var flowpointsList = this.state.flowpoints;
                 var newTerm = {'id':term.id, 'degree':term.degree, 'batch': term.batch, 'courses': term.courses, 'year': term.year, 'term': term.term} 
+                var currentTerm = term.term + 3 * (term.year - 1);
                 termsList.push(newTerm);
                 term.courses.map((course, j) => {
                   var outputsList = [];
@@ -50,7 +54,7 @@ class Flowchart extends Component {
                       outputsList.push(prereq_to)
                   })                  
                   console.log(outputsList);
-                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:i*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
+                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:(currentTerm-1)*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
                 })
                 this.setState({terms: termsList})
                 this.setState({courses: coursesList})
@@ -86,17 +90,52 @@ class Flowchart extends Component {
             {this.props.menu()}
 
             <div class="sidemenu">
-                <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center>
-                <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center>
-                <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center>
+                <center><input type="submit" class="btn btn-success change-flowchart" value="CCS 116 CS" /></center>
+                {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
+                {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
             </div>
 
             <div class="sidemenu-main">
+              <br/>
                 <center><h2>YOUR FLOWCHART</h2></center>
-                <div>
+                <div class="flowchart-area">
+                  <div class="flowchart-header-parent">
+                    <div class="header-year-parent">
+                      <div class="header-year">Year 1</div>
+                      <div class="header-term-parent">
+                        <div class="header-term">Term 1</div>
+                        <div class="header-term">Term 2</div>
+                        <div class="header-term">Term 3</div>
+                      </div>
+                    </div>
+                    <div class="header-year-parent">
+                      <div class="header-year">Year 2</div>
+                      <div class="header-term-parent">
+                        <div class="header-term">Term 1</div>
+                        <div class="header-term">Term 2</div>
+                        <div class="header-term">Term 3</div>
+                      </div>
+                    </div>
+                    <div class="header-year-parent">
+                      <div class="header-year">Year 3</div>
+                      <div class="header-term-parent">
+                        <div class="header-term">Term 1</div>
+                        <div class="header-term">Term 2</div>
+                        <div class="header-term">Term 3</div>
+                      </div>
+                    </div>
+                    <div class="header-year-parent">
+                      <div class="header-year">Year 4</div>
+                      <div class="header-term-parent">
+                        <div class="header-term">Term 1</div>
+                        <div class="header-term">Term 2</div>
+                        <div class="header-term">Term 3</div>
+                      </div>
+                    </div>
+                  </div>
                     {/* {flowchartCells} */}
                     {/* headers */}
-                    <Flowspace theme="green" variant="paper" background="white" style={{ height:"100vh", width:"100vw" }}>
+                    <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
                       {
                         Object.keys(this.state.flowpoints).map(key => {
                           const point = this.state.flowpoints[key]
@@ -109,7 +148,7 @@ class Flowchart extends Component {
                               dragX={point.dragX} 
                               dragY={point.dragY} 
                               outputs={point.outputs}>
-                              <div className={classes.flowchartText}><center>{point.name}<br />{point.units}</center></div>
+                              <div className={classes.flowchartText}>{point.name}<br />{point.units}</div>
                             </Flowpoint>
 
                             // <Flowpoint
