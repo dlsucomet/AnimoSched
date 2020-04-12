@@ -26,6 +26,8 @@ import HomeIcon from '@material-ui/icons/Home';
 
 import PropTypes from 'prop-types';
 
+import ReactLoading from 'react-loading';
+
 const styles = theme => ({
     homeButton:{
         color: "green", 
@@ -798,7 +800,10 @@ class Preferences extends Component {
 
 
                 </div>
-                : null }
+                : 
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                </div> }
             </div>
         </div>        
       );

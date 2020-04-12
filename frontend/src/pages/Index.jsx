@@ -473,33 +473,6 @@ class Index extends Component {
 
         const { classes } = this.props;
 
-        const trycolor = <div className={"colorContainer"} style={{width: "100%", display: "table"}}>
-        <div style= {{backgroundColor:'#EAC9C0', color: '#EAC9C0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px"}}>
-          #EAC9C0
-        </div>
-        <div style= {{backgroundColor:'#DAB2D3', color: '#DAB2D3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #DAB2D3
-        </div>
-        <div style= {{backgroundColor:'#9EDAE3', color: '#9EDAE3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-        #9EDAE3
-        </div>
-        <div style= {{backgroundColor:'#65C4D8', color: '#65C4D8', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #65C4D8
-        </div>
-        <div style= {{backgroundColor:'#FFD0D6', color: '#FFD0D6', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #FFD0D6
-        </div>
-        <div style= {{backgroundColor:'#B7DDE0', color: '#B7DDE0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #B7DDE0
-        </div>
-        <div style= {{backgroundColor:'#FEE19F', color: '#FEE19F', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #FEE19F
-        </div>
-        <div style= {{backgroundColor:'#735b69', color: '#735b69', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px"}}>
-          #735b69
-        </div>
-      </div>;
-
       return (
         <div style={!this.props.logged_in? sectionStyle : {}}>
           {this.props.menu()}
@@ -656,105 +629,6 @@ class Index extends Component {
                       </Snackbar> 
                   </Grid>
 
-                  {/* <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    endIcon={<DateRangeIcon/>}
-                    >
-                    Edit
-                  </Button>
-
-                  <Button
-                  variant="contained"
-                  className={classes.buttonStyle}
-                  onClick={this.handleOpenModal}
-                  endIcon={<PaletteIcon/>}
-                  >
-                    Customize
-                  </Button>
-                  <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
-                    <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
-                    <ModalBody>
-                      Select a class box color palette
-                
-                      <div>
-                      <TextField
-                          id="outlined-select-break"
-                          select
-                          label="class box color palette"
-                          onChange={this.handlePaletteChange}
-                          
-                          helperText="Choose a color palette"
-                          variant="outlined"
-                          style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
-                          >
-                                 
-                          {this.state.paletteChoices.map((option) => (
-                              <MenuItem key={option.title} value={option.paletteArray}>
-                              {option.paletteDiv}
-                              </MenuItem>
-                                  ))}
-                      </TextField>
-                      </div>
-                      
-                    </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-                  <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    onClick={this.exportSched}
-                    endIcon={ <GetAppIcon/>}
-                    >
-                    Export
-                  </Button>
-                 
-                  <Button
-                    variant="contained"
-                    className={classes.deleteButtonStyle}
-                    onClick={this.handleClickOpenAlert}
-                    endIcon={<DeleteIcon/>}
-                    >
-                    Delete
-                  </Button>
-                    {this.state.currentContent != null ?
-                    <Dialog
-                      open={this.state.openAlert}
-                      onClose={this.handleCloseAlert}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                          Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={this.handleCloseAlert} color="primary">
-                          Cancel
-                        </Button>
-                        <Button onClick={this.deleteSchedule} color="primary" autoFocus>
-                          Delete
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                    : null }
-
-                    <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
-                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
-                        Your schedule has been successfully discarded!
-                      </Alert>
-                    </Snackbar>
-
-                    <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
-                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
-                      Delete failed
-                      </Alert>
-                    </Snackbar> */}
                   </div>
               </Grid>
 
@@ -788,86 +662,7 @@ class Index extends Component {
               </Grid>
 
             </Grid>
-              
-              {/* <Row horizontal="center">
-                  <div style={(this.state.generatedContents != null) ? {paddingTop:"20px"} : {display: "none"}}>
-                    <center ><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
-                  </div>
-                </Row>
-              <Row horizontal="center"> */}
-               
-                {/* <Column flexShrink={1} >
-                  <div class="sidemenu" >
-                    <div style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
-                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
-                    </div>
-                  </div>
-                </Column> */}
 
-                {/* <div className='savedContent'>
-                  <Column flexGrow={1}>
-                    <span>{this.state.currentContent}</span>
-                  </Column>
-                </div>
-
-                <Column >
-                <div class='optionList'>
-                  <Button
-                      variant="contained"
-                      className={classes.buttonStyle}
-                      >
-                      Edit
-                    </Button>
-                    <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    >
-                    Customize
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    >
-                    Export
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.deleteButtonStyle}
-                    >
-                    Delete
-                  </Button>
-                  </div>
-                </Column>
-
-              </Row>
-
-              <Row horizontal='center'>
-              <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                <Row horizontal='center'>
-                    <Pagination aria-label="Page navigation example">
-                        <PaginationItem disabled={this.state.currentPage <= 0}>
-                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                previous/>
-                        </PaginationItem>
-                        {[...Array(this.state.pagesCount)].map((page, i) => 
-                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                {i + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                            )}
-                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                            <PaginationLink
-                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                next
-                            />
-                            
-                            </PaginationItem>
-                    </Pagination>
-                </Row>
-              </div>
-            </Row>*/}
             </div> 
                           
                         
@@ -889,7 +684,10 @@ class Index extends Component {
 
           </div>
           :
-          <ReactLoading type={'balls'} color={'#9BCFB8'} height={'20%'} width={'20%'} />
+          <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+            <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+          </div>
+          
           }
 
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>

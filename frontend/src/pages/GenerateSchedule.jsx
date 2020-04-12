@@ -22,6 +22,8 @@ import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import ReactLoading from 'react-loading';
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -673,7 +675,10 @@ class GenerateSchedule extends Component {
                         </div>
                     </Column>
                 </div>
-                : null }
+                : 
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                </div> }
             </div>  
         );
     }
