@@ -57,6 +57,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ReactLoading from 'react-loading';
 
+
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -85,6 +87,7 @@ const styles = theme => ({
       borderStyle: "solid",
       borderColor: "#16775D",
       marginTop: "20px",
+      justifyContent: 'center',
       '&:hover': {
           backgroundColor: "white",
           color: "#16775D"
@@ -105,6 +108,7 @@ const styles = theme => ({
       borderStyle: "solid",
       borderColor: "#D3D3D3",
       marginTop: "20px",
+      justifyContent: 'center',
       '&:hover': {
           backgroundColor: "#d11a2a",
           borderStyle: "solid",
@@ -134,6 +138,10 @@ const styles = theme => ({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+
+    gridRoot:{
+      flexGrow: 1,
+    }
 
 });
 
@@ -398,8 +406,12 @@ class Index extends Component {
   }
 
   exportSched = () => {
+    window.scrollTo(0, 0);
     html2canvas(document.querySelector("#savedSchedContent")).then(canvas => {
       document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+      // var = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+      // Canvas2Image.saveAsPNG(canvas.toDataURL())
+
     });
   }
 
@@ -493,7 +505,7 @@ class Index extends Component {
               <Grid item xs={2}>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={6} className={'gridSavedContent'}>
                 <div id='savedContent' className='savedContent'>
                     <span>{this.state.currentContent}</span>
                 </div>
@@ -502,7 +514,7 @@ class Index extends Component {
               {/* <Grid item xs={1}>
               </Grid> */}
        
-              <Grid item xs={4} align="center" alignItems="center" alignContent="center" direction="column">
+              <Grid item xs={4} align="center" justify="center" alignItems="center" alignContent="center" direction="column">
                 <div class='optionList'>
                   <Grid item xs={1} direction="column" align="center">
                     <Button
