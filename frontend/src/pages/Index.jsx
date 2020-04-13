@@ -57,7 +57,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ReactLoading from 'react-loading';
 
+import SearchIcon from '@material-ui/icons/Search';
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -141,7 +143,29 @@ const styles = theme => ({
 
     gridRoot:{
       flexGrow: 1,
-    }
+    },
+
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      
+    },
+    wrapper: {
+      // margin: theme.spacing(1),
+      position: 'relative',
+      
+  
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+      paddingTop: '5px',
+      paddingBottom: '5px',
+    },
 
 });
 
@@ -172,14 +196,20 @@ class Index extends Component {
         pagesCount: 1,
         dataReceived: !props.logged_in,
         schedules: [],
-        openModal: false,
+        openModalCustomize: false,
+        openModalEdit: false,
         paletteChoices: [],
         chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
         classboxDetailsList: [
           {id: 1, title: "showFaculty", checked: true},
           {id: 2, title: "showTime", checked: true},
           {id: 3, title: "showRoom", checked: true}
-        ]
+        ],
+        classList: [{title: "CSSERVM S15", course_code: "2351"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
+        currentClasses:  [{title: "TREDTRI C4", course_code: "451"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
+        newCurrentClasses: [],
+        newClassboxDetailsList: [],
+        newChosenPalette: [],
       }
       
     }
@@ -417,21 +447,25 @@ class Index extends Component {
     });
   }
 
-  handleCloseModal = ()=>{
-    this.setState({openModal: false})
+  handleCloseModalCustomize = ()=>{
+    this.setState({openModalCustomize: false})
   }
 
-  handleOpenModal = ()=>{
+  handleOpenModalCustomize = ()=>{
     console.log("Hello opening modal");
-    this.setState({openModal: true})
-    console.log(this.state.openModal);
+    this.setState({openModalCustomize: true})
+    console.log(this.state.openModalCustomize);
   }
 
   toggleModal = () => {
-    var openModalVar = this.state.openModal;
-    this.setState({openModal: !openModalVar});
+    var openModalVar = this.state.openModalCustomize;
+    this.setState({openModalCustomize: !openModalVar});
   }
 
+  toggleModalEdit = () => {
+    var openModalVar = this.state.openModalEdit;
+    this.setState({openModalEdit: !openModalVar});
+  }
   processPaletteChoices = (title, paletteArray) => {
     const colorDiv = paletteArray.map(function(palColor, index){
                         var newstyle = {backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"};
@@ -465,9 +499,9 @@ class Index extends Component {
   }
 
   handlePaletteChange=(event)=>{
-    var chosenPalette = event.target.value;
-    this.setState({chosenPalette});
-    console.log(chosenPalette);
+    var newChosenPalette = event.target.value;
+    this.setState({newChosenPalette});
+    console.log(newChosenPalette);
   }
 
   handleClassBoxChange = (event) => {
@@ -477,9 +511,30 @@ class Index extends Component {
             value.checked = event.target.checked;
         }
     })
-    this.setState({classboxDetailsList: newDetailsList});
+    this.setState({newClassboxDetailsList: newDetailsList});
     // this.setState({[event.target.name]: event.target.checked });
   };
+
+  handleCustomizeSave = () =>{
+    console.log("Class Box changes saved");
+    this.setState({chosenPalette: this.state.newChosenPalette});
+    // this.setState({classboxDetailsList: this.state.newClassboxDetailsList});
+    this.setState({openModalCustomize: false});
+  }
+
+  handleEditChange =(event)=>{
+    console.log("Hello der from saveEdit");
+    console.log(event.target.value);
+    var newClassList = event.target.value;
+    console.log(newClassList);
+    this.setState({newCurrentClasses: newClassList});
+  }
+
+  handleEditSave=()=>{
+    console.log("Schedule edit changes saved");
+    this.setState({currentClasses: this.state.newCurrentClasses})
+    this.setState({openModalCustomize: false});
+  }
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -523,21 +578,55 @@ class Index extends Component {
                       variant="contained"
                       className={classes.buttonStyle}
                       endIcon={<DateRangeIcon/>}
+                      onClick={this.toggleModalEdit}
                       >
                       Edit
                     </Button>
+                      <Modal isOpen={this.state.openModalEdit} toggle={this.toggleModalEdit} returnFocusAfterClose={false} backdrop="static" data-keyboard="false" >
+                        <ModalHeader toggle={this.toggleModalEdit}>Edit Schedule</ModalHeader>
+                        <ModalBody>
+                          <div className="searchBarEdit" >
+                            <h4>Search, add or remove your classes</h4>
+                              <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
+                                  <Autocomplete
+                                    multiple
+                                    id="tags-outlined"
+                                    options={this.state.classList}
+                                    style={{ width: 500 }}
+                                    getOptionLabel={(option) => option.title}
+                                    defaultValue={this.state.currentClasses}
+                                    filterSelectedOptions
+                                    onChange={this.handleEditChange}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Edit class schedule"
+                                        placeholder="Class Section"
+                                      />
+                                    )}
+                                  />
+                                
+                              </div>
+                          </div>
+                        </ModalBody>
+                      <ModalFooter>
+                        <Button color="primary" onClick={this.handleEditSave}>Save Changes</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleModalEdit}>Cancel</Button>
+                      </ModalFooter>
+                    </Modal>    
                   </Grid>
-
+                  
                   <Grid item xs={1} direction="column" align="center">
                     <Button
                     variant="contained"
                     className={classes.buttonStyle}
-                    onClick={this.handleOpenModal}
+                    onClick={this.handleOpenModalCustomize}
                     endIcon={<PaletteIcon/>}
                     >
                       Customize
                     </Button>
-                    <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                    <Modal isOpen={this.state.openModalCustomize} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
                       <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
                       <ModalBody>
                         <h4>Color Palette</h4>
@@ -580,7 +669,7 @@ class Index extends Component {
                         </div>
                       </ModalBody>
                     <ModalFooter>
-                      <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
+                      <Button color="primary" onClick={this.handleCustomizeSave}>Save Changes</Button>{' '}
                       <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
                     </ModalFooter>
                   </Modal>    

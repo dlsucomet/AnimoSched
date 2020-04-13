@@ -92,8 +92,8 @@ triggerUpdate=(e)=>{
       <div>
 
         <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center'}}>
-          <div className= "card-container" >
-            <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate}>
+          <div className= "card-container" style={{height:"452px", overflow: "auto"}}>
+            <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate} style={{height:"100%"}}>
                 {this.state.courses.map((p, index) => {
                 return (
                     <Draggable key={p.id}>
