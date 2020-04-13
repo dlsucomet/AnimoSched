@@ -484,7 +484,7 @@ class Index extends Component {
             <div className={"hasContent"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
 
               
-            <Grid container spacing={3}>
+            <Grid container>
               <Grid item xs={12}>
                 <br></br>
                     <Typography gutterBottom variant="h3" align="center">

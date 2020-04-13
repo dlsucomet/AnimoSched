@@ -118,10 +118,10 @@ const formatDayScaleDate = (date, options) => {
         <div className={restProps.container} style={{whiteSpace: "normal"}}>
           <div>{restProps.data.title}</div>
           {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
-          <div>{restProps.data.location}</div>
+          <div style={{fontSize: "11px"}}>{restProps.data.location}</div>
           <div style={{fontSize: "11px"}} >{restProps.data.startTime} - {restProps.data.endTime}</div>
           <div>
-            <Typography gutterBottom variant="body2" style={{fontSize: "11px", wordWrap: "break-word"}}>
+            <Typography gutterBottom variant="body2" style={{fontSize: "8px", wordWrap: "break-word"}}>
                   {restProps.data.professor}
             </Typography>
           </div>
