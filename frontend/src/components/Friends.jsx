@@ -54,6 +54,7 @@ class Friends extends React.Component{
         const friendList = [];
         const searchFriends = [];
         const currentPanel = this.state.panel;
+        console.log(this.state.panel + " - FOR CHECKING IN CHANGING PANELS");
 
         for(var i=0; i < this.state.requests.length; i++){
             friendRequests.push(this.state.requests[i]);
@@ -72,7 +73,7 @@ class Friends extends React.Component{
         let changePanel;
         if(currentPanel == "requests"){
             changePanel = 
-                <Card className="cardPanel">
+                <div className="cardPanel">
                     {friendRequests.map(request => (
                         <DropdownItem className="panelItem">
                             <Row>
@@ -113,11 +114,11 @@ class Friends extends React.Component{
                             </Row>
                         </DropdownItem>
                     ))}
-                </Card>;
+                </div>;
         }
         else if(currentPanel == "list"){
             changePanel = 
-                <Card className="cardPanel">
+                <div className="cardPanel">
                     {friendList.map(friend => (
                         <DropdownItem className="panelItem">
                             <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -131,11 +132,11 @@ class Friends extends React.Component{
                     <DropdownItem header> 
                         <a href='javascript:void(0)' id="dropdownFooter">More Details</a>
                     </DropdownItem>
-                </Card>;
+                </div>;
         }
         else{
             changePanel = 
-                <Card className="cardPanel">
+                <div className="cardPanel">
 
                     <DropdownItem header className="dropdownHeader"> 
                         <input id="searchFriendsInput"></input>
@@ -156,7 +157,7 @@ class Friends extends React.Component{
                             </Row>
                         </DropdownItem>
                     ))}
-                </Card>;
+                </div>;
         }
 
         return(
