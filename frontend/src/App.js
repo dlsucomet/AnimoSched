@@ -39,7 +39,7 @@ class App extends Component {
 
   componentWillMount(){
     // if(this.state.logged_in){
-    //   axios.get('http://localhost:8000/api/auth/user/',
+    //   axios.get('https://archerone-backend.herokuapp.com/api/auth/user/',
     //   {
     //     headers: {
     //       Authorization: `JWT ${localStorage.getItem('token')}` 
@@ -61,7 +61,7 @@ class App extends Component {
   }
 
   handle_login = (data, _callback) => {
-    axios.post('http://localhost:8000/api/auth/login/', data,
+    axios.post('https://archerone-backend.herokuapp.com/api/auth/login/', data,
     {
         headers: {
             'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ class App extends Component {
   }
 
   handle_register = (data, _callback) => {
-    axios.post('http://localhost:8000/api/auth/registration/', data,
+    axios.post('https://archerone-backend.herokuapp.com/api/auth/registration/', data,
     {
         headers: {
             'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ class App extends Component {
   }
 
   handle_resetPassword = (data, _callback) => {
-    axios.post('http://localhost:8000/api/auth/password/reset/', data,
+    axios.post('https://archerone-backend.herokuapp.com/api/auth/password/reset/', data,
     {
         headers: {
             'Content-Type': 'application/json'
@@ -132,7 +132,7 @@ class App extends Component {
   }
 
   handle_resetPasswordConfirm = (data, _callback) => {
-    axios.post('http://localhost:8000/api/auth/password/reset/confirm/', data,
+    axios.post('https://archerone-backend.herokuapp.com/api/auth/password/reset/confirm/', data,
     {
         headers: {
             'Content-Type': 'application/json'
@@ -270,7 +270,9 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" render={this.mainPage} />
+          {!this.state.logged_in &&
           <Route exact path="/login" component={this.loginPage}/>
+          }
           <Route exact path="/register" component={this.registerPage} />
           <Route exact path="/password_reset" component={this.resetPasswordPage} />
           <Route exact path="/password_reset_done" component={this.resetPasswordDonePage} />
@@ -292,7 +294,10 @@ class App extends Component {
           <Route exact path="/search_courses" component={this.searchCoursesPage} />
           }
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
-          <Redirect to="/login" />
+          {this.state.logged_in
+          ? <Redirect to="/" />
+          : <Redirect to="/login" />
+          }
         </Switch>
       </Router>
     );

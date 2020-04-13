@@ -32,8 +32,10 @@ const theme = createMuiTheme({ palette: { type: "light", primary: green } });
 
 const styles = {
     dayScaleCell: {
-      overflow: "hidden",
-      textOverflow: "ellipsis"
+      overflow: "visible",
+      // textOverflow: "ellipsis"
+      wordWrap: "break-word",
+      flexWrap: 'wrap',
     }
     
 
@@ -45,16 +47,8 @@ const styles = {
       color: palette.action.active,
     },
     textCenter: {
-      textAlign: 'center',
-    },
-    firstRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/Lobby-4.jpg)',
-    },
-    secondRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-4.jpg)',
-    },
-    thirdRoom: {
-      background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-0.jpg)',
+      textAlign: 'left',
+      wordWrap: "break-word",
     },
     header: {
       height: '260px',
@@ -127,45 +121,51 @@ const formatDayScaleDate = (date, options) => {
           {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
           <div>{restProps.data.location}</div>
           <div>{restProps.data.startTime} - {restProps.data.endTime}</div>
-          <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
-                {restProps.data.professor}
-          </Typography>
+          <div>
+            <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
+                  {restProps.data.professor}
+            </Typography>
+          </div>
         </div>
+        
       </Appointments.AppointmentContent>
     );
   };
 
-  const CustomAppointment = ({ style, ...restProps }) => {
-  
-    if (restProps.data.location === "Room 1")
-      return (
-        <Appointments.Appointment
-          {...restProps}
-          style={{ ...style, backgroundColor: "blue"}}
-          className="CLASS_ROOM1"
-          data={restProps.data.location}
-        />
-      );
-    if (restProps.data.location === "Room 2")
-      return (
-        <Appointments.Appointment
-          {...restProps}
-          style={{ ...style, backgroundColor: "green" }}
-          className="CLASS_ROOM2"
-        />
-      );
-    return (
-      <Appointments.Appointment
-        {...restProps}
-        style={style}
-        className="CLASS_ROOM3"
-      />
-    );
-  };
+  // const CustomAppointment = ({ style, ...restProps }, coursesArray, index) => {
+  //   // console.log(coursesArray);
+  //   // console.log(index);
+  //   var coloredClasses = [...coursesArray];
+  //   var palIndex = 1;
+  //   var palette = ['#324856', '#4A746A', '#D18237', 'D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'];
+  //   if (coloredClasses.includes(restProps.data.title)){
+  //     return (
+  //       <Appointments.Appointment
+  //         {...restProps}
+  //         style={{ ...style, backgroundColor: "blue"}}
+  //         // className="CLASS_ROOM1"
+  //         data={restProps.data.title}
+  //       />
+  //     );
+  //   }else{
+  //     // coloredClasses.concat({title: restProps.data.title, color: palette[palIndex]});
+  //     // this.setState({coloredClasses});
+  //     // palIndex = palIndex + 1;
+  //     // this.setState({palIndex})
+  //     return(<Appointments.Appointment
+  //         {...restProps}
+  //         style={{ ...style, backgroundColor: palette[palIndex]}}
+  //         // className="CLASS_ROOM1"
+  //         data={restProps.data.title}
+  //       />
+  //     );
+  //   }
+  // };
 
 class ScheduleView extends Component {
     constructor(props){
       super(props);
+      this.CustomAppointment = this.CustomAppointment.bind(this);
       var earliest = 9;
       if(props.earliest != undefined){
         earliest = props.earliest;
@@ -178,7 +178,9 @@ class ScheduleView extends Component {
         classes: props.content,
         latest: latest,
         earliest: earliest,
-        palette: ['#324856', '#4A746A', '#D18237', 'D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        palette: props.palette/*['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C']*/,
+        coloredClasses: [],
+        palIndex: 0,
       }
       const priorities = [
         { id: 1, text: 'Low Priority', color: green },
@@ -205,33 +207,92 @@ class ScheduleView extends Component {
         classes: props.content,
         latest: latest,
         earliest: earliest,
-        palette: [],
+        palette: props.palette,
       });
+
+      this.processColoredClasses();
+      console.log(props.palette);
     }
     
+    CustomAppointment = ({ style, ...restProps }) => {
+      // console.log(restProps);
+      var coloredClasses = [...this.state.coloredClasses];;
+      var changeColor = <Appointments.Appointment {...restProps} style={{ ...style, backgroundColor: this.state.palette[1]}}data={restProps.data.title}/>;
+      // console.log(coloredClasses)
+      coloredClasses.map(data=>{
+        if(data.title == restProps.data.title){
+          console.log(data.color);
+          changeColor = <Appointments.Appointment
+              {...restProps}
+              style={{ ...style, backgroundColor: data.color}}
+              // className="CLASS_ROOM1"
+              data={restProps.data.title}
+            />
+          return (
+            <Appointments.Appointment
+              {...restProps}
+              style={{ ...style, backgroundColor: data.color}}
+              // className="CLASS_ROOM1"
+              data={restProps.data.title}
+            />
+          )
+        }
+      })
+
+      return changeColor;
+    };
+
+
+    componentWillMount(){
+      this.processColoredClasses();
+      
+    }
+    processColoredClasses=()=>{
+      console.log("hello from proccessColoredClasses");
+      var coloredClasses = [];
+      var palIndex = 0;
+      var classData = [...this.state.classes];
+      classData.map(data => {
+        // if(!coloredClasses.includes(data.title)){
+        if(!coloredClasses.some(p => p.title == data.title)){
+
+          coloredClasses.push({title: data.title, color: this.state.palette[palIndex]});
+          palIndex = palIndex + 1;
+        }
+      })
+      console.log(coloredClasses)
+      this.setState({coloredClasses});
+    }
+
     render() { 
         return (
-            <MuiThemeProvider theme={theme}>
+          
+            // <MuiThemeProvider theme={theme}>
+            
             <Paper>
+              <div>
+                {this.processColoredClasses}
+              </div>
+              
                 <Scheduler id='scheduleView' data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
                 <WeekView startDayHour={this.state.earliest} endDayHour={this.state.latest} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
                 <Appointments 
                 appointmentContentComponent={AppointmentContent}
-                appointmentComponent={CustomAppointment}
+                appointmentComponent={this.CustomAppointment}
                 />
-                <AppointmentTooltip
+                {/* <AppointmentTooltip
                   // headerComponent={Header}
                   contentComponent={Content}
                   // commandButtonComponent={CommandButton}
                   showCloseButton
-                />
+                /> */}
                 <Resources
                   data={this.resources}
                 />
                 </Scheduler>
             </Paper>
-            </MuiThemeProvider>
+            // </MuiThemeProvider>
           );
     }
 }

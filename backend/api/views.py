@@ -88,50 +88,50 @@ class SavedScheduleList(APIView):
         return Response(serializer.data)
 
 class PreferenceList(APIView):
-    def get(self, request, pk, format=None):
-        preferences = Preference.objects.filter(user=pk)
-        serializer = PreferenceSerializer(preferences, many=True)
-        for d in serializer.data:
-          if(d['preferred_faculty'] != None):
-            faculty = Faculty.objects.get(id=d['preferred_faculty'])
-            d['preferred_faculty'] = {'id':faculty.id, 'full_name':faculty.full_name}
-          if(d['preferred_sections'] != None):
-            section = Section.objects.get(id=d['preferred_sections'])
-            d['preferred_sections'] = {'id':section.id, 'section_code':section.section_code}
-        return Response(serializer.data)
+  def get(self, request, pk, format=None):
+      preferences = Preference.objects.filter(user=pk)
+      serializer = PreferenceSerializer(preferences, many=True)
+      for d in serializer.data:
+        if(d['preferred_faculty'] != None):
+          faculty = Faculty.objects.get(id=d['preferred_faculty'])
+          d['preferred_faculty'] = {'id':faculty.id, 'full_name':faculty.full_name}
+        if(d['preferred_sections'] != None):
+          section = Section.objects.get(id=d['preferred_sections'])
+          d['preferred_sections'] = {'id':section.id, 'section_code':section.section_code}
+      return Response(serializer.data)
 
-    def delete(self, request, pk, format=None):
-        preferences = Preference.objects.filter(user=pk).delete()
-        return Response(None)
+  def delete(self, request, pk, format=None):
+      preferences = Preference.objects.filter(user=pk).delete()
+      return Response(None)
 
 class CoursePriorityList(APIView):
-    def get(self, request, pk, format=None):
-        coursePriority = CoursePriority.objects.filter(user=pk)
-        serializer = CoursePrioritySerializer(coursePriority, many=True)
-        return Response(serializer.data)
+  def get(self, request, pk, format=None):
+      coursePriority = CoursePriority.objects.filter(user=pk)
+      serializer = CoursePrioritySerializer(coursePriority, many=True)
+      return Response(serializer.data)
 
-    def delete(self, request, pk, format=None):
-        coursePriority = CoursePriority.objects.filter(id=pk).delete()
-        return Response(None)
+  def delete(self, request, pk, format=None):
+      coursePriority = CoursePriority.objects.filter(id=pk).delete()
+      return Response(None)
 
 class CourseOfferingsList(APIView):
-    def post(self, request, format=None):
-        courseData = []
-        for c in request.data['courses']:
-          offerings = CourseOffering.objects.filter(course=c)
-          serializer = CourseOfferingSerializer(offerings, many=True)
-          for d in serializer.data:
-            if(d['faculty'] != None):
-              d['faculty'] = Faculty.objects.get(id=d['faculty']).full_name
-            d['course'] = Course.objects.get(id=d['course']).course_code
-            d['section'] = Section.objects.get(id=d['section']).section_code  
-            d['day'] = Day.objects.get(id=d['day']).day_code  
-            d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
-            d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
-            if(d['room'] != None):
-              d['room'] = Room.objects.get(id=d['room']).room_name
-          courseData.append(serializer.data)
-        return Response(courseData)
+  def post(self, request, format=None):
+      courseData = []
+      for c in request.data['courses']:
+        offerings = CourseOffering.objects.filter(course=c)
+        serializer = CourseOfferingSerializer(offerings, many=True)
+        for d in serializer.data:
+          if(d['faculty'] != None):
+            d['faculty'] = Faculty.objects.get(id=d['faculty']).full_name
+          d['course'] = Course.objects.get(id=d['course']).course_code
+          d['section'] = Section.objects.get(id=d['section']).section_code  
+          d['day'] = Day.objects.get(id=d['day']).day_code  
+          d['timeslot_begin'] = Timeslot.objects.get(id=d['timeslot']).begin_time  
+          d['timeslot_end'] = Timeslot.objects.get(id=d['timeslot']).end_time
+          if(d['room'] != None):
+            d['room'] = Room.objects.get(id=d['room']).room_name
+        courseData.append(serializer.data)
+      return Response(courseData)
 
 class SchedulesList(APIView):
   def post(self, request, format=None):
@@ -166,17 +166,17 @@ class SchedulesList(APIView):
     return Response(serializedSchedules)
 
 class FlowchartTermsList(APIView):
-    def get(self, request, pk, pk2, format=None):
-        flowchartTerms = FlowchartTerm.objects.filter(degree=pk, batch=pk2)
-        serializer = FlowchartTermSerializer(flowchartTerms, many=True)
-        for d in serializer.data:
-          courses = []
-          for o in d['courses']:
-            course = Course.objects.get(id=o)
-            courseSerializer = CourseSerializer(course)
-            d2 = courseSerializer.data
-            print(d2)
-            d2['college'] = College.objects.get(id=d2['college']).college_code
-            courses.append(d2)
-          d['courses'] = courses
-        return Response(serializer.data)
+  def get(self, request, pk, pk2, format=None):
+      flowchartTerms = FlowchartTerm.objects.filter(degree=pk, batch=pk2)
+      serializer = FlowchartTermSerializer(flowchartTerms, many=True)
+      for d in serializer.data:
+        courses = []
+        for o in d['courses']:
+          course = Course.objects.get(id=o)
+          courseSerializer = CourseSerializer(course)
+          d2 = courseSerializer.data
+          print(d2)
+          d2['college'] = College.objects.get(id=d2['college']).college_code
+          courses.append(d2)
+        d['courses'] = courses
+      return Response(serializer.data)

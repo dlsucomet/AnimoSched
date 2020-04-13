@@ -19,6 +19,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
 const styles = theme => ({
     root: {
       display: 'flex',
@@ -104,6 +111,7 @@ class GenerateSchedule extends Component {
             schedules: [],
             dataReceived: false,
 
+            snackBar: false,
             loading: false,
             success: false,
      
@@ -118,7 +126,7 @@ class GenerateSchedule extends Component {
 
     componentDidMount(){
         const id = localStorage.getItem('user_id');
-        axios.get('http://localhost:8000/api/courses/')
+        axios.get('https://archerone-backend.herokuapp.com/api/courses/')
         .then(res => {
             res.data.map(course => {
                 var courses = this.state.courseList;
@@ -126,7 +134,7 @@ class GenerateSchedule extends Component {
                 courses.push(addCourse)
                 this.setState({courseList: courses})
             })
-            axios.get('http://localhost:8000/api/courseprioritylist/'+id+'/')
+            axios.get('https://archerone-backend.herokuapp.com/api/courseprioritylist/'+id+'/')
             .then(res => {
                 console.log(res.data)
                 res.data.map(coursepriority => {
@@ -198,7 +206,7 @@ class GenerateSchedule extends Component {
     //     }
     // }
     handleCourseDelete = (addCourse) => {
-        axios.delete('http://localhost:8000/api/courseprioritylist/'+addCourse.id+'/')
+        axios.delete('https://archerone-backend.herokuapp.com/api/courseprioritylist/'+addCourse.id+'/')
         .then(res => {
             console.log("deleted "+addCourse.id)
             const newCourseList = [];
@@ -243,7 +251,7 @@ class GenerateSchedule extends Component {
                     priority: true,
                     user: id
                 }
-                axios.post('http://localhost:8000/api/coursepriority/', data,
+                axios.post('https://archerone-backend.herokuapp.com/api/coursepriority/', data,
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -333,7 +341,7 @@ class GenerateSchedule extends Component {
             this.setState({loading: false});
           } 
 
-        axios.post('http://localhost:8000/api/generateschedule/',
+        axios.post('https://archerone-backend.herokuapp.com/api/generateschedule/',
         {
             highCourses: this.state.highCourses, 
             lowCourses: this.state.lowCourses,
@@ -489,16 +497,16 @@ class GenerateSchedule extends Component {
             this.state.currentContent.props.offerings.map(offering => {
                 courseOfferings.push(offering.id)
             })
-            axios.post('http://localhost:8000/api/schedules/',{
+            axios.post('https://archerone-backend.herokuapp.com/api/schedules/',{
                 title: this.state.currentContent.props.titleName,
                 courseOfferings: courseOfferings,
                 user: user_id
             }).then(res => {
-                // axios.get('http://localhost:8000/api/users/'+user_id+'/')
+                // axios.get('https://archerone-backend.herokuapp.com/api/users/'+user_id+'/')
                 // .then(res => {
                 //     const schedules = res.data.schedules;
                 //     schedules.push(sched_id);
-                //     axios.patch('http://localhost:8000/api/users/'+user_id+'/',{
+                //     axios.patch('https://archerone-backend.herokuapp.com/api/users/'+user_id+'/',{
                 //         schedules: schedules
                 //     }).then(res => {
                 //         console.log(res)
@@ -519,12 +527,19 @@ class GenerateSchedule extends Component {
             this.setState({saveButtonLabel: "Saved"});
             const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D", borderStyle: "solid", borderColor: "#16775D"};
             this.setState({saveButtonStyle: styleChange});
+            this.setState({snackBar: true});
         }
         
 
     }
 
-
+    handleCloseSnackBar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({snackBar: false});
+      }
 
     render() { 
         let search_field = this.props.search_field;
@@ -647,6 +662,11 @@ class GenerateSchedule extends Component {
                                             </Button>
                                             {this.state.loading && <CircularProgress size={24} className={classes.buttonProgressSave}/>}
                                         </div>
+                                        <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
+                                            <Alert onClose={this.handleCloseSnackBar} severity="success">
+                                            Your schedule have been successfully saved! View in <a href="/" style={{color:"#D3D3D3"}}>homepage</a>
+                                            </Alert>
+                                        </Snackbar>
                                     </div>
                                 {/* <button className={"schedButton"} style={this.state.saveButtonStyle} onClick={this.handleSaveChange}>{this.state.saveButtonLabel}</button> */}
                             </Row>  
