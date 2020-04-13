@@ -11,6 +11,8 @@ import {
     Card
   } from 'reactstrap';
 
+import axios from 'axios'
+
 class Friends extends React.Component{
 
     constructor(props){
@@ -18,20 +20,23 @@ class Friends extends React.Component{
 
         this.state = {
             requests: [
-                this.createRequests("Katniss", "Everdeen", "new"),
-                this.createRequests("Peeta", "Mellark", "new"),
-                this.createRequests("Beatrice", "Prior", "accept"),
-                this.createRequests("Tobias", "Eaton", "delete"),
-                this.createRequests("Yeji", "Hwang", "accept"),
-                this.createRequests("Jisoo", "Choi", "accept")
+                // this.createRequests("Katniss", "Everdeen", "new"),
+                // this.createRequests("Peeta", "Mellark", "new"),
+                // this.createRequests("Beatrice", "Prior", "accept"),
+                // this.createRequests("Tobias", "Eaton", "delete"),
+                // this.createRequests("Yeji", "Hwang", "accept"),
+                // this.createRequests("Jisoo", "Choi", "accept")
             ],
             database: [
-                this.createDatabase("Amelia", "Earhart", false),
-                this.createDatabase("Beatrice", "Prior", true),
-                this.createDatabase("Maria", "Clara", false),
-                this.createDatabase("Mara", "Makiling", false)
+                // this.createDatabase("Amelia", "Earhart", false),
+                // this.createDatabase("Beatrice", "Prior", true),
+                // this.createDatabase("Maria", "Clara", false),
+                // this.createDatabase("Mara", "Makiling", false)
             ],
-            panel: "requests"
+            panel: "requests",
+            changePanel: null,
+            polling: true,
+            pollingInterval: 5000,
         }
     }
 
@@ -45,8 +50,43 @@ class Friends extends React.Component{
 
     handleClick(e, action) {
         e.preventDefault();
-        this.state.panel = action;
+        this.setState({panel: action});
         console.log(action);
+    }
+
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            res.data.map(request => {
+                const requests = this.state.requests
+                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, 'new'))
+                this.setState({requests})
+                this.poll()
+            })
+        })
+    }
+
+    poll () {
+        this.state.polling && clearTimeout(this.state.polling)
+    
+        const polling = setTimeout(() => {
+            axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
+            .then(res => {
+                this.setState({requests: []})
+                res.data.map(request => {
+                    const requests = this.state.requests
+                    requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, 'new'))
+                    this.setState({requests})
+                })
+            })
+    
+            this.poll()
+        }
+        , this.state.pollingInterval)
+    
+        this.setState({
+            polling
+        })
     }
 
     render (){
@@ -70,12 +110,11 @@ class Friends extends React.Component{
                 searchFriends.push(this.state.database[i]);
         }
 
-        let changePanel;
         if(currentPanel == "requests"){
-            changePanel = 
+            this.state.changePanel = 
                 <div className="cardPanel">
                     {friendRequests.map(request => (
-                        <DropdownItem className="panelItem">
+                        <div className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -112,12 +151,11 @@ class Friends extends React.Component{
                                 </Col>
                                 }
                             </Row>
-                        </DropdownItem>
+                        </div>
                     ))}
                 </div>;
-        }
-        else if(currentPanel == "list"){
-            changePanel = 
+        }else if(currentPanel == "list"){
+            this.state.changePanel = 
                 <div className="cardPanel">
                     {friendList.map(friend => (
                         <DropdownItem className="panelItem">
@@ -133,9 +171,8 @@ class Friends extends React.Component{
                         <a href='javascript:void(0)' id="dropdownFooter">More Details</a>
                     </DropdownItem>
                 </div>;
-        }
-        else{
-            changePanel = 
+        }else{
+            this.state.changePanel = 
                 <div className="cardPanel">
 
                     <DropdownItem header className="dropdownHeader"> 
@@ -159,7 +196,6 @@ class Friends extends React.Component{
                     ))}
                 </div>;
         }
-
         return(
             <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle tag="span" data-toggle="dropdown">
@@ -169,15 +205,6 @@ class Friends extends React.Component{
                 </DropdownToggle>
                 
                 <DropdownMenu right id="dropdownMenu">
-                        {this.state.panel == "requests" &&
-                            <DropdownItem header className="dropdownHeader">
-                                <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
-                                |
-                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
-                                |
-                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"find")}>Find Friends</a>
-                            </DropdownItem>
-                        }
 
                         {this.state.panel == "list" &&
                             <DropdownItem header className="dropdownHeader">
@@ -199,7 +226,16 @@ class Friends extends React.Component{
                             </DropdownItem>
                         }
 
-                    {changePanel}
+                        {this.state.panel == "requests" &&
+                            <DropdownItem header className="dropdownHeader">
+                                <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
+                                |
+                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
+                                |
+                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"find")}>Find Friends</a>
+                            </DropdownItem>
+                        }
+                    {this.state.changePanel}
                 </DropdownMenu>
             </UncontrolledDropdown>
         );

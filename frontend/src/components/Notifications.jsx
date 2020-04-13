@@ -9,6 +9,8 @@ import {
     DropdownItem,
   } from 'reactstrap';
 
+import axios from 'axios'
+
 class Notifications extends React.Component{
 
     constructor(props){
@@ -18,9 +20,9 @@ class Notifications extends React.Component{
 
         this.state = {
             database: [
-                this.createData('Schedule', 'INOVATE S17 is full.',             false,  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
-                this.createData('Friend',   'Juan Tamad saved a new schedule.', true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
-                this.createData('Schedule', 'FTDANCE S15 was dissolved.',       true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", "")
+                // this.createData('Schedule', 'INOVATE S17 is full.',             false,  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
+                // this.createData('Friend',   'Juan Tamad saved a new schedule.', true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
+                // this.createData('Schedule', 'FTDANCE S15 was dissolved.',       true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", "")
             ]
         }
     }
@@ -46,6 +48,17 @@ class Notifications extends React.Component{
                 </svg>
             );
         }
+    }
+
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/notificationlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            res.data.map(notif=> {
+                const database = this.state.database;
+                database.push(this.createData('Schedule', notif.content, false, notif.date, "", ""))
+                this.setState({database})
+            })
+        })
     }
 
     render (){
