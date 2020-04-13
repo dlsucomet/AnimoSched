@@ -25,6 +25,7 @@ class Menu extends React.Component{
         const loggedIn = () => {
             return(
                 <React.Fragment>
+                    <Nav.Link href="/view_friends">View Friends</Nav.Link>
                     <Nav.Link href="/preferences">Preferences</Nav.Link>
                     <Nav.Link href="/search_courses">Search Courses</Nav.Link>
                     <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>

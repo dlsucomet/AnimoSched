@@ -18,6 +18,7 @@ import FlowchartPage from "./pages/Flowchart.jsx";
 import GenerateSchedulePage from "./pages/GenerateSchedule.jsx";
 import PreferencesPage from "./pages/Preferences.jsx";
 import SearchCoursesPage from "./pages/SearchCourses.jsx";
+import ViewFriendsPage from "./pages/FriendPage.jsx";
 import Menu from "./components/Menu.jsx";
 
 import axios from 'axios';
@@ -256,6 +257,14 @@ class App extends Component {
     )
   }
 
+  viewFriendsPage = () => {
+    return (
+      <ViewFriendsPage
+        menu={this.menu}
+      />
+    )
+  }
+
   flowchartPage = () => {
     return (
       <FlowchartPage
@@ -292,6 +301,9 @@ class App extends Component {
           }
           {this.state.logged_in && 
           <Route exact path="/search_courses" component={this.searchCoursesPage} />
+          }
+          {this.state.logged_in && 
+          <Route exact path="/view_friends" component={this.viewFriendsPage} />
           }
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
           {this.state.logged_in

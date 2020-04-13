@@ -1,0 +1,12 @@
+.friendMenu {
+    height: 100%;
+    overflow-y: hidden;
+    width: 20%;
+    position: fixed;
+    background-color: white;
+}
+
+.titleRow {
+    overflow: hidden;
+    padding: 10%;  
+}
