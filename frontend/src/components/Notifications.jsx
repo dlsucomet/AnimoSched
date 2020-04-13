@@ -7,7 +7,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Badge
   } from 'reactstrap';
 
 import Badge from '@material-ui/core/Badge';
