@@ -185,9 +185,8 @@ class Index extends Component {
       this.state={
         openAlert: false,
         snackBarVariables: [
-          {snackBarDelete: false}, {snackBarFailedDelete: false}],
-        // snackBarDelete: false,
-        // snackBarFailedDelete: false,
+          {snackBarSuccess: false}, {snackBarFailed: false}],
+        // snackBarFailed: false,
         currentPage: 0,
         currentContent: "",
         generatedContents: [],
@@ -210,6 +209,7 @@ class Index extends Component {
         newCurrentClasses: [],
         newClassboxDetailsList: [],
         newChosenPalette: [],
+        snackbarMsg: "",
       }
       
     }
@@ -405,8 +405,9 @@ class Index extends Component {
     this.setState({openAlert: false});
 
     let snackBarVariables = [...this.state.snackBarVariables];
-    snackBarVariables[0].snackBarDelete = true;
-    // snackBarVariables[1].snackBarFailedDelete = true;
+    this.setState({snackbarMsg: "Your schedule has been successfully discarded!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
     this.setState({snackBarVariables});
     console.log(snackBarVariables);
  }
@@ -430,9 +431,9 @@ class Index extends Component {
   
     let snackBarVariables = [...this.state.snackBarVariables];
     if(snackBarIndex == 0){
-      snackBarVariables[0].snackBarDelete = false;
+      snackBarVariables[0].snackBarSuccess = false;
     }else if(snackBarIndex == 1){
-      snackBarVariables[1].snackBarFailedDelete = false;
+      snackBarVariables[1].snackBarFailed = false;
     }
     this.setState({snackBarVariables});
   }
@@ -445,6 +446,13 @@ class Index extends Component {
       // Canvas2Image.saveAsPNG(canvas.toDataURL())
 
     });
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule image is downloading!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
   }
 
   handleCloseModalCustomize = ()=>{
@@ -520,6 +528,13 @@ class Index extends Component {
     this.setState({chosenPalette: this.state.newChosenPalette});
     // this.setState({classboxDetailsList: this.state.newClassboxDetailsList});
     this.setState({openModalCustomize: false});
+    
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule customization changes has been successfully saved!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
   }
 
   handleEditChange =(event)=>{
@@ -533,7 +548,14 @@ class Index extends Component {
   handleEditSave=()=>{
     console.log("Schedule edit changes saved");
     this.setState({currentClasses: this.state.newCurrentClasses})
-    this.setState({openModalCustomize: false});
+    this.setState({openModalEdit: false});
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
   }
 
     render() {
@@ -719,13 +741,13 @@ class Index extends Component {
                       </Dialog>
                       : null }
 
-                      <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
+                      <Snackbar open={this.state.snackBarVariables[0].snackBarSuccess} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
                         <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
-                          Your schedule has been successfully discarded!
+                          {this.state.snackbarMsg}{/* Your schedule has been successfully discarded! */}
                         </Alert>
                       </Snackbar>
 
-                      <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
+                      <Snackbar open={this.state.snackBarVariables[1].snackBarFailed} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
                         <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
                         Delete failed
                         </Alert>
