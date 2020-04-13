@@ -49,8 +49,8 @@ class Friends extends React.Component{
         return { firstName, lastName, seenStatus, acceptStatus, id, from_user};
     }
 
-    createDatabase(firstName, lastName, friendList, id) {
-        return { firstName, lastName, friendList, id};
+    createDatabase(firstName, lastName, id) {
+        return { firstName, lastName, id};
     }
 
     handleClick(e, action) {
@@ -84,7 +84,16 @@ class Friends extends React.Component{
     }
 
     componentDidMount(){
-        this.getInfo();
+        axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const database = this.state.database;
+            console.log(res.data)
+            res.data.map(nonfriend => {
+                database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, nonfriend.id));
+            })
+            this.setState({database})
+            this.getInfo();
+        })
     }
 
     poll () {
@@ -135,6 +144,29 @@ class Friends extends React.Component{
         this.setState({polling: true})
     }
 
+    handleDeleteClick = (e, index, id) => {
+        this.setState({polling: false})
+        axios.delete('https://archerone-backend.herokuapp.com/api/friendrequests/'+id+'/')
+        const requests = [];
+        this.state.requests.map((request, index2) => {
+            if(index != index2){
+                requests.push(request)
+            }
+        })
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
+    handleSendClick = (e, id) => {
+        this.setState({polling: false})
+        axios.post('https://archerone-backend.herokuapp.com/api/friendrequests/',{
+            from_user: localStorage.getItem('user_id'),
+            seen: false,
+            accepted: false,
+            to_user: id
+        })
+        this.setState({polling: true})
+    }
 
     render (){
         const friendRequests = [];
@@ -153,8 +185,7 @@ class Friends extends React.Component{
         }
 
         for(var i=0; i < this.state.database.length; i++){
-            if(!this.state.database[i].friendList)
-                searchFriends.push(this.state.database[i]);
+            searchFriends.push(this.state.database[i]);
         }
 
         if(currentPanel == "requests"){
@@ -173,7 +204,7 @@ class Friends extends React.Component{
                                 {!request.acceptStatus &&
                                     <Col xs={6} md={4}>
                                         <Button onClick={(e) => this.handleAcceptClick(e, index, request.id, request.from_user)} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
-                                        <Button variant="secondary" size="sm">Delete</Button>
+                                        <Button onClick={(e) => this.handleDeleteClick(e, index, request.id)} variant="secondary" size="sm">Delete</Button>
                                     </Col>
                                 }
 
@@ -223,21 +254,11 @@ class Friends extends React.Component{
                 <div className="cardPanel">
 
                     <DropdownItem header className="dropdownHeader"> 
-                        <Autocomplete
-                        // id="combo-box-demo"
-                        options={[]}
-                        // getOptionLabel={option => option.name}
-                        // style={{ width: }}
-                        renderInput={params => <TextField {...params} label="Search Friends" variant="outlined" />}
-                        // value={this.state.value}
-                        // inputValue={this.state.value}
-                        // searchText={this.state.value}
-                        // onChange={this.props.onChange}
-                        />
+                        <TextField id="outlined-basic" label="Search Friends" variant="outlined" />
                     </DropdownItem>
 
                     {searchFriends.map(search => (
-                        <DropdownItem className="panelItem">
+                        <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -246,7 +267,7 @@ class Friends extends React.Component{
                                     <span> {search.firstName} {search.lastName} </span>
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    <Button variant="success" size="sm">Add</Button>
+                                    <Button onClick={(e) => this.handleSendClick(e, search.id)}variant="success" size="sm">Add</Button>
                                 </Col>
                             </Row>
                         </DropdownItem>
