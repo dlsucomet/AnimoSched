@@ -150,32 +150,32 @@ var sectionStyle = {
 class Index extends Component {
     constructor(props){
       super(props);
+      this.state={
+        openAlert: false,
+        snackBarVariables: [
+          {snackBarDelete: false}, {snackBarFailedDelete: false}],
+        // snackBarDelete: false,
+        // snackBarFailedDelete: false,
+        currentPage: 0,
+        currentContent: "",
+        generatedContents: [],
+        // currentContent: <SchedViewHome/>,
+        // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+        pagesCount: 1,
+        dataReceived: !props.logged_in,
+        schedules: [],
+        openModal: false,
+        paletteChoices: [],
+        chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        classboxDetailsList: [
+          {id: 1, title: "showFaculty", checked: true},
+          {id: 2, title: "showTime", checked: true},
+          {id: 3, title: "showRoom", checked: true}
+        ]
+      }
       
     }
 
-    state={
-      openAlert: false,
-      snackBarVariables: [
-        {snackBarDelete: false}, {snackBarFailedDelete: false}],
-      // snackBarDelete: false,
-      // snackBarFailedDelete: false,
-      currentPage: 0,
-      currentContent: "",
-      generatedContents: [],
-      // currentContent: <SchedViewHome/>,
-      // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
-      pagesCount: 1,
-      dataReceived: false,
-      schedules: [],
-      openModal: false,
-      paletteChoices: [],
-      chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
-      classboxDetailsList: [
-        {id: 1, title: "showFaculty", checked: true},
-        {id: 2, title: "showTime", checked: true},
-        {id: 3, title: "showRoom", checked: true}
-      ]
-    }
 
     handlePageChange = (e,index) => {
   
@@ -214,96 +214,98 @@ class Index extends Component {
   }
 
   componentWillMount(){
-    axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
-    .then(res => {
-        const schedules = []
-        res.data.map(newSchedule =>{
-            var count = 0;
-            const scheduleContent = []
-            const tableContent = []
-            var earliest = 9
-            var latest = 17
-            var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
-            for (let key in arranged) {
-              var days = []
-              var day = ''
-              var classnumber = ''
-              var course = ''
-              var section = ''
-              var faculty = ''
-              var timeslot_begin = ''
-              var timeslot_end = ''
-              var room = ''
-              var max_enrolled = ''
-              var current_enrolled = ''
-              arranged[key].map(offering => {
-                days.push(offering.day)
-                classnumber = offering.classnumber
-                course = offering.course
-                section = offering.section
-                faculty = offering.faculty
-                timeslot_begin = offering.timeslot_begin
-                timeslot_end = offering.timeslot_end
-                room = offering.room
-                max_enrolled = offering.max_enrolled
-                current_enrolled = offering.current_enrolled
-              })
-              days.map(day_code => {
-                day += day_code;
-              })
-              const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-              tableContent.push(newTableContent)
-            }
-            newSchedule.courseOfferings.map(offering=>{
-                var startTime = offering.timeslot_begin.split(':');
-                var endTime = offering.timeslot_end.split(':');
-                const newContent = 
-                {
-                    id: count,
-                    title: offering.course + ' ' + offering.section,
-                    section: offering.section,
-                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                    location: offering.room,
-                    professor: offering.faculty,
-                    startTime: offering.timeslot_begin,
-                    endTime: offering.timeslot_end,
-                    days: offering.day,
-                    classCode: offering.classnumber 
-                }
-                if(earliest > Number(startTime[0])){
-                    earliest = Number(startTime[0])
-                }
-                if(latest < Number(endTime[0]) + 1){
-                    latest = Number(endTime[0]) + 1
-                }
-                scheduleContent.push(newContent);
+    if(!this.state.dataReceived){
+      axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+      .then(res => {
+          const schedules = []
+          res.data.map(newSchedule =>{
+              var count = 0;
+              const scheduleContent = []
+              const tableContent = []
+              var earliest = 9
+              var latest = 17
+              var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+              for (let key in arranged) {
+                var days = []
+                var day = ''
+                var classnumber = ''
+                var course = ''
+                var section = ''
+                var faculty = ''
+                var timeslot_begin = ''
+                var timeslot_end = ''
+                var room = ''
+                var max_enrolled = ''
+                var current_enrolled = ''
+                arranged[key].map(offering => {
+                  days.push(offering.day)
+                  classnumber = offering.classnumber
+                  course = offering.course
+                  section = offering.section
+                  faculty = offering.faculty
+                  timeslot_begin = offering.timeslot_begin
+                  timeslot_end = offering.timeslot_end
+                  room = offering.room
+                  max_enrolled = offering.max_enrolled
+                  current_enrolled = offering.current_enrolled
+                })
+                days.map(day_code => {
+                  day += day_code;
+                })
+                const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                tableContent.push(newTableContent)
+              }
+              newSchedule.courseOfferings.map(offering=>{
+                  var startTime = offering.timeslot_begin.split(':');
+                  var endTime = offering.timeslot_end.split(':');
+                  const newContent = 
+                  {
+                      id: count,
+                      title: offering.course + ' ' + offering.section,
+                      section: offering.section,
+                      startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                      endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                      location: offering.room,
+                      professor: offering.faculty,
+                      startTime: offering.timeslot_begin,
+                      endTime: offering.timeslot_end,
+                      days: offering.day,
+                      classCode: offering.classnumber 
+                  }
+                  if(earliest > Number(startTime[0])){
+                      earliest = Number(startTime[0])
+                  }
+                  if(latest < Number(endTime[0]) + 1){
+                      latest = Number(endTime[0]) + 1
+                  }
+                  scheduleContent.push(newContent);
 
-                count += 1;
-            })
-            schedules.push({
-                id: newSchedule.id,
-                title: newSchedule.title,
-                scheduleContent: scheduleContent,
-                tableContent: tableContent, 
-                prefContent: [],
-                conflictsContent: newSchedule.information,
-                earliest: earliest,
-                latest: latest,
-                offerings: newSchedule.courseOfferings
-            });
-        })
-        console.log(schedules)
-        this.setState({schedules});
-        this.setSchedInfo();
-        this.setState({success: true});
-        this.setState({loading: false});
-        this.setState({dataReceived: true})
-    }).catch(error => {
-        console.log(error)
-        this.setState({success: false});
-        this.setState({loading: false});
-    })
+                  count += 1;
+              })
+              schedules.push({
+                  id: newSchedule.id,
+                  title: newSchedule.title,
+                  scheduleContent: scheduleContent,
+                  tableContent: tableContent, 
+                  prefContent: [],
+                  conflictsContent: newSchedule.information,
+                  earliest: earliest,
+                  latest: latest,
+                  offerings: newSchedule.courseOfferings
+              });
+          })
+          console.log(schedules)
+          this.setState({schedules});
+          this.setSchedInfo();
+          this.setState({success: true});
+          this.setState({loading: false});
+          this.setState({dataReceived: true})
+      }).catch(error => {
+          console.log(error)
+          this.setState({success: false});
+          this.setState({loading: false});
+      })
+    }
   }
 
   setSchedInfo = () => {
