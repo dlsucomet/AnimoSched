@@ -24,12 +24,15 @@ class Notifications extends React.Component{
                 // this.createData('Schedule', 'INOVATE S17 is full.',             false,  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
                 // this.createData('Friend',   'Juan Tamad saved a new schedule.', true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", ""),
                 // this.createData('Schedule', 'FTDANCE S15 was dissolved.',       true,   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(), "", "")
-            ]
+            ],
+            polling: true,
+            pollingInterval: 5000,
+            newNotifs: 0
         }
     }
 
-    createData(category, message, seen, date, icon, bgColor) {
-        return {category, message, seen, date, icon, bgColor };
+    createData(category, message, seen, date, icon, bgColor, id) {
+        return {category, message, seen, date, icon, bgColor, id};
     }
 
     specifyIcon(props) {
@@ -51,15 +54,55 @@ class Notifications extends React.Component{
         }
     }
 
-    componentDidMount(){
+    getInfo(){
         axios.get('https://archerone-backend.herokuapp.com/api/notificationlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
+            this.setState({database: []})
+            this.setState({newNotifs: 0})
+            var newNotifs = this.state.newNotifs;
             res.data.map(notif=> {
                 const database = this.state.database;
-                database.push(this.createData('Schedule', notif.content, false, notif.date, "", ""))
+                database.push(this.createData('Schedule', notif.content, notif.seen, notif.date, "", "", notif.id))
+                if(!notif.seen){
+                    newNotifs += 1;
+                }
                 this.setState({database})
             })
+            this.setState({newNotifs})
+            this.poll()
         })
+    }
+
+    componentDidMount(){
+        this.getInfo()
+    }
+
+    poll () {
+        this.state.polling && clearTimeout(this.state.polling)
+    
+        const polling = setTimeout(() => {
+            this.getInfo()
+        }
+        , this.state.pollingInterval)
+    
+        this.setState({
+            polling
+        })
+    }
+
+    handleNotifsClick = (e, action) => {
+        this.setState({polling: false})
+        this.setState({newNotifs: 0})
+        const database = []
+        this.state.database.map(notif => {
+            axios.patch('https://archerone-backend.herokuapp.com/api/notifications/'+notif.id+'/',{
+                seen: true
+            })
+            notif.seen = true;
+            database.push(notif)
+        })
+        this.setState({database})
+        this.setState({polling: true})
     }
 
     render (){
@@ -82,8 +125,8 @@ class Notifications extends React.Component{
 
         return(
             <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle tag="span" data-toggle="dropdown">
-                <Badge badgeContent={2} color="error" overlap="circle">
+                <DropdownToggle tag="span" data-toggle="dropdown" onClick={this.handleNotifsClick}>
+                <Badge badgeContent={this.state.newNotifs} color="error" overlap="circle">
                     <svg class="bi bi-bell-fill" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 18a2 2 0 002-2H8a2 2 0 002 2zm.995-14.901a1 1 0 10-1.99 0A5.002 5.002 0 005 8c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
                     </svg>
@@ -96,7 +139,7 @@ class Notifications extends React.Component{
                     </DropdownItem>
 
                     {options.map(option => (
-                        <DropdownItem className="notifItem" style={{backgroundColor: option.bgColor}}>
+                        <DropdownItem disabled className="notifItem" style={{backgroundColor: option.bgColor}}>
                             <this.specifyIcon category={option.category} />
                             <span id="notifDate"> {option.date} </span>
                             <span> {option.message} </span>

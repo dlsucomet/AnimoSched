@@ -38,15 +38,16 @@ class Friends extends React.Component{
             changePanel: null,
             polling: true,
             pollingInterval: 5000,
+            newRequests: 0,
         }
     }
 
-    createRequests(firstName, lastName, status) {
-        return { firstName, lastName, status };
+    createRequests(firstName, lastName, seenStatus, acceptStatus, id) {
+        return { firstName, lastName, seenStatus, acceptStatus, id};
     }
 
-    createDatabase(firstName, lastName, friendList) {
-        return { firstName, lastName, friendList };
+    createDatabase(firstName, lastName, friendList, id) {
+        return { firstName, lastName, friendList, id};
     }
 
     handleClick(e, action) {
@@ -55,33 +56,34 @@ class Friends extends React.Component{
         console.log(action);
     }
 
-    componentDidMount(){
+    getInfo(){
         axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
+            this.setState({requests: []})
+            this.setState({newRequests: 0})
+            var newRequests = this.state.newRequests;
             res.data.map(request => {
                 const requests = this.state.requests
-                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, 'new'))
+                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, request.seen, request.accepted, request.id))
+                if(!request.seen){
+                    newRequests += 1;
+                }
                 this.setState({requests})
-                this.poll()
             })
+            this.setState({newRequests})
+            this.poll()
         })
+    }
+
+    componentDidMount(){
+        this.getInfo();
     }
 
     poll () {
         this.state.polling && clearTimeout(this.state.polling)
     
         const polling = setTimeout(() => {
-            axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
-            .then(res => {
-                this.setState({requests: []})
-                res.data.map(request => {
-                    const requests = this.state.requests
-                    requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, 'new'))
-                    this.setState({requests})
-                })
-            })
-    
-            this.poll()
+            this.getInfo();
         }
         , this.state.pollingInterval)
     
@@ -89,6 +91,22 @@ class Friends extends React.Component{
             polling
         })
     }
+
+    handleFriendsClick = (e, action) => {
+        this.setState({polling: false})
+        this.setState({newRequests: 0})
+        const requests = []
+        this.state.requests.map(request => {
+            axios.patch('https://archerone-backend.herokuapp.com/api/friendrequests/'+request.id+'/',{
+                seen: true
+            })
+            request.seenStatus = true;
+            requests.push(request)
+        })
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
 
     render (){
         const friendRequests = [];
@@ -115,7 +133,7 @@ class Friends extends React.Component{
             this.state.changePanel = 
                 <div className="cardPanel">
                     {friendRequests.map(request => (
-                        <div className="panelItem">
+                        <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -124,9 +142,16 @@ class Friends extends React.Component{
                                     <span> {request.firstName} {request.lastName} </span>
                                 </Col>
 
-                                {request.status == "new" &&
+                                {/* {request.status == "new" && */}
                                     <Col xs={6} md={4}>
-                                        <Button variant="success" size="sm" className="marginRightSeparator">Accept</Button>
+                                        <Button onClick={() => console.log("hello")} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
+                                        <Button variant="secondary" size="sm">Delete</Button>
+                                    </Col>
+                                {/* } */}
+
+                                {/* {request.status == "seen" &&
+                                    <Col xs={6} md={4}>
+                                        <Button onClick={() => console.log("hello")} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
                                         <Button variant="secondary" size="sm">Delete</Button>
                                     </Col>
                                 }
@@ -150,9 +175,9 @@ class Friends extends React.Component{
                                         <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
                                     </svg>
                                 </Col>
-                                }
+                                } */}
                             </Row>
-                        </div>
+                        </DropdownItem>
                     ))}
                 </div>;
         }else if(currentPanel == "list"){
@@ -199,8 +224,8 @@ class Friends extends React.Component{
         }
         return(
             <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle tag="span" data-toggle="dropdown">
-                <Badge badgeContent={4} color="error" overlap="circle">
+                <DropdownToggle tag="span" data-toggle="dropdown" onClick={this.handleFriendsClick}>
+                <Badge badgeContent={this.state.newRequests} color="error" overlap="circle">
                     <svg class="bi bi-people-fill" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M9 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H9zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 017 15c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 007 11c-4 0-5 3-5 4s1 1 1 1h4.216zM6.5 10a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"></path>
                     </svg>
