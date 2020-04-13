@@ -141,55 +141,7 @@ class SchedViewHome extends Component {
         createData(2044, 'TREDTRI', 'S18', 'TORRES, MARIA', 'TH', '12:45', '14:15', 'GK301', 30, 28)
       ];
         return (
-          // <div class='savedSchedContent' style={{block: "display"}}>
-          //   <Grid container spacing={3}>
-          //   </Grid>
-          //     <Grid item xs={1}>
-          //     <Grid item xs={10}>
-          //       <center><SavedSchedule/></center>
-          //     </Grid>
-          //     <Grid item xs={1}>
-                
-
-          //     </Grid>
-          //     <Grid item xs={12}>
-          //     <div className="viewCoursesHome">
-          //               <TableContainer component={Paper}>
-          //                 <Table aria-label="customized table">
-          //                   <TableHead>
-          //                     <TableRow>
-          //                       <StyledTableCell> Class Number </StyledTableCell>
-          //                       <StyledTableCell> Course </StyledTableCell>
-          //                       <StyledTableCell> Section </StyledTableCell>
-          //                       <StyledTableCell> Faculty </StyledTableCell>
-          //                       <StyledTableCell> Day </StyledTableCell>
-          //                       <StyledTableCell> Time </StyledTableCell>
-          //                       <StyledTableCell> Room </StyledTableCell>
-          //                       <StyledTableCell> Capacity </StyledTableCell>
-          //                       <StyledTableCell> Enrolled </StyledTableCell>
-          //                     </TableRow>
-          //                   </TableHead>
-          //                   <TableBody>
-          //                     {rows.map(row => (
-          //                       <StyledTableRow key={row.classNmbr}>
-          //                         <StyledTableCell> {row.classNmbr} </StyledTableCell>
-          //                         <StyledTableCell> {row.course} </StyledTableCell>
-          //                         <StyledTableCell> {row.section} </StyledTableCell>
-          //                         <StyledTableCell> {row.faculty} </StyledTableCell>
-          //                         <StyledTableCell> {row.day} </StyledTableCell>
-          //                         <StyledTableCell> {row.startTime} - {row.endTime} </StyledTableCell>
-          //                         <StyledTableCell> {row.room} </StyledTableCell>
-          //                         <StyledTableCell align="right"> {row.capacity} </StyledTableCell>
-          //                         <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
-          //                       </StyledTableRow>
-          //                     ))}
-          //                   </TableBody>
-          //                 </Table>
-          //               </TableContainer>
-          //             </div>
-          //     </Grid>
-          //   </Grid>
-          // </div>
+          <div style={{marginRight:"20px"}}>
             <Row horizontal="center">
                 <Column flexShrink={1}>
                   <div id='savedSchedContent' class='savedSchedContent' style={{block: "display"}}>
@@ -253,7 +205,7 @@ class SchedViewHome extends Component {
                 </div>
                 </Column>
             </Row>
-           
+          </div>
   
         );
     }
