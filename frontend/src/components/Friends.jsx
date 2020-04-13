@@ -13,6 +13,8 @@ import {
 
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios'
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 class Friends extends React.Component{
 
@@ -34,6 +36,7 @@ class Friends extends React.Component{
                 // this.createDatabase("Maria", "Clara", false),
                 // this.createDatabase("Mara", "Makiling", false)
             ],
+            friends: [],
             panel: "requests",
             changePanel: null,
             polling: true,
@@ -42,8 +45,8 @@ class Friends extends React.Component{
         }
     }
 
-    createRequests(firstName, lastName, seenStatus, acceptStatus, id) {
-        return { firstName, lastName, seenStatus, acceptStatus, id};
+    createRequests(firstName, lastName, seenStatus, acceptStatus, id, from_user) {
+        return { firstName, lastName, seenStatus, acceptStatus, id, from_user};
     }
 
     createDatabase(firstName, lastName, friendList, id) {
@@ -64,13 +67,18 @@ class Friends extends React.Component{
             var newRequests = this.state.newRequests;
             res.data.map(request => {
                 const requests = this.state.requests
-                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, request.seen, request.accepted, request.id))
+                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, request.seen, request.accepted, request.id, request.from_user))
                 if(!request.seen){
                     newRequests += 1;
                 }
                 this.setState({requests})
             })
             this.setState({newRequests})
+            // axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
+            // .then(res => {
+            //     const friends = res.data.friends;
+
+            // })
             this.poll()
         })
     }
@@ -107,21 +115,41 @@ class Friends extends React.Component{
         this.setState({polling: true})
     }
 
+    handleAcceptClick = (e, index, id, from_user) => {
+        this.setState({polling: false})
+        axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const friends = res.data.friends;
+            friends.push(from_user)
+            axios.patch('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/',{
+                friends: friends
+            })
+            axios.patch('https://archerone-backend.herokuapp.com/api/friendrequests/'+id+'/',{
+                seen: true,
+                accepted: true
+            })
+        })
+        const requests = this.state.requests;
+        requests[index].acceptStatus = true;
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
 
     render (){
         const friendRequests = [];
         const friendList = [];
         const searchFriends = [];
         const currentPanel = this.state.panel;
-        console.log(this.state.panel + " - FOR CHECKING IN CHANGING PANELS");
 
         for(var i=0; i < this.state.requests.length; i++){
             friendRequests.push(this.state.requests[i]);
         }
 
         for(var i=0; i < this.state.requests.length; i++){
-            if(this.state.requests[i].status == "accept")
+            if(this.state.requests[i].acceptStatus){
                 friendList.push(this.state.requests[i]);
+            }
         }
 
         for(var i=0; i < this.state.database.length; i++){
@@ -132,7 +160,7 @@ class Friends extends React.Component{
         if(currentPanel == "requests"){
             this.state.changePanel = 
                 <div className="cardPanel">
-                    {friendRequests.map(request => (
+                    {friendRequests.map((request, index) => (
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
@@ -142,21 +170,14 @@ class Friends extends React.Component{
                                     <span> {request.firstName} {request.lastName} </span>
                                 </Col>
 
-                                {/* {request.status == "new" && */}
+                                {!request.acceptStatus &&
                                     <Col xs={6} md={4}>
-                                        <Button onClick={() => console.log("hello")} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
-                                        <Button variant="secondary" size="sm">Delete</Button>
-                                    </Col>
-                                {/* } */}
-
-                                {/* {request.status == "seen" &&
-                                    <Col xs={6} md={4}>
-                                        <Button onClick={() => console.log("hello")} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
+                                        <Button onClick={(e) => this.handleAcceptClick(e, index, request.id, request.from_user)} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
                                         <Button variant="secondary" size="sm">Delete</Button>
                                     </Col>
                                 }
 
-                                {request.status == "accept" &&
+                                {request.acceptStatus &&
                                     <Col xs={6} md={4}>
                                         <span className="marginRightSeparator"> Accepted </span>
                                         <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
@@ -166,7 +187,7 @@ class Friends extends React.Component{
                                     </Col>
                                 }
 
-                                {request.status == "delete" &&
+                                {/* {request.status == "delete" &&
                                     <Col xs={6} md={4}>
                                     <span className="marginRightSeparator"> Removed </span>
                                     <svg class="bi bi-x-circle" width="21" height="21" viewBox="0 0 16 16" fill="#8E1600" xmlns="http://www.w3.org/2000/svg">
@@ -175,7 +196,7 @@ class Friends extends React.Component{
                                         <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
                                     </svg>
                                 </Col>
-                                } */}
+                                }  */}
                             </Row>
                         </DropdownItem>
                     ))}
@@ -202,7 +223,17 @@ class Friends extends React.Component{
                 <div className="cardPanel">
 
                     <DropdownItem header className="dropdownHeader"> 
-                        <input id="searchFriendsInput"></input>
+                        <Autocomplete
+                        // id="combo-box-demo"
+                        options={[]}
+                        // getOptionLabel={option => option.name}
+                        // style={{ width: }}
+                        renderInput={params => <TextField {...params} label="Search Friends" variant="outlined" />}
+                        // value={this.state.value}
+                        // inputValue={this.state.value}
+                        // searchText={this.state.value}
+                        // onChange={this.props.onChange}
+                        />
                     </DropdownItem>
 
                     {searchFriends.map(search => (
