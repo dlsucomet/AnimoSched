@@ -1,0 +1,43 @@
+.cardPanel {
+    border: none;
+}
+
+.panelItem {
+    height: 50px;
+    width: 500px;
+    white-space: normal;
+}
+
+.marginRightSeparator {
+    margin-right: 10px;
+}
+
+#searchFriendsInput {
+    width: 300px;
+}
+
+.dropdownHeader {
+    text-align: center;
+    padding: 10px;
+}
+
+#dropdownMenu {
+    height: auto;
+    width: 500px;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+.dropdownOption {
+    color: #006A4E;
+    margin: 5%;
+}
+
+#activeOption {
+    color: #505050;
+    font-weight: bold;
+}
+
+#dropdownFooter {
+    color: #006A4E;
+}
