@@ -198,7 +198,8 @@ class Index extends Component {
         openModalCustomize: false,
         openModalEdit: false,
         paletteChoices: [],
-        chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        // chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        chosenPalette: [],
         classboxDetailsList: [
           {id: 1, title: "showFaculty", checked: true},
           {id: 2, title: "showTime", checked: true},
@@ -334,7 +335,7 @@ class Index extends Component {
           })
           console.log(schedules)
           this.setState({schedules});
-          this.setSchedInfo();
+          this.setSchedInfo(this.state.chosenPalette);
           this.setState({success: true});
           this.setState({loading: false});
           this.setState({dataReceived: true})
@@ -346,10 +347,10 @@ class Index extends Component {
     }
   }
 
-  setSchedInfo = () => {
+  setSchedInfo = (palette) => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle} palette={this.state.chosenPalette}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle} palette={palette}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
@@ -500,16 +501,18 @@ class Index extends Component {
   componentDidMount=()=>{
     var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
     var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
-    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42', ];
+    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42'];
     this.processPaletteChoices('Pastel Blossoms', pal1);
     this.processPaletteChoices('Halographic', pal2);
     this.processPaletteChoices('Plantita', pal3);
   }
 
   handlePaletteChange=(event)=>{
-    var newChosenPalette = event.target.value;
-    this.setState({newChosenPalette});
-    console.log(newChosenPalette);
+    var chosenPalette = event.target.value;
+    console.log(chosenPalette);
+    this.setState({chosenPalette});
+    this.setSchedInfo(chosenPalette);
+    console.log(chosenPalette);
   }
 
   handleClassBoxChange = (event) => {

@@ -49,8 +49,8 @@ class Friends extends React.Component{
         return { firstName, lastName, seenStatus, acceptStatus, id, from_user};
     }
 
-    createDatabase(firstName, lastName, id) {
-        return { firstName, lastName, id};
+    createDatabase(firstName, lastName, sentStatus, id) {
+        return { firstName, lastName, sentStatus, id};
     }
 
     handleClick(e, action) {
@@ -84,15 +84,21 @@ class Friends extends React.Component{
     }
 
     componentDidMount(){
-        axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
+        axios.get('https://archerone-backend.herokuapp.com/api/sentrequestlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
-            const database = this.state.database;
-            console.log(res.data)
-            res.data.map(nonfriend => {
-                database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, nonfriend.id));
+            const sentRequests = [];
+            res.data.map(sent => {
+                sentRequests.push(sent.to_user)
             })
-            this.setState({database})
-            this.getInfo();
+            axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
+            .then(res => {
+                const database = this.state.database;
+                res.data.map(nonfriend => {
+                    database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, sentRequests.includes(nonfriend.id), nonfriend.id));
+                })
+                this.setState({database})
+                this.getInfo();
+            })
         })
     }
 
@@ -137,6 +143,11 @@ class Friends extends React.Component{
                 seen: true,
                 accepted: true
             })
+            axios.post('https://archerone-backend.herokuapp.com/api/notifications/',{
+                content: localStorage.getItem('first_name') + ' accepted your friend request!',
+                seen: false,
+                to_user: from_user
+            })
         })
         const requests = this.state.requests;
         requests[index].acceptStatus = true;
@@ -157,15 +168,19 @@ class Friends extends React.Component{
         this.setState({polling: true})
     }
 
-    handleSendClick = (e, id) => {
+    handleSendClick = (e, index, id) => {
         this.setState({polling: false})
         axios.post('https://archerone-backend.herokuapp.com/api/friendrequests/',{
             from_user: localStorage.getItem('user_id'),
             seen: false,
             accepted: false,
             to_user: id
+        }).catch(err => {
+            console.log(err.response)
         })
-        alert('send friend request')
+        const database = this.state.database
+        database[index].sentStatus = true
+        this.setState({database})
         this.setState({polling: true})
     }
 
@@ -258,7 +273,7 @@ class Friends extends React.Component{
                         <TextField id="outlined-basic" label="Search Friends" variant="outlined" />
                     </DropdownItem>
 
-                    {searchFriends.map(search => (
+                    {searchFriends.map((search, index) => (
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
@@ -268,7 +283,11 @@ class Friends extends React.Component{
                                     <span> {search.firstName} {search.lastName} </span>
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    <Button onClick={(e) => this.handleSendClick(e, search.id)}variant="success" size="sm">Add</Button>
+                                    {search.sentStatus ?
+                                    <Button disabled variant="success" size="sm">Sent</Button>
+                                    :
+                                    <Button onClick={(e) => this.handleSendClick(e, index, search.id)}variant="success" size="sm">Add</Button>
+                                    }
                                 </Col>
                             </Row>
                         </DropdownItem>
