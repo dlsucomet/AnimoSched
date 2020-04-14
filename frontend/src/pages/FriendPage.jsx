@@ -12,6 +12,9 @@ import {
     ListGroupItem
 } from 'reactstrap';
 
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -85,7 +88,19 @@ class FriendPage extends Component {
 
                         <div style={{height: "100%"}}>
                             
-                            <center><input style={{marginBottom: "10%"}}></input></center>
+                         <center>
+                            <Autocomplete
+                                key={"friendPage_searchFriends"}
+                                id="friendPage_searchFriends"
+                                options={friendList}
+                                getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                                style={{ width: "95%", marginBottom: "10%" }}
+                                filterSelectedOptions
+                                onChange={this.handleEditChange}
+                                renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}
+                                />
+                                {/* <input style={{marginBottom: "10%"}}></input> */}
+                        </center>
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
                                 {friendList.map(friend => (

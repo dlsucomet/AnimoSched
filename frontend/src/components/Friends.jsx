@@ -12,7 +12,7 @@ import {
   } from 'reactstrap';
 
 import Badge from '@material-ui/core/Badge';
-import axios from 'axios'
+import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
