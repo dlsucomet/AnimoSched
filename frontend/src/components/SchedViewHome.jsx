@@ -131,6 +131,8 @@ class SchedViewHome extends Component {
         head: {
           backgroundColor: '#006A4E',
           color: theme.palette.common.white,
+          position: "sticky",
+          top: 0,
         },
         body: {
           fontSize: 12,
@@ -189,8 +191,8 @@ class SchedViewHome extends Component {
                   
                   <Row horizontal='center' flexShrink={1}>
                     <div className="viewCoursesHome">
-                      <TableContainer component={Paper}>
-                        <Table aria-label="customized table">
+                      <TableContainer component={Paper} style={{maxHeight: "428px", overflowY: "auto", overflowX: "hidden"}}>
+                        <Table aria-label="customized table" >
                           <TableHead>
                             <TableRow>
                               <StyledTableCell> Class Number </StyledTableCell>
