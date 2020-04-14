@@ -63,6 +63,7 @@ class SchedViewHome extends Component {
         palette: props.palette,
         earliest: props.earliest,
         latest: props.latest,
+        allowEdit: true,
       }
       this.editableLabel = React.createRef();
       console.log(props.tableContent)
@@ -112,6 +113,20 @@ class SchedViewHome extends Component {
     console.log(props.palette);
   }
 
+  componentWillMount(){
+    if(this.state.palette == undefined){
+      var defPalette =['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'];
+      this.setState({palette: defPalette});
+    }
+
+    if(this.state.updateSchedTitle == undefined){
+      this.setState({allowEdit: false});
+    }else{
+      this.setState({allowEdit: true});
+    }
+    
+  }
+
     render() { 
       
       const { classes } = this.props;
@@ -149,7 +164,8 @@ class SchedViewHome extends Component {
             <Row horizontal="center">
                 <Column flexShrink={1}>
                   <div id='savedSchedContent' class='savedSchedContent' style={{block: "display"}}>
-                    
+                
+                {this.state.allowEdit ? 
                   <Row horizontal= 'center'>
                       <EditableLabel ref={this.editableLabel} text={this.state.schedTitle}
                       labelClassName='myLabelClass'
@@ -166,6 +182,11 @@ class SchedViewHome extends Component {
 
                       {this.state.boolEdit ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={this.editButtonPress}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={this.editButtonPress}/>}
                     </Row>
+                : 
+                  <Row horizontal= 'center'>
+                    <h5>{this.state.schedTitle}</h5>  
+                  </Row>
+                }
                     <center>
                       <ScheduleView height='300px' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest} palette={this.state.palette}/>
                     </center>
