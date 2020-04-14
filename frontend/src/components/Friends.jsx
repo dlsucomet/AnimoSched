@@ -165,7 +165,6 @@ class Friends extends React.Component{
             accepted: false,
             to_user: id
         })
-        alert('send friend request')
         this.setState({polling: true})
     }
 
