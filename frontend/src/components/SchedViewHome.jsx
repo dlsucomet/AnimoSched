@@ -61,6 +61,8 @@ class SchedViewHome extends Component {
         schedTitle: props.titleName,
         boolEdit: false,
         palette: props.palette,
+        earliest: props.earliest,
+        latest: props.latest,
       }
       this.editableLabel = React.createRef();
       console.log(props.tableContent)
@@ -104,6 +106,8 @@ class SchedViewHome extends Component {
   componentWillReceiveProps(props){
     this.setState({
       palette: props.palette,
+      earliest: props.earliest,
+      latest: props.latest,
     });
     console.log(props.palette);
   }
@@ -163,7 +167,7 @@ class SchedViewHome extends Component {
                       {this.state.boolEdit ? <DoneIcon fontSize="medium" className={classes.checkIcon} onClick={this.editButtonPress}/> : <EditIcon fontSize= "small" className={classes.pencilIcon} onClick={this.editButtonPress}/>}
                     </Row>
                     <center>
-                      <ScheduleView height='300px' content={this.state.scheduleContent} palette={this.state.palette}/>
+                      <ScheduleView height='300px' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest} palette={this.state.palette}/>
                     </center>
                   
                   <Row horizontal='center' flexShrink={1}>
