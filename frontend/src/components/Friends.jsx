@@ -11,6 +11,11 @@ import {
     Card
   } from 'reactstrap';
 
+import Badge from '@material-ui/core/Badge';
+import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 class Friends extends React.Component{
 
     constructor(props){
@@ -18,35 +23,165 @@ class Friends extends React.Component{
 
         this.state = {
             requests: [
-                this.createRequests("Katniss", "Everdeen", "new"),
-                this.createRequests("Peeta", "Mellark", "new"),
-                this.createRequests("Beatrice", "Prior", "accept"),
-                this.createRequests("Tobias", "Eaton", "delete"),
-                this.createRequests("Yeji", "Hwang", "accept"),
-                this.createRequests("Jisoo", "Choi", "accept")
+                // this.createRequests("Katniss", "Everdeen", "new"),
+                // this.createRequests("Peeta", "Mellark", "new"),
+                // this.createRequests("Beatrice", "Prior", "accept"),
+                // this.createRequests("Tobias", "Eaton", "delete"),
+                // this.createRequests("Yeji", "Hwang", "accept"),
+                // this.createRequests("Jisoo", "Choi", "accept")
             ],
             database: [
-                this.createDatabase("Amelia", "Earhart", false),
-                this.createDatabase("Beatrice", "Prior", true),
-                this.createDatabase("Maria", "Clara", false),
-                this.createDatabase("Mara", "Makiling", false)
+                // this.createDatabase("Amelia", "Earhart", false),
+                // this.createDatabase("Beatrice", "Prior", true),
+                // this.createDatabase("Maria", "Clara", false),
+                // this.createDatabase("Mara", "Makiling", false)
             ],
-            panel: "requests"
+            friends: [],
+            panel: "requests",
+            changePanel: null,
+            polling: true,
+            pollingInterval: 5000,
+            newRequests: 0,
         }
     }
 
-    createRequests(firstName, lastName, status) {
-        return { firstName, lastName, status };
+    createRequests(firstName, lastName, seenStatus, acceptStatus, id, from_user) {
+        return { firstName, lastName, seenStatus, acceptStatus, id, from_user};
     }
 
-    createDatabase(firstName, lastName, friendList) {
-        return { firstName, lastName, friendList };
+    createDatabase(firstName, lastName, sentStatus, id) {
+        return { firstName, lastName, sentStatus, id};
     }
 
     handleClick(e, action) {
         e.preventDefault();
-        this.state.panel = action;
+        this.setState({panel: action});
         console.log(action);
+    }
+
+    getInfo(){
+        axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            this.setState({requests: []})
+            this.setState({newRequests: 0})
+            var newRequests = this.state.newRequests;
+            res.data.map(request => {
+                const requests = this.state.requests
+                requests.push(this.createRequests(request.from_user_fname, request.from_user_lname, request.seen, request.accepted, request.id, request.from_user))
+                if(!request.seen){
+                    newRequests += 1;
+                }
+                this.setState({requests})
+            })
+            this.setState({newRequests})
+            // axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
+            // .then(res => {
+            //     const friends = res.data.friends;
+
+            // })
+            this.poll()
+        })
+    }
+
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/sentrequestlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const sentRequests = [];
+            res.data.map(sent => {
+                sentRequests.push(sent.to_user)
+            })
+            axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
+            .then(res => {
+                const database = this.state.database;
+                res.data.map(nonfriend => {
+                    database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, sentRequests.includes(nonfriend.id), nonfriend.id));
+                })
+                this.setState({database})
+                this.getInfo();
+            })
+        })
+    }
+
+    poll () {
+        this.state.polling && clearTimeout(this.state.polling)
+    
+        const polling = setTimeout(() => {
+            this.getInfo();
+        }
+        , this.state.pollingInterval)
+    
+        this.setState({
+            polling
+        })
+    }
+
+    handleFriendsClick = (e, action) => {
+        this.setState({polling: false})
+        this.setState({newRequests: 0})
+        const requests = []
+        this.state.requests.map(request => {
+            axios.patch('https://archerone-backend.herokuapp.com/api/friendrequests/'+request.id+'/',{
+                seen: true
+            })
+            request.seenStatus = true;
+            requests.push(request)
+        })
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
+    handleAcceptClick = (e, index, id, from_user) => {
+        this.setState({polling: false})
+        axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const friends = res.data.friends;
+            friends.push(from_user)
+            axios.patch('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/',{
+                friends: friends
+            })
+            axios.patch('https://archerone-backend.herokuapp.com/api/friendrequests/'+id+'/',{
+                seen: true,
+                accepted: true
+            })
+            // axios.post('https://archerone-backend.herokuapp.com/api/notifications/',{
+            //     content: localStorage.getItem('first_name') + ' accepted your friend request!',
+            //     seen: false,
+            //     to_user: from_user
+            // })
+        })
+        const requests = this.state.requests;
+        requests[index].acceptStatus = true;
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
+    handleDeleteClick = (e, index, id) => {
+        this.setState({polling: false})
+        axios.delete('https://archerone-backend.herokuapp.com/api/friendrequests/'+id+'/')
+        const requests = [];
+        this.state.requests.map((request, index2) => {
+            if(index != index2){
+                requests.push(request)
+            }
+        })
+        this.setState({requests})
+        this.setState({polling: true})
+    }
+
+    handleSendClick = (e, index, id) => {
+        this.setState({polling: false})
+        axios.post('https://archerone-backend.herokuapp.com/api/friendrequests/',{
+            from_user: localStorage.getItem('user_id'),
+            seen: false,
+            accepted: false,
+            to_user: id
+        }).catch(err => {
+            console.log(err.response)
+        })
+        const database = this.state.database
+        database[index].sentStatus = true
+        this.setState({database})
+        this.setState({polling: true})
     }
 
     render (){
@@ -54,28 +189,26 @@ class Friends extends React.Component{
         const friendList = [];
         const searchFriends = [];
         const currentPanel = this.state.panel;
-        console.log(this.state.panel + " - FOR CHECKING IN CHANGING PANELS");
 
         for(var i=0; i < this.state.requests.length; i++){
             friendRequests.push(this.state.requests[i]);
         }
 
         for(var i=0; i < this.state.requests.length; i++){
-            if(this.state.requests[i].status == "accept")
+            if(this.state.requests[i].acceptStatus){
                 friendList.push(this.state.requests[i]);
+            }
         }
 
         for(var i=0; i < this.state.database.length; i++){
-            if(!this.state.database[i].friendList)
-                searchFriends.push(this.state.database[i]);
+            searchFriends.push(this.state.database[i]);
         }
 
-        let changePanel;
         if(currentPanel == "requests"){
-            changePanel = 
+            this.state.changePanel = 
                 <div className="cardPanel">
-                    {friendRequests.map(request => (
-                        <DropdownItem className="panelItem">
+                    {friendRequests.map((request, index) => (
+                        <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -84,14 +217,14 @@ class Friends extends React.Component{
                                     <span> {request.firstName} {request.lastName} </span>
                                 </Col>
 
-                                {request.status == "new" &&
+                                {!request.acceptStatus &&
                                     <Col xs={6} md={4}>
-                                        <Button variant="success" size="sm" className="marginRightSeparator">Accept</Button>
-                                        <Button variant="secondary" size="sm">Delete</Button>
+                                        <Button onClick={(e) => this.handleAcceptClick(e, index, request.id, request.from_user)} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
+                                        <Button onClick={(e) => this.handleDeleteClick(e, index, request.id)} variant="secondary" size="sm">Delete</Button>
                                     </Col>
                                 }
 
-                                {request.status == "accept" &&
+                                {request.acceptStatus &&
                                     <Col xs={6} md={4}>
                                         <span className="marginRightSeparator"> Accepted </span>
                                         <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +234,7 @@ class Friends extends React.Component{
                                     </Col>
                                 }
 
-                                {request.status == "delete" &&
+                                {/* {request.status == "delete" &&
                                     <Col xs={6} md={4}>
                                     <span className="marginRightSeparator"> Removed </span>
                                     <svg class="bi bi-x-circle" width="21" height="21" viewBox="0 0 16 16" fill="#8E1600" xmlns="http://www.w3.org/2000/svg">
@@ -110,14 +243,13 @@ class Friends extends React.Component{
                                         <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
                                     </svg>
                                 </Col>
-                                }
+                                }  */}
                             </Row>
                         </DropdownItem>
                     ))}
                 </div>;
-        }
-        else if(currentPanel == "list"){
-            changePanel = 
+        }else if(currentPanel == "list"){
+            this.state.changePanel = 
                 <div className="cardPanel">
                     {friendList.map(friend => (
                         <DropdownItem className="panelItem">
@@ -133,17 +265,16 @@ class Friends extends React.Component{
                         <a href='javascript:void(0)' id="dropdownFooter">More Details</a>
                     </DropdownItem>
                 </div>;
-        }
-        else{
-            changePanel = 
+        }else{
+            this.state.changePanel = 
                 <div className="cardPanel">
 
                     <DropdownItem header className="dropdownHeader"> 
-                        <input id="searchFriendsInput"></input>
+                        <TextField id="outlined-basic" label="Search Friends" variant="outlined" />
                     </DropdownItem>
 
-                    {searchFriends.map(search => (
-                        <DropdownItem className="panelItem">
+                    {searchFriends.map((search, index) => (
+                        <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -152,32 +283,28 @@ class Friends extends React.Component{
                                     <span> {search.firstName} {search.lastName} </span>
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    <Button variant="success" size="sm">Add</Button>
+                                    {search.sentStatus ?
+                                    <Button disabled variant="success" size="sm">Sent</Button>
+                                    :
+                                    <Button onClick={(e) => this.handleSendClick(e, index, search.id)}variant="success" size="sm">Add</Button>
+                                    }
                                 </Col>
                             </Row>
                         </DropdownItem>
                     ))}
                 </div>;
         }
-
         return(
             <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle tag="span" data-toggle="dropdown">
+                <DropdownToggle tag="span" data-toggle="dropdown" onClick={this.handleFriendsClick}>
+                <Badge badgeContent={this.state.newRequests} color="error" overlap="circle">
                     <svg class="bi bi-people-fill" width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M9 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H9zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 017 15c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 007 11c-4 0-5 3-5 4s1 1 1 1h4.216zM6.5 10a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"></path>
                     </svg>
+                </Badge>
                 </DropdownToggle>
                 
                 <DropdownMenu right id="dropdownMenu">
-                        {this.state.panel == "requests" &&
-                            <DropdownItem header className="dropdownHeader">
-                                <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
-                                |
-                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
-                                |
-                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"find")}>Find Friends</a>
-                            </DropdownItem>
-                        }
 
                         {this.state.panel == "list" &&
                             <DropdownItem header className="dropdownHeader">
@@ -199,7 +326,16 @@ class Friends extends React.Component{
                             </DropdownItem>
                         }
 
-                    {changePanel}
+                        {this.state.panel == "requests" &&
+                            <DropdownItem header className="dropdownHeader">
+                                <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
+                                |
+                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
+                                |
+                                <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"find")}>Find Friends</a>
+                            </DropdownItem>
+                        }
+                    {this.state.changePanel}
                 </DropdownMenu>
             </UncontrolledDropdown>
         );

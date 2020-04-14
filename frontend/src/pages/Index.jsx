@@ -57,7 +57,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ReactLoading from 'react-loading';
 
+import SearchIcon from '@material-ui/icons/Search';
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -141,7 +143,29 @@ const styles = theme => ({
 
     gridRoot:{
       flexGrow: 1,
-    }
+    },
+
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      
+    },
+    wrapper: {
+      // margin: theme.spacing(1),
+      position: 'relative',
+      
+  
+    },
+    buttonProgress: {
+      color: green[500],
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+      paddingTop: '5px',
+      paddingBottom: '5px',
+    },
 
 });
 
@@ -161,9 +185,8 @@ class Index extends Component {
       this.state={
         openAlert: false,
         snackBarVariables: [
-          {snackBarDelete: false}, {snackBarFailedDelete: false}],
-        // snackBarDelete: false,
-        // snackBarFailedDelete: false,
+          {snackBarSuccess: false}, {snackBarFailed: false}],
+        // snackBarFailed: false,
         currentPage: 0,
         currentContent: "",
         generatedContents: [],
@@ -172,14 +195,22 @@ class Index extends Component {
         pagesCount: 1,
         dataReceived: !props.logged_in,
         schedules: [],
-        openModal: false,
+        openModalCustomize: false,
+        openModalEdit: false,
         paletteChoices: [],
-        chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        // chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        chosenPalette: [],
         classboxDetailsList: [
           {id: 1, title: "showFaculty", checked: true},
           {id: 2, title: "showTime", checked: true},
           {id: 3, title: "showRoom", checked: true}
-        ]
+        ],
+        classList: [{title: "CSSERVM S15", course_code: "2351"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
+        currentClasses:  [{title: "TREDTRI C4", course_code: "451"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
+        newCurrentClasses: [],
+        newClassboxDetailsList: [],
+        newChosenPalette: [],
+        snackbarMsg: "",
       }
       
     }
@@ -304,7 +335,7 @@ class Index extends Component {
           })
           console.log(schedules)
           this.setState({schedules});
-          this.setSchedInfo();
+          this.setSchedInfo(this.state.chosenPalette);
           this.setState({success: true});
           this.setState({loading: false});
           this.setState({dataReceived: true})
@@ -316,10 +347,10 @@ class Index extends Component {
     }
   }
 
-  setSchedInfo = () => {
+  setSchedInfo = (palette) => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} updateSchedTitle={this.updateSchedTitle} palette={this.state.chosenPalette}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
@@ -375,8 +406,9 @@ class Index extends Component {
     this.setState({openAlert: false});
 
     let snackBarVariables = [...this.state.snackBarVariables];
-    snackBarVariables[0].snackBarDelete = true;
-    // snackBarVariables[1].snackBarFailedDelete = true;
+    this.setState({snackbarMsg: "Your schedule has been successfully discarded!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
     this.setState({snackBarVariables});
     console.log(snackBarVariables);
  }
@@ -400,9 +432,9 @@ class Index extends Component {
   
     let snackBarVariables = [...this.state.snackBarVariables];
     if(snackBarIndex == 0){
-      snackBarVariables[0].snackBarDelete = false;
+      snackBarVariables[0].snackBarSuccess = false;
     }else if(snackBarIndex == 1){
-      snackBarVariables[1].snackBarFailedDelete = false;
+      snackBarVariables[1].snackBarFailed = false;
     }
     this.setState({snackBarVariables});
   }
@@ -415,23 +447,34 @@ class Index extends Component {
       // Canvas2Image.saveAsPNG(canvas.toDataURL())
 
     });
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule image is downloading!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
   }
 
-  handleCloseModal = ()=>{
-    this.setState({openModal: false})
+  handleCloseModalCustomize = ()=>{
+    this.setState({openModalCustomize: false})
   }
 
-  handleOpenModal = ()=>{
+  handleOpenModalCustomize = ()=>{
     console.log("Hello opening modal");
-    this.setState({openModal: true})
-    console.log(this.state.openModal);
+    this.setState({openModalCustomize: true})
+    console.log(this.state.openModalCustomize);
   }
 
   toggleModal = () => {
-    var openModalVar = this.state.openModal;
-    this.setState({openModal: !openModalVar});
+    var openModalVar = this.state.openModalCustomize;
+    this.setState({openModalCustomize: !openModalVar});
   }
 
+  toggleModalEdit = () => {
+    var openModalVar = this.state.openModalEdit;
+    this.setState({openModalEdit: !openModalVar});
+  }
   processPaletteChoices = (title, paletteArray) => {
     const colorDiv = paletteArray.map(function(palColor, index){
                         var newstyle = {backgroundColor: palColor, color: palColor, width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"};
@@ -458,7 +501,7 @@ class Index extends Component {
   componentDidMount=()=>{
     var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
     var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
-    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42', ];
+    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42'];
     this.processPaletteChoices('Pastel Blossoms', pal1);
     this.processPaletteChoices('Halographic', pal2);
     this.processPaletteChoices('Plantita', pal3);
@@ -466,7 +509,9 @@ class Index extends Component {
 
   handlePaletteChange=(event)=>{
     var chosenPalette = event.target.value;
+    console.log(chosenPalette);
     this.setState({chosenPalette});
+    this.setSchedInfo(chosenPalette);
     console.log(chosenPalette);
   }
 
@@ -477,9 +522,44 @@ class Index extends Component {
             value.checked = event.target.checked;
         }
     })
-    this.setState({classboxDetailsList: newDetailsList});
+    this.setState({newClassboxDetailsList: newDetailsList});
     // this.setState({[event.target.name]: event.target.checked });
   };
+
+  handleCustomizeSave = () =>{
+    console.log("Class Box changes saved");
+    this.setState({chosenPalette: this.state.newChosenPalette});
+    // this.setState({classboxDetailsList: this.state.newClassboxDetailsList});
+    this.setState({openModalCustomize: false});
+    
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule customization changes has been successfully saved!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
+  }
+
+  handleEditChange =(event)=>{
+    console.log("Hello der from saveEdit");
+    console.log(event.target.value);
+    var newClassList = event.target.value;
+    console.log(newClassList);
+    this.setState({newCurrentClasses: newClassList});
+  }
+
+  handleEditSave=()=>{
+    console.log("Schedule edit changes saved");
+    this.setState({currentClasses: this.state.newCurrentClasses})
+    this.setState({openModalEdit: false});
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
+    snackBarVariables[0].snackBarSuccess = true;
+    // snackBarVariables[1].snackBarFailed = true;
+    this.setState({snackBarVariables});
+    console.log(snackBarVariables);
+  }
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -523,21 +603,55 @@ class Index extends Component {
                       variant="contained"
                       className={classes.buttonStyle}
                       endIcon={<DateRangeIcon/>}
+                      onClick={this.toggleModalEdit}
                       >
                       Edit
                     </Button>
+                      <Modal isOpen={this.state.openModalEdit} toggle={this.toggleModalEdit} returnFocusAfterClose={false} backdrop="static" data-keyboard="false" >
+                        <ModalHeader toggle={this.toggleModalEdit}>Edit Schedule</ModalHeader>
+                        <ModalBody>
+                          <div className="searchBarEdit" >
+                            <h4>Search, add or remove your classes</h4>
+                              <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
+                                  <Autocomplete
+                                    multiple
+                                    id="tags-outlined"
+                                    options={this.state.classList}
+                                    style={{ width: 500 }}
+                                    getOptionLabel={(option) => option.title}
+                                    defaultValue={this.state.currentClasses}
+                                    filterSelectedOptions
+                                    onChange={this.handleEditChange}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Edit class schedule"
+                                        placeholder="Class Section"
+                                      />
+                                    )}
+                                  />
+                                
+                              </div>
+                          </div>
+                        </ModalBody>
+                      <ModalFooter>
+                        <Button color="primary" onClick={this.handleEditSave}>Save Changes</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleModalEdit}>Cancel</Button>
+                      </ModalFooter>
+                    </Modal>    
                   </Grid>
-
+                  
                   <Grid item xs={1} direction="column" align="center">
                     <Button
                     variant="contained"
                     className={classes.buttonStyle}
-                    onClick={this.handleOpenModal}
+                    onClick={this.handleOpenModalCustomize}
                     endIcon={<PaletteIcon/>}
                     >
                       Customize
                     </Button>
-                    <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                    <Modal isOpen={this.state.openModalCustomize} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
                       <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
                       <ModalBody>
                         <h4>Color Palette</h4>
@@ -580,7 +694,7 @@ class Index extends Component {
                         </div>
                       </ModalBody>
                     <ModalFooter>
-                      <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
+                      <Button color="primary" onClick={this.handleCustomizeSave}>Save Changes</Button>{' '}
                       <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
                     </ModalFooter>
                   </Modal>    
@@ -630,13 +744,13 @@ class Index extends Component {
                       </Dialog>
                       : null }
 
-                      <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
+                      <Snackbar open={this.state.snackBarVariables[0].snackBarSuccess} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
                         <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
-                          Your schedule has been successfully discarded!
+                          {this.state.snackbarMsg}{/* Your schedule has been successfully discarded! */}
                         </Alert>
                       </Snackbar>
 
-                      <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
+                      <Snackbar open={this.state.snackBarVariables[1].snackBarFailed} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
                         <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
                         Delete failed
                         </Alert>
@@ -647,32 +761,28 @@ class Index extends Component {
               </Grid>
 
               <Grid item xs={12} justify="center" alignItems="center">
-              <Row horizontal='center'>
-              <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                
-                    <Pagination aria-label="Page navigation example">
-                        <PaginationItem disabled={this.state.currentPage <= 0}>
-                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                previous/>
-                        </PaginationItem>
-                        {[...Array(this.state.pagesCount)].map((page, i) => 
-                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                {i + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                            )}
-                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                            <PaginationLink
-                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                next
-                            />
-                            
-                            </PaginationItem>
-                    </Pagination>
-                
-              </div>
-              </Row>
+                <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                      <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                          <PaginationItem disabled={this.state.currentPage <= 0}>
+                              <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                  previous/>
+                          </PaginationItem>
+                          {[...Array(this.state.pagesCount)].map((page, i) => 
+                              <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                  <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                  {i + 1}
+                                  </PaginationLink>
+                              </PaginationItem>
+                              )}
+                          <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                              <PaginationLink
+                                  onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                  next
+                              />
+                              
+                              </PaginationItem>
+                      </Pagination>
+                </div>
               </Grid>
 
             </Grid>

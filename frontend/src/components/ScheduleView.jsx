@@ -177,23 +177,15 @@ class ScheduleView extends Component {
         classes: props.content,
         latest: latest,
         earliest: earliest,
-        palette: props.palette/*['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C']*/,
+        palette: props.palette,
         coloredClasses: [],
         palIndex: 0,
+        dataReceived: false,
       }
-      const priorities = [
-        { id: 1, text: 'Low Priority', color: green },
-        { id: 2, text: 'Medium Priority', color: lightBlue },
-        { id: 3, text: 'High Priority', color: deepOrange },
-      ];
-      this.resources = [{
-        fieldName: 'priorityId',
-        title: 'Priority',
-        instances: priorities,
-      }]
     }
 
     componentWillReceiveProps(props){
+      this.setState({dataReceived: false})
       var earliest = 9;
       if(props.earliest != undefined){
         earliest = props.earliest;
@@ -202,6 +194,12 @@ class ScheduleView extends Component {
       if(props.latest != undefined){
         latest = props.latest;
       }
+
+      if(props.palette == undefined){
+        var defPalette =['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'];
+        this.setState({palette: defPalette});
+      }
+      
       this.setState({
         classes: props.content,
         latest: latest,
@@ -211,6 +209,7 @@ class ScheduleView extends Component {
 
       this.processColoredClasses();
       console.log(props.palette);
+      this.setState({dataReceived: true})
     }
     
     CustomAppointment = ({ style, ...restProps }) => {
@@ -242,8 +241,9 @@ class ScheduleView extends Component {
     };
 
 
-    componentWillMount(){
+    componentDidMount(){
       this.processColoredClasses();
+      this.setState({dataReceived: true})
       
     }
     processColoredClasses=()=>{
@@ -252,7 +252,6 @@ class ScheduleView extends Component {
       var palIndex = 0;
       var classData = [...this.state.classes];
       classData.map(data => {
-        // if(!coloredClasses.includes(data.title)){
         if(!coloredClasses.some(p => p.title == data.title)){
 
           coloredClasses.push({title: data.title, color: this.state.palette[palIndex]});
@@ -264,15 +263,14 @@ class ScheduleView extends Component {
     }
 
     render() { 
+
         return (
           
             // <MuiThemeProvider theme={theme}>
             
             <Paper>
-              <div>
-                {this.processColoredClasses}
-              </div>
               
+              {this.state.dataReceived ? 
                 <Scheduler id='scheduleView' data={this.state.classes}>
                 <ViewState currentDate="2018-06-28" />
                 <WeekView startDayHour={this.state.earliest} endDayHour={this.state.latest} excludedDays={[0,6]} dayScaleCellComponent={DayScaleCell}/>
@@ -286,10 +284,8 @@ class ScheduleView extends Component {
                   // commandButtonComponent={CommandButton}
                   showCloseButton
                 /> */}
-                <Resources
-                  data={this.resources}
-                />
                 </Scheduler>
+              : null}
             </Paper>
             // </MuiThemeProvider>
           );
