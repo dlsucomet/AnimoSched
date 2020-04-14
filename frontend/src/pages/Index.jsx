@@ -761,32 +761,28 @@ class Index extends Component {
               </Grid>
 
               <Grid item xs={12} justify="center" alignItems="center">
-              <Row horizontal='center'>
-              <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                
-                    <Pagination aria-label="Page navigation example">
-                        <PaginationItem disabled={this.state.currentPage <= 0}>
-                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                previous/>
-                        </PaginationItem>
-                        {[...Array(this.state.pagesCount)].map((page, i) => 
-                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                {i + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                            )}
-                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                            <PaginationLink
-                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                next
-                            />
-                            
-                            </PaginationItem>
-                    </Pagination>
-                
-              </div>
-              </Row>
+                <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                      <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                          <PaginationItem disabled={this.state.currentPage <= 0}>
+                              <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                  previous/>
+                          </PaginationItem>
+                          {[...Array(this.state.pagesCount)].map((page, i) => 
+                              <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                  <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                  {i + 1}
+                                  </PaginationLink>
+                              </PaginationItem>
+                              )}
+                          <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                              <PaginationLink
+                                  onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                  next
+                              />
+                              
+                              </PaginationItem>
+                      </Pagination>
+                </div>
               </Grid>
 
             </Grid>
