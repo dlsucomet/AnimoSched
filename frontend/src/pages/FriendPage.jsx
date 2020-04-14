@@ -129,6 +129,32 @@ class FriendPage extends Component {
                         room: 'GK210', 
                         capacity: 45, 
                         enrolled: 45
+                    },
+                    {
+                        id: 3,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
+                    },
+                    {
+                        id: 4,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
                     }
                 ]
             },
@@ -308,7 +334,7 @@ class FriendPage extends Component {
                                 </Grid>
 
                                 <Grid item xs={12} className={'gridSavedContent'}>
-                                    <div id='savedContent' className='savedContent' style={{height: "180vh"}}>
+                                    <div id='savedContent' className='savedContent' style={{height: "210vh"}}>
                                         <span>{this.state.currentContent}</span>
                                     </div>
                                 </Grid>
