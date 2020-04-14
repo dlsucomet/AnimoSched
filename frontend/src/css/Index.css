@@ -25,21 +25,29 @@
 }
 
 .savedSchedContent{
-    width: 615px;
+    min-width: 615px;
     padding: 10px;
     margin: 10px;
-    height: 770px;
+    /* min-height: 770px; */
+    height: 100%;
+    overflow: hidden;
 }
+
+.savedSchedContent:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
 
 
 .optionList{
-    height: 600px;
-    /* width: 20%; */
-    /* width: 20%; */
+    /* height: 600px; */
+    width: 25%;
     position: fixed;
     margin-top: 75px;
     /* margin-right: 20px; */
-    padding: 5px;
+    /* padding-left: 5px; */
+    padding-bottom: 5px;
     top:0;
     /* right: 0; */
     padding-top: 9%;
@@ -62,7 +70,7 @@
 
 .savedSchedContent{
     width: 800px;
-    height: 100%;
+    height: auto;
 }
 
 .paginationContainer{
@@ -90,9 +98,7 @@
     left: 48%;
 }
 
-.savedContent{
-    height: 100%;
-}
+
 
 .landingpage{
     /* background-image: url(../assets/Gradient_BG.png); */
@@ -132,4 +138,19 @@
 .MuiGrid-root makeStyles-container-31 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-wrap-xs-nowrap{
     width: 500px;
     height: 500px;
+}
+
+.savedContent{
+    /* height: 230vh;
+    width: 100vh;
+    margin-right: 20px;
+    margin-left: 20px;
+    justify-content: center;
+    align-items: center; */
+}
+
+.gridSavedContent:after{
+    content: "";
+    display: table;
+    clear: both;
 }

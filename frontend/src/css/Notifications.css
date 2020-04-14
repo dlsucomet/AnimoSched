@@ -1,0 +1,26 @@
+#dropdownMenu {
+    height: auto;
+    width: 500px;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+#notifSettings {
+    text-align: right;
+    padding: 10px;
+}
+
+#headerLink {
+    color: #006A4E;
+}
+
+.notifItem {
+    height: 50px;
+    white-space: normal;
+}
+
+#notifDate {
+    font-size: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}

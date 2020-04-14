@@ -27,6 +27,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
+import ReactLoading from 'react-loading';
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -71,18 +73,19 @@ class SearchCourses extends Component {
         courseList: [],
         selectedCourses: [],
         loading: false,
-        radioVal: ''
+        radioVal: '',
+        dataReceived: false,
       }
       this.radioRef = React.createRef()
     }
 
-    componentWillMount(){
+    componentDidMount(){
         axios.get('https://archerone-backend.herokuapp.com/api/courses/')
         .then(res => {
             res.data.map(course => {
                 var courses = this.state.courseList;
                 courses.push({'id':course.id, 'course_code':course.course_code})
-                this.setState({courseList: courses})
+                this.setState({courseList: courses, dataReceived: true})
             })
         })
     }
@@ -237,6 +240,7 @@ class SearchCourses extends Component {
           <div>
             {this.props.menu()}
 
+            {this.state.dataReceived ? 
             <div className="search-container">
 
                 <div className="searchBar">
@@ -310,6 +314,10 @@ class SearchCourses extends Component {
                   </TableContainer>
                 </div>
             </div>
+            : 
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+              <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+            </div> }
         </div>        
       );
     }

@@ -34,8 +34,7 @@ const styles = {
     dayScaleCell: {
       overflow: "visible",
       // textOverflow: "ellipsis"
-      wordWrap: "break-word",
-      flexWrap: 'wrap',
+      // whiteSpace: "normal",
     }
     
 
@@ -116,13 +115,13 @@ const formatDayScaleDate = (date, options) => {
   const AppointmentContent = ({ style, ...restProps }) => {
     return (
       <Appointments.AppointmentContent {...restProps}>
-        <div className={restProps.container}>
+        <div className={restProps.container} style={{whiteSpace: "normal"}}>
           <div>{restProps.data.title}</div>
           {/* <div style={{fontSize: "8px"}}>{restProps.data.professor}</div> */}
-          <div>{restProps.data.location}</div>
-          <div>{restProps.data.startTime} - {restProps.data.endTime}</div>
+          <div style={{fontSize: "11px"}}>{restProps.data.location}</div>
+          <div style={{fontSize: "11px"}} >{restProps.data.startTime} - {restProps.data.endTime}</div>
           <div>
-            <Typography gutterBottom variant="body2" style={{fontSize: "8px"}}>
+            <Typography gutterBottom variant="body2" style={{fontSize: "8px", wordWrap: "break-word"}}>
                   {restProps.data.professor}
             </Typography>
           </div>
@@ -224,14 +223,14 @@ class ScheduleView extends Component {
           console.log(data.color);
           changeColor = <Appointments.Appointment
               {...restProps}
-              style={{ ...style, backgroundColor: data.color}}
+              style={{ ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
               // className="CLASS_ROOM1"
               data={restProps.data.title}
             />
           return (
             <Appointments.Appointment
               {...restProps}
-              style={{ ...style, backgroundColor: data.color}}
+              style={{ ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
               // className="CLASS_ROOM1"
               data={restProps.data.title}
             />

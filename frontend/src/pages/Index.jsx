@@ -55,6 +55,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import ReactLoading from 'react-loading';
+
+
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -84,6 +87,7 @@ const styles = theme => ({
       borderStyle: "solid",
       borderColor: "#16775D",
       marginTop: "20px",
+      justifyContent: 'center',
       '&:hover': {
           backgroundColor: "white",
           color: "#16775D"
@@ -104,6 +108,7 @@ const styles = theme => ({
       borderStyle: "solid",
       borderColor: "#D3D3D3",
       marginTop: "20px",
+      justifyContent: 'center',
       '&:hover': {
           backgroundColor: "#d11a2a",
           borderStyle: "solid",
@@ -134,6 +139,10 @@ const styles = theme => ({
       padding: theme.spacing(2, 4, 3),
     },
 
+    gridRoot:{
+      flexGrow: 1,
+    }
+
 });
 
 var sectionStyle = {
@@ -149,32 +158,32 @@ var sectionStyle = {
 class Index extends Component {
     constructor(props){
       super(props);
+      this.state={
+        openAlert: false,
+        snackBarVariables: [
+          {snackBarDelete: false}, {snackBarFailedDelete: false}],
+        // snackBarDelete: false,
+        // snackBarFailedDelete: false,
+        currentPage: 0,
+        currentContent: "",
+        generatedContents: [],
+        // currentContent: <SchedViewHome/>,
+        // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+        pagesCount: 1,
+        dataReceived: !props.logged_in,
+        schedules: [],
+        openModal: false,
+        paletteChoices: [],
+        chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
+        classboxDetailsList: [
+          {id: 1, title: "showFaculty", checked: true},
+          {id: 2, title: "showTime", checked: true},
+          {id: 3, title: "showRoom", checked: true}
+        ]
+      }
       
     }
 
-    state={
-      openAlert: false,
-      snackBarVariables: [
-        {snackBarDelete: false}, {snackBarFailedDelete: false}],
-      // snackBarDelete: false,
-      // snackBarFailedDelete: false,
-      currentPage: 0,
-      currentContent: "",
-      generatedContents: [],
-      // currentContent: <SchedViewHome/>,
-      // generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
-      pagesCount: 1,
-      dataReceived: false,
-      schedules: [],
-      openModal: false,
-      paletteChoices: [],
-      chosenPalette: ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'],
-      classboxDetailsList: [
-        {id: 1, title: "showFaculty", checked: true},
-        {id: 2, title: "showTime", checked: true},
-        {id: 3, title: "showRoom", checked: true}
-      ]
-    }
 
     handlePageChange = (e,index) => {
   
@@ -213,96 +222,98 @@ class Index extends Component {
   }
 
   componentWillMount(){
-    axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
-    .then(res => {
-        const schedules = []
-        res.data.map(newSchedule =>{
-            var count = 0;
-            const scheduleContent = []
-            const tableContent = []
-            var earliest = 9
-            var latest = 17
-            var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
-            for (let key in arranged) {
-              var days = []
-              var day = ''
-              var classnumber = ''
-              var course = ''
-              var section = ''
-              var faculty = ''
-              var timeslot_begin = ''
-              var timeslot_end = ''
-              var room = ''
-              var max_enrolled = ''
-              var current_enrolled = ''
-              arranged[key].map(offering => {
-                days.push(offering.day)
-                classnumber = offering.classnumber
-                course = offering.course
-                section = offering.section
-                faculty = offering.faculty
-                timeslot_begin = offering.timeslot_begin
-                timeslot_end = offering.timeslot_end
-                room = offering.room
-                max_enrolled = offering.max_enrolled
-                current_enrolled = offering.current_enrolled
-              })
-              days.map(day_code => {
-                day += day_code;
-              })
-              const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-              tableContent.push(newTableContent)
-            }
-            newSchedule.courseOfferings.map(offering=>{
-                var startTime = offering.timeslot_begin.split(':');
-                var endTime = offering.timeslot_end.split(':');
-                const newContent = 
-                {
-                    id: count,
-                    title: offering.course + ' ' + offering.section,
-                    section: offering.section,
-                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                    location: offering.room,
-                    professor: offering.faculty,
-                    startTime: offering.timeslot_begin,
-                    endTime: offering.timeslot_end,
-                    days: offering.day,
-                    classCode: offering.classnumber 
-                }
-                if(earliest > Number(startTime[0])){
-                    earliest = Number(startTime[0])
-                }
-                if(latest < Number(endTime[0]) + 1){
-                    latest = Number(endTime[0]) + 1
-                }
-                scheduleContent.push(newContent);
+    if(!this.state.dataReceived){
+      axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+      .then(res => {
+          const schedules = []
+          res.data.map(newSchedule =>{
+              var count = 0;
+              const scheduleContent = []
+              const tableContent = []
+              var earliest = 9
+              var latest = 17
+              var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+              for (let key in arranged) {
+                var days = []
+                var day = ''
+                var classnumber = ''
+                var course = ''
+                var section = ''
+                var faculty = ''
+                var timeslot_begin = ''
+                var timeslot_end = ''
+                var room = ''
+                var max_enrolled = ''
+                var current_enrolled = ''
+                arranged[key].map(offering => {
+                  days.push(offering.day)
+                  classnumber = offering.classnumber
+                  course = offering.course
+                  section = offering.section
+                  faculty = offering.faculty
+                  timeslot_begin = offering.timeslot_begin
+                  timeslot_end = offering.timeslot_end
+                  room = offering.room
+                  max_enrolled = offering.max_enrolled
+                  current_enrolled = offering.current_enrolled
+                })
+                days.map(day_code => {
+                  day += day_code;
+                })
+                const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                tableContent.push(newTableContent)
+              }
+              newSchedule.courseOfferings.map(offering=>{
+                  var startTime = offering.timeslot_begin.split(':');
+                  var endTime = offering.timeslot_end.split(':');
+                  const newContent = 
+                  {
+                      id: count,
+                      title: offering.course + ' ' + offering.section,
+                      section: offering.section,
+                      startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                      endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                      location: offering.room,
+                      professor: offering.faculty,
+                      startTime: offering.timeslot_begin,
+                      endTime: offering.timeslot_end,
+                      days: offering.day,
+                      classCode: offering.classnumber 
+                  }
+                  if(earliest > Number(startTime[0])){
+                      earliest = Number(startTime[0])
+                  }
+                  if(latest < Number(endTime[0]) + 1){
+                      latest = Number(endTime[0]) + 1
+                  }
+                  scheduleContent.push(newContent);
 
-                count += 1;
-            })
-            schedules.push({
-                id: newSchedule.id,
-                title: newSchedule.title,
-                scheduleContent: scheduleContent,
-                tableContent: tableContent, 
-                prefContent: [],
-                conflictsContent: newSchedule.information,
-                earliest: earliest,
-                latest: latest,
-                offerings: newSchedule.courseOfferings
-            });
-        })
-        console.log(schedules)
-        this.setState({schedules});
-        this.setSchedInfo();
-        this.setState({success: true});
-        this.setState({loading: false});
-        this.setState({dataReceived: true})
-    }).catch(error => {
-        console.log(error)
-        this.setState({success: false});
-        this.setState({loading: false});
-    })
+                  count += 1;
+              })
+              schedules.push({
+                  id: newSchedule.id,
+                  title: newSchedule.title,
+                  scheduleContent: scheduleContent,
+                  tableContent: tableContent, 
+                  prefContent: [],
+                  conflictsContent: newSchedule.information,
+                  earliest: earliest,
+                  latest: latest,
+                  offerings: newSchedule.courseOfferings
+              });
+          })
+          console.log(schedules)
+          this.setState({schedules});
+          this.setSchedInfo();
+          this.setState({success: true});
+          this.setState({loading: false});
+          this.setState({dataReceived: true})
+      }).catch(error => {
+          console.log(error)
+          this.setState({success: false});
+          this.setState({loading: false});
+      })
+    }
   }
 
   setSchedInfo = () => {
@@ -397,8 +408,12 @@ class Index extends Component {
   }
 
   exportSched = () => {
+    window.scrollTo(0, 0);
     html2canvas(document.querySelector("#savedSchedContent")).then(canvas => {
       document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+      // var = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+      // Canvas2Image.saveAsPNG(canvas.toDataURL())
+
     });
   }
 
@@ -472,33 +487,6 @@ class Index extends Component {
 
         const { classes } = this.props;
 
-        const trycolor = <div className={"colorContainer"} style={{width: "100%", display: "table"}}>
-        <div style= {{backgroundColor:'#EAC9C0', color: '#EAC9C0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "100px 0px 0px 100px"}}>
-          #EAC9C0
-        </div>
-        <div style= {{backgroundColor:'#DAB2D3', color: '#DAB2D3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #DAB2D3
-        </div>
-        <div style= {{backgroundColor:'#9EDAE3', color: '#9EDAE3', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-        #9EDAE3
-        </div>
-        <div style= {{backgroundColor:'#65C4D8', color: '#65C4D8', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #65C4D8
-        </div>
-        <div style= {{backgroundColor:'#FFD0D6', color: '#FFD0D6', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #FFD0D6
-        </div>
-        <div style= {{backgroundColor:'#B7DDE0', color: '#B7DDE0', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #B7DDE0
-        </div>
-        <div style= {{backgroundColor:'#FEE19F', color: '#FEE19F', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell"}}>
-          #FEE19F
-        </div>
-        <div style= {{backgroundColor:'#735b69', color: '#735b69', width:"50px", fontSize:"8px", padding: "1em", display: "table-cell", borderRadius: "0px 100px 100px 0px"}}>
-          #735b69
-        </div>
-      </div>;
-
       return (
         <div style={!this.props.logged_in? sectionStyle : {}}>
           {this.props.menu()}
@@ -508,7 +496,7 @@ class Index extends Component {
             <div className={"hasContent"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
 
               
-            <Grid container spacing={3}>
+            <Grid container>
               <Grid item xs={12}>
                 <br></br>
                     <Typography gutterBottom variant="h3" align="center">
@@ -519,7 +507,7 @@ class Index extends Component {
               <Grid item xs={2}>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={6} className={'gridSavedContent'}>
                 <div id='savedContent' className='savedContent'>
                     <span>{this.state.currentContent}</span>
                 </div>
@@ -528,7 +516,7 @@ class Index extends Component {
               {/* <Grid item xs={1}>
               </Grid> */}
        
-              <Grid item xs={4} align="center" alignItems="center" alignContent="center" direction="column">
+              <Grid item xs={4} align="center" justify="center" alignItems="center" alignContent="center" direction="column">
                 <div class='optionList'>
                   <Grid item xs={1} direction="column" align="center">
                     <Button
@@ -655,105 +643,6 @@ class Index extends Component {
                       </Snackbar> 
                   </Grid>
 
-                  {/* <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    endIcon={<DateRangeIcon/>}
-                    >
-                    Edit
-                  </Button>
-
-                  <Button
-                  variant="contained"
-                  className={classes.buttonStyle}
-                  onClick={this.handleOpenModal}
-                  endIcon={<PaletteIcon/>}
-                  >
-                    Customize
-                  </Button>
-                  <Modal isOpen={this.state.openModal} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
-                    <ModalHeader toggle={this.toggleModal}>Customize Schedule</ModalHeader>
-                    <ModalBody>
-                      Select a class box color palette
-                
-                      <div>
-                      <TextField
-                          id="outlined-select-break"
-                          select
-                          label="class box color palette"
-                          onChange={this.handlePaletteChange}
-                          
-                          helperText="Choose a color palette"
-                          variant="outlined"
-                          style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
-                          >
-                                 
-                          {this.state.paletteChoices.map((option) => (
-                              <MenuItem key={option.title} value={option.paletteArray}>
-                              {option.paletteDiv}
-                              </MenuItem>
-                                  ))}
-                      </TextField>
-                      </div>
-                      
-                    </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={this.toggleModal}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-                  <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    onClick={this.exportSched}
-                    endIcon={ <GetAppIcon/>}
-                    >
-                    Export
-                  </Button>
-                 
-                  <Button
-                    variant="contained"
-                    className={classes.deleteButtonStyle}
-                    onClick={this.handleClickOpenAlert}
-                    endIcon={<DeleteIcon/>}
-                    >
-                    Delete
-                  </Button>
-                    {this.state.currentContent != null ?
-                    <Dialog
-                      open={this.state.openAlert}
-                      onClose={this.handleCloseAlert}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">{"Schedule Deletion"}</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                          Are you deleting "{this.state.currentContent.props.titleName}" from your saved schedules?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={this.handleCloseAlert} color="primary">
-                          Cancel
-                        </Button>
-                        <Button onClick={this.deleteSchedule} color="primary" autoFocus>
-                          Delete
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                    : null }
-
-                    <Snackbar open={this.state.snackBarVariables[0].snackBarDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
-                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
-                        Your schedule has been successfully discarded!
-                      </Alert>
-                    </Snackbar>
-
-                    <Snackbar open={this.state.snackBarVariables[1].snackBarFailedDelete} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)}>
-                      <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 1)} severity="error">
-                      Delete failed
-                      </Alert>
-                    </Snackbar> */}
                   </div>
               </Grid>
 
@@ -787,86 +676,7 @@ class Index extends Component {
               </Grid>
 
             </Grid>
-              
-              {/* <Row horizontal="center">
-                  <div style={(this.state.generatedContents != null) ? {paddingTop:"20px"} : {display: "none"}}>
-                    <center ><h3 >FIRST TRIMESTER, AY 2019 - 2020</h3></center>
-                  </div>
-                </Row>
-              <Row horizontal="center"> */}
-               
-                {/* <Column flexShrink={1} >
-                  <div class="sidemenu" >
-                    <div style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1920 T1" /></center>
-                      <center><input type="submit" class="btn btn-success change-term-sched" value="AY1819 T3" /></center>
-                    </div>
-                  </div>
-                </Column> */}
 
-                {/* <div className='savedContent'>
-                  <Column flexGrow={1}>
-                    <span>{this.state.currentContent}</span>
-                  </Column>
-                </div>
-
-                <Column >
-                <div class='optionList'>
-                  <Button
-                      variant="contained"
-                      className={classes.buttonStyle}
-                      >
-                      Edit
-                    </Button>
-                    <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    >
-                    Customize
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.buttonStyle}
-                    >
-                    Export
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.deleteButtonStyle}
-                    >
-                    Delete
-                  </Button>
-                  </div>
-                </Column>
-
-              </Row>
-
-              <Row horizontal='center'>
-              <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                <Row horizontal='center'>
-                    <Pagination aria-label="Page navigation example">
-                        <PaginationItem disabled={this.state.currentPage <= 0}>
-                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                previous/>
-                        </PaginationItem>
-                        {[...Array(this.state.pagesCount)].map((page, i) => 
-                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                {i + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                            )}
-                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                            <PaginationLink
-                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                next
-                            />
-                            
-                            </PaginationItem>
-                    </Pagination>
-                </Row>
-              </div>
-            </Row>*/}
             </div> 
                           
                         
@@ -887,7 +697,12 @@ class Index extends Component {
             </div>
 
           </div>
-          : null }
+          :
+          <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+            <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+          </div>
+          
+          }
 
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           
