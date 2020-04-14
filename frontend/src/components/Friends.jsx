@@ -143,11 +143,11 @@ class Friends extends React.Component{
                 seen: true,
                 accepted: true
             })
-            axios.post('https://archerone-backend.herokuapp.com/api/notifications/',{
-                content: localStorage.getItem('first_name') + ' accepted your friend request!',
-                seen: false,
-                to_user: from_user
-            })
+            // axios.post('https://archerone-backend.herokuapp.com/api/notifications/',{
+            //     content: localStorage.getItem('first_name') + ' accepted your friend request!',
+            //     seen: false,
+            //     to_user: from_user
+            // })
         })
         const requests = this.state.requests;
         requests[index].acceptStatus = true;
