@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import '../css/FriendPage.css';
-import { Button, Row, Col, Tabs, Tab } from 'react-bootstrap';
-
+import { Row, Col, Tabs, Tab } from 'react-bootstrap';
+import SidebarIMG from '../images/FriendPage.svg';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 import {
-    DropdownMenu,
-    DropdownItem,
     ListGroup,
-    ListGroupItem
+    ListGroupItem,
+    Table
 } from 'reactstrap';
 
 import TextField from '@material-ui/core/TextField';
@@ -47,7 +46,7 @@ class FriendPage extends Component {
             requests: [
                 this.createRequests("Katniss", "Everdeen", "new"),
                 this.createRequests("Peeta", "Mellark", "new"),
-                this.createRequests("Beatrice", "Prior", "accept"),
+                this.createRequests("Beatrice", "Prior", "delete"),
                 this.createRequests("Tobias", "Eaton", "delete"),
                 this.createRequests("Yeji", "Hwang", "accept"),
                 this.createRequests("Jisoo", "Choi", "accept"),
@@ -271,7 +270,7 @@ class FriendPage extends Component {
                 {this.props.menu()}
                 <div>
                     <div class="friendMenu">
-                        <div class="titleRow" style={{height: "30%"}}>
+                        <div class="titleRow">
                             <center>
                                 <h1>FRIENDS</h1>
                                 <svg class="bi bi-people-fill" width="75" height="75" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -320,8 +319,57 @@ class FriendPage extends Component {
                     <div class="sidemenu-main">
                         <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
                             <Tab eventKey="details" title="Details">
-                                <br/>
-                                <center><h1>NAME</h1></center>
+                                <div className="friendName">
+                                    <center><h1> Name </h1></center>
+                                </div>
+
+                                <div className="friendDetails">
+                                    <div class="columnn" style={{float: "left", width: "65%"}}>
+                                        <div>
+                                            <h3> Details </h3>
+                                            <Table responsive size="sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">College</th>
+                                                        <td>College of Business (RVRCOB)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Degree</th>
+                                                        <td>Bachelor of Science in Marketing Management (MKT)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">ID Number</th>
+                                                        <td>116</td>
+                                                    </tr>
+                                                </tbody>
+                                            </Table>
+                                        </div>
+
+                                        <div>
+                                            <h3> Preferences </h3>
+                                            <Table responsive size="sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Earliest Time</th>
+                                                        <td>07:30 AM</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Latest Time</th>
+                                                        <td>09:00 PM</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Break Length</th>
+                                                        <td>15 Minutes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </Table>
+                                        </div>
+                                    </div>
+
+                                    <div class="columnn" style={{float: "left", width: "35%"}}>
+                                        <center><img id='loweeer' src={SidebarIMG}/></center>
+                                    </div>
+                                </div>
                             </Tab>
 
                             <Tab eventKey="schedule" title="Schedule">
