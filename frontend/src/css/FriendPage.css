@@ -9,4 +9,32 @@
 .titleRow {
     overflow: hidden;
     padding: 10%;  
+    height: 30%;
+}
+
+#loweeer {
+    height: 80%;
+    width: 80%;
+    object-fit: contain;
+}
+
+.friendName {
+    margin-top: 10px;
+    height: 20%;
+}
+
+.friendDetails {
+    display: flex;
+}
+
+.dataColumn {
+    float: left;
+}
+
+#actualDetails {
+    width: 65%;
+}
+
+#imgDesign {
+    width: 35%;
 }
