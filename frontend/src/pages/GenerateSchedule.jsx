@@ -627,28 +627,26 @@ class GenerateSchedule extends Component {
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">
-                                <Row horizontal='center'>
-                                    <Pagination aria-label="Page navigation example">
-                                        <PaginationItem disabled={this.state.currentPage <= 0}>
-                                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                                previous/>
+                                <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                    <PaginationItem disabled={this.state.currentPage <= 0}>
+                                        <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                            previous/>
+                                    </PaginationItem>
+                                    {[...Array(this.state.pagesCount)].map((page, i) => 
+                                        <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                            <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                            {i + 1}
+                                            </PaginationLink>
                                         </PaginationItem>
-                                        {[...Array(this.state.pagesCount)].map((page, i) => 
-                                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                                {i + 1}
-                                                </PaginationLink>
-                                            </PaginationItem>
-                                            )}
-                                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                                            <PaginationLink
-                                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                                next
-                                            />
-                                            
-                                            </PaginationItem>
-                                    </Pagination>
-                                </Row>
+                                        )}
+                                    <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                        <PaginationLink
+                                            onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                            next
+                                        />
+                                        
+                                        </PaginationItem>
+                                </Pagination>
                             </div>
                             <Row horizontal='center'>
                                 <div className={classes.root}>

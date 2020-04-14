@@ -14,6 +14,13 @@ import {
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
+
+import SchedViewHome from '../components/SchedViewHome';
+
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -56,6 +63,135 @@ class FriendPage extends Component {
                 this.createRequests("Dahyun", "Kim", "accept"),
                 this.createRequests("Chaeyoung", "Son", "accept"),
                 this.createRequests("Tzuyu", "Chou", "accept")
+            ],
+            currentPage: 0,
+            // currentContent: "",
+            // generatedContents: [],
+            currentContent: <SchedViewHome/>,
+            generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+            pagesCount: 1,
+            dataReceived: !props.logged_in,
+            // schedules: [],
+            schedules: [{
+                id: 1,
+                title: "Schedule 1",
+                scheduleContent:[
+                    {
+                        id: 0,
+                        title: "HUMAART S17",
+                        section: "S17",
+                        startDate: new Date(2018, 5, 25, 9, 30),
+                        endDate: new Date(2018, 5, 25, 11, 30),
+                        location: "G302",
+                        professor: "Flowers, Fritz",
+                        startTime: "09:30AM",
+                        endTime: "11:30AM",
+                        days: ['T', 'H'],
+                        classCode: "2453"
+                      },
+                      {
+                        id: 2,
+                        title: "KASPIL2 S15",
+                        section: "S15",
+                        startDate: new Date(2018, 5, 26, 13, 30),
+                        endDate: new Date(2018, 5, 26, 15, 30),
+                        location: "G310",
+                        professor: "Tiburcio, Juan",
+                        startTime: "01:30PM",
+                        endTime: "03:30PM",
+                        days: ['M', 'W'],
+                        classCode: "345"
+                      },
+                ],
+                tableContent:[
+                    {
+                        id: 1,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
+                    },
+                    {
+                        id: 2,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Schedule 2",
+                scheduleContent:[
+                    {
+                        id: 0,
+                        title: "TREDTRI EB4",
+                        section: "EB4",
+                        startDate: new Date(2018, 5, 27, 11, 30),
+                        endDate: new Date(2018, 5, 27, 13, 30),
+                        location: "G302",
+                        professor: "Flowers, Fritz",
+                        startTime: "11:30AM",
+                        endTime: "01:30PM",
+                        days: ['T', 'H'],
+                        classCode: "2453"
+                      },
+                      {
+                        id: 2,
+                        title: "SOCTEC2 S16",
+                        section: "S16",
+                        startDate: new Date(2018, 5, 28, 12, 30),
+                        endDate: new Date(2018, 5, 28, 14, 30),
+                        location: "G310",
+                        professor: "Tiburcio, Juan",
+                        startTime: "12:30PM",
+                        endTime: "02:30PM",
+                        days: ['M', 'W'],
+                        classCode: "345"
+                      },
+                ],
+                tableContent:[
+                    {
+                        id: 1,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
+                    },
+                    {
+                        id: 2,
+                        classNmbr: 2258, 
+                        course: 'INOVATE', 
+                        section: 'S17', 
+                        faculty: 'DELA CRUZ, JUAN', 
+                        day:'TH', 
+                        startTime: '12:45', 
+                        endTime: '14:15', 
+                        room: 'GK210', 
+                        capacity: 45, 
+                        enrolled: 45
+                    }
+                ]
+            },
             ]
         }
     }
@@ -64,6 +200,38 @@ class FriendPage extends Component {
         return { firstName, lastName, status };
     }
 
+    handlePageChange = (e,index) => {
+  
+        this.setState(state =>{
+            var currentContent = state.generatedContents[index];
+            return {currentContent};
+            });
+        
+        this.setState({currentPage: index});
+        this.setState(state =>{
+            var currentPage = index;
+            return {currentPage};
+            });
+        console.log("pressed page " + index);
+        console.log(this.state.generatedContents[index]);
+    }
+
+    setSchedInfo = () => {
+        console.log(this.state.schedules)
+        var generatedContents = this.state.schedules.map((item, index) =>
+            <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title}/>
+        );
+        this.setState({currentPage: 0})
+        this.setState({generatedContents});
+        // this.setState({hideGenContent: false});
+        this.setState({pagesCount: generatedContents.length});
+        this.setState({currentContent: generatedContents[0]})
+    
+      }
+    
+    componentWillMount(){
+        this.setSchedInfo();   
+    }
     render() {
         const friendList = [];
 
@@ -131,7 +299,46 @@ class FriendPage extends Component {
                             </Tab>
 
                             <Tab eventKey="schedule" title="Schedule">
-                                Duis vitae felis vel massa sollicitudin sollicitudin. Morbi egestas nulla et augue aliquam, eget condimentum felis molestie. Nullam ac metus ac nibh finibus tristique. Donec non faucibus augue, eget euismod justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam risus turpis, scelerisque eget facilisis quis, egestas nec tortor. Aenean vel dignissim erat. Ut augue lectus, dictum id sapien sed, placerat pellentesque urna. Ut pharetra mauris nisi, ac varius urna pretium a. Sed fermentum nibh nisl, ut posuere leo tempus id. Sed condimentum massa et velit mollis, eget fermentum nisi efficitur. Curabitur varius ipsum eget sapien auctor, eu gravida lorem facilisis. Nam hendrerit lorem nec nibh ultrices dapibus. Maecenas vel sodales libero. Nam interdum scelerisque diam et congue.
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <br></br>
+                                        <Typography gutterBottom variant="h3" align="center">
+                                        FIRST TRIMESTER, AY 2019 - 2020
+                                        </Typography>
+                                </Grid>
+
+                                <Grid item xs={12} className={'gridSavedContent'}>
+                                    <div id='savedContent' className='savedContent' style={{height: "180vh"}}>
+                                        <span>{this.state.currentContent}</span>
+                                    </div>
+                                </Grid>
+
+                                <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                    <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                                            <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                                <PaginationItem disabled={this.state.currentPage <= 0}>
+                                                    <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                                        previous/>
+                                                </PaginationItem>
+                                                {[...Array(this.state.pagesCount)].map((page, i) => 
+                                                    <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                                        <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                                        {i + 1}
+                                                        </PaginationLink>
+                                                    </PaginationItem>
+                                                    )}
+                                                <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                                    <PaginationLink
+                                                        onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                                        next
+                                                    />
+                                                    
+                                                    </PaginationItem>
+                                            </Pagination>
+                                    </div>
+                                </Grid>
+                            
+                            </Grid>
                             </Tab>
                         </Tabs>
                     </div>
