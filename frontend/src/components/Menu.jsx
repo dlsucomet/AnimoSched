@@ -19,15 +19,29 @@ import {
 class Menu extends React.Component{
     constructor(props){
         super(props);
+        this.state={
+          
+        }
     }
 
+    // handleChange=(page)=>{
+    //     var activePage = [...this.state.activePage];
+    //     activePage.map(page=>{
+    //         page = false;
+    //     })
+
+    //     activePage[page] = true;
+    //     this.setState({activePage});
+    //     console.log(activePage);
+    // }
     render (){
         const loggedIn = () => {
             return(
                 <React.Fragment>
-                    <Nav.Link href="/view_friends">View Friends</Nav.Link>
+                    <Nav /*activeKey={"/preferences"}*/>  
+                    <Nav.Link /*active={this.state.activePage["viewFriends"]} onClick={()=>this.handleChange("viewFriends")}*/ href="/view_friends" >View Friends</Nav.Link>
                     <Nav.Link href="/preferences">Preferences</Nav.Link>
-                    <Nav.Link href="/search_courses">Search Courses</Nav.Link>
+                    <Nav.Link href="/search_courses" >Search Courses</Nav.Link>
                     <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                     <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                     <Nav.Link href="/profile">
@@ -52,6 +66,7 @@ class Menu extends React.Component{
                             </DropdownMenu>
                     </UncontrolledDropdown>
                     {/* <Nav.Link eventKey={2} href="#memes"> Dank memes </Nav.Link> */}
+                    </Nav>
                 </React.Fragment>
             );
         }

@@ -16,6 +16,7 @@
     height: 80%;
     width: 80%;
     object-fit: contain;
+    bottom: 0px;
 }
 
 .friendName {
