@@ -21,7 +21,9 @@ import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 import SchedViewHome from '../components/SchedViewHome';
 
 import CheckIcon from '@material-ui/icons/Check';
+import Button from '@material-ui/core/Button';
 
+  
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -36,7 +38,30 @@ const styles = theme => ({
             backgroundColor: "white",
             color: "#79c879"
           },
-    }
+    },
+
+    buttonStyle:{
+        textTransform: "none",
+        width: "20px",
+        borderRadius: "100px",
+        // padding: "10px",
+        // paddingLeft: "10px",
+        // paddingRight: "10px",
+        // backgroundColor: "#16775D",
+        // border: "none",
+        // color: "white",
+        // boxShadow: "6px 5px #e8f4ea",
+        border: "2px solid #16775D",
+        borderStyle: "solid",
+        borderColor: "#16775D",
+        // marginTop: "20px",
+        justifyContent: 'center',
+        backgroundColor: "white",
+        color: "#16775D",
+        '&:hover:after': {
+           content: "Unfriend"
+          },
+    },
   });
 
 class FriendPage extends Component {
@@ -262,6 +287,7 @@ class FriendPage extends Component {
     }
     render() {
         const friendList = [];
+        const { classes } = this.props;
 
         for(var i=0; i < this.state.requests.length; i++){
             if(this.state.requests[i].status == "accept")
@@ -311,10 +337,17 @@ class FriendPage extends Component {
 
                                             <Col xs={6} md={4}>
                                                 <div className={"friend_btn"}>
-                                                    <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                                    <Button
+                                                    variant="contained"
+                                                    className={classes.buttonStyle}
+                                                    >
+                                                        {/* "Hello" */}
+                                                        <CheckIcon fontSize="small"/>
+                                                    </Button>
+                                                    {/* <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                                                         <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
-                                                    </svg>
+                                                    </svg> */}
                                                 </div>
                                             </Col>
                                         </Row>                        
