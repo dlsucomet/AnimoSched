@@ -256,6 +256,9 @@ class ScheduleView extends Component {
 
           coloredClasses.push({title: data.title, color: this.state.palette[palIndex]});
           palIndex = palIndex + 1;
+          if(palIndex == coloredClasses.length + 1){
+            palIndex = 0;
+          }
         }
       })
       console.log(coloredClasses)
