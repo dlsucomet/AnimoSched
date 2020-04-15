@@ -53,6 +53,10 @@ class Friends extends React.Component{
         return { firstName, lastName, sentStatus, id};
     }
 
+    createFriends(firstName, lastName, id) {
+        return { firstName, lastName, id};
+    }
+
     handleClick(e, action) {
         e.preventDefault();
         this.setState({panel: action});
@@ -97,7 +101,15 @@ class Friends extends React.Component{
                     database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, sentRequests.includes(nonfriend.id), nonfriend.id));
                 })
                 this.setState({database})
-                this.getInfo();
+                axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
+                .then(res => {
+                    const friends = this.state.friends;
+                    res.data.map(friend => {
+                        friends.push(this.createFriends(friend.first_name, friend.last_name, friend.id))
+                    })
+                    this.setState({friends})
+                    this.getInfo();
+                })
             })
         })
     }
@@ -194,10 +206,8 @@ class Friends extends React.Component{
             friendRequests.push(this.state.requests[i]);
         }
 
-        for(var i=0; i < this.state.requests.length; i++){
-            if(this.state.requests[i].acceptStatus){
-                friendList.push(this.state.requests[i]);
-            }
+        for(var i=0; i < this.state.friends.length; i++){
+            friendList.push(this.state.friends[i]);
         }
 
         for(var i=0; i < this.state.database.length; i++){
