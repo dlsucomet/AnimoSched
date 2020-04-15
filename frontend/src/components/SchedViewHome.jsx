@@ -63,7 +63,7 @@ class SchedViewHome extends Component {
         palette: props.palette,
         earliest: props.earliest,
         latest: props.latest,
-        allowEdit: true,
+        allowEdit: props.allowEdit,
       }
       this.editableLabel = React.createRef();
       console.log(props.tableContent)
@@ -109,6 +109,7 @@ class SchedViewHome extends Component {
       palette: props.palette,
       earliest: props.earliest,
       latest: props.latest,
+      allowEdit: props.allowEdit,
     });
     console.log(props.palette);
   }
@@ -119,11 +120,6 @@ class SchedViewHome extends Component {
       this.setState({palette: defPalette});
     }
 
-    if(this.state.updateSchedTitle == undefined){
-      this.setState({allowEdit: false});
-    }else{
-      this.setState({allowEdit: true});
-    }
     
   }
 
