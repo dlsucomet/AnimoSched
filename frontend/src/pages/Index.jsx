@@ -514,6 +514,7 @@ class Index extends Component {
   handlePaletteChange=(event)=>{
     this.setState({scheduleChanged: false},() => {
     this.setState({chosenPalette: event.target.value},() => {
+      localStorage.setItem('palette', JSON.stringify(event.target.value))
       this.setSchedInfo();
     });
     })
