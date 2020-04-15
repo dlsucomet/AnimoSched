@@ -211,6 +211,7 @@ class Index extends Component {
         newClassboxDetailsList: [],
         newChosenPalette: [],
         snackbarMsg: "",
+        allowEdit: true,
       }
       
     }
@@ -349,7 +350,7 @@ class Index extends Component {
   setSchedInfo = (palette) => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
@@ -368,7 +369,8 @@ class Index extends Component {
     }).catch(err => {
       console.log(err.response)
     })
-    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} earliest={currentContent.props.earliest} latest={currentContent.props.latest} titleName={text} updateSchedTitle={this.updateSchedTitle} palette={currentContent.props.palette}/>
+
+    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} earliest={currentContent.props.earliest} latest={currentContent.props.latest} titleName={text} updateSchedTitle={this.updateSchedTitle} allowEdit={this.state.allowEdit} palette={currentContent.props.palette}/>
 
     this.state.generatedContents.map(value=>{
         if(value.key == this.state.currentContent.key){

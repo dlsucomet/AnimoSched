@@ -70,6 +70,7 @@ class FriendPage extends Component {
             generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
             pagesCount: 1,
             dataReceived: !props.logged_in,
+            allowEdit: false,
             // schedules: [],
             schedules: [{
                 id: 1,
@@ -244,7 +245,7 @@ class FriendPage extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title}/>
+            <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -280,20 +281,23 @@ class FriendPage extends Component {
                         </div>
 
                         <div style={{height: "100%"}}>
-                            
-                         <center>
-                            <Autocomplete
+                        
+                         <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto"}}>
+                            <TextField
                                 key={"friendPage_searchFriends"}
                                 id="friendPage_searchFriends"
-                                options={friendList}
-                                getOptionLabel={(option) => option.firstName + " " + option.lastName}
-                                style={{ width: "95%", marginBottom: "10%" }}
+                                variant= "outlined"
+                                // options={friendList}
+                                // getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                                style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
                                 filterSelectedOptions
-                                onChange={this.handleEditChange}
-                                renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}
+                                label="Search Friends" 
+                                placeholder="FirstName LastName"
+                                // onChange={this.handleEditChange}
+                                /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
                                 />
                                 {/* <input style={{marginBottom: "10%"}}></input> */}
-                        </center>
+                        </div>
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
                                 {friendList.map(friend => (
@@ -382,7 +386,7 @@ class FriendPage extends Component {
                                 </Grid>
 
                                 <Grid item xs={12} className={'gridSavedContent'}>
-                                    <div id='savedContent' className='savedContent' style={{height: "210vh"}}>
+                                    <div id='savedContent' className='savedContent' style={{height: "75em"}}>
                                         <span>{this.state.currentContent}</span>
                                     </div>
                                 </Grid>
