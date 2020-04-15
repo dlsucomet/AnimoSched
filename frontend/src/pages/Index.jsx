@@ -218,17 +218,16 @@ class Index extends Component {
 
 
     handlePageChange = (e,index) => {
-  
       this.setState(state =>{
-          var currentContent = state.generatedContents[index];
-          return {currentContent};
-          });
+        var currentContent = state.generatedContents[index];
+        return {currentContent};
+      });
       
       this.setState({currentPage: index});
       this.setState(state =>{
-          var currentPage = index;
-          return {currentPage};
-          });
+        var currentPage = index;
+        return {currentPage};
+      });
       console.log("pressed page " + index);
       console.log(this.state.generatedContents[index]);
   }
@@ -370,7 +369,8 @@ class Index extends Component {
     }).catch(err => {
       console.log(err.response)
     })
-    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle} allowEdit={this.state.allowEdit}/>
+
+    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} earliest={currentContent.props.earliest} latest={currentContent.props.latest} titleName={text} updateSchedTitle={this.updateSchedTitle} allowEdit={this.state.allowEdit} palette={currentContent.props.palette}/>
 
     this.state.generatedContents.map(value=>{
         if(value.key == this.state.currentContent.key){
@@ -509,11 +509,9 @@ class Index extends Component {
   }
 
   handlePaletteChange=(event)=>{
-    var chosenPalette = event.target.value;
-    console.log(chosenPalette);
-    this.setState({chosenPalette});
-    this.setSchedInfo(chosenPalette);
-    console.log(chosenPalette);
+    this.setState({chosenPalette: event.target.value});
+    this.setSchedInfo(event.target.value);
+    console.log(event.target.value);
   }
 
   handleClassBoxChange = (event) => {
@@ -529,7 +527,7 @@ class Index extends Component {
 
   handleCustomizeSave = () =>{
     console.log("Class Box changes saved");
-    this.setState({chosenPalette: this.state.newChosenPalette});
+    // this.setState({chosenPalette: this.state.newChosenPalette});
     // this.setState({classboxDetailsList: this.state.newClassboxDetailsList});
     this.setState({openModalCustomize: false});
     
@@ -668,6 +666,7 @@ class Index extends Component {
                             helperText="Choose a color palette"
                             variant="outlined"
                             style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
+                            value = {this.state.chosenPalette}
                             >
                             
                             {/* <MenuItem key={1} value={"option.value"}>
