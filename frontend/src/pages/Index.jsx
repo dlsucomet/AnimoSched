@@ -212,6 +212,7 @@ class Index extends Component {
         newChosenPalette: [],
         snackbarMsg: "",
         allowEdit: true,
+        scheduleChanged: true,
       }
       
     }
@@ -347,17 +348,18 @@ class Index extends Component {
     }
   }
 
-  setSchedInfo = (palette) => {
+  setSchedInfo = () => {
     console.log(this.state.schedules)
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={this.state.chosenPalette} allowEdit={this.state.allowEdit}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});
     // this.setState({hideGenContent: false});
     this.setState({pagesCount: generatedContents.length});
-    this.setState({currentContent: generatedContents[0]})
-
+    this.setState({currentContent: generatedContents[0]},() => {
+      this.setState({scheduleChanged: true})
+    })
   }
 
   updateSchedTitle=(text)=>{
@@ -381,6 +383,7 @@ class Index extends Component {
     })
 
     this.setState({generatedContents: newArray});
+    this.setState({currentContent: newContent});
   }
 
  deleteSchedule=()=>{
@@ -509,8 +512,13 @@ class Index extends Component {
   }
 
   handlePaletteChange=(event)=>{
-    this.setState({chosenPalette: event.target.value});
-    this.setSchedInfo(event.target.value);
+    this.setState({scheduleChanged: false},() => {
+    this.setState({chosenPalette: event.target.value},() => {
+      this.setSchedInfo();
+    });
+    })
+    console.log(this.state.currentContent)
+    console.log(this.state.currentContent.props)
     console.log(event.target.value);
   }
 
@@ -588,7 +596,9 @@ class Index extends Component {
 
               <Grid item xs={6} className={'gridSavedContent'}>
                 <div id='savedContent' className='savedContent'>
+                  {this.state.scheduleChanged ? 
                     <span>{this.state.currentContent}</span>
+                  : null }
                 </div>
               </Grid>
 

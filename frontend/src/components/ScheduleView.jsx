@@ -194,11 +194,6 @@ class ScheduleView extends Component {
       if(props.latest != undefined){
         latest = props.latest;
       }
-
-      if(props.palette == undefined){
-        var defPalette =['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C'];
-        this.setState({palette: defPalette});
-      }
       
       this.setState({
         classes: props.content,
@@ -208,7 +203,7 @@ class ScheduleView extends Component {
       });
 
       this.processColoredClasses();
-      console.log(props.palette);
+      console.log('REACHED SCHEDULEVIEW')
       this.setState({dataReceived: true})
     }
     
