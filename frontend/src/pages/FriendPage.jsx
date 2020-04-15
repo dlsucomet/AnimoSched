@@ -20,6 +20,7 @@ import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 
 import SchedViewHome from '../components/SchedViewHome';
 
+import CheckIcon from '@material-ui/icons/Check';
 
 const styles = theme => ({
     pencilIcon:{ 
