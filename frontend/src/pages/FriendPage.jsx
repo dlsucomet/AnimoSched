@@ -244,8 +244,9 @@ class FriendPage extends Component {
 
     setSchedInfo = () => {
         console.log(this.state.schedules)
+        const palette = JSON.parse(localStorage.getItem('palette'))
         var generatedContents = this.state.schedules.map((item, index) =>
-            <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit}/>
+            <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
