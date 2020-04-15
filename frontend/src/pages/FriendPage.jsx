@@ -386,7 +386,7 @@ class FriendPage extends Component {
                                 </Grid>
 
                                 <Grid item xs={12} className={'gridSavedContent'}>
-                                    <div id='savedContent' className='savedContent' style={{height: "210vh"}}>
+                                    <div id='savedContent' className='savedContent' style={{height: "75em"}}>
                                         <span>{this.state.currentContent}</span>
                                     </div>
                                 </Grid>
