@@ -8,6 +8,10 @@
     white-space: normal;
 }
 
+.panelItem:focus {
+    background-color: #F6F7F8;
+}
+
 .marginRightSeparator {
     margin-right: 10px;
 }
@@ -31,6 +35,10 @@
 .dropdownOption {
     color: #505050;
     margin: 5%;
+}
+
+.dropdownOption:hover {
+    color: #006A4E;
 }
 
 #activeOption {

@@ -144,10 +144,10 @@ class Notifications extends React.Component{
 
                     {options.map(option => (
                         <DropdownItem disabled className="notifItem">
+                            <DropdownItem divider />
                             <this.specifyIcon category={option.category} />
                             <span id="notifDate"> {option.date} </span>
                             <span> {option.message} </span>
-                            <DropdownItem divider />
                         </DropdownItem>
                     ))}
                 </DropdownMenu>

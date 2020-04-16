@@ -20,6 +20,10 @@
     padding: 0px 10px;
 }
 
+.notifItem:disabled {
+    color: #212529;
+}
+
 #notifDate {
     font-size: 10px;
     margin-left: 5px;
