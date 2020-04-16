@@ -316,7 +316,7 @@ class FriendPage extends Component {
                                                     </svg>
                                                 </div>
                                             </Col>
-                                        </Row>                        
+                                        </Row>            
                                     </ListGroupItem>
                                 ))}
                             </ListGroup>

@@ -29,12 +29,12 @@
 }
 
 .dropdownOption {
-    color: #006A4E;
+    color: #505050;
     margin: 5%;
 }
 
 #activeOption {
-    color: #505050;
+    color: #006A4E;
     font-weight: bold;
 }
 
