@@ -205,8 +205,8 @@ class Index extends Component {
           {id: 2, title: "showTime", checked: true},
           {id: 3, title: "showRoom", checked: true}
         ],
-        classList: [{title: "CSSERVM S15", course_code: "2351"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
-        currentClasses:  [{title: "TREDTRI C4", course_code: "451"}, {title: "HUMAART S18", course_code: "2331"}, {title: "KASPIL1 EB5", course_code: "384"}],
+        classList: [],
+        currentClasses:  [],
         newCurrentClasses: [],
         newClassboxDetailsList: [],
         newChosenPalette: [],
@@ -477,7 +477,15 @@ class Index extends Component {
 
   toggleModalEdit = () => {
     var openModalVar = this.state.openModalEdit;
-    this.setState({openModalEdit: !openModalVar});
+    console.log(this.state.currentContent.props)
+    const currentClasses = [];
+    const offerings = this.state.currentContent.props.offerings
+    for(var i = 0 ; i < offerings.length ; i += 2){
+      currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
+    }
+    this.setState({currentClasses},()=>{
+      this.setState({openModalEdit: !openModalVar});
+    })
   }
   processPaletteChoices = (title, paletteArray) => {
     const colorDiv = paletteArray.map(function(palColor, index){

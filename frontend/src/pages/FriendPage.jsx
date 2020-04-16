@@ -259,6 +259,7 @@ class FriendPage extends Component {
     componentWillMount(){
         this.setSchedInfo();   
     }
+
     render() {
         const friendList = [];
 
@@ -432,4 +433,5 @@ class FriendPage extends Component {
   FriendPage.propTypes={
     classes: PropTypes.object.isRequired,
   };
+
   export default withStyles(styles)(FriendPage);
