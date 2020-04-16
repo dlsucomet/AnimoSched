@@ -48,7 +48,7 @@ const styles = theme => ({
           },
     },
 
-    buttonStyle:{
+    unfriendBtnStyle:{
         textTransform: "none",
         width: "20px",
         borderRadius: "100px",
@@ -68,6 +68,31 @@ const styles = theme => ({
         color: "#16775D",
         '&:hover:after': {
            content: "Unfriend"
+          },
+    },
+
+    buttonStyle:{
+        textTransform: "none",
+        width: "200px",
+        borderRadius: "25px",
+        padding: "10px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        backgroundColor: "#16775D",
+        border: "none",
+        color: "white",
+        boxShadow: "6px 5px #e8f4ea",
+        borderStyle: "solid",
+        borderColor: "#16775D",
+        marginTop: "20px",
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        justify: 'center',
+        marginBottom: "5em",
+        '&:hover': {
+            backgroundColor: "white",
+            color: "#16775D"
           },
     },
   });
@@ -457,7 +482,7 @@ class FriendPage extends Component {
                             </Tab>
 
                             <Tab eventKey="schedule" title="Schedule">
-                            <Grid container>
+                            <Grid container >
                                 <Grid item xs={12}>
                                     <br></br>
                                         <Typography gutterBottom variant="h3" align="center">
@@ -495,7 +520,16 @@ class FriendPage extends Component {
                                             </Pagination>
                                     </div>
                                 </Grid>
-                            
+                                <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                    <center>
+                                        <Button
+                                        variant="contained"
+                                        className={classes.buttonStyle}
+                                        >
+                                            Compare Schedules
+                                        </Button>
+                                    </center>
+                                </Grid>
                             </Grid>
                             </Tab>
                         </Tabs>
