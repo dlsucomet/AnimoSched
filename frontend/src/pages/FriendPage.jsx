@@ -23,7 +23,15 @@ import SchedViewHome from '../components/SchedViewHome';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
 
-  
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -97,6 +105,8 @@ class FriendPage extends Component {
             pagesCount: 1,
             dataReceived: !props.logged_in,
             allowEdit: false,
+            openAlert: false,
+            selectedFriend: "",
             // schedules: [],
             schedules: [{
                 id: 1,
@@ -285,6 +295,17 @@ class FriendPage extends Component {
     componentWillMount(){
         this.setSchedInfo();   
     }
+
+    handleClickOpenAlert = (friend) => {
+        this.setState({openAlert: true});
+        this.setState({selectedFriend: friend});
+        
+    }
+     
+       handleCloseAlert = () => {
+         this.setState({openAlert: false});
+    }
+
     render() {
         const friendList = [];
         const { classes } = this.props;
@@ -310,22 +331,22 @@ class FriendPage extends Component {
 
                         <div style={{height: "100%"}}>
                         
-                         <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto"}}>
-                            <TextField
-                                key={"friendPage_searchFriends"}
-                                id="friendPage_searchFriends"
-                                variant= "outlined"
-                                // options={friendList}
-                                // getOptionLabel={(option) => option.firstName + " " + option.lastName}
-                                style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
-                                filterSelectedOptions
-                                label="Search Friends" 
-                                placeholder="FirstName LastName"
-                                // onChange={this.handleEditChange}
-                                /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
-                                />
-                                {/* <input style={{marginBottom: "10%"}}></input> */}
-                        </div>
+                            <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto"}}>
+                                <TextField
+                                    key={"friendPage_searchFriends"}
+                                    id="friendPage_searchFriends"
+                                    variant= "outlined"
+                                    // options={friendList}
+                                    // getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                                    style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
+                                    filterSelectedOptions
+                                    label="Search Friends" 
+                                    placeholder="FirstName LastName"
+                                    // onChange={this.handleEditChange}
+                                    /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
+                                    />
+                                    {/* <input style={{marginBottom: "10%"}}></input> */}
+                            </div>
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
                                 {friendList.map(friend => (
@@ -337,23 +358,45 @@ class FriendPage extends Component {
 
                                             <Col xs={6} md={4}>
                                                 <div className={"friend_btn"}>
-                                                    <Button
+                                                    {/* <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
+                                                    onClick={()=>this.handleClickOpenAlert(friend)}
                                                     >
-                                                        {/* "Hello" */}
+
                                                         <CheckIcon fontSize="small"/>
-                                                    </Button>
-                                                    {/* <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                                    </Button> */}
+                                                    <svg onClick={()=>this.handleClickOpenAlert(friend)} class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                                                         <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
-                                                    </svg> */}
+                                                    </svg>
                                                 </div>
                                             </Col>
                                         </Row>                        
                                     </ListGroupItem>
                                 ))}
                             </ListGroup>
+                            <Dialog
+                                open={this.state.openAlert}
+                                onClose={this.handleCloseAlert}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Remove From Friend List"}</DialogTitle>
+                                <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Do you want to unfriend "{this.state.selectedFriend.firstName} {this.state.selectedFriend.lastName}"?
+                                </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                <Button onClick={this.handleCloseAlert} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={this.deleteSchedule} color="primary" autoFocus>
+                                    Unfriend
+                                </Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                     </div>
 
@@ -423,7 +466,7 @@ class FriendPage extends Component {
                                 </Grid>
 
                                 <Grid item xs={12} className={'gridSavedContent'}>
-                                    <div id='savedContent' className='savedContent' style={{height: "75em"}}>
+                                    <div id='savedContent' className='savedContent' style={{height: "75em", color:"black"}}>
                                         <span>{this.state.currentContent}</span>
                                     </div>
                                 </Grid>

@@ -21,6 +21,7 @@
     "group-array": "^1.0.0",
     "html2canvas": "^1.0.0-rc.5",
     "react": "^16.6.3",
+    "react-avatar": "^3.9.2",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.6.3",
     "react-inline-editing": "^1.0.10",
