@@ -330,7 +330,7 @@ class FriendPage extends Component {
        handleCloseAlert = () => {
          this.setState({openAlert: false});
     }
-
+       
     render() {
         const friendList = [];
         const { classes } = this.props;
@@ -397,7 +397,7 @@ class FriendPage extends Component {
                                                     </svg>
                                                 </div>
                                             </Col>
-                                        </Row>                        
+                                        </Row>            
                                     </ListGroupItem>
                                 ))}
                             </ListGroup>
@@ -543,4 +543,5 @@ class FriendPage extends Component {
   FriendPage.propTypes={
     classes: PropTypes.object.isRequired,
   };
+
   export default withStyles(styles)(FriendPage);

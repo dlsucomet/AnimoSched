@@ -9,6 +9,10 @@ import {
     DropdownItem,
   } from 'reactstrap';
 
+import {
+    Link
+} from "react-router-dom";
+
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios'
 
@@ -135,14 +139,15 @@ class Notifications extends React.Component{
                 
                 <DropdownMenu right id="dropdownMenu">
                     <DropdownItem header id="notifSettings">
-                        <a href='javascript:void(0)' id="headerLink">Settings</a>
+                        <Link to={"/profile"} id="headerLink">Settings</Link>
                     </DropdownItem>
 
                     {options.map(option => (
-                        <DropdownItem disabled className="notifItem" style={{backgroundColor: option.bgColor}}>
+                        <DropdownItem disabled className="notifItem">
                             <this.specifyIcon category={option.category} />
                             <span id="notifDate"> {option.date} </span>
                             <span> {option.message} </span>
+                            <DropdownItem divider />
                         </DropdownItem>
                     ))}
                 </DropdownMenu>
