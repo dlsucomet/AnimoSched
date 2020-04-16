@@ -309,7 +309,7 @@ class FriendPage extends Component {
                                                     <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
                                                 </svg>
                                             </Col>
-                                        </Row>                        
+                                        </Row>            
                                     </ListGroupItem>
                                 ))}
                             </ListGroup>
