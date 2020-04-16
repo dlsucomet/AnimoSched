@@ -522,12 +522,14 @@ class FriendPage extends Component {
                                 </Grid>
                                 <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                     <center>
+                                    <a className="backBtn" href="/compare_schedule">
                                         <Button
                                         variant="contained"
                                         className={classes.buttonStyle}
                                         >
                                             Compare Schedules
                                         </Button>
+                                    </a>
                                     </center>
                                 </Grid>
                             </Grid>
