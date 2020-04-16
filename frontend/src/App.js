@@ -212,6 +212,7 @@ class App extends Component {
         handle_logout={this.handle_logout}
         logged_in={this.state.logged_in}
         first_name={this.state.first_name}
+        last_name={this.state.last_name}
       />
     )
   }

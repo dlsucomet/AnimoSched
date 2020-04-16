@@ -39,3 +39,17 @@
 #imgDesign {
     width: 35%;
 }
+
+/* .friend_btn span.btn_content{
+    position: relative;
+    content: "Friend";
+}
+
+.friend_btn:hover span.btn_content{
+    display: none;
+}
+
+.friend_btn:hover span.btn_content:before{
+    position: relative;
+    content: "Unriend";
+} */

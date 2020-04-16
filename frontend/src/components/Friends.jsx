@@ -19,6 +19,8 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import Avatar from 'react-avatar';
+
 class Friends extends React.Component{
 
     constructor(props){
@@ -224,9 +226,10 @@ class Friends extends React.Component{
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
-                                    <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="10" cy="10" r="8"></circle>
-                                    </svg>
+                                    </svg> */}
+                                    <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
                                     <span> {request.firstName} {request.lastName} </span>
                                 </Col>
 
@@ -266,9 +269,10 @@ class Friends extends React.Component{
                 <div className="cardPanel">
                     {friendList.map(friend => (
                         <DropdownItem className="panelItem">
-                            <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="10" cy="10" r="8"></circle>
-                            </svg>
+                            </svg> */}
+                            <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
                             <span> {friend.firstName} {friend.lastName} </span>
                         </DropdownItem>
                     ))}
@@ -290,9 +294,10 @@ class Friends extends React.Component{
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
-                                    <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="10" cy="10" r="8"></circle>
-                                    </svg>
+                                    </svg> */}
+                                    <Avatar name={search.firstName +" "+ search.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
                                     <span> {search.firstName} {search.lastName} </span>
                                 </Col>
                                 <Col xs={6} md={4}>
