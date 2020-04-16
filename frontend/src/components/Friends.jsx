@@ -7,9 +7,12 @@ import {
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem,
-    Card
-  } from 'reactstrap';
+    DropdownItem
+} from 'reactstrap';
+
+import {
+    Link
+} from "react-router-dom";
 
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios';
@@ -262,7 +265,7 @@ class Friends extends React.Component{
 
 
                     <DropdownItem header> 
-                        <a href='javascript:void(0)' id="dropdownFooter">More Details</a>
+                        <Link to={"/view_friends"} id="dropdownFooter">More Details</Link>
                     </DropdownItem>
                 </div>;
         }else{
