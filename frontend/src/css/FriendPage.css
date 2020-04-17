@@ -17,6 +17,7 @@
     width: 80%;
     object-fit: contain;
     bottom: 0px;
+    background-position: right bottom;
 }
 
 .friendName {
@@ -63,4 +64,8 @@
     position: relative;
     content: "Unriend";
 } */
+
+.sidemenu-main{
+    color:black;
+}
 

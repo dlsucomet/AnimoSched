@@ -40,6 +40,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import ReactLoading from 'react-loading';
 
+import friendDef from '../assets/friend2.png';
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -549,13 +550,19 @@ class FriendPage extends Component {
                             <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
                                 <Tab eventKey="details" title="Details">
                                     <div className="friendName">
-                                        <center><h1> Name </h1></center>
+                                        <Typography gutterBottom variant="h4" align="center" style={{color:"black"}}>
+                                            Name                
+                                        </Typography>
+                                        {/* <center><h1> Name </h1></center> */}
                                     </div>
 
                                     <div className="friendDetails">
                                         <div class="column" style={{float: "left", width: "65%"}}>
                                             <div>
-                                                <h3> Details </h3>
+                                                <Typography gutterBottom variant="h5" align="left" style={{color:"black"}}>
+                                                    Details
+                                                </Typography>
+                                                {/* <h3> Details </h3> */}
                                                 <Table responsive size="sm">
                                                     <tbody>
                                                         <tr>
@@ -575,8 +582,11 @@ class FriendPage extends Component {
                                             </div>
 
                                         <div>
-                                            <h3> Preferences </h3>
-                                            <Table responsive size="sm">
+                                            <Typography gutterBottom variant="h5" align="left" style={{color:"black"}}>
+                                                Preferences
+                                            </Typography>
+                                            {/* <h3> Preferences </h3> */}
+                                            <Table responsive size="sm" style={{overflow:"hidden"}}>
                                                 <tbody>
                                                     <tr>
                                                         <th scope="row">Earliest Time</th>
@@ -696,7 +706,7 @@ class FriendPage extends Component {
                                 <Grid container >
                                     <Grid item xs={12}>
                                         <br></br>
-                                            <Typography gutterBottom variant="h3" align="center">
+                                            <Typography gutterBottom variant="h3" align="center" style={{color:"black"}}>
                                             FIRST TRIMESTER, AY 2019 - 2020
                                             </Typography>
                                     </Grid>
@@ -754,7 +764,15 @@ class FriendPage extends Component {
                         </div>}
                     </div>
                     :
-                    <div className={"sidemenu-main"}><h3>Select a friend to see their schedule! :D</h3></div>
+                    <div className={"sidemenu-main"} /*style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}*/>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <img src={friendDef} style={{height: "10em", display:"block", whiteSpace: "pre", marginTop:"10em"}}/>
+                        </div >
+                        <br></br>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center", }}>
+                        <h3>Select a friend to see their schedule!</h3>
+                        </div>
+                    </div>
                     }
                 </div>
                 : 
