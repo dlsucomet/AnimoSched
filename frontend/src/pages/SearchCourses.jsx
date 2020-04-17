@@ -29,6 +29,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 import ReactLoading from 'react-loading';
 
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -70,7 +71,6 @@ class SearchCourses extends Component {
         database: [],
         siteData: [],
         allSiteData: [],
-        courseList: [],
         selectedCourses: [],
         loading: false,
         radioVal: '',
@@ -80,14 +80,15 @@ class SearchCourses extends Component {
     }
 
     componentDidMount(){
-        axios.get('https://archerone-backend.herokuapp.com/api/courses/')
-        .then(res => {
-            res.data.map(course => {
-                var courses = this.state.courseList;
-                courses.push({'id':course.id, 'course_code':course.course_code})
-                this.setState({courseList: courses, dataReceived: true})
-            })
-        })
+        // axios.get('https://archerone-backend.herokuapp.com/api/courses/')
+        // .then(res => {
+        //     res.data.map(course => {
+        //         var courses = this.state.courseList;
+        //         courses.push({'id':course.id, 'course_code':course.course_code})
+        //         this.setState({courseList: courses, dataReceived: true})
+        //     })
+        // })
+        this.setState({dataReceived: true})
     }
 
     createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
@@ -246,7 +247,7 @@ class SearchCourses extends Component {
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
                     <div style={{display: "flex", justifyContent: "center"}}>
-                      <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} courseList={this.state.courseList} />
+                      <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch}/>
                       <div className={classes.root}>
                           <div className={classes.wrapper} >
                             <Button
