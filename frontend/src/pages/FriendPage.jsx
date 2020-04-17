@@ -32,6 +32,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
+import groupArray from 'group-array'
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -120,9 +121,30 @@ class FriendPage extends Component {
             college: '', 
             degree: '',
             idnum: '',
+            earliest_class_time: '',
+            latest_class_time: '',
+            break_length: '',
+        }
+
+    }
+    createTimeslot = (day, hour, minute) =>{
+        if(day == 'M'){
+            return new Date(2018, 5, 25, hour, minute);
+        }else if(day == 'T'){
+            return new Date(2018, 5, 26, hour, minute);
+        }else if(day == 'W'){
+            return new Date(2018, 5, 27, hour, minute);
+        }else if(day == 'H'){
+            return new Date(2018, 5, 28, hour, minute);
+        }else if(day == 'F'){
+            return new Date(2018, 5, 29, hour, minute);
+        }else if(day == 'S'){
+            return new Date(2018, 5, 30, hour, minute);
         }
     }
-
+    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
+    }
     createRequests(firstName, lastName, status, id, college, degree, id_num) {
         return { firstName, lastName, status, id, college, degree, id_num};
     }
@@ -149,11 +171,14 @@ class FriendPage extends Component {
         var generatedContents = this.state.schedules.map((item, index) =>
             <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
         );
-        this.setState({currentPage: 0})
-        this.setState({generatedContents});
         // this.setState({hideGenContent: false});
-        this.setState({pagesCount: generatedContents.length});
-        this.setState({currentContent: generatedContents[0]})
+        this.setState({generatedContents}, ()=>{
+            this.setState({currentContent: generatedContents[0]}, () => {
+                this.setState({hasSelectedFriend: true})
+            })
+            this.setState({pagesCount: generatedContents.length});
+            this.setState({currentPage: 0})
+        });
     
       }
     
@@ -180,8 +205,164 @@ class FriendPage extends Component {
 
     handleClick = (e, i) => {
         const requests = this.state.requests
-        this.setState({college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
-            this.setState({hasSelectedFriend: true})
+        axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+requests[i].id+'/')
+        .then(res => {
+            const schedules = []
+            res.data.map(newSchedule =>{
+                var count = 0;
+                const scheduleContent = []
+                const tableContent = []
+                var earliest = 9
+                var latest = 17
+                var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+                for (let key in arranged) {
+                  var days = []
+                  var day = ''
+                  var classnumber = ''
+                  var course = ''
+                  var section = ''
+                  var faculty = ''
+                  var timeslot_begin = ''
+                  var timeslot_end = ''
+                  var room = ''
+                  var max_enrolled = ''
+                  var current_enrolled = ''
+                  arranged[key].map(offering => {
+                    days.push(offering.day)
+                    classnumber = offering.classnumber
+                    course = offering.course
+                    section = offering.section
+                    faculty = offering.faculty
+                    timeslot_begin = offering.timeslot_begin
+                    timeslot_end = offering.timeslot_end
+                    room = offering.room
+                    max_enrolled = offering.max_enrolled
+                    current_enrolled = offering.current_enrolled
+                  })
+                  days.map(day_code => {
+                    day += day_code;
+                  })
+                  const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                  tableContent.push(newTableContent)
+                }
+                newSchedule.courseOfferings.map(offering=>{
+                    var startTime = offering.timeslot_begin.split(':');
+                    var endTime = offering.timeslot_end.split(':');
+                    const newContent = 
+                    {
+                        id: count,
+                        title: offering.course + ' ' + offering.section,
+                        section: offering.section,
+                        startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                        endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                        location: offering.room,
+                        professor: offering.faculty,
+                        startTime: offering.timeslot_begin,
+                        endTime: offering.timeslot_end,
+                        days: offering.day,
+                        classCode: offering.classnumber 
+                    }
+                    if(earliest > Number(startTime[0])){
+                        earliest = Number(startTime[0])
+                    }
+                    if(latest < Number(endTime[0]) + 1){
+                        latest = Number(endTime[0]) + 1
+                    }
+                    scheduleContent.push(newContent);
+  
+                    count += 1;
+                })
+                schedules.push({
+                    id: newSchedule.id,
+                    title: newSchedule.title,
+                    scheduleContent: scheduleContent,
+                    tableContent: tableContent, 
+                    prefContent: [],
+                    conflictsContent: newSchedule.information,
+                    earliest: earliest,
+                    latest: latest,
+                    offerings: newSchedule.courseOfferings
+                });
+            })
+            axios.get('https://archerone-backend.herokuapp.com/api/preferencelist/'+requests[i].id+'/')
+            .then(res => {
+                console.log(res.data)
+                res.data.map(preference =>{
+                    if(preference.earliest_class_time != null){
+                        this.setState({earliest_class_time:preference.earliest_class_time})
+                    }
+                    if(preference.latest_class_time != null){
+                        this.setState({latest_class_time:preference.latest_class_time})
+                    }
+                    if(preference.preferred_days != null){
+                        const newDaysList = [];
+                        // this.state.daysList.map(day => {
+                        //     if(preference.preferred_days == day.id){
+                        //         newDaysList.push({'id':day.id, 'day_code':day.day_code, 'day':day.day, 'checked':true})
+                        //     }else{
+                        //         newDaysList.push(day);
+                        //     }
+                        // })
+                        // this.setState({daysList: newDaysList})
+                    }
+                    if(preference.break_length != null){
+                        this.setState({break_length:preference.break_length})
+                    }
+                    if(preference.min_courses != null){
+                        this.setState({min_courses:preference.min_courses})
+                    }
+                    if(preference.max_courses != null){
+                        this.setState({max_courses:preference.max_courses})
+                    }
+                    if(preference.preferred_faculty != null){
+                        // const selectedProfs = this.state.selectedProfs;
+                        // var prof = {'id': preference.preferred_faculty.id, 'profName': preference.preferred_faculty.full_name} 
+                        // selectedProfs.push(prof);
+                        // this.setState({selectedProfs})
+                        // const profList = [];
+                        // this.state.profList.map(prof2 => {
+                        //     if(prof2.profName != prof.profName){
+                        //         profList.push(prof2);
+                        //     }
+                        // })
+                        // this.setState({profList})
+                    }
+                    if(preference.preferred_buildings != null){
+                        // const newBuildingList = [];
+                        // this.state.buildingList.map(bldg => {
+                        //     if(preference.preferred_buildings == bldg.id){
+                        //         newBuildingList.push({'id':bldg.id, 'bldg_code':bldg.bldg_code, 'building':bldg.building, 'checked':true})
+                        //     }else{
+                        //         newBuildingList.push(bldg);
+                        //     }
+                        // })
+                        // this.setState({buildingList: newBuildingList})
+                    }
+                    if(preference.preferred_sections != null){
+                        // const selectedSections = this.state.selectedSections;
+                        // var section = {'id': preference.preferred_sections.id, 'sectionName': preference.preferred_sections.section_code} 
+                        // selectedSections.push(section);
+                        // this.setState({selectedSections})
+                        // const sectionList = [];
+                        // this.state.sectionList.map(section2 => {
+                        //     if(section2.sectionName != section.sectionName){
+                        //         sectionList.push(section2);
+                        //     }
+                        // })
+                        // this.setState({sectionList})
+                    }
+                })
+                this.setState({schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+                    this.setSchedInfo();
+                })
+            });
+            // this.setState({success: true});
+            // this.setState({loading: false});
+            // this.setState({dataReceived: true})
+        }).catch(error => {
+            console.log(error)
+            // this.setState({success: false});
+            // this.setState({loading: false});
         })
 
     }
@@ -317,15 +498,15 @@ class FriendPage extends Component {
                                                 <tbody>
                                                     <tr>
                                                         <th scope="row">Earliest Time</th>
-                                                        <td>07:30 AM</td>
+                                                        <td>{this.state.earliest_class_time}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Latest Time</th>
-                                                        <td>09:00 PM</td>
+                                                        <td>{this.state.latest_class_time}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Break Length</th>
-                                                        <td>15 Minutes</td>
+                                                        <td>{this.state.break_length}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Faculty</th>

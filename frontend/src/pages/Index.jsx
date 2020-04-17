@@ -336,7 +336,7 @@ class Index extends Component {
           })
           console.log(schedules)
           this.setState({schedules});
-          this.setSchedInfo(this.state.chosenPalette);
+          this.setSchedInfo();
           this.setState({success: true});
           this.setState({loading: false});
           this.setState({dataReceived: true})
@@ -350,8 +350,9 @@ class Index extends Component {
 
   setSchedInfo = () => {
     console.log(this.state.schedules)
+    const palette = JSON.parse(localStorage.getItem('palette'))
     var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={this.state.chosenPalette} allowEdit={this.state.allowEdit}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
     );
     this.setState({currentPage: 0})
     this.setState({generatedContents});

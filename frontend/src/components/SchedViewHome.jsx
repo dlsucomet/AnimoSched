@@ -67,6 +67,8 @@ class SchedViewHome extends Component {
       }
       this.editableLabel = React.createRef();
       console.log(props.tableContent)
+      console.log("reach schedviewhome")
+      console.log(props.scheduleContent)
     }
     
 
@@ -106,6 +108,10 @@ class SchedViewHome extends Component {
 
   componentWillReceiveProps(props){
     this.setState({
+      scheduleContent: props.scheduleContent,
+      tableContent: props.tableContent,
+      id: props.id,
+      schedTitle: props.titleName,
       palette: props.palette,
       earliest: props.earliest,
       latest: props.latest,

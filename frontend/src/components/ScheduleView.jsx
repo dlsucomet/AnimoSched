@@ -182,10 +182,10 @@ class ScheduleView extends Component {
         palIndex: 0,
         dataReceived: false,
       }
+      console.log("reach schedview")
     }
 
     componentWillReceiveProps(props){
-      this.setState({dataReceived: false})
       var earliest = 9;
       if(props.earliest != undefined){
         earliest = props.earliest;
@@ -204,7 +204,6 @@ class ScheduleView extends Component {
 
       this.processColoredClasses();
       console.log('REACHED SCHEDULEVIEW')
-      this.setState({dataReceived: true})
     }
     
     CustomAppointment = ({ style, ...restProps }) => {
