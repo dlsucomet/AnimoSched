@@ -33,6 +33,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import groupArray from 'group-array'
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -98,7 +102,18 @@ const styles = theme => ({
           },
     },
   });
+const GreenCheckbox = withStyles({
+    root: {
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 class FriendPage extends Component {
     constructor(props){
         super(props);
@@ -117,6 +132,81 @@ class FriendPage extends Component {
             selectedFriend: "",
             hasSelectedFriend: false,
             schedules: [],
+            profList: [],
+
+            daysList:[
+                {   id: 1,
+                    day_code: "M",
+                    day: "Monday",
+                    checked: false,},
+                { 
+                    id: 2,
+                    day_code: "T",
+                    day: "Tuesday",
+                    checked: false,},
+                {
+                    id: 3,
+                    day_code: "W",
+                    day: "Wednesday",
+                    checked: false,},
+                {
+                    id: 4, 
+                    day_code: "H",
+                    day: "Thursday",
+                    checked: false,},
+                {
+                    id: 5,
+                    day_code: "F",
+                    day: "Friday",
+                    checked: false,},
+                { 
+                    id: 6,
+                    day_code: "S",
+                    day: "Saturday",
+                    checked: false,},
+
+                ],
+            
+            buildingList:[{   
+                id: 2,
+                bldg_code: "LS",
+                building: "St. La Salle Hall",
+                checked: false,},
+            { 
+                id: 3,
+                bldg_code: "Y",
+                building: "Enrique Yuchengco Hall",
+                checked: false,},
+            {
+                id: 4,
+                bldg_code: "J",
+                building: "St. Joseph Hall",
+                checked: false,},
+            {
+                id: 5, 
+                bldg_code: "V",
+                building: "Velasco Hall",
+                checked: false,},
+            {
+                id: 6,
+                bldg_code: "M",
+                building: "St. Miguel Hall",
+                checked: false,},
+            { 
+                id: 7,
+                bldg_code: "MU",
+                building: "St. Mutien Marie Hall",
+                checked: false,},
+            {
+                id: 1,
+                bldg_code: "GK",
+                building: "Gokongwei Hall",
+                checked: false,},
+            { 
+                id: 8,
+                bldg_code: "A",
+                building: "Br. Andrew Gonzales Hall",
+                checked: false,},],
 
             college: '', 
             degree: '',
@@ -124,6 +214,7 @@ class FriendPage extends Component {
             earliest_class_time: '',
             latest_class_time: '',
             break_length: '',
+
         }
 
     }
@@ -286,6 +377,8 @@ class FriendPage extends Component {
             })
             axios.get('https://archerone-backend.herokuapp.com/api/preferencelist/'+requests[i].id+'/')
             .then(res => {
+                const profList = []
+                const sectionList = []
                 console.log(res.data)
                 res.data.map(preference =>{
                     if(preference.earliest_class_time != null){
@@ -296,14 +389,14 @@ class FriendPage extends Component {
                     }
                     if(preference.preferred_days != null){
                         const newDaysList = [];
-                        // this.state.daysList.map(day => {
-                        //     if(preference.preferred_days == day.id){
-                        //         newDaysList.push({'id':day.id, 'day_code':day.day_code, 'day':day.day, 'checked':true})
-                        //     }else{
-                        //         newDaysList.push(day);
-                        //     }
-                        // })
-                        // this.setState({daysList: newDaysList})
+                        this.state.daysList.map(day => {
+                            if(preference.preferred_days == day.id){
+                                newDaysList.push({'id':day.id, 'day_code':day.day_code, 'day':day.day, 'checked':true})
+                            }else{
+                                newDaysList.push(day);
+                            }
+                        })
+                        this.setState({daysList: newDaysList})
                     }
                     if(preference.break_length != null){
                         this.setState({break_length:preference.break_length})
@@ -315,44 +408,27 @@ class FriendPage extends Component {
                         this.setState({max_courses:preference.max_courses})
                     }
                     if(preference.preferred_faculty != null){
-                        // const selectedProfs = this.state.selectedProfs;
-                        // var prof = {'id': preference.preferred_faculty.id, 'profName': preference.preferred_faculty.full_name} 
-                        // selectedProfs.push(prof);
-                        // this.setState({selectedProfs})
-                        // const profList = [];
-                        // this.state.profList.map(prof2 => {
-                        //     if(prof2.profName != prof.profName){
-                        //         profList.push(prof2);
-                        //     }
-                        // })
-                        // this.setState({profList})
+                        var prof = preference.preferred_faculty
+                        profList.push(prof);
                     }
                     if(preference.preferred_buildings != null){
-                        // const newBuildingList = [];
-                        // this.state.buildingList.map(bldg => {
-                        //     if(preference.preferred_buildings == bldg.id){
-                        //         newBuildingList.push({'id':bldg.id, 'bldg_code':bldg.bldg_code, 'building':bldg.building, 'checked':true})
-                        //     }else{
-                        //         newBuildingList.push(bldg);
-                        //     }
-                        // })
-                        // this.setState({buildingList: newBuildingList})
+                        const newBuildingList = [];
+                        this.state.buildingList.map(bldg => {
+                            if(preference.preferred_buildings == bldg.id){
+                                newBuildingList.push({'id':bldg.id, 'bldg_code':bldg.bldg_code, 'building':bldg.building, 'checked':true})
+                            }else{
+                                newBuildingList.push(bldg);
+                            }
+                        })
+                        this.setState({buildingList: newBuildingList})
                     }
                     if(preference.preferred_sections != null){
-                        // const selectedSections = this.state.selectedSections;
-                        // var section = {'id': preference.preferred_sections.id, 'sectionName': preference.preferred_sections.section_code} 
-                        // selectedSections.push(section);
-                        // this.setState({selectedSections})
-                        // const sectionList = [];
-                        // this.state.sectionList.map(section2 => {
-                        //     if(section2.sectionName != section.sectionName){
-                        //         sectionList.push(section2);
-                        //     }
-                        // })
-                        // this.setState({sectionList})
+                        var section = preference.preferred_sections 
+                        sectionList.push(section);
                     }
                 })
-                this.setState({schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+                console.log(profList)
+                this.setState({sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
                     this.setSchedInfo();
                 })
             });
@@ -509,22 +585,95 @@ class FriendPage extends Component {
                                                         <td>{this.state.break_length}</td>
                                                     </tr>
                                                     <tr>
+                                                        <th scope="row">Minimum Courses</th>
+                                                        <td>{this.state.min_courses}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Maximum Courses</th>
+                                                        <td>{this.state.max_courses}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <th scope="row">Faculty</th>
                                                         <td>
                                                         <Autocomplete
+                                                            multiple
                                                             disabled
-                                                            // multiple
                                                             id="combo-box-demo"
-                                                            // options={this.state.programList}
-                                                            // getOptionLabel={option => option.name}
-                                                            // style={{ width: 500 }}
+                                                            options={this.state.profList}
+                                                            getOptionLabel={option => option.full_name}
+                                                            style={{ width: 400 }}
                                                             renderInput={params => <TextField {...params} label="" variant="outlined" />}
-                                                            // value={this.state.value}
-                                                            // inputValue={this.state.value}
-                                                            // searchText={this.state.value}
-                                                            // onChange={this.props.onChange}
+                                                            value={this.state.profList}
                                                         />
                                                         </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Section</th>
+                                                        <td>
+                                                        <Autocomplete
+                                                            multiple
+                                                            disabled
+                                                            id="combo-box-demo"
+                                                            options={this.state.sectionList}
+                                                            getOptionLabel={option => option.section_code}
+                                                            style={{ width: 400 }}
+                                                            renderInput={params => <TextField {...params} label="" variant="outlined" />}
+                                                            value={this.state.sectionList}
+                                                        />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Days</th>
+                                                        <td>
+                                                            <FormGroup row>
+                                                                <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id={this.state.daysList[0].id} color="primary"/>}label="M" />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[1].checked} onChange={this.handleDayChange} id={this.state.daysList[1].id} color="primary"/>}label="T" />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[2].checked} onChange={this.handleDayChange} id={this.state.daysList[2].id} color="primary"/>}label="W" />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[3].checked} onChange={this.handleDayChange} id={this.state.daysList[3].id} color="primary"/>}label="H" />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[4].checked} onChange={this.handleDayChange} id={this.state.daysList[4].id} color="primary"/>}label="F" />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id={this.state.daysList[5].id} color="primary"/>}label="S" />
+                                                            </FormGroup>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Buildings</th>
+                                                        <td>
+                                                            <Grid container spacing={6}>
+                                                                <Grid item xs={6}>
+
+                                                                <FormGroup>
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[0].id}  color="primary"/>}label={this.state.buildingList[0].building} />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.buildingList[1].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[1].id} color="primary"/>}label={this.state.buildingList[1].building} />
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.buildingList[2].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[2].id} color="primary"/>}label={this.state.buildingList[2].building}/>
+                                                                    <FormControlLabel
+                                                                    control = {<GreenCheckbox checked={this.state.buildingList[3].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[3].id} color="primary"/>}label={this.state.buildingList[3].building} />
+                                                                </FormGroup>
+                                                                </Grid>
+
+                                                                <Grid item xs={6}>
+                                                                <FormGroup>
+                                                                <FormControlLabel
+                                                                control = {<GreenCheckbox checked={this.state.buildingList[4].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[4].id} color="primary"/>}label={this.state.buildingList[4].building}/>
+                                                                <FormControlLabel
+                                                                control = {<GreenCheckbox checked={this.state.buildingList[5].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[5].id} color="primary"/>}label={this.state.buildingList[5].building} />
+                                                                    <FormControlLabel
+                                                                control = {<GreenCheckbox checked={this.state.buildingList[6].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[6].id} color="primary"/>}label={this.state.buildingList[6].building}/>
+                                                                <FormControlLabel
+                                                                control = {<GreenCheckbox checked={this.state.buildingList[7].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[7].id} color="primary"/>}label={this.state.buildingList[7].building} />
+                                                                </FormGroup>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </td>
+
                                                     </tr>
                                                 </tbody>
                                             </Table>
