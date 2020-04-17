@@ -553,7 +553,7 @@ class FriendPage extends Component {
                                     </div>
 
                                     <div className="friendDetails">
-                                        <div class="columnn" style={{float: "left", width: "65%"}}>
+                                        <div class="column" style={{float: "left", width: "65%"}}>
                                             <div>
                                                 <h3> Details </h3>
                                                 <Table responsive size="sm">
@@ -683,6 +683,11 @@ class FriendPage extends Component {
                                                     </tr>
                                                 </tbody>
                                             </Table>
+                                            </div>
+                                        </div>
+
+                                        <div class="columnn" style={{float: "left", width: "35%"}}>
+                                            <center><img id='loweeer' src={SidebarIMG}/></center>
                                         </div>
                                     </div>
                                 </Tab>
