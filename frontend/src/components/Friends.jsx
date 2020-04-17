@@ -92,6 +92,32 @@ class Friends extends React.Component{
         })
     }
 
+    refreshFriends(){
+        axios.get('https://archerone-backend.herokuapp.com/api/sentrequestlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const sentRequests = [];
+            res.data.map(sent => {
+                sentRequests.push(sent.to_user)
+            })
+            axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
+            .then(res => {
+                const database = this.state.database;
+                res.data.map(nonfriend => {
+                    database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, sentRequests.includes(nonfriend.id), nonfriend.id));
+                })
+                this.setState({database})
+                axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
+                .then(res => {
+                    const friends = this.state.friends;
+                    res.data.map(friend => {
+                        friends.push(this.createFriends(friend.first_name, friend.last_name, friend.id))
+                    })
+                    this.setState({friends})
+                })
+            })
+        })
+    }
+
     componentDidMount(){
         axios.get('https://archerone-backend.herokuapp.com/api/sentrequestlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
@@ -169,6 +195,7 @@ class Friends extends React.Component{
         const requests = this.state.requests;
         requests[index].acceptStatus = true;
         this.setState({requests})
+        this.refreshFriends()
         this.setState({polling: true})
     }
 
