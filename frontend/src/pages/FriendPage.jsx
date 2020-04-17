@@ -31,6 +31,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -102,189 +103,28 @@ class FriendPage extends Component {
         super(props);
 
         this.state = {
-            requests: [
-                this.createRequests("Katniss", "Everdeen", "new"),
-                this.createRequests("Peeta", "Mellark", "new"),
-                this.createRequests("Beatrice", "Prior", "delete"),
-                this.createRequests("Tobias", "Eaton", "delete"),
-                this.createRequests("Yeji", "Hwang", "accept"),
-                this.createRequests("Jisoo", "Choi", "accept"),
-                this.createRequests("Ryujin", "Shin", "accept"),
-                this.createRequests("Chaeryeong", "Lee", "accept"),
-                this.createRequests("Yuna", "Shin", "accept"),
-                this.createRequests("Nayeon", "Im", "accept"),
-                this.createRequests("Jeongyeon", "Yoo", "accept"),
-                this.createRequests("Momo", "Hirai", "accept"),
-                this.createRequests("Sana", "Minatozaki", "accept"),
-                this.createRequests("Jihyo", "Park", "accept"),
-                this.createRequests("Mina", "Myoui", "accept"),
-                this.createRequests("Dahyun", "Kim", "accept"),
-                this.createRequests("Chaeyoung", "Son", "accept"),
-                this.createRequests("Tzuyu", "Chou", "accept")
-            ],
+            requests: [],
             currentPage: 0,
             // currentContent: "",
             // generatedContents: [],
-            currentContent: <SchedViewHome/>,
-            generatedContents: [<SchedViewHome/>,<SchedViewHome/>,<SchedViewHome/>],
+            currentContent: "",
+            generatedContents: [],
             pagesCount: 1,
-            dataReceived: !props.logged_in,
+            dataReceived: false,
             allowEdit: false,
             openAlert: false,
             selectedFriend: "",
-            // schedules: [],
-            schedules: [{
-                id: 1,
-                title: "Schedule 1",
-                scheduleContent:[
-                    {
-                        id: 0,
-                        title: "HUMAART S17",
-                        section: "S17",
-                        startDate: new Date(2018, 5, 25, 9, 30),
-                        endDate: new Date(2018, 5, 25, 11, 30),
-                        location: "G302",
-                        professor: "Flowers, Fritz",
-                        startTime: "09:30AM",
-                        endTime: "11:30AM",
-                        days: ['T', 'H'],
-                        classCode: "2453"
-                      },
-                      {
-                        id: 2,
-                        title: "KASPIL2 S15",
-                        section: "S15",
-                        startDate: new Date(2018, 5, 26, 13, 30),
-                        endDate: new Date(2018, 5, 26, 15, 30),
-                        location: "G310",
-                        professor: "Tiburcio, Juan",
-                        startTime: "01:30PM",
-                        endTime: "03:30PM",
-                        days: ['M', 'W'],
-                        classCode: "345"
-                      },
-                ],
-                tableContent:[
-                    {
-                        id: 1,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    },
-                    {
-                        id: 2,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    },
-                    {
-                        id: 3,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    },
-                    {
-                        id: 4,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    }
-                ]
-            },
-            {
-                id: 2,
-                title: "Schedule 2",
-                scheduleContent:[
-                    {
-                        id: 0,
-                        title: "TREDTRI EB4",
-                        section: "EB4",
-                        startDate: new Date(2018, 5, 27, 11, 30),
-                        endDate: new Date(2018, 5, 27, 13, 30),
-                        location: "G302",
-                        professor: "Flowers, Fritz",
-                        startTime: "11:30AM",
-                        endTime: "01:30PM",
-                        days: ['T', 'H'],
-                        classCode: "2453"
-                      },
-                      {
-                        id: 2,
-                        title: "SOCTEC2 S16",
-                        section: "S16",
-                        startDate: new Date(2018, 5, 28, 12, 30),
-                        endDate: new Date(2018, 5, 28, 14, 30),
-                        location: "G310",
-                        professor: "Tiburcio, Juan",
-                        startTime: "12:30PM",
-                        endTime: "02:30PM",
-                        days: ['M', 'W'],
-                        classCode: "345"
-                      },
-                ],
-                tableContent:[
-                    {
-                        id: 1,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    },
-                    {
-                        id: 2,
-                        classNmbr: 2258, 
-                        course: 'INOVATE', 
-                        section: 'S17', 
-                        faculty: 'DELA CRUZ, JUAN', 
-                        day:'TH', 
-                        startTime: '12:45', 
-                        endTime: '14:15', 
-                        room: 'GK210', 
-                        capacity: 45, 
-                        enrolled: 45
-                    }
-                ]
-            },
-            ]
+            hasSelectedFriend: false,
+            schedules: [],
+
+            college: '', 
+            degree: '',
+            idnum: '',
         }
     }
 
-    createRequests(firstName, lastName, status) {
-        return { firstName, lastName, status };
+    createRequests(firstName, lastName, status, id, college, degree, id_num) {
+        return { firstName, lastName, status, id, college, degree, id_num};
     }
 
     handlePageChange = (e,index) => {
@@ -317,8 +157,15 @@ class FriendPage extends Component {
     
       }
     
-    componentWillMount(){
-        this.setSchedInfo();   
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const requests = []
+            res.data.map(friend => {
+                requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
+            })
+            this.setState({requests, dataReceived: true})
+        })
     }
 
     handleClickOpenAlert = (friend) => {
@@ -329,6 +176,14 @@ class FriendPage extends Component {
      
        handleCloseAlert = () => {
          this.setState({openAlert: false});
+    }
+
+    handleClick = (e, i) => {
+        const requests = this.state.requests
+        this.setState({college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+            this.setState({hasSelectedFriend: true})
+        })
+
     }
        
     render() {
@@ -343,6 +198,7 @@ class FriendPage extends Component {
         return (
             <div>
                 {this.props.menu()}
+                {this.state.dataReceived ? 
                 <div>
                     <div class="friendMenu">
                         <div class="titleRow">
@@ -374,8 +230,8 @@ class FriendPage extends Component {
                             </div>
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
-                                {friendList.map(friend => (
-                                    <ListGroupItem tag="a" href="#" action>
+                                {friendList.map((friend, index) => (
+                                    <ListGroupItem type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
                                         <Row>
                                             <Col xs={12} md={8}>
                                                 <span> {friend.firstName} {friend.lastName} </span>
@@ -425,6 +281,7 @@ class FriendPage extends Component {
                         </div>
                     </div>
 
+                    {this.state.hasSelectedFriend ?
                     <div class="sidemenu-main">
                         <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
                             <Tab eventKey="details" title="Details">
@@ -440,15 +297,15 @@ class FriendPage extends Component {
                                                 <tbody>
                                                     <tr>
                                                         <th scope="row">College</th>
-                                                        <td>College of Business (RVRCOB)</td>
+                                                        <td>{this.state.college}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Degree</th>
-                                                        <td>Bachelor of Science in Marketing Management (MKT)</td>
+                                                        <td>{this.state.degree}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">ID Number</th>
-                                                        <td>116</td>
+                                                        <td>{this.state.idnum}</td>
                                                     </tr>
                                                 </tbody>
                                             </Table>
@@ -469,6 +326,24 @@ class FriendPage extends Component {
                                                     <tr>
                                                         <th scope="row">Break Length</th>
                                                         <td>15 Minutes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Faculty</th>
+                                                        <td>
+                                                        <Autocomplete
+                                                            disabled
+                                                            // multiple
+                                                            id="combo-box-demo"
+                                                            // options={this.state.programList}
+                                                            // getOptionLabel={option => option.name}
+                                                            // style={{ width: 500 }}
+                                                            renderInput={params => <TextField {...params} label="" variant="outlined" />}
+                                                            // value={this.state.value}
+                                                            // inputValue={this.state.value}
+                                                            // searchText={this.state.value}
+                                                            // onChange={this.props.onChange}
+                                                        />
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </Table>
@@ -534,7 +409,9 @@ class FriendPage extends Component {
                             </Tab>
                         </Tabs>
                     </div>
+                    : null}
                 </div>
+                : null}
             </div>     
         );
     }
