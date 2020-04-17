@@ -34,6 +34,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import groupArray from 'group-array'
 
+import ReactLoading from 'react-loading';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -111,13 +113,13 @@ class FriendPage extends Component {
             currentContent: "",
             generatedContents: [],
             pagesCount: 1,
-            dataReceived: false,
+            dataReceived: false, //whole page
             allowEdit: false,
             openAlert: false,
             selectedFriend: "",
-            hasSelectedFriend: false,
+            hasSelectedFriend: false, //right side
+            contentSelected: false,
             schedules: [],
-
             college: '', 
             degree: '',
             idnum: '',
@@ -175,6 +177,7 @@ class FriendPage extends Component {
         this.setState({generatedContents}, ()=>{
             this.setState({currentContent: generatedContents[0]}, () => {
                 this.setState({hasSelectedFriend: true})
+                
             })
             this.setState({pagesCount: generatedContents.length});
             this.setState({currentPage: 0})
@@ -204,6 +207,7 @@ class FriendPage extends Component {
     }
 
     handleClick = (e, i) => {
+        this.setState({contentSelected: true})
         const requests = this.state.requests
         axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+requests[i].id+'/')
         .then(res => {
@@ -461,140 +465,152 @@ class FriendPage extends Component {
                             </Dialog>
                         </div>
                     </div>
+                    {this.state.contentSelected ? 
+                        <div>
+                        {this.state.hasSelectedFriend ?
+                        <div class="sidemenu-main">
+                            <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
+                                <Tab eventKey="details" title="Details">
+                                    <div className="friendName">
+                                        <center><h1> Name </h1></center>
+                                    </div>
 
-                    {this.state.hasSelectedFriend ?
-                    <div class="sidemenu-main">
-                        <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
-                            <Tab eventKey="details" title="Details">
-                                <div className="friendName">
-                                    <center><h1> Name </h1></center>
-                                </div>
+                                    <div className="friendDetails">
+                                        <div class="columnn" style={{float: "left", width: "65%"}}>
+                                            <div>
+                                                <h3> Details </h3>
+                                                <Table responsive size="sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">College</th>
+                                                            <td>{this.state.college}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Degree</th>
+                                                            <td>{this.state.degree}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">ID Number</th>
+                                                            <td>{this.state.idnum}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </Table>
+                                            </div>
 
-                                <div className="friendDetails">
-                                    <div class="columnn" style={{float: "left", width: "65%"}}>
-                                        <div>
-                                            <h3> Details </h3>
-                                            <Table responsive size="sm">
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">College</th>
-                                                        <td>{this.state.college}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Degree</th>
-                                                        <td>{this.state.degree}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">ID Number</th>
-                                                        <td>{this.state.idnum}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </Table>
+                                            <div>
+                                                <h3> Preferences </h3>
+                                                <Table responsive size="sm">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">Earliest Time</th>
+                                                            <td>{this.state.earliest_class_time}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Latest Time</th>
+                                                            <td>{this.state.latest_class_time}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Break Length</th>
+                                                            <td>{this.state.break_length}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Faculty</th>
+                                                            <td>
+                                                            <Autocomplete
+                                                                disabled
+                                                                // multiple
+                                                                id="combo-box-demo"
+                                                                // options={this.state.programList}
+                                                                // getOptionLabel={option => option.name}
+                                                                // style={{ width: 500 }}
+                                                                renderInput={params => <TextField {...params} label="" variant="outlined" />}
+                                                                // value={this.state.value}
+                                                                // inputValue={this.state.value}
+                                                                // searchText={this.state.value}
+                                                                // onChange={this.props.onChange}
+                                                            />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </Table>
+                                            </div>
                                         </div>
 
-                                        <div>
-                                            <h3> Preferences </h3>
-                                            <Table responsive size="sm">
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">Earliest Time</th>
-                                                        <td>{this.state.earliest_class_time}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Latest Time</th>
-                                                        <td>{this.state.latest_class_time}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Break Length</th>
-                                                        <td>{this.state.break_length}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Faculty</th>
-                                                        <td>
-                                                        <Autocomplete
-                                                            disabled
-                                                            // multiple
-                                                            id="combo-box-demo"
-                                                            // options={this.state.programList}
-                                                            // getOptionLabel={option => option.name}
-                                                            // style={{ width: 500 }}
-                                                            renderInput={params => <TextField {...params} label="" variant="outlined" />}
-                                                            // value={this.state.value}
-                                                            // inputValue={this.state.value}
-                                                            // searchText={this.state.value}
-                                                            // onChange={this.props.onChange}
+                                        <div class="columnn" style={{float: "left", width: "35%"}}>
+                                            <center><img id='loweeer' src={SidebarIMG}/></center>
+                                        </div>
+                                    </div>
+                                </Tab>
+
+                                <Tab eventKey="schedule" title="Schedule">
+                                <Grid container >
+                                    <Grid item xs={12}>
+                                        <br></br>
+                                            <Typography gutterBottom variant="h3" align="center">
+                                            FIRST TRIMESTER, AY 2019 - 2020
+                                            </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12} className={'gridSavedContent'}>
+                                        <div id='savedContent' className='savedContent' style={{height: "75em", color:"black"}}>
+                                            <span>{this.state.currentContent}</span>
+                                        </div>
+                                    </Grid>
+
+                                    <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                        <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                                                <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                                    <PaginationItem disabled={this.state.currentPage <= 0}>
+                                                        <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                                            previous/>
+                                                    </PaginationItem>
+                                                    {[...Array(this.state.pagesCount)].map((page, i) => 
+                                                        <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                                            <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                                            {i + 1}
+                                                            </PaginationLink>
+                                                        </PaginationItem>
+                                                        )}
+                                                    <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                                        <PaginationLink
+                                                            onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                                            next
                                                         />
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </Table>
+                                                        
+                                                        </PaginationItem>
+                                                </Pagination>
                                         </div>
-                                    </div>
-
-                                    <div class="columnn" style={{float: "left", width: "35%"}}>
-                                        <center><img id='loweeer' src={SidebarIMG}/></center>
-                                    </div>
-                                </div>
-                            </Tab>
-
-                            <Tab eventKey="schedule" title="Schedule">
-                            <Grid container >
-                                <Grid item xs={12}>
-                                    <br></br>
-                                        <Typography gutterBottom variant="h3" align="center">
-                                        FIRST TRIMESTER, AY 2019 - 2020
-                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                        <center>
+                                        <a className="backBtn" href="/compare_schedule">
+                                            <Button
+                                            variant="contained"
+                                            className={classes.buttonStyle}
+                                            >
+                                                Compare Schedules
+                                            </Button>
+                                        </a>
+                                        </center>
+                                    </Grid>
                                 </Grid>
-
-                                <Grid item xs={12} className={'gridSavedContent'}>
-                                    <div id='savedContent' className='savedContent' style={{height: "75em", color:"black"}}>
-                                        <span>{this.state.currentContent}</span>
-                                    </div>
-                                </Grid>
-
-                                <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
-                                    <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                                            <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
-                                                <PaginationItem disabled={this.state.currentPage <= 0}>
-                                                    <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                                        previous/>
-                                                </PaginationItem>
-                                                {[...Array(this.state.pagesCount)].map((page, i) => 
-                                                    <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                                        <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                                        {i + 1}
-                                                        </PaginationLink>
-                                                    </PaginationItem>
-                                                    )}
-                                                <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                                                    <PaginationLink
-                                                        onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                                        next
-                                                    />
-                                                    
-                                                    </PaginationItem>
-                                            </Pagination>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
-                                    <center>
-                                    <a className="backBtn" href="/compare_schedule">
-                                        <Button
-                                        variant="contained"
-                                        className={classes.buttonStyle}
-                                        >
-                                            Compare Schedules
-                                        </Button>
-                                    </a>
-                                    </center>
-                                </Grid>
-                            </Grid>
-                            </Tab>
-                        </Tabs>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                        
+                        : 
+                        <div className={"sidemenu-main"} style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}>
+                            <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                        </div>}
                     </div>
-                    : null}
+                    :
+                    <div className={"sidemenu-main"}><h3>Select a friend to see their schedule! :D</h3></div>
+                    }
                 </div>
-                : null}
+                : 
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                </div>}
             </div>     
         );
     }
