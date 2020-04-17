@@ -20,6 +20,7 @@ import PreferencesPage from "./pages/Preferences.jsx";
 import SearchCoursesPage from "./pages/SearchCourses.jsx";
 import ViewFriendsPage from "./pages/FriendPage.jsx";
 import Menu from "./components/Menu.jsx";
+import CompareSchedulePage from "./pages/CompareSchedule.jsx";
 
 import axios from 'axios';
 
@@ -274,6 +275,14 @@ class App extends Component {
     )
   }
 
+  compareSchedulePage = () => {
+    return (
+      <CompareSchedulePage
+        menu={this.menu}
+      />
+    )
+  }
+
   render() {
 
     return (
@@ -305,6 +314,9 @@ class App extends Component {
           }
           {this.state.logged_in && 
           <Route exact path="/view_friends" component={this.viewFriendsPage} />
+          }
+          {this.state.logged_in && 
+          <Route exact path="/compare_schedule" component={this.compareSchedulePage} />
           }
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
           {this.state.logged_in
