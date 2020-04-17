@@ -4,6 +4,8 @@ import '../css/Menu.css';
 import NotifCenter from './Notifications.jsx'
 import Friends from './Friends.jsx'
 
+import Avatar from 'react-avatar';
+
 import {
     Collapse,
     NavbarToggler,
@@ -45,9 +47,10 @@ class Menu extends React.Component{
                     <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
                     <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
                     <Nav.Link href="/profile">
-                        <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="10" cy="10" r="8"></circle>
-                        </svg>
+                        </svg> */}
+                        <Avatar name={this.props.first_name +" "+ this.props.last_name} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "14px",}} />
                        {this.props.first_name} 
                     </Nav.Link>
                     <Nav.Link>

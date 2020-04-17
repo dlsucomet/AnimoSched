@@ -40,6 +40,7 @@
     width: 35%;
 }
 
+
 .nav-tabs .nav-link {
     color: #505050 !important;
 }
@@ -48,3 +49,18 @@
     color: #006A4E !important;
     font-weight: bold !important;
 }
+
+/* .friend_btn span.btn_content{
+    position: relative;
+    content: "Friend";
+}
+
+.friend_btn:hover span.btn_content{
+    display: none;
+}
+
+.friend_btn:hover span.btn_content:before{
+    position: relative;
+    content: "Unriend";
+} */
+

@@ -23,6 +23,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import ReactLoading from 'react-loading';
+import ComboBox from '../components/ComboBox.jsx';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -224,6 +225,7 @@ class GenerateSchedule extends Component {
 
     handleAutoCompleteChange = (e, val) => {
         this.setState({currentCourse: val});
+        this.setState({AutoCompleteValue: val});
     }
 
     handleAutoCompletePress = (e) => {
@@ -234,43 +236,46 @@ class GenerateSchedule extends Component {
     }
 
     handleAddCoursePriority = () => {
-        this.setState({AutoCompleteValue: []})
+        console.log(this.state.currentCourse)
         const val = this.state.currentCourse;
-        this.setState({currentCourse: undefined})
+        this.setState({AutoCompleteValue: []})
+        this.setState({currentCourse: []})
         const newCourseList = [];
 
-        if(val != undefined){
-            this.state.courseList.map(course => {
-                if(course.id != val.id){
-                    newCourseList.push(course)
+        if(val != undefined && val != []){
+            // this.state.courseList.map(course => {
+            //     if(course.id != val.id){
+            //         newCourseList.push(course)
+            //     }
+            // })
+            // this.setState({courseList:newCourseList})
+            val.map(course => {
+                if(course.course_code != undefined && course.course_code.trim() != ''){
+                    const id = localStorage.getItem('user_id');
+                    const data = {
+                        courses: course.id,
+                        priority: true,
+                        user: id
+                    }
+                    axios.post('https://archerone-backend.herokuapp.com/api/coursepriority/', data,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(res => {
+                        console.log(res)
+                        const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':course.course_code}; 
+                        this.setState(state =>{
+                            const highCourses = state.highCourses.concat(newCourse);
+                            return{highCourses};
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error.response)
+                    });
                 }
             })
-            this.setState({courseList:newCourseList})
-            if(val.course_code != undefined && val.course_code.trim() != ''){
-                const id = localStorage.getItem('user_id');
-                const data = {
-                    courses: val.id,
-                    priority: true,
-                    user: id
-                }
-                axios.post('https://archerone-backend.herokuapp.com/api/coursepriority/', data,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => {
-                    console.log(res)
-                    const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':val.course_code}; 
-                    this.setState(state =>{
-                        const highCourses = state.highCourses.concat(newCourse);
-                        return{highCourses};
-                    });
-                })
-                .catch(error => {
-                    console.log(error.response)
-                });
-            }
         }       
     }
 
@@ -568,12 +573,8 @@ class GenerateSchedule extends Component {
                                     value = {this.state.Input}
                                     onKeyPress={this.handleKeyPress}
                                     /> */}
-                                    <Autocomplete
-                                    options={this.state.courseList}
-                                    getOptionLabel={option => option.course_code}
-                                    style={{ width: 200 }}
-                                    filterSelectedOptions
-                                    renderInput={params => <TextField {...params} label="Course" variant="outlined" />}
+                                    <ComboBox
+                                    page={"add"}
                                     onChange={this.handleAutoCompleteChange}
                                     onKeyPress={this.handleAutoCompletePress}
                                     value={this.state.AutoCompleteValue}
