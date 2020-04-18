@@ -857,7 +857,7 @@ class Index extends Component {
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           
           <img src={whiteBlob} className={"whiteBlob"}/>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} style={{flexGrow: 2}}>
             <Grid item xs={6} style={{height:"100%"}}>
                   <Typography gutterBottom variant="h3" align="center">
                     Create your schedule!

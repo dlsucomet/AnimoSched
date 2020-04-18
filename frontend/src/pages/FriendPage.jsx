@@ -41,6 +41,9 @@ import ReactLoading from 'react-loading';
 
 import friendDef from '../assets/friend2.png';
 import { Chip } from "@material-ui/core";
+
+import calendarIMG from '../images/Register.svg';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -552,7 +555,7 @@ class FriendPage extends Component {
                     {this.state.contentSelected ? 
                         <div>
                         {this.state.hasSelectedFriend ?
-                        <div class="sidemenu-main">
+                        <div class="sidemenu-main" >
                             <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
                                 <Tab eventKey="details" title="Details">
                                     <div className="friendName">
@@ -715,57 +718,68 @@ class FriendPage extends Component {
                                 </Tab>
 
                                 <Tab eventKey="schedule" title="Schedule">
-                                <Grid container >
-                                    <Grid item xs={12}>
-                                        <br></br>
-                                            <Typography gutterBottom variant="h3" align="center" style={{color:"black"}}>
-                                            FIRST TRIMESTER, AY 2019 - 2020
-                                            </Typography>
-                                    </Grid>
+                                <div className={"hasSchedules"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
+                                    <Grid container >
+                                        <Grid item xs={12}>
+                                            <br></br>
+                                                <Typography gutterBottom variant="h3" align="center" style={{color:"black"}}>
+                                                FIRST TRIMESTER, AY 2019 - 2020
+                                                </Typography>
+                                        </Grid>
 
-                                    <Grid item xs={12} className={'gridSavedContent'}>
-                                        <div id='savedContent' className='savedContent' style={{height: "80em", color:"black"}}>
-                                            <span>{this.state.currentContent}</span>
-                                        </div>
-                                    </Grid>
+                                        <Grid item xs={12} className={'gridSavedContent'}>
+                                            <div id='savedContent' className='savedContent' style={{height: "80em", color:"black"}}>
+                                                <span>{this.state.currentContent}</span>
+                                            </div>
+                                        </Grid>
 
-                                    <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
-                                        <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                                                <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
-                                                    <PaginationItem disabled={this.state.currentPage <= 0}>
-                                                        <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                                            previous/>
-                                                    </PaginationItem>
-                                                    {[...Array(this.state.pagesCount)].map((page, i) => 
-                                                        <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                                            <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                                            {i + 1}
-                                                            </PaginationLink>
+                                        <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                            <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                                                    <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                                        <PaginationItem disabled={this.state.currentPage <= 0}>
+                                                            <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                                                                previous/>
                                                         </PaginationItem>
-                                                        )}
-                                                    <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                                                        <PaginationLink
-                                                            onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                                            next
-                                                        />
-                                                        
-                                                        </PaginationItem>
-                                                </Pagination>
+                                                        {[...Array(this.state.pagesCount)].map((page, i) => 
+                                                            <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                                                                <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                                                                {i + 1}
+                                                                </PaginationLink>
+                                                            </PaginationItem>
+                                                            )}
+                                                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                                            <PaginationLink
+                                                                onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                                                                next
+                                                            />
+
+                                                            </PaginationItem>
+                                                    </Pagination>
+                                            </div>
+                                        </Grid>
+                                        <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                            <center>
+                                            <a className="backBtn" href="/compare_schedule">
+                                                <Button
+                                                variant="contained"
+                                                className={classes.buttonStyle}
+                                                >
+                                                    Compare Schedules
+                                                </Button>
+                                            </a>
+                                            </center>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                                <div className={"noSchedules"} style={((this.state.generatedContents.length <= 0) && this.state.hasSelectedFriend) ? {justifyContent: "center"} : {display: "none"}}>
+                                        <div className={"sidemenu-main"} style={{justifyContent: "center", alignItems: "center"}}>
+                                         
+                                            <center><img src={calendarIMG} style={{height: "10em", display:"block", whiteSpace: "pre", marginTop:"10em"}}/></center>
+                                            <br></br>
+                                            <center><h3>Your friend has not made any schedules yet</h3></center>
+                                            
                                         </div>
-                                    </Grid>
-                                    <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
-                                        <center>
-                                        <a className="backBtn" href="/compare_schedule">
-                                            <Button
-                                            variant="contained"
-                                            className={classes.buttonStyle}
-                                            >
-                                                Compare Schedules
-                                            </Button>
-                                        </a>
-                                        </center>
-                                    </Grid>
-                                </Grid>
+                                </div>
                                 </Tab>
                             </Tabs>
                         </div>
