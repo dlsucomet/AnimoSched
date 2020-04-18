@@ -66,7 +66,7 @@ class Notifications extends React.Component{
             var newNotifs = this.state.newNotifs;
             res.data.map(notif=> {
                 const database = this.state.database;
-                database.push(this.createData('Schedule', notif.content, notif.seen, notif.date, "", "", notif.id))
+                database.push(this.createData(notif.category, notif.content, notif.seen, notif.date, "", "", notif.id))
                 if(!notif.seen){
                     newNotifs += 1;
                 }
