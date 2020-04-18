@@ -50,11 +50,11 @@ class Flowchart extends Component {
                 var currentTerm = term.term + 3 * (term.year - 1);
                 termsList.push(newTerm);
                 term.courses.map((course, j) => {
-                  var outputsList = [];
+                  var outputsList = {};
                   coursesList.push(course);
                   console.log(course);
                   course.prerequisite_to.map((prereq_to) => {
-                      outputsList.push(prereq_to)
+                    outputsList[prereq_to] = { output: "right", input: "left" }                    
                   })                  
                   console.log(outputsList);
                   flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:(currentTerm-1)*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
