@@ -613,6 +613,7 @@ class GenerateSchedule extends Component {
                                         className={classes.schedButton}
                                         disabled={this.state.loading}
                                         onClick={()=>this.createSchedInfo()}
+                                        
                                         // style={{backgroundColor: "green"}}
                                         >
                                         Generate Schedule
@@ -624,7 +625,7 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
 
-                        <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}} ref={this.generatedRef} >
+                        <div  ref={this.generatedRef}  className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">
