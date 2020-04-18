@@ -160,7 +160,7 @@ setSchedInfo = (type) => {
                 </div>
 
                 <div>
-                     <Grid container>
+                     <Grid container style={{marginTop: "30px"}}>
                           <Grid item xs={6}>
 
                            <center><h6>Your Schedule</h6></center>
