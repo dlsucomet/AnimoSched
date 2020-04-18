@@ -48,6 +48,7 @@ class FlowchartTerm(models.Model):
     degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
     batch = models.CharField(max_length=3)
     courses = models.ManyToManyField(Course)
+    tracks = models.CharField(validators=int_list_validator, null=True, blank=True)
     year = models.IntegerField()
     term = models.IntegerField()
     timestamp = models.DateTimeField(auto_now=True)
