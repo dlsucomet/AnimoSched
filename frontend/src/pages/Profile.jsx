@@ -201,7 +201,7 @@ class Profile extends Component {
         const { classes } = this.props;
       return (
           <div>
-            {this.props.menu()}
+            {this.props.menu('profile')}
 
             {this.state.dataReceived ? 
             <div>

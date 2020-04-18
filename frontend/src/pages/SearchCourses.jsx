@@ -239,7 +239,7 @@ class SearchCourses extends Component {
 
       return (
           <div>
-            {this.props.menu()}
+            {this.props.menu('search_courses')}
 
             {this.state.dataReceived ? 
             <div className="search-container">

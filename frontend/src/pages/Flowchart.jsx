@@ -91,7 +91,7 @@ class Flowchart extends Component {
 
       return (
         <div>
-            {this.props.menu()}
+            {this.props.menu('flowchart')}
 
             {this.state.dataReceived ? 
             <div>
