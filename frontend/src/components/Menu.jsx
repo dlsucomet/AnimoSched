@@ -22,7 +22,7 @@ class Menu extends React.Component{
     constructor(props){
         super(props);
         this.state={
-          
+            currentPage: props.currentPage
         }
     }
 
@@ -42,11 +42,11 @@ class Menu extends React.Component{
                 <React.Fragment>
                     <Nav /*activeKey={"/preferences"}*/>  
                     <Nav.Link /*active={this.state.activePage["viewFriends"]} onClick={()=>this.handleChange("viewFriends")}*/ href="/view_friends" >View Friends</Nav.Link>
-                    <Nav.Link href="/preferences">Preferences</Nav.Link>
-                    <Nav.Link href="/search_courses" >Search Courses</Nav.Link>
-                    <Nav.Link href="/generateSchedule">Generate Schedule</Nav.Link>
-                    <Nav.Link href="/flowchart">View Flowchart</Nav.Link>
-                    <Nav.Link href="/profile">
+                    <Nav.Link active={this.state.currentPage == 'preferences'} href="/preferences">Preferences</Nav.Link>
+                    <Nav.Link active={this.state.currentPage == 'search_courses'} href="/search_courses" >Search Courses</Nav.Link>
+                    <Nav.Link active={this.state.currentPage == 'generateSchedule'} href="/generateSchedule">Generate Schedule</Nav.Link>
+                    <Nav.Link active={this.state.currentPage == 'flowchart'} href="/flowchart">View Flowchart</Nav.Link>
+                    <Nav.Link active={this.state.currentPage == 'profile'} href="/profile">
                         {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="10" cy="10" r="8"></circle>
                         </svg> */}

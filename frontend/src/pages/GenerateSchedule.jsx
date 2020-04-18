@@ -555,7 +555,7 @@ class GenerateSchedule extends Component {
 
         return (
             <div>
-                {this.props.menu()}
+                {this.props.menu('generateSchedule')}
                 {this.state.dataReceived ?
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>

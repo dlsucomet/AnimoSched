@@ -12,7 +12,10 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
@@ -34,6 +37,15 @@ const styles = theme => ({
           },
     }
   });
+
+const GreenCheckbox = withStyles({
+    root: {
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
 
 class Profile extends Component {
     constructor(props){
@@ -189,7 +201,7 @@ class Profile extends Component {
         const { classes } = this.props;
       return (
           <div>
-            {this.props.menu()}
+            {this.props.menu('profile')}
 
             {this.state.dataReceived ? 
             <div>
@@ -323,8 +335,18 @@ class Profile extends Component {
 
                 <div className="profile-category-content">
                     Receive notifications when
-
-                    <form>
+                    <FormGroup>
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"The status of your chosen sections in your schedule has changed."} />
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"Course conflicts in your schedule."} />
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"Your friends make changes to their schedules and preferences."}/>
+                    </FormGroup>
+                    <center>
+                        <input class="btn btn-success submit-form" type="submit" value="Submit"/>
+                    </center>
+                    {/* <form>
                         <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
                         <label className="checkbox-description" for=""> The status of your chosen sections in your schedule has changed. </label><br/>
 
@@ -337,7 +359,7 @@ class Profile extends Component {
                         <center>
                         <input class="btn btn-success submit-form" type="submit" value="Submit"/>
                         </center>
-                    </form>
+                    </form> */}
 
                 </div>
             </div>
@@ -347,8 +369,19 @@ class Profile extends Component {
 
                 <div className="profile-category-content">
                     Allow friends to view
+                    <FormGroup>
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"Your saved schedules."} />
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"Your schedule preferences."} />
+                        <FormControlLabel
+                        control = {<GreenCheckbox color="primary"/>} label={"College and course details."}/>
+                    </FormGroup>
+                    <center>
+                        <input class="btn btn-success submit-form" type="submit" value="Submit"/>
+                    </center>
 
-                    <form>
+                    {/* <form>
                         <input className="checkbox-description" type="checkbox" id="" name="" value=""/>
                         <label className="checkbox-description" for=""> Your saved schedules. </label><br/>
 
@@ -361,7 +394,7 @@ class Profile extends Component {
                         <center>
                             <input class="btn btn-success submit-form" type="submit" value="Submit"/>
                         </center>
-                    </form>
+                    </form> */}
                 </div>
             </div>
             </div> : 

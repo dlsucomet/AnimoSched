@@ -28,7 +28,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
 import ReactLoading from 'react-loading';
-
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const styles = theme => ({
   root: {
@@ -75,6 +75,7 @@ class SearchCourses extends Component {
         loading: false,
         radioVal: '',
         dataReceived: false,
+        skeletons: [...Array(8).keys()]
       }
       this.radioRef = React.createRef()
     }
@@ -239,7 +240,7 @@ class SearchCourses extends Component {
 
       return (
           <div>
-            {this.props.menu()}
+            {this.props.menu('search_courses')}
 
             {this.state.dataReceived ? 
             <div className="search-container">
@@ -296,6 +297,23 @@ class SearchCourses extends Component {
                           <StyledTableCell> Enrolled </StyledTableCell>
                         </TableRow>
                       </TableHead>
+                      {this.state.loading ? 
+                      <TableBody>
+                          {this.state.skeletons.map(skeleton =>(
+                            <StyledTableRow>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                            </StyledTableRow>
+                          ))}
+                      </TableBody>
+                      : 
                       <TableBody>
                         {this.state.siteData.map(row => (
                           <StyledTableRow key={row.classNmbr}>
@@ -310,7 +328,8 @@ class SearchCourses extends Component {
                             <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
                           </StyledTableRow>
                         ))}
-                      </TableBody>
+                        </TableBody>
+                        }
                     </Table>
                   </TableContainer>
                 </div>

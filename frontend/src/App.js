@@ -218,6 +218,18 @@ class App extends Component {
     )
   }
 
+  menu = (currentPage) => {
+    return (
+      <Menu
+        handle_logout={this.handle_logout}
+        logged_in={this.state.logged_in}
+        first_name={this.state.first_name}
+        last_name={this.state.last_name}
+        currentPage={currentPage}
+      />
+    )
+  }
+
   mainPage = () => {
     return (
       <MainPage

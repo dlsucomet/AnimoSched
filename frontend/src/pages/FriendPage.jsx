@@ -37,10 +37,10 @@ import { green } from '@material-ui/core/colors';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import ReactLoading from 'react-loading';
 
 import friendDef from '../assets/friend2.png';
+import { Chip } from "@material-ui/core";
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -611,7 +611,10 @@ class FriendPage extends Component {
                                                     <tr>
                                                         <th scope="row">Faculty</th>
                                                         <td>
-                                                        <Autocomplete
+                                                        {this.state.profList.map(prof => (
+                                                            <Chip label={prof.full_name}></Chip>
+                                                        ))}
+                                                        {/* <Autocomplete
                                                             multiple
                                                             disabled
                                                             id="combo-box-demo"
@@ -620,13 +623,16 @@ class FriendPage extends Component {
                                                             style={{ width: 400 }}
                                                             renderInput={params => <TextField {...params} label="" variant="outlined" />}
                                                             value={this.state.profList}
-                                                        />
+                                                        /> */}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Section</th>
                                                         <td>
-                                                        <Autocomplete
+                                                        {this.state.sectionList.map(section => (
+                                                            <Chip label={section.section_code}></Chip>
+                                                        ))}
+                                                        {/* <Autocomplete
                                                             multiple
                                                             disabled
                                                             id="combo-box-demo"
@@ -635,7 +641,7 @@ class FriendPage extends Component {
                                                             style={{ width: 400 }}
                                                             renderInput={params => <TextField {...params} label="" variant="outlined" />}
                                                             value={this.state.sectionList}
-                                                        />
+                                                        /> */}
                                                         </td>
                                                     </tr>
                                                     <tr>
