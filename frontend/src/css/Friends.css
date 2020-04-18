@@ -6,10 +6,19 @@
     height: 50px;
     width: 500px;
     white-space: normal;
+    color: #212529;
+}
+
+.panelItem:disabled {
+    color: #212529;
 }
 
 .panelItem:focus {
     background-color: #F6F7F8;
+}
+
+.panelItem:hover {
+    background-color: gray;
 }
 
 .marginRightSeparator {

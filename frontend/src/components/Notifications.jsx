@@ -170,6 +170,13 @@ class Notifications extends React.Component{
                             <span> {option.message} </span>
                         </DropdownItem>
                     ))}
+
+                    {options.length == 0 &&
+                        <DropdownItem disabled className="notifItem">
+                            <DropdownItem divider />
+                            <center>No Notifications</center>
+                        </DropdownItem>
+                    }
                 </DropdownMenu>
             </UncontrolledDropdown>
         );

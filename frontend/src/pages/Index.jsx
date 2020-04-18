@@ -353,22 +353,24 @@ class Index extends Component {
 
   setSchedInfo = () => {
     console.log(this.state.schedules)
-    const palette = JSON.parse(localStorage.getItem('palette'))
-    var generatedContents = this.state.schedules.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
-    );
-    this.setState({currentPage: 0})
-    this.setState({generatedContents});
-    // this.setState({hideGenContent: false});
-    this.setState({pagesCount: generatedContents.length});
-    this.setState({currentContent: generatedContents[0]},() => {
-      const currentClasses = [];
-      const offerings = this.state.currentContent.props.offerings
-      for(var i = 0 ; i < offerings.length ; i += 2){
-        currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
-      }
-      this.setState({currentClasses, scheduleChanged: true})
-    })
+    if(this.state.schedules.length > 0){
+      const palette = JSON.parse(localStorage.getItem('palette'))
+      var generatedContents = this.state.schedules.map((item, index) =>
+          <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
+      );
+      this.setState({currentPage: 0})
+      this.setState({generatedContents});
+      // this.setState({hideGenContent: false});
+      this.setState({pagesCount: generatedContents.length});
+      this.setState({currentContent: generatedContents[0]},() => {
+        const currentClasses = [];
+        const offerings = this.state.currentContent.props.offerings
+        for(var i = 0 ; i < offerings.length ; i += 2){
+          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
+        }
+        this.setState({currentClasses, scheduleChanged: true})
+      })
+    }
   }
 
   updateSchedTitle=(text)=>{
