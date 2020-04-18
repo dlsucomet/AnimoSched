@@ -21,6 +21,8 @@ import Grid from '@material-ui/core/Grid';
 
 import ReactLoading from 'react-loading';
 
+import { Element } from 'react-scroll'
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -314,7 +316,7 @@ class Profile extends Component {
                     <b>Email Address</b>
                     <br/>
                     {/* <input value={this.state.email}/><br/><br/> */}
-                    <Row horizontal= 'start'>
+                    <Row horizontal= 'start' id="notifs-container">
                         <EditableLabel
                             ref={this.editEmail}
                             text={this.state.email}
@@ -329,11 +331,12 @@ class Profile extends Component {
                     <br/>
                 </div>
             </div>
-
-            <div className="profile-category">
+            
+            
+            <div className="profile-category" >
                 <h2>Notification Settings</h2>
-
-                <div className="profile-category-content">
+                    
+                <div className="profile-category-content" >
                     Receive notifications when
                     <FormGroup>
                         <FormControlLabel
