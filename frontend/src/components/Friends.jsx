@@ -290,6 +290,13 @@ class Friends extends React.Component{
                             </Row>
                         </DropdownItem>
                     ))}
+                    
+                    {friendRequests.length == 0 &&
+                        <DropdownItem disabled className="panelItem">
+                            <DropdownItem divider />
+                            <center>No Friend Requests</center>
+                        </DropdownItem>
+                    }
                 </div>;
         }else if(currentPanel == "list"){
             this.state.changePanel = 
@@ -304,10 +311,18 @@ class Friends extends React.Component{
                         </DropdownItem>
                     ))}
 
+                    {friendList.length != 0 &&
+                        <DropdownItem header> 
+                            <Link to={"/view_friends"} id="dropdownFooter">More Details</Link>
+                        </DropdownItem>
+                    }
 
-                    <DropdownItem header> 
-                        <Link to={"/view_friends"} id="dropdownFooter">More Details</Link>
-                    </DropdownItem>
+                    {friendList.length == 0 &&
+                        <DropdownItem disabled className="panelItem">
+                            <DropdownItem divider />
+                            <center>No Friends</center>
+                        </DropdownItem>
+                    }
                 </div>;
         }else{
             this.state.changePanel = 

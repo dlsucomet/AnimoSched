@@ -475,7 +475,7 @@ class FriendPage extends Component {
 
                         <div style={{height: "100%"}}>
                         
-                            <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto"}}>
+                            <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
                                 <TextField
                                     key={"friendPage_searchFriends"}
                                     id="friendPage_searchFriends"
@@ -519,6 +519,12 @@ class FriendPage extends Component {
                                         </Row>            
                                     </ListGroupItem>
                                 ))}
+
+                                {friendList.length == 0 &&
+                                    <ListGroupItem>
+                                        <center>No Friends</center>
+                                    </ListGroupItem>
+                                }
                             </ListGroup>
                             <Dialog
                                 open={this.state.openAlert}
