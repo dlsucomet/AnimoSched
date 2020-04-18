@@ -18,6 +18,7 @@ import whiteBlob from '../assets/whiteBlob.png'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -60,6 +61,8 @@ import ReactLoading from 'react-loading';
 import SearchIcon from '@material-ui/icons/Search';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Chip } from "@material-ui/core";
+import ComboBox from "../components/ComboBox.jsx";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -359,7 +362,12 @@ class Index extends Component {
     // this.setState({hideGenContent: false});
     this.setState({pagesCount: generatedContents.length});
     this.setState({currentContent: generatedContents[0]},() => {
-      this.setState({scheduleChanged: true})
+      const currentClasses = [];
+      const offerings = this.state.currentContent.props.offerings
+      for(var i = 0 ; i < offerings.length ; i += 2){
+        currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
+      }
+      this.setState({currentClasses, scheduleChanged: true})
     })
   }
 
@@ -478,15 +486,7 @@ class Index extends Component {
 
   toggleModalEdit = () => {
     var openModalVar = this.state.openModalEdit;
-    console.log(this.state.currentContent.props)
-    const currentClasses = [];
-    const offerings = this.state.currentContent.props.offerings
-    for(var i = 0 ; i < offerings.length ; i += 2){
-      currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
-    }
-    this.setState({currentClasses},()=>{
-      this.setState({openModalEdit: !openModalVar});
-    })
+    this.setState({openModalEdit: !openModalVar});
   }
   processPaletteChoices = (title, paletteArray) => {
     const colorDiv = paletteArray.map(function(palColor, index){
@@ -570,25 +570,34 @@ class Index extends Component {
     console.log(snackBarVariables);
   }
 
-  handleEditChange =(event)=>{
-    console.log("Hello der from saveEdit");
-    console.log(event.target.value);
-    var newClassList = event.target.value;
-    console.log(newClassList);
-    this.setState({newCurrentClasses: newClassList});
+  handleEditChange =(e, val)=>{
+    this.setState({newCurrentClasses: val});
   }
 
   handleEditSave=()=>{
     console.log("Schedule edit changes saved");
-    this.setState({currentClasses: this.state.newCurrentClasses})
-    this.setState({openModalEdit: false});
+    const currentClasses = this.state.currentClasses
+    this.state.newCurrentClasses.map(offering => {
+      currentClasses.push({title: offering.course + ' ' + offering.section, course_code: offering.classnumber})
+    })
+    this.setState({currentClasses, newCurrentClasses: []})
+    // this.setState({openModalEdit: false});
 
-    let snackBarVariables = [...this.state.snackBarVariables];
-    this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
-    snackBarVariables[0].snackBarSuccess = true;
-    // snackBarVariables[1].snackBarFailed = true;
-    this.setState({snackBarVariables});
-    console.log(snackBarVariables);
+    // let snackBarVariables = [...this.state.snackBarVariables];
+    // this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
+    // snackBarVariables[0].snackBarSuccess = true;
+    // // snackBarVariables[1].snackBarFailed = true;
+    // this.setState({snackBarVariables});
+    // console.log(snackBarVariables);
+  }
+  
+  handleDelete=(index)=>{
+    const currentClasses = this.state.currentClasses
+    if (index > -1) {
+      currentClasses.splice(index, 1);
+    }
+    this.setState({currentClasses})
+
   }
 
     render() {
@@ -645,25 +654,21 @@ class Index extends Component {
                           <div className="searchBarEdit" >
                             <h4>Search, add or remove your classes</h4>
                               <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
-                                  <Autocomplete
-                                    multiple
-                                    id="tags-outlined"
-                                    options={this.state.classList}
-                                    style={{ width: 500 }}
-                                    getOptionLabel={(option) => option.title}
-                                    defaultValue={this.state.currentClasses}
-                                    filterSelectedOptions
-                                    onChange={this.handleEditChange}
-                                    renderInput={(params) => (
-                                      <TextField
-                                        {...params}
-                                        variant="outlined"
-                                        label="Edit class schedule"
-                                        placeholder="Class Section"
-                                      />
-                                    )}
-                                  />
-                                
+                                <span>
+                                  {this.state.currentClasses.map((current, index) => (
+                                    <Chip label={current.title} onDelete={() => this.handleDelete(index)}></Chip>
+                                  ))}
+                                </span>
+                              </div>
+                              <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
+                                <ComboBox page={"edit"} value={this.state.newCurrentClasses} onChange={this.handleEditChange}></ComboBox>
+                                  <Button
+                                      variant="contained"
+                                      color = "Primary"
+                                      style={{backgroundColor: "green", color:"white", height:"56px"}}
+                                      onClick={this.handleEditSave}>
+                                      <AddIcon fontSize="small"/>  
+                                  </Button>
                               </div>
                           </div>
                         </ModalBody>
