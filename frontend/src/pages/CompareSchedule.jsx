@@ -62,6 +62,8 @@ class CompareSchedule extends Component {
             currentContentFriend: "Hello Friend",
             generatedContentsFriend: ["I'm", "Okay", "Now"],
             pagesCountFriend: 1,
+            schedulesUser: [],
+            schedulesFriend: [],
             }
     }
     
@@ -104,6 +106,41 @@ componentWillMount(){
     this.setState({currentContentFriend: this.state.generatedContentsFriend[this.state.currentPageFriend]});
     
 }
+
+setSchedInfo = (type) => {
+    console.log(this.state.schedules)
+    const palette = JSON.parse(localStorage.getItem('palette'))
+    
+    if(type == "user"){
+         var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
+        );
+        // this.setState({hideGenContent: false});
+        this.setState({generatedContentsUser}, ()=>{
+            this.setState({currentContentUser: generatedContentsUser[0]}, () => {
+//                this.setState({hasSelectedFriend: true})
+
+            })
+            this.setState({pagesCountUser: generatedContentsUser.length});
+            this.setState({currentPageUser: 0})
+        });
+
+    }else if(type == "friend"){
+         var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
+        );
+        // this.setState({hideGenContent: false});
+        this.setState({generatedContentsFriend}, ()=>{
+            this.setState({currentContentFriend: generatedContentsFriend[0]}, () => {
+//                this.setState({hasSelectedFriend: true})
+
+            })
+            this.setState({pagesCountFriend: generatedContentsFriend.length});
+            this.setState({currentPageFriend: 0})
+         });
+    }
+
+  }
     
     render() {
 
@@ -126,8 +163,8 @@ componentWillMount(){
                      <Grid container>
                           <Grid item xs={6}>
 
-                           <h6>Your Schedule</h6>
-                           <span>{this.state.currentContentUser}</span>
+                           <center><h6>Your Schedule</h6></center>
+                           <center><span>{this.state.currentContentUser}</span></center>
                               <div className = "paginationContainer" style={(this.state.generatedContentsUser != null) ? {} : {display: "none"}}>
                                   <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                                       <PaginationItem disabled={this.state.currentPageUser <= 0}>
@@ -153,8 +190,8 @@ componentWillMount(){
                           </Grid>
                           <Grid item xs={6}>
   
-                            <h6>Friend's Schedule</h6>
-                            <span>{this.state.currentContentFriend}</span>
+                            <center><h6>Friend's Schedule</h6></center>
+                            <center><span>{this.state.currentContentFriend}</span></center>
                             <div className = "paginationContainer" style={(this.state.generatedContentsFriend != null) ? {} : {display: "none"}}>
                               <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                                   <PaginationItem disabled={this.state.currentPageFriend <= 0}>
