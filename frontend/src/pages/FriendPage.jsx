@@ -261,6 +261,7 @@ class FriendPage extends Component {
             });
         console.log("pressed page " + index);
         console.log(this.state.generatedContents[index]);
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     setSchedInfo = () => {

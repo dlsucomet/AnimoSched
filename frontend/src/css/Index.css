@@ -114,8 +114,11 @@
 }
 
 .iconStyle{
+    height: 13vh;
+/*
     height: 70px;
     width: 70px;
+*/
 }
 
 .whiteBlob{
@@ -153,4 +156,10 @@
     content: "";
     display: table;
     clear: both;
+}
+
+.edit-current-classes-container{
+    border: 2px solid #16775D;
+    padding: 10px;
+    margin-bottom: 15px;
 }
