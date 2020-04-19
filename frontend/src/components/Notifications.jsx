@@ -18,10 +18,6 @@ import { HashLink as Link } from 'react-router-hash-link';
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios'
 
-import Scroll from 'react-scroll'
-const ScrollLink = Scroll.ScrollLink
-
-
 
 class Notifications extends React.Component{
 
@@ -146,18 +142,6 @@ class Notifications extends React.Component{
                 
                 <DropdownMenu right id="dropdownMenu">
                     <DropdownItem header id="notifSettings">
-                        
-                        <ScrollLink 
-                            to="notifs-container" 
-                            spy={true} 
-                            smooth={true} 
-                            duration={500} 
-                            className='some-class' 
-                            activeClass='some-active-class'
-                            id="headerLink"
-                          >
-                            Settings
-                          </ScrollLink>
                         
                         <Link to="profile#notifs-container" id="headerLink">Settings</Link>
                     </DropdownItem>

@@ -80,7 +80,7 @@ const GreenCheckbox = withStyles({
 const styles = theme => ({
   buttonStyle:{
       textTransform: "none",
-      width: "150px",
+      width: "160px",
       borderRadius: "25px",
       padding: "10px",
       paddingLeft: "10px",
@@ -101,7 +101,7 @@ const styles = theme => ({
 
     deleteButtonStyle:{
       textTransform: "none",
-      width: "150px",
+      width: "160px",
       borderRadius: "25px",
       padding: "10px",
       paddingLeft: "10px",
@@ -216,6 +216,8 @@ class Index extends Component {
         snackbarMsg: "",
         allowEdit: true,
         scheduleChanged: true,
+//        this.scheduleRef = React.createRef();
+        
       }
       if(localStorage.getItem('palette') == undefined){
         localStorage.setItem('palette', JSON.stringify(['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C']))
@@ -237,6 +239,7 @@ class Index extends Component {
       });
       console.log("pressed page " + index);
       console.log(this.state.generatedContents[index]);
+      window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   createTimeslot = (day, hour, minute) =>{
@@ -460,9 +463,12 @@ class Index extends Component {
   exportSched = () => {
     window.scrollTo(0, 0);
     html2canvas(document.querySelector("#savedSchedContent")).then(canvas => {
-      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
-      // var = canvas.toDataURL().replace('image/png', 'image/octet-stream');
-      // Canvas2Image.saveAsPNG(canvas.toDataURL())
+//      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+        var filename = this.state.currentContent.title + ".png";
+        console.log(this.state.currentContent.props.titleName);
+        console.log(filename);
+        this.saveAs(canvas.toDataURL(), this.state.currentContent.props.titleName+".png"); 
+        
 
     });
 
@@ -473,6 +479,31 @@ class Index extends Component {
     this.setState({snackBarVariables});
     console.log(snackBarVariables);
   }
+  
+  saveAs = (uri, filename) => {
+
+    var link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+
+        link.href = uri;
+        link.download = filename;
+
+        //Firefox requires the link to be in the body
+        document.body.appendChild(link);
+
+        //simulate click
+        link.click();
+
+        //remove the link when done
+        document.body.removeChild(link);
+
+    } else {
+
+        window.open(uri);
+
+    }
+}
 
   handleCloseModalCustomize = ()=>{
     this.setState({openModalCustomize: false})
@@ -604,6 +635,7 @@ class Index extends Component {
     this.setState({currentClasses})
 
   }
+  
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -658,14 +690,17 @@ class Index extends Component {
                         <ModalBody>
                           <div className="searchBarEdit" >
                             <h4>Search, add or remove your classes</h4>
+                              
+                              <h7>your current classes</h7>
                               <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
-                                <span>
+                                
+                                <span className={'edit-current-classes-container'}>
                                   {this.state.currentClasses.map((current, index) => (
-                                    <Chip label={current.title} onDelete={() => this.handleDelete(index)}></Chip>
+                                    <Chip label={current.title} onDelete={() => this.handleDelete(index)} style={{marginBottom: "5px", marginRight: "5px"}}></Chip>
                                   ))}
                                 </span>
                               </div>
-                              <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
+                              <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available", marginBottom: "15px"}}>
                                 <ComboBox page={"edit"} value={this.state.newCurrentClasses} onChange={this.handleEditChange}></ComboBox>
                                   <Button
                                       variant="contained"
@@ -679,7 +714,7 @@ class Index extends Component {
                         </ModalBody>
                       <ModalFooter>
                         <Button color="primary" onClick={this.handleEditSave}>Save Changes</Button>{' '}
-                        <Button color="secondary" onClick={this.toggleModalEdit}>Cancel</Button>
+                        <Button style={{color: "gray"}} onClick={this.toggleModalEdit}>Cancel</Button>
                       </ModalFooter>
                     </Modal>    
                   </Grid>
@@ -738,7 +773,7 @@ class Index extends Component {
                       </ModalBody>
                     <ModalFooter>
                       <Button color="primary" onClick={this.handleCustomizeSave}>Save Changes</Button>{' '}
-                      <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+                      <Button style={{color: "gray"}}onClick={this.toggleModal}>Cancel</Button>
                     </ModalFooter>
                   </Modal>    
                   </Grid>
@@ -777,12 +812,13 @@ class Index extends Component {
                           </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                          <Button onClick={this.handleCloseAlert} color="primary">
-                            Cancel
-                          </Button>
-                          <Button onClick={this.deleteSchedule} color="primary" autoFocus>
-                            Delete
-                          </Button>
+                            <Button onClick={this.deleteSchedule} color="secondary" autoFocus>
+                                Delete
+                            </Button>
+                            <Button onClick={this.handleCloseAlert} style={{color: "gray"}}>
+                                Cancel
+                            </Button>
+                          
                         </DialogActions>
                       </Dialog>
                       : null }
@@ -860,7 +896,7 @@ class Index extends Component {
           <div className={"landingpage"} style={!this.props.logged_in? {height:"100%"} : {display: "none"}}>
           
           <img src={whiteBlob} className={"whiteBlob"}/>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} style={{flexGrow: 1}}>
             <Grid item xs={6} style={{height:"100%"}}>
                   <Typography gutterBottom variant="h3" align="center">
                     Create your schedule!

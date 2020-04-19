@@ -475,6 +475,7 @@ class GenerateSchedule extends Component {
         this.setState({generatedContents: newArray});
         this.setState({currentContent: newContent});
     }
+    
     handleScrollToGen=()=>{
         window.scrollTo({
             top: this.generatedRef.current.offsetTop,
