@@ -189,7 +189,7 @@ class SchedViewHome extends Component {
                   <Row horizontal='center' flexShrink={1}>
                     <div className="viewCoursesHome">
                       <TableContainer component={Paper} style={{maxHeight: "428px", overflowY: "auto", overflowX: "hidden"}}>
-                        <Table aria-label="customized table" >
+                        <Table aria-label="customized table" fixedHeader={false} style={{ tableLayout: 'auto' }} >
                           <TableHead>
                             <TableRow>
                               <StyledTableCell> Class Number </StyledTableCell>

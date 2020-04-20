@@ -30,6 +30,8 @@ import FormControl from '@material-ui/core/FormControl';
 import ReactLoading from 'react-loading';
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import searchIMG from '../assets/search_engine.png';
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -280,7 +282,8 @@ class SearchCourses extends Component {
                   </FormControl>
                     </center>
                 </div>
-
+                
+                {this.state.siteData.length > 0 ?
                 <div className="viewCourses">
                   <TableContainer component={Paper}>
                     <Table aria-label="customized table">
@@ -333,7 +336,13 @@ class SearchCourses extends Component {
                     </Table>
                   </TableContainer>
                 </div>
+                
+                    :
+                <div className={"noContent"}>
+                    <center><img style={{width:"30%"}} src={searchIMG}/></center>
+                </div>}
             </div>
+                     
             : 
             <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
               <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
