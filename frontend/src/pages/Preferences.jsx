@@ -623,6 +623,7 @@ class Preferences extends Component {
                                     value = {this.state.break_length == null ? 15 : this.state.break_length}
                                     helperText="Please select your preferred break length"
                                     variant="outlined"
+                                    autoWidth= {true}
                                     >
                                     
                                     {this.state.breakOptions.map((option) => (

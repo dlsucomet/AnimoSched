@@ -745,6 +745,8 @@ class Index extends Component {
                             variant="outlined"
                             style={{width: "100%", marginTop: "20px", marginBottom: "20px"}}
                             value = {this.state.chosenPalette}
+                            maxRows = "3"
+                            autoWidth= {true}
                             >
                             
                             {/* <MenuItem key={1} value={"option.value"}>

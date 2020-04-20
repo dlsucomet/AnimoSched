@@ -45,6 +45,10 @@ import { Chip } from "@material-ui/core";
 import calendarIMG from '../images/Register.svg';
 import { Link } from 'react-router-dom'
 
+import Avatar from 'react-avatar';
+
+import Tooltip from '@material-ui/core/Tooltip';
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -503,11 +507,15 @@ class FriendPage extends Component {
                                 {friendList.map((friend, index) => (
                                     <ListGroupItem type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
                                         <Row>
+                                            <Col xs={6} md={1}>
+                                                <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "5px",}} />
+                                            </Col>
                                             <Col xs={12} md={8}>
+                                                
                                                 <span> {friend.firstName} {friend.lastName} </span>
                                             </Col>
 
-                                            <Col xs={6} md={4}>
+                                            <Col xs={6} md={2}>
                                                 <div className={"friend_btn"}>
                                                     {/* <Button
                                                     variant="contained"
@@ -517,10 +525,12 @@ class FriendPage extends Component {
 
                                                         <CheckIcon fontSize="small"/>
                                                     </Button> */}
-                                                    <svg onClick={()=>this.handleClickOpenAlert(friend)} class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                                     <Tooltip title="Unfriend">
+                                                    <svg onClick={()=>this.handleClickOpenAlert(friend)} class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg" className={"svgUnfriend"}>
                                                         <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                                                         <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
                                                     </svg>
+                                                    </Tooltip>
                                                 </div>
                                             </Col>
                                         </Row>            
