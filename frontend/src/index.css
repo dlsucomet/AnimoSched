@@ -1,6 +1,11 @@
 
 /* frontend/src/index.css  */
  
+@font-face {
+  font-family: 'Varela Round';
+  src: local('Varela Round'), url(./fonts/VarelaRound-Regular.ttf) format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;

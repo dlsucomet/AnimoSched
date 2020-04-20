@@ -320,7 +320,7 @@ class SearchCourses extends Component {
                       : 
                       <TableBody>
                         {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#BBE1FA"} : {backgroundColor: "#B8D4CD"}}>
+                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#DFF7FA"} : {backgroundColor: "#CFF0CC"}}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
                             <StyledTableCell> {row.course} </StyledTableCell>
                             <StyledTableCell> {row.section} </StyledTableCell>
