@@ -77,7 +77,8 @@ class SearchCourses extends Component {
         loading: false,
         radioVal: '',
         dataReceived: false,
-        skeletons: [...Array(8).keys()]
+        skeletons: [...Array(8).keys()],
+        rowStyle: "",
       }
       this.radioRef = React.createRef()
     }
@@ -319,7 +320,7 @@ class SearchCourses extends Component {
                       : 
                       <TableBody>
                         {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr}>
+                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#BBE1FA"} : {backgroundColor: "#B8D4CD"}}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
                             <StyledTableCell> {row.course} </StyledTableCell>
                             <StyledTableCell> {row.section} </StyledTableCell>
