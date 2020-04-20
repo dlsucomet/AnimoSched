@@ -688,7 +688,7 @@ class Index extends Component {
                           <div className="searchBarEdit" >
                             <h4>Search, add or remove your classes</h4>
                               
-                              <h7>your current classes</h7>
+                              {/* <h7>Your current classes</h7> */}
                               <div style={{display: "flex", justifyContent: "center", width: "-webkit-fill-available"}}>
                                 
                                 <span className={'edit-current-classes-container'}>
