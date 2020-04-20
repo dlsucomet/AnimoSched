@@ -263,6 +263,25 @@ class Index extends Component {
   }
 
   componentDidMount(){
+    var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
+    var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
+    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42'];
+    this.processPaletteChoices('Pastel Blossoms', pal1);
+    this.processPaletteChoices('Halographic', pal2);
+    this.processPaletteChoices('Plantita', pal3);
+
+    var pal4 = ['#138086', '#534666', '#CD7672', '#DC8665', '#E8A49C', '#EEB462'];
+    var pal5 = ['#522157', '#8B4C70', '#C2649A', '#E4C7B7', '#E4DFD9'];
+    var pal6 = ['#205072', '#2C6975', '#329D9C', '#56C596', '#68B2A0', '#7BE495', '#CDE0C9', '#CFF4D2'];
+    var pal7 = ['#9F8189', '#F3ABB6', '#FAA7B8', '#FBEEE6', '#FFCAD4', '#FFE5D8'];
+    var pal8 = ['#0191B4', '#35BBCA', '#D3DD18', '#F8D90F', '#FE7A15'];
+    var pal9 = ['#47CACC', '#63BCC9', '#CDB3D4', '#E7B7C8', '#FFBE88'];
+    this.processPaletteChoices('Pal4', pal4);
+    this.processPaletteChoices('Pal5', pal5);
+    this.processPaletteChoices('Pal6', pal6);
+    this.processPaletteChoices('Pal7', pal7);
+    this.processPaletteChoices('Pal8', pal8);
+    this.processPaletteChoices('Pal9', pal9);
     if(!this.state.dataReceived){
       axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
       .then(res => {
@@ -545,28 +564,6 @@ class Index extends Component {
       paletteChoices.push({id: this.state.paletteChoices.length, title: title, paletteDiv: paletteDiv, paletteArray: paletteArray});
       console.log(paletteChoices);
       this.setState({paletteChoices});
-  }
-  
-  componentDidMount=()=>{
-    var pal1 = ['#EAC9C0', '#DAB2D3', '#9EDAE3', '#65C4D8', '#FFD0D6', '#B7DDE0', '#FEE19F', '#735b69'];
-    var pal2 = ['#A9DFED', '#EBD6E8', '#84C0E9', '#37419A', '#7CCAAE', '#A299CA', '#FFb69B', '#ECEC84'];
-    var pal3 = ['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42'];
-    this.processPaletteChoices('Pastel Blossoms', pal1);
-    this.processPaletteChoices('Halographic', pal2);
-    this.processPaletteChoices('Plantita', pal3);
-
-    var pal4 = ['#138086', '#534666', '#CD7672', '#DC8665', '#E8A49C', '#EEB462'];
-    var pal5 = ['#522157', '#8B4C70', '#C2649A', '#E4C7B7', '#E4DFD9'];
-    var pal6 = ['#205072', '#2C6975', '#329D9C', '#56C596', '#68B2A0', '#7BE495', '#CDE0C9', '#CFF4D2'];
-    var pal7 = ['#9F8189', '#F3ABB6', '#FAA7B8', '#FBEEE6', '#FFCAD4', '#FFE5D8'];
-    var pal8 = ['#0191B4', '#35BBCA', '#D3DD18', '#F8D90F', '#FE7A15'];
-    var pal9 = ['#47CACC', '#63BCC9', '#CDB3D4', '#E7B7C8', '#FFBE88'];
-    this.processPaletteChoices('Pal4', pal4);
-    this.processPaletteChoices('Pal5', pal5);
-    this.processPaletteChoices('Pal6', pal6);
-    this.processPaletteChoices('Pal7', pal7);
-    this.processPaletteChoices('Pal8', pal8);
-    this.processPaletteChoices('Pal9', pal9);
   }
 
   handlePaletteChange=(event)=>{
