@@ -68,3 +68,7 @@
 .sidemenu-main{
     color:black;
 }
+
+.svgUnfriend:hover{
+    fill: gray;
+}

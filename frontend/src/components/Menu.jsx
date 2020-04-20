@@ -41,7 +41,7 @@ class Menu extends React.Component{
             return(
                 <React.Fragment>
                     <Nav /*activeKey={"/preferences"}*/>  
-                    <Nav.Link /*active={this.state.activePage["viewFriends"]} onClick={()=>this.handleChange("viewFriends")}*/ href="/view_friends" >View Friends</Nav.Link>
+                    
                     <Nav.Link active={this.state.currentPage == 'preferences'} href="/preferences">Preferences</Nav.Link>
                     <Nav.Link active={this.state.currentPage == 'search_courses'} href="/search_courses" >Search Courses</Nav.Link>
                     <Nav.Link active={this.state.currentPage == 'generateSchedule'} href="/generateSchedule">Generate Schedule</Nav.Link>

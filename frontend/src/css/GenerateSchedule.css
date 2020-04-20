@@ -21,8 +21,12 @@
 
 .DnDContainer{
     margin-top: 40px;
+/*
     margin-left: 10em;
     margin-right: 10em;
+*/
+    margin-left: 30vh;
+    margin-right: 30vh;   
 }
 
 .paginationContainer{
