@@ -364,7 +364,10 @@ setSchedInfo = () => {
                           <Grid item xs={6}>
 
                            <center><h6>Your Schedule</h6></center>
-                           <center><span>{this.state.currentContentUser}</span></center>
+                            <div className={"scheduleContent"}>
+                                  <center><span>{this.state.currentContentUser}</span></center>
+                            </div>
+                         
                               <div className = "paginationContainer" style={(this.state.generatedContentsUser != null) ? {} : {display: "none"}}>
                                   <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                                       <PaginationItem disabled={this.state.currentPageUser <= 0}>
@@ -391,7 +394,10 @@ setSchedInfo = () => {
                           <Grid item xs={6}>
   
                             <center><h6>Friend's Schedule</h6></center>
-                            <center><span>{this.state.currentContentFriend}</span></center>
+                            <div className={"scheduleContent"}>
+                                <center><span>{this.state.currentContentFriend}</span></center>
+                            </div>
+                            
                             <div className = "paginationContainer" style={(this.state.generatedContentsFriend != null) ? {} : {display: "none"}}>
                               <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                                   <PaginationItem disabled={this.state.currentPageFriend <= 0}>
