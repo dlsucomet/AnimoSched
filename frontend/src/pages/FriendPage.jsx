@@ -43,6 +43,7 @@ import friendDef from '../assets/friend2.png';
 import { Chip } from "@material-ui/core";
 
 import calendarIMG from '../images/Register.svg';
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -136,6 +137,7 @@ class FriendPage extends Component {
             allowEdit: false,
             openAlert: false,
             selectedFriend: "",
+            selectedFriendId: "",
             hasSelectedFriend: false, //right side
             contentSelected: false,
             schedules: [],
@@ -304,8 +306,9 @@ class FriendPage extends Component {
     }
 
     handleClick = (e, i) => {
-        this.setState({contentSelected: true})
         const requests = this.state.requests
+        this.setState({contentSelected: true})
+        this.setState({selectedFriendId: requests[i].id})
         axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+requests[i].id+'/')
         .then(res => {
             const schedules = []
@@ -760,14 +763,14 @@ class FriendPage extends Component {
                                         </Grid>
                                         <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            <a className="backBtn" href="/compare_schedule">
-                                                <Button
-                                                variant="contained"
-                                                className={classes.buttonStyle}
-                                                >
-                                                    Compare Schedules
-                                                </Button>
-                                            </a>
+                                            <Link to={'/compare_schedule/'+this.state.selectedFriendId}>
+                                                    <Button
+                                                    variant="contained"
+                                                    className={classes.buttonStyle}
+                                                    >
+                                                        Compare Schedules
+                                                    </Button>
+                                                </Link>
                                             </center>
                                         </Grid>
                                     </Grid>

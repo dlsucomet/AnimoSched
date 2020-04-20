@@ -115,6 +115,8 @@ class Friends extends React.Component{
                     this.setState({friends})
                 })
             })
+        }).catch(err => {
+            console.log(err.response)
         })
     }
 

@@ -262,7 +262,7 @@ class Index extends Component {
     return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
   }
 
-  componentWillMount(){
+  componentDidMount(){
     if(!this.state.dataReceived){
       axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
       .then(res => {

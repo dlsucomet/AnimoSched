@@ -287,10 +287,11 @@ class App extends Component {
     )
   }
 
-  compareSchedulePage = () => {
+  compareSchedulePage = (props) => {
     return (
       <CompareSchedulePage
         menu={this.menu}
+        params={props.match.params}
       />
     )
   }
@@ -328,7 +329,7 @@ class App extends Component {
           <Route exact path="/view_friends" component={this.viewFriendsPage} />
           }
           {this.state.logged_in && 
-          <Route exact path="/compare_schedule" component={this.compareSchedulePage} />
+          <Route exact path="/compare_schedule/:id/" component={this.compareSchedulePage} />
           }
           {/* <Route exact path="/404" component={MainPage} /> change to 404 page */}
           {this.state.logged_in

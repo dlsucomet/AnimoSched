@@ -15,6 +15,10 @@ import Grid from '@material-ui/core/Grid';
 import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 
 import SchedViewHome from '../components/SchedViewHome';
+import axios from 'axios';
+import groupArray from 'group-array'
+import ReactLoading from 'react-loading';
+
 
 
 const styles = theme => ({
@@ -55,16 +59,215 @@ class CompareSchedule extends Component {
 
         this.state = {
             currentPageUser: 0,
-            currentContentUser: "Hello User",
-            generatedContentsUser: ["I'm", "Not", "Okay"],
+            currentContentUser: "",
+            generatedContentsUser: [],
             pagesCountUser: 1,
             currentPageFriend: 0,
-            currentContentFriend: "Hello Friend",
-            generatedContentsFriend: ["I'm", "Okay", "Now"],
+            currentContentFriend: "",
+            generatedContentsFriend: [],
             pagesCountFriend: 1,
             schedulesUser: [],
             schedulesFriend: [],
-            }
+            dataReceived: false,
+        }
+    }
+
+    createTimeslot = (day, hour, minute) =>{
+        if(day == 'M'){
+            return new Date(2018, 5, 25, hour, minute);
+        }else if(day == 'T'){
+            return new Date(2018, 5, 26, hour, minute);
+        }else if(day == 'W'){
+            return new Date(2018, 5, 27, hour, minute);
+        }else if(day == 'H'){
+            return new Date(2018, 5, 28, hour, minute);
+        }else if(day == 'F'){
+            return new Date(2018, 5, 29, hour, minute);
+        }else if(day == 'S'){
+            return new Date(2018, 5, 30, hour, minute);
+        }
+    }
+
+    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+      return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
+    }
+
+    componentDidMount(){
+      if(!this.state.dataReceived){
+        axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const schedules = []
+            res.data.map(newSchedule =>{
+                var count = 0;
+                const scheduleContent = []
+                const tableContent = []
+                var earliest = 9
+                var latest = 17
+                var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+                for (let key in arranged) {
+                  var days = []
+                  var day = ''
+                  var classnumber = ''
+                  var course = ''
+                  var section = ''
+                  var faculty = ''
+                  var timeslot_begin = ''
+                  var timeslot_end = ''
+                  var room = ''
+                  var max_enrolled = ''
+                  var current_enrolled = ''
+                  arranged[key].map(offering => {
+                    days.push(offering.day)
+                    classnumber = offering.classnumber
+                    course = offering.course
+                    section = offering.section
+                    faculty = offering.faculty
+                    timeslot_begin = offering.timeslot_begin
+                    timeslot_end = offering.timeslot_end
+                    room = offering.room
+                    max_enrolled = offering.max_enrolled
+                    current_enrolled = offering.current_enrolled
+                  })
+                  days.map(day_code => {
+                    day += day_code;
+                  })
+                  const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                  tableContent.push(newTableContent)
+                }
+                newSchedule.courseOfferings.map(offering=>{
+                    var startTime = offering.timeslot_begin.split(':');
+                    var endTime = offering.timeslot_end.split(':');
+                    const newContent = 
+                    {
+                        id: count,
+                        title: offering.course + ' ' + offering.section,
+                        section: offering.section,
+                        startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                        endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                        location: offering.room,
+                        professor: offering.faculty,
+                        startTime: offering.timeslot_begin,
+                        endTime: offering.timeslot_end,
+                        days: offering.day,
+                        classCode: offering.classnumber 
+                    }
+                    if(earliest > Number(startTime[0])){
+                        earliest = Number(startTime[0])
+                    }
+                    if(latest < Number(endTime[0]) + 1){
+                        latest = Number(endTime[0]) + 1
+                    }
+                    scheduleContent.push(newContent);
+
+                    count += 1;
+                })
+                schedules.push({
+                    id: newSchedule.id,
+                    title: newSchedule.title,
+                    scheduleContent: scheduleContent,
+                    tableContent: tableContent, 
+                    prefContent: [],
+                    conflictsContent: newSchedule.information,
+                    earliest: earliest,
+                    latest: latest,
+                    offerings: newSchedule.courseOfferings
+                });
+            })
+            console.log(schedules)
+            this.setState({schedulesUser: schedules});
+            axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+this.props.params.id+'/')
+            .then(res => {
+                const schedules = []
+                res.data.map(newSchedule =>{
+                    var count = 0;
+                    const scheduleContent = []
+                    const tableContent = []
+                    var earliest = 9
+                    var latest = 17
+                    var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+                    for (let key in arranged) {
+                      var days = []
+                      var day = ''
+                      var classnumber = ''
+                      var course = ''
+                      var section = ''
+                      var faculty = ''
+                      var timeslot_begin = ''
+                      var timeslot_end = ''
+                      var room = ''
+                      var max_enrolled = ''
+                      var current_enrolled = ''
+                      arranged[key].map(offering => {
+                        days.push(offering.day)
+                        classnumber = offering.classnumber
+                        course = offering.course
+                        section = offering.section
+                        faculty = offering.faculty
+                        timeslot_begin = offering.timeslot_begin
+                        timeslot_end = offering.timeslot_end
+                        room = offering.room
+                        max_enrolled = offering.max_enrolled
+                        current_enrolled = offering.current_enrolled
+                      })
+                      days.map(day_code => {
+                        day += day_code;
+                      })
+                      const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                      tableContent.push(newTableContent)
+                    }
+                    newSchedule.courseOfferings.map(offering=>{
+                        var startTime = offering.timeslot_begin.split(':');
+                        var endTime = offering.timeslot_end.split(':');
+                        const newContent = 
+                        {
+                            id: count,
+                            title: offering.course + ' ' + offering.section,
+                            section: offering.section,
+                            startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                            endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                            location: offering.room,
+                            professor: offering.faculty,
+                            startTime: offering.timeslot_begin,
+                            endTime: offering.timeslot_end,
+                            days: offering.day,
+                            classCode: offering.classnumber 
+                        }
+                        if(earliest > Number(startTime[0])){
+                            earliest = Number(startTime[0])
+                        }
+                        if(latest < Number(endTime[0]) + 1){
+                            latest = Number(endTime[0]) + 1
+                        }
+                        scheduleContent.push(newContent);
+
+                        count += 1;
+                    })
+                    schedules.push({
+                        id: newSchedule.id,
+                        title: newSchedule.title,
+                        scheduleContent: scheduleContent,
+                        tableContent: tableContent, 
+                        prefContent: [],
+                        conflictsContent: newSchedule.information,
+                        earliest: earliest,
+                        latest: latest,
+                        offerings: newSchedule.courseOfferings
+                    });
+                })
+                console.log(schedules)
+                this.setState({schedulesFriend: schedules});
+                this.setSchedInfo();
+                this.setState({success: true});
+                this.setState({loading: false});
+                this.setState({dataReceived: true})
+            }).catch(error => {
+                console.log(error)
+            })
+        }).catch(error => {
+            console.log(error)
+        })
+
+      }
     }
     
     handlePageChange = (e,index, type) => {
@@ -107,11 +310,9 @@ componentWillMount(){
     
 }
 
-setSchedInfo = (type) => {
-    console.log(this.state.schedules)
+setSchedInfo = () => {
     const palette = JSON.parse(localStorage.getItem('palette'))
     
-    if(type == "user"){
          var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
         <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
         );
@@ -125,7 +326,6 @@ setSchedInfo = (type) => {
             this.setState({currentPageUser: 0})
         });
 
-    }else if(type == "friend"){
          var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
         <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
         );
@@ -138,7 +338,6 @@ setSchedInfo = (type) => {
             this.setState({pagesCountFriend: generatedContentsFriend.length});
             this.setState({currentPageFriend: 0})
          });
-    }
 
   }
     
@@ -159,6 +358,7 @@ setSchedInfo = (type) => {
                     {/* <img class='img-responsive' id='lower' src={SidebarIMG}/> */}
                 </div>
 
+                {this.state.dataReceived ?
                 <div>
                      <Grid container style={{marginTop: "30px"}}>
                           <Grid item xs={6}>
@@ -218,6 +418,11 @@ setSchedInfo = (type) => {
                           </Grid>
                       </Grid>
                 </div>
+                : 
+                  <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                  </div>
+                }
 
             </div>
         );
