@@ -156,7 +156,6 @@ class ComboBox extends React.Component{
                         {...params}
                         label="Search Course"
                         variant="outlined"
-                        placeholder="TREDONE, KASPIL1"
                         InputProps={{
                         ...params.InputProps,
                         endAdornment: (
