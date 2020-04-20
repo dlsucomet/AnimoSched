@@ -28,7 +28,7 @@ class Flowchart extends Component {
     constructor(props){
       super(props);
       this.state = {
-        terms: [],
+        // terms: [],
         courses: [],
         flowpoints: [],
         degreekey: '1',
@@ -43,55 +43,51 @@ class Flowchart extends Component {
       axios.get('https://archerone-backend.herokuapp.com/api/flowcharttermslist/'+this.state.degreekey+'/'+this.state.batchkey+'/')
       .then(res => {
         res.data.map((term, i) => {
-                var termsList = this.state.terms;
+                // var termsList = this.state.terms;
                 var coursesList = this.state.courses;
                 var flowpointsList = this.state.flowpoints;
-                var newTerm = {'id':term.id, 'degree':term.degree, 'batch': term.batch, 'courses': term.courses, 'year': term.year, 'term': term.term} 
+                var newTerm = {'id':term.id, 'degree':term.degree, 'batch': term.batch, 'courses': term.courses, 'tracks': term.tracks, 'year': term.year, 'term': term.term} 
                 var currentTerm = term.term + 3 * (term.year - 1);
-                termsList.push(newTerm);
+                var tracks = newTerm.tracks.split(',');
+                var tempCoursesList = [];
+                // termsList.push(newTerm);
                 term.courses.map((course, j) => {
-                  var outputsList = {};
+                  // var outputsList = {};
                   coursesList.push(course);
-                  console.log(course);
-                  course.prerequisite_to.map((prereq_to) => {
-                    outputsList[prereq_to] = { output: "right", input: "left" }                    
-                  })                  
-                  console.log(outputsList);
-                  flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:(currentTerm-1)*85, y:j*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList});
+                  tempCoursesList.push(course);
+                  // course.prerequisite_to.map((prereq_to) => {
+                  //   outputsList[prereq_to] = { output: "right", input: "left" }                    
+                  // })            
+                  // flowpointsList.push({'key': course.id, 'name': course.course_code, 'units': course.units, 'startPosition': { x:(currentTerm-1)*85, y:tracks[j]*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList, 'year': term.year, 'term': term.term});
                 })
-                this.setState({terms: termsList})
+                tempCoursesList.sort(function(a, b) {
+                  var keyA = new String(a.course_code),
+                    keyB = new String(b.course_code);
+                  if (keyA < keyB) return -1;
+                  if (keyA > keyB) return 1;
+                  return 0;
+                });
+                for(var k = 0; k < tempCoursesList.length; k++) {
+                  var outputsList = {};                  
+                  tempCoursesList[k].prerequisite_to.map((prereq_to) => {
+                    outputsList[prereq_to] = { output: "right", input: "left" }                    
+                  })
+                  flowpointsList.push({'key': tempCoursesList[k].id, 'name': tempCoursesList[k].course_code, 'units': tempCoursesList[k].units, 'startPosition': { x:(currentTerm-1)*85, y:tracks[k]*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList, 'year': term.year, 'term': term.term});
+                }
+                console.log(tempCoursesList)               
+                // this.setState({terms: termsList})
                 this.setState({courses: coursesList})
                 this.setState({flowpoints: flowpointsList})                
         })
         this.setState({dataReceived: true})
       })
-    
-  // console.log(this.state.flowpoints)
-  // console.log(this.state.terms)
-    }
+    }  
 
     render() {
       const { classes } = this.props;
-      // console.log(this.state.terms)
-    //   const flowchartCells = this.state.terms.map((item, i) => {
-    //     return (
-    //         <Flowspace theme="green" variant="outlined">
-    //           {item.courses.map((course, j) => {
-    //             // console.log(course.course_code)
-    //             return (
-    //               <Flowpoint key={course.course_code} startPosition={{ x:i*180, y:j*70 }} dragX={false} dragY={false}>
-    //                 {course.course_code}
-    //               </Flowpoint>
-    //             )
-    //           })}            
-    //         </Flowspace>
-    //        );
-    // });
-    // outputs={{"point_b": {input: "left", output: "right", outputColor:"green", inputColor:"green",},}}
-
       return (
         <div>
-            {this.props.menu('flowchart')}
+            {this.props.menu()}
 
             {this.state.dataReceived ? 
             <div>
@@ -139,9 +135,7 @@ class Flowchart extends Component {
                         </div>
                       </div>
                     </div>
-                      {/* {flowchartCells} */}
-                      {/* headers */}
-                      <Flowspace theme="green" variant="paper" background="white" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
+                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
                         {
                           Object.keys(this.state.flowpoints).map(key => {
                             const point = this.state.flowpoints[key]
