@@ -117,12 +117,8 @@ class GenerateSchedule extends Component {
             snackBar: false,
             loading: false,
             success: false,
+            courseAdded: true,
      
-            //temp
-            id:0
-        
-
-            
         };
 
     }
@@ -240,6 +236,7 @@ class GenerateSchedule extends Component {
         const val = this.state.currentCourse;
         this.setState({AutoCompleteValue: []})
         this.setState({currentCourse: []})
+        this.setState({courseAdded: false})
         const newCourseList = [];
 
         if(val != undefined && val != []){
@@ -276,6 +273,7 @@ class GenerateSchedule extends Component {
                     });
                 }
             })
+            this.setState({courseAdded: true})
         }       
     }
 
@@ -586,6 +584,7 @@ class GenerateSchedule extends Component {
                                     <Button
                                         variant="contained"
                                         color = "Primary"
+                                        disabled={!this.state.courseAdded}
                                         style={{backgroundColor: "green", color:"white", height:"56px"}}
                                         onClick={this.handleAddCoursePriority}>
                                         <AddIcon fontSize="medium"/>  
@@ -612,7 +611,7 @@ class GenerateSchedule extends Component {
                                         <Button
                                         variant="contained"
                                         className={classes.schedButton}
-                                        disabled={this.state.loading}
+                                        disabled={!this.state.courseAdded}
                                         onClick={()=>this.createSchedInfo()}
                                         
                                         // style={{backgroundColor: "green"}}

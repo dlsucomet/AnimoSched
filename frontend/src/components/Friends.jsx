@@ -101,14 +101,14 @@ class Friends extends React.Component{
             })
             axios.get('https://archerone-backend.herokuapp.com/api/nonfriendlist/'+localStorage.getItem('user_id')+'/')
             .then(res => {
-                const database = this.state.database;
+                const database = [];
                 res.data.map(nonfriend => {
                     database.push(this.createDatabase(nonfriend.first_name, nonfriend.last_name, sentRequests.includes(nonfriend.id), nonfriend.id));
                 })
                 this.setState({database})
                 axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
                 .then(res => {
-                    const friends = this.state.friends;
+                    const friends = [];
                     res.data.map(friend => {
                         friends.push(this.createFriends(friend.first_name, friend.last_name, friend.id))
                     })
