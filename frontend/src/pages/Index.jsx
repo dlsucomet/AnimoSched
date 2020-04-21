@@ -947,6 +947,10 @@ class Index extends Component {
           
           <img src={whiteBlob} className={"whiteBlob"}/>
           <Grid container spacing={3} style={{flexGrow: 1}}>
+            <Grid item xs={12}>
+            </Grid>
+              <Grid item xs={12}>
+            </Grid>
             <Grid item xs={6} style={{height:"100%"}}>
                   <Typography gutterBottom variant="h3" align="center">
                     Create your schedule!
