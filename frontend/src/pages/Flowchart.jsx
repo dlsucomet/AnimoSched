@@ -70,9 +70,15 @@ class Flowchart extends Component {
                 for(var k = 0; k < tempCoursesList.length; k++) {
                   var outputsList = {};                  
                   tempCoursesList[k].prerequisite_to.map((prereq_to) => {
-                    outputsList[prereq_to] = { output: "right", input: "left" }                    
+                    outputsList[prereq_to] = { output: "right", input: "left", inputColor: "#16775d", outputColor: "#16775d" }                    
                   })
-                  flowpointsList.push({'key': tempCoursesList[k].id, 'name': tempCoursesList[k].course_code, 'units': tempCoursesList[k].units, 'startPosition': { x:(currentTerm-1)*85, y:tracks[k]*45 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList, 'year': term.year, 'term': term.term});
+                  tempCoursesList[k].soft_prerequisite_to.map((prereq_to) => {
+                    outputsList[prereq_to] = { output: "right", input: "left", inputColor: "#16775d", outputColor: "#16775d", dash: "3" }                    
+                  })
+                  tempCoursesList[k].co_requisite.map((coreq) => {
+                    outputsList[coreq] = { output: "auto", input: "auto", inputColor: "#16775d", outputColor: "#16775d"}                    
+                  })
+                  flowpointsList.push({'key': tempCoursesList[k].id, 'name': tempCoursesList[k].course_code, 'units': tempCoursesList[k].units, 'startPosition': { x:(currentTerm-1)*85, y:tracks[k]*50 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList, 'year': term.year, 'term': term.term});
                 }
                 console.log(tempCoursesList)               
                 // this.setState({terms: termsList})
