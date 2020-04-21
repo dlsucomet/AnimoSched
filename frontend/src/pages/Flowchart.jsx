@@ -201,11 +201,11 @@ class Flowchart extends Component {
       const { classes } = this.props;
       return (
         <div>
-            {this.props.menu('flowchart')}
+            {this.props.menu()}
 
             {this.state.dataReceived ? 
             <div>
-              <div class="sidemenu"  /*style={{display:"none", width: "0%", marginLeft: "0%"}}*/>
+              <div class="sidemenu" >
                   <center>
                       {/*<Button
                       variant="contained"
