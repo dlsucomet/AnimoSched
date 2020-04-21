@@ -22,8 +22,13 @@ body {
     background-color: white;
 }
 
-.sidemenu-main {
+.sidemenu-main-flow {
     margin-left: 12%;
+    /* overflow-y: scroll; */
+}
+
+.sidemenu-main {
+    margin-left: 23%;
     /* overflow-y: scroll; */
 }
 
