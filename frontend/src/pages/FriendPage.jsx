@@ -300,9 +300,15 @@ class FriendPage extends Component {
                 requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
             })
             this.setState({requests, dataReceived: true})
+            
+//            console.log(this.props.location.state.index);
+//            console.log(this.props.location.state.selectedFriend);
+           this.handleClick("clickaway", this.props.location.state.index)
+//            console.log(requests[this.props.location.state.index]);
         })
         
-        console.log(this.props.location);
+        
+
     }
 
     handleClickOpenAlert = (friend) => {
@@ -834,4 +840,4 @@ class FriendPage extends Component {
     classes: PropTypes.object.isRequired,
   };
 
-  export default withStyles(styles); withRouter(FriendPage);
+  export default withStyles(styles)(withRouter(FriendPage));
