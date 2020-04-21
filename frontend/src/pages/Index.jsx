@@ -583,12 +583,7 @@ class Index extends Component {
   }
 
   handlePaletteChange=(event)=>{
-    this.setState({scheduleChanged: false},() => {
-    this.setState({chosenPalette: event.target.value},() => {
-      localStorage.setItem('palette', JSON.stringify(event.target.value))
-      this.setSchedInfo();
-    });
-    })
+    this.setState({chosenPalette: event.target.value})
     console.log(this.state.currentContent)
     console.log(this.state.currentContent.props)
     console.log(event.target.value);
@@ -609,6 +604,9 @@ class Index extends Component {
     console.log("Class Box changes saved");
     // this.setState({chosenPalette: this.state.newChosenPalette});
     // this.setState({classboxDetailsList: this.state.newClassboxDetailsList});
+    this.setState({scheduleChanged: false})
+    localStorage.setItem('palette', JSON.stringify(this.state.chosenPalette))
+    this.setSchedInfo();
     this.setState({openModalCustomize: false});
     
     let snackBarVariables = [...this.state.snackBarVariables];
