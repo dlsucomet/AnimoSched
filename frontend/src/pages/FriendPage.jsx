@@ -301,8 +301,8 @@ class FriendPage extends Component {
         
     }
      
-       handleCloseAlert = () => {
-         this.setState({openAlert: false});
+    handleCloseAlert = () => {
+        this.setState({openAlert: false});
     }
 
     handleClick = (e, i) => {
