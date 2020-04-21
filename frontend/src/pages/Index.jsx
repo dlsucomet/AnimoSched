@@ -230,7 +230,15 @@ class Index extends Component {
       this.setState(state =>{
         var currentContent = state.generatedContents[index];
         return {currentContent};
+      }, () => {
+        const currentClasses = [];
+        const offerings = this.state.currentContent.props.offerings
+        for(var i = 0 ; i < offerings.length ; i += 2){
+          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+        }
+        this.setState({currentClasses})
       });
+
       
       this.setState({currentPage: index});
       this.setState(state =>{
@@ -283,97 +291,104 @@ class Index extends Component {
     this.processPaletteChoices('Pal8', pal8);
     this.processPaletteChoices('Pal9', pal9);
     if(!this.state.dataReceived){
-      axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
-      .then(res => {
-          const schedules = []
-          res.data.map(newSchedule =>{
-              var count = 0;
-              const scheduleContent = []
-              const tableContent = []
-              var earliest = 9
-              var latest = 17
-              var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
-              for (let key in arranged) {
-                var days = []
-                var day = ''
-                var classnumber = ''
-                var course = ''
-                var section = ''
-                var faculty = ''
-                var timeslot_begin = ''
-                var timeslot_end = ''
-                var room = ''
-                var max_enrolled = ''
-                var current_enrolled = ''
-                arranged[key].map(offering => {
-                  days.push(offering.day)
-                  classnumber = offering.classnumber
-                  course = offering.course
-                  section = offering.section
-                  faculty = offering.faculty
-                  timeslot_begin = offering.timeslot_begin
-                  timeslot_end = offering.timeslot_end
-                  room = offering.room
-                  max_enrolled = offering.max_enrolled
-                  current_enrolled = offering.current_enrolled
-                })
-                days.map(day_code => {
-                  day += day_code;
-                })
-                const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                tableContent.push(newTableContent)
-              }
-              newSchedule.courseOfferings.map(offering=>{
-                  var startTime = offering.timeslot_begin.split(':');
-                  var endTime = offering.timeslot_end.split(':');
-                  const newContent = 
-                  {
-                      id: count,
-                      title: offering.course + ' ' + offering.section,
-                      section: offering.section,
-                      startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                      endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                      location: offering.room,
-                      professor: offering.faculty,
-                      startTime: offering.timeslot_begin,
-                      endTime: offering.timeslot_end,
-                      days: offering.day,
-                      classCode: offering.classnumber 
-                  }
-                  if(earliest > Number(startTime[0])){
-                      earliest = Number(startTime[0])
-                  }
-                  if(latest < Number(endTime[0]) + 1){
-                      latest = Number(endTime[0]) + 1
-                  }
-                  scheduleContent.push(newContent);
-
-                  count += 1;
-              })
-              schedules.push({
-                  id: newSchedule.id,
-                  title: newSchedule.title,
-                  scheduleContent: scheduleContent,
-                  tableContent: tableContent, 
-                  prefContent: [],
-                  conflictsContent: newSchedule.information,
-                  earliest: earliest,
-                  latest: latest,
-                  offerings: newSchedule.courseOfferings
-              });
-          })
-          console.log(schedules)
-          this.setState({schedules});
-          this.setSchedInfo();
-          this.setState({success: true});
-          this.setState({loading: false});
-          this.setState({dataReceived: true})
-      }).catch(error => {
-          console.log(error)
-          this.setState({success: false});
-          this.setState({loading: false});
-      })
+      this.retrieveSchedInfo()
     }
+  }
+
+  retrieveSchedInfo = () => {
+    axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+localStorage.getItem('user_id')+'/')
+    .then(res => {
+        const schedules = []
+        res.data.map(newSchedule =>{
+            var count = 0;
+            const scheduleContent = []
+            const tableContent = []
+            var earliest = 9
+            var latest = 17
+            var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
+            for (let key in arranged) {
+              var days = []
+              var day = ''
+              var classnumber = ''
+              var course = ''
+              var course_id = ''
+              var section = ''
+              var faculty = ''
+              var timeslot_begin = ''
+              var timeslot_end = ''
+              var room = ''
+              var max_enrolled = ''
+              var current_enrolled = ''
+              arranged[key].map(offering => {
+                days.push(offering.day)
+                classnumber = offering.classnumber
+                course = offering.course
+                course_id = offering.course_id
+                section = offering.section
+                faculty = offering.faculty
+                timeslot_begin = offering.timeslot_begin
+                timeslot_end = offering.timeslot_end
+                room = offering.room
+                max_enrolled = offering.max_enrolled
+                current_enrolled = offering.current_enrolled
+              })
+              days.map(day_code => {
+                day += day_code;
+              })
+              const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+              tableContent.push(newTableContent)
+            }
+            newSchedule.courseOfferings.map(offering=>{
+                var startTime = offering.timeslot_begin.split(':');
+                var endTime = offering.timeslot_end.split(':');
+                const newContent = 
+                {
+                    id: count,
+                    title: offering.course + ' ' + offering.section,
+                    section: offering.section,
+                    startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                    endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                    location: offering.room,
+                    professor: offering.faculty,
+                    startTime: offering.timeslot_begin,
+                    endTime: offering.timeslot_end,
+                    days: offering.day,
+                    classCode: offering.classnumber 
+                }
+                if(earliest > Number(startTime[0])){
+                    earliest = Number(startTime[0])
+                }
+                if(latest < Number(endTime[0]) + 1){
+                    latest = Number(endTime[0]) + 1
+                }
+                scheduleContent.push(newContent);
+
+                count += 1;
+            })
+            schedules.push({
+                id: newSchedule.id,
+                title: newSchedule.title,
+                scheduleContent: scheduleContent,
+                tableContent: tableContent, 
+                prefContent: [],
+                conflictsContent: newSchedule.information,
+                earliest: earliest,
+                latest: latest,
+                offerings: newSchedule.courseOfferings
+            });
+        })
+        console.log(schedules)
+        this.setState({schedules});
+        this.setSchedInfo();
+        this.setState({success: true});
+        this.setState({loading: false});
+        this.setState({dataReceived: true})
+        this.setState({scheduleChanged: true})
+    }).catch(error => {
+        console.log(error)
+        this.setState({success: false});
+        this.setState({loading: false});
+    })
   }
 
   setSchedInfo = () => {
@@ -391,7 +406,7 @@ class Index extends Component {
         const currentClasses = [];
         const offerings = this.state.currentContent.props.offerings
         for(var i = 0 ; i < offerings.length ; i += 2){
-          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, course_code: offerings[i].classnumber})
+          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
         }
         this.setState({currentClasses, scheduleChanged: true})
       })
@@ -607,23 +622,56 @@ class Index extends Component {
     this.setState({newCurrentClasses: val});
   }
 
-  handleEditSave=()=>{
+  handleEditAdd=()=>{
     console.log("Schedule edit changes saved");
     const currentClasses = this.state.currentClasses
     this.state.newCurrentClasses.map(offering => {
-      currentClasses.push({title: offering.course + ' ' + offering.section, course_code: offering.classnumber})
+      console.log(offering)
+      currentClasses.push({title: offering.course + ' ' + offering.section, classnumber: offering.classNmbr, course: offering.course_id})
     })
-    this.setState({currentClasses, newCurrentClasses: []})
-    // this.setState({openModalEdit: false});
-
-    // let snackBarVariables = [...this.state.snackBarVariables];
-    // this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
-    // snackBarVariables[0].snackBarSuccess = true;
-    // // snackBarVariables[1].snackBarFailed = true;
-    // this.setState({snackBarVariables});
-    // console.log(snackBarVariables);
+    this.setState({currentClasses, newCurrentClasses: []}, () => {
+      console.log(currentClasses)
+    })
   }
   
+  handleEditSave=()=>{
+
+    this.setState({scheduleChanged: false})
+
+    const classnumbers = []
+    const courses = []
+    const sched_id = this.state.currentContent.props.id
+    const user_id = localStorage.getItem('user_id')
+
+    this.state.currentClasses.map(offering => {
+      classnumbers.push(offering.course)
+      courses.push(offering.classnumber)
+    })
+    console.log(classnumbers)
+    console.log(courses)
+
+    this.setState({openModalEdit: false});
+
+    let snackBarVariables = [...this.state.snackBarVariables];
+    axios.post('https://archerone-backend.herokuapp.com/api/editschedule/',{
+      classnumbers,
+      courses,
+      sched_id,
+      user_id
+    }).then(res => {
+      console.log(res.data)
+      this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
+      snackBarVariables[0].snackBarSuccess = true;
+      // snackBarVariables[1].snackBarFailed = true;
+      this.setState({snackBarVariables});
+      console.log(snackBarVariables);
+      this.retrieveSchedInfo()
+    }).catch(err => {
+      console.log(err.response)
+    })
+
+  }
+
   handleDelete=(index)=>{
     const currentClasses = this.state.currentClasses
     if (index > -1) {
@@ -664,7 +712,11 @@ class Index extends Component {
                 <div id='savedContent' className='savedContent'>
                   {this.state.scheduleChanged ? 
                     <span>{this.state.currentContent}</span>
-                  : null }
+                  : 
+                  <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
+                    <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
+                  </div>
+                  }
                 </div>
               </Grid>
 
@@ -703,7 +755,7 @@ class Index extends Component {
                                       variant="contained"
                                       color = "Primary"
                                       style={{backgroundColor: "green", color:"white", height:"56px"}}
-                                      onClick={this.handleEditSave}>
+                                      onClick={this.handleEditAdd}>
                                       <AddIcon fontSize="small"/>  
                                   </Button>
                               </div>
@@ -913,7 +965,7 @@ class Index extends Component {
                               Enter your courses, 
                               set your schedule, 
                               and choose your schedule, 
-                              generate automatically
+                              generated automatically
                           </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -941,7 +993,7 @@ class Index extends Component {
             <Grid item xs={3}>
                             <Typography variant="body1" gutterBottom>
                             Customize the look of your
-                            schedule and save it as an image.
+                            schedule and save it as an image
                           </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -962,8 +1014,7 @@ class Index extends Component {
         
             <Grid item xs={3}>
                             <Typography variant="body1" gutterBottom>
-                            Share your schedules,
-                            view your friends' schedules, 
+                            Share your schedules and view your friends' schedules,
                             making schedule coordination easier
                             {/* collaborate with friends
                             and create schedules

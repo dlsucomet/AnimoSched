@@ -49,6 +49,8 @@ import Avatar from 'react-avatar';
 
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { withRouter } from "react-router";
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -144,6 +146,7 @@ class FriendPage extends Component {
             selectedFriendId: "",
             hasSelectedFriend: false, //right side
             contentSelected: false,
+            fromModalIndex: "",
             schedules: [],
             profList: [],
 
@@ -227,8 +230,11 @@ class FriendPage extends Component {
             earliest_class_time: '',
             latest_class_time: '',
             break_length: '',
+            firstName: '',
+            lastName: '',
 
         }
+        console.log(props)
 
     }
     createTimeslot = (day, hour, minute) =>{
@@ -288,16 +294,6 @@ class FriendPage extends Component {
     
       }
     
-    componentDidMount(){
-        axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
-        .then(res => {
-            const requests = []
-            res.data.map(friend => {
-                requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
-            })
-            this.setState({requests, dataReceived: true})
-        })
-    }
 
     handleClickOpenAlert = (friend) => {
         this.setState({openAlert: true});
@@ -313,6 +309,7 @@ class FriendPage extends Component {
         const requests = this.state.requests
         this.setState({contentSelected: true})
         this.setState({selectedFriendId: requests[i].id})
+        this.setState({hasSelectedFriend: false});
         axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+requests[i].id+'/')
         .then(res => {
             const schedules = []
@@ -445,9 +442,11 @@ class FriendPage extends Component {
                     }
                 })
                 console.log(profList)
-                this.setState({sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+                this.setState({firstName: requests[i].firstName, lastName: requests[i].lastName, sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
                     this.setSchedInfo();
                 })
+                
+                this.setState({hasSelectedFriend: true});
             });
             // this.setState({success: true});
             // this.setState({loading: false});
@@ -458,6 +457,66 @@ class FriendPage extends Component {
             // this.setState({loading: false});
         })
 
+    }
+    
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const requests = []
+            res.data.map(friend => {
+                requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
+            })
+            this.setState({requests}, () => {
+                if(this.props.location.state != undefined){
+                    let selectedFriendId = this.props.location.state.selectedFriendId;
+                    if(selectedFriendId != -1){
+                        requests.map((friend,index) => {
+                            if(friend.id == selectedFriendId){
+                                this.handleClick(null, index)
+                            }
+                        })
+                    }
+                    const {location, history} = this.props;
+                    //use the state via location.state
+                    //and replace the state via
+                    location.state = undefined
+                    history.replace() 
+                }
+                this.setState({dataReceived: true})
+            })
+//            if(this.state.fromModalIndex == "" && ){
+                // this.handleClick("clickaway", this.props.location.state.index)
+//            }
+        })
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({dataReceived: false})
+        if(props.location.state != undefined){
+            let selectedFriendId = props.location.state.selectedFriendId;
+            if(selectedFriendId != -1){
+                this.state.requests.map((friend,index) => {
+                    if(friend.id == selectedFriendId){
+                        this.handleClick(null, index)
+                    }
+                })
+            }else{
+                this.setState({selectedFriendId: '', contentSelected: false, hasSelectedFriend: false})
+            }
+            const {location, history} = props;
+            //use the state via location.state
+            //and replace the state via
+            location.state = undefined
+            history.replace() 
+        }
+        this.setState({dataReceived: true})
+        //  if (this.props.number !== nextProps.number) {
+        //   this.handleClick("clickaway", this.props.location.state.index)
+        // }
+      
+//        console.log(this.props.location.state.index);
+//            console.log(this.props.location.state.selectedFriend);
+//           this.handleClick("clickaway", this.props.location.state.index)
     }
        
     render() {
@@ -505,7 +564,7 @@ class FriendPage extends Component {
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
                                 {friendList.map((friend, index) => (
-                                    <ListGroupItem type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
+                                    <ListGroupItem color={this.state.selectedFriendId == friend.id ? 'success' : ''} type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
                                         <Row>
                                             <Col xs={6} md={1}>
                                                 <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "5px",}} />
@@ -574,7 +633,7 @@ class FriendPage extends Component {
                                 <Tab eventKey="details" title="Details">
                                     <div className="friendName">
                                         <Typography gutterBottom variant="h4" align="center" style={{color:"black"}}>
-                                            Name                
+                                            {this.state.firstName} {this.state.lastName}
                                         </Typography>
                                         {/* <center><h1> Name </h1></center> */}
                                     </div>
@@ -828,4 +887,4 @@ class FriendPage extends Component {
     classes: PropTypes.object.isRequired,
   };
 
-  export default withStyles(styles)(FriendPage);
+  export default withStyles(styles)(withRouter(FriendPage));

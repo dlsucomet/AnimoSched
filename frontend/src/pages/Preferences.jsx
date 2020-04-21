@@ -506,7 +506,7 @@ class Preferences extends Component {
                 
                 <div class="introduction">
                     <h2>Preferences</h2>
-                    <p>Disclaimer: Adding your preferences will help filter out the schedules that best suits you from among the available choices. However, it cannot assure you that all your preferences will be satisfied because taking into account the courses you need is of upmost priority.</p>
+                    <p>Disclaimer: Adding your preferences will help filter out the schedules that best suit you from among the available choices. However, it cannot assure you that all your preferences will be satisfied because taking into account the courses you need is of upmost priority.</p>
                     {this.state.dataSaved ?
                     <center><button onClick={this.handleSave} class="btn btn-success change-flowchart" disabled>Save</button></center>
                     :

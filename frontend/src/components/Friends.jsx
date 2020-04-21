@@ -21,6 +21,9 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Avatar from 'react-avatar';
 
+import Paper from '@material-ui/core/Paper';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 class Friends extends React.Component{
 
     constructor(props){
@@ -47,7 +50,15 @@ class Friends extends React.Component{
             polling: true,
             pollingInterval: 5000,
             newRequests: 0,
+            message: "hello from friends modal",
+            skeletons: [...Array(2).keys()],
+            notifRefresh: props.notifRefresh,
+            dataReceived: false,
         }
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({notifRefresh: props.notifRefresh})
     }
 
     createRequests(firstName, lastName, seenStatus, acceptStatus, id, from_user) {
@@ -80,7 +91,7 @@ class Friends extends React.Component{
                 if(!request.seen){
                     newRequests += 1;
                 }
-                this.setState({requests})
+                this.setState({requests, dataReceived: true})
             })
             this.setState({newRequests})
             // axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
@@ -118,6 +129,14 @@ class Friends extends React.Component{
         }).catch(err => {
             console.log(err.response)
         })
+    }
+
+    notifRefreshFriends = () => {
+        if(this.state.notifRefresh){
+            this.setState({notifRefresh: false}, ()=>{
+                this.refreshFriends()
+            })
+        }
     }
 
     componentDidMount(){
@@ -250,111 +269,216 @@ class Friends extends React.Component{
 
         if(currentPanel == "requests"){
             this.state.changePanel = 
-                <div className="cardPanel">
-                    {friendRequests.map((request, index) => (
+                <div>
+                    {this.state.dataReceived ? 
+                    <div className="cardPanel">
+                        {friendRequests.map((request, index) => (
+                            <DropdownItem header className="panelItem">
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="10" cy="10" r="8"></circle>
+                                        </svg> */}
+                                        <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
+                                        <span> {request.firstName} {request.lastName} </span>
+                                    </Col>
+
+                                    {!request.acceptStatus &&
+                                        <Col xs={6} md={4}>
+                                            <Button onClick={(e) => this.handleAcceptClick(e, index, request.id, request.from_user)} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
+                                            <Button onClick={(e) => this.handleDeleteClick(e, index, request.id)} variant="secondary" size="sm">Delete</Button>
+                                        </Col>
+                                    }
+
+                                    {request.acceptStatus &&
+                                        <Col xs={6} md={4}>
+                                            <span className="marginRightSeparator"> Accepted </span>
+                                            <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                                                <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </Col>
+                                    }
+
+                                    {/* {request.status == "delete" &&
+                                        <Col xs={6} md={4}>
+                                        <span className="marginRightSeparator"> Removed </span>
+                                        <svg class="bi bi-x-circle" width="21" height="21" viewBox="0 0 16 16" fill="#8E1600" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"></path>
+                                            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                                            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </Col>
+                                    }  */}
+                                </Row>
+                            </DropdownItem>
+                        ))}
+                        
+                        {friendRequests.length == 0 &&
+                            <DropdownItem disabled className="panelItem">
+                                <DropdownItem divider />
+                                <center>No Friend Requests</center>
+                            </DropdownItem>
+                        }
+                    </div>
+                    :
+                    <div className="cardPanel">
+                        {this.state.skeletons.map(skeleton => (
+                            <DropdownItem header className="panelItem">
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="10" cy="10" r="8"></circle>
+                                        </svg> */}
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                        {/* <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} /> */}
+                                        {/* <span> {request.firstName} {request.lastName} </span> */}
+                                        <span>
+                                            <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                        </span>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        {/* <span className="marginRightSeparator"> Accepted </span> */}
+                                        <span>
+                                            <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                        </span>
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                        {/* <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                                            <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
+                                        </svg> */}
+                                    </Col>
+                                </Row>
+                            </DropdownItem>
+                        ))} 
+                    </div>
+                    }
+                </div>
+        }else if(currentPanel == "list"){
+            this.state.changePanel = 
+                <div>
+                    {this.state.dataReceived ?
+                    <div className="cardPanel">
+
+                        {friendList.map((friend, index) => (
+                            <Link className="friendItem" /*to={"/view_friends"}*/ to={{pathname: "/view_friends", state:{selectedFriendId: friend.id}}}>
+                                <DropdownItem className="panelItem">
+                                        <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
+                                        <span> {friend.firstName} {friend.lastName} </span>
+                                </DropdownItem>
+                            </Link>
+                        ))}
+
+                        {friendList.length != 0 &&
+                            <DropdownItem header style={{ position: "sticky", bottom: "0", backgroundColor: "white", padding: "5px", marginLeft: "10px", marginTop: "10px"}}> 
+                                <div><Link to={{pathname: "/view_friends", state:{selectedFriendId: -1}}} id="dropdownFooter">More Details</Link></div>
+                            </DropdownItem>
+                        }
+
+                        {friendList.length == 0 &&
+                            <DropdownItem disabled className="panelItem">
+                                <DropdownItem divider />
+                                <center>No Friends</center>
+                            </DropdownItem>
+                        }
+                    </div>
+                    :
+                    <div className="cardPanel">
+                    {this.state.skeletons.map(skeleton => (
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="10" cy="10" r="8"></circle>
                                     </svg> */}
-                                    <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
-                                    <span> {request.firstName} {request.lastName} </span>
+                                    <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    {/* <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} /> */}
+                                    {/* <span> {request.firstName} {request.lastName} </span> */}
+                                    <span>
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    </span>
                                 </Col>
-
-                                {!request.acceptStatus &&
-                                    <Col xs={6} md={4}>
-                                        <Button onClick={(e) => this.handleAcceptClick(e, index, request.id, request.from_user)} variant="success" size="sm" className="marginRightSeparator">Accept</Button>
-                                        <Button onClick={(e) => this.handleDeleteClick(e, index, request.id)} variant="secondary" size="sm">Delete</Button>
-                                    </Col>
-                                }
-
-                                {request.acceptStatus &&
-                                    <Col xs={6} md={4}>
-                                        <span className="marginRightSeparator"> Accepted </span>
-                                        <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
-                                            <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    </Col>
-                                }
-
-                                {/* {request.status == "delete" &&
-                                    <Col xs={6} md={4}>
-                                    <span className="marginRightSeparator"> Removed </span>
-                                    <svg class="bi bi-x-circle" width="21" height="21" viewBox="0 0 16 16" fill="#8E1600" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"></path>
-                                        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
-                                        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"></path>
-                                    </svg>
+                                <Col xs={6} md={4}>
+                                    {/* <span className="marginRightSeparator"> Accepted </span> */}
+                                    <span>
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    </span>
+                                    <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    {/* <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
+                                    </svg> */}
                                 </Col>
-                                }  */}
                             </Row>
                         </DropdownItem>
-                    ))}
-                    
-                    {friendRequests.length == 0 &&
-                        <DropdownItem disabled className="panelItem">
-                            <DropdownItem divider />
-                            <center>No Friend Requests</center>
-                        </DropdownItem>
-                    }
-                </div>;
-        }else if(currentPanel == "list"){
-            this.state.changePanel = 
-                <div className="cardPanel">
-                    {friendList.map(friend => (
-                        <DropdownItem className="panelItem">
-                            {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="8"></circle>
-                            </svg> */}
-                            <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
-                            <span> {friend.firstName} {friend.lastName} </span>
-                        </DropdownItem>
-                    ))}
-
-                    {friendList.length != 0 &&
-                        <DropdownItem header> 
-                            <Link to={"/view_friends"} id="dropdownFooter">More Details</Link>
-                        </DropdownItem>
-                    }
-
-                    {friendList.length == 0 &&
-                        <DropdownItem disabled className="panelItem">
-                            <DropdownItem divider />
-                            <center>No Friends</center>
-                        </DropdownItem>
+                    ))} 
+                    </div>
                     }
                 </div>;
         }else{
             this.state.changePanel = 
-                <div className="cardPanel">
+                <div>
+                    {this.state.dataReceived ?
+                    <div className="cardPanel">
 
-                    <DropdownItem header className="dropdownHeader"> 
-                        <TextField id="outlined-basic" label="Search Friends" variant="outlined" />
-                    </DropdownItem>
+                        <DropdownItem header className="dropdownHeader"> 
+                            <TextField id="outlined-basic" label="Search Friends" variant="outlined" />
+                        </DropdownItem>
 
-                    {searchFriends.map((search, index) => (
+                        {searchFriends.map((search, index) => (
+                            <DropdownItem header className="panelItem">
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="10" cy="10" r="8"></circle>
+                                        </svg> */}
+                                        <Avatar name={search.firstName +" "+ search.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
+                                        <span> {search.firstName} {search.lastName} </span>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        {search.sentStatus ?
+                                        <Button disabled variant="success" size="sm">Sent</Button>
+                                        :
+                                        <Button onClick={(e) => this.handleSendClick(e, index, search.id)}variant="success" size="sm">Add</Button>
+                                        }
+                                    </Col>
+                                </Row>
+                            </DropdownItem>
+                        ))}
+                    </div>
+                    :
+                    <div className="cardPanel">
+                    {this.state.skeletons.map(skeleton => (
                         <DropdownItem header className="panelItem">
                             <Row>
                                 <Col xs={12} md={8}>
                                     {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="10" cy="10" r="8"></circle>
                                     </svg> */}
-                                    <Avatar name={search.firstName +" "+ search.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
-                                    <span> {search.firstName} {search.lastName} </span>
+                                    <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    {/* <Avatar name={request.firstName +" "+ request.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} /> */}
+                                    {/* <span> {request.firstName} {request.lastName} </span> */}
+                                    <span>
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    </span>
                                 </Col>
                                 <Col xs={6} md={4}>
-                                    {search.sentStatus ?
-                                    <Button disabled variant="success" size="sm">Sent</Button>
-                                    :
-                                    <Button onClick={(e) => this.handleSendClick(e, index, search.id)}variant="success" size="sm">Add</Button>
-                                    }
+                                    {/* <span className="marginRightSeparator"> Accepted </span> */}
+                                    <span>
+                                        <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    </span>
+                                    <Skeleton width={'100%'} height={'100%'}></Skeleton>
+                                    {/* <svg class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
+                                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
+                                    </svg> */}
                                 </Col>
                             </Row>
                         </DropdownItem>
-                    ))}
-                </div>;
+                    ))} 
+                    </div>
+                    }
+                </div>
         }
         return(
             <UncontrolledDropdown nav inNavbar>
@@ -369,7 +493,7 @@ class Friends extends React.Component{
                 <DropdownMenu right id="dropdownMenu">
 
                         {this.state.panel == "list" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
@@ -379,7 +503,7 @@ class Friends extends React.Component{
                         }
 
                         {this.state.panel == "find" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
@@ -389,7 +513,7 @@ class Friends extends React.Component{
                         }
 
                         {this.state.panel == "requests" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
@@ -399,6 +523,7 @@ class Friends extends React.Component{
                         }
                     {this.state.changePanel}
                 </DropdownMenu>
+                {this.notifRefreshFriends()}
             </UncontrolledDropdown>
         );
     }

@@ -64,8 +64,8 @@ class ComboBox extends React.Component{
         this.setState({courseList: []})
       }
     }
-    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
-    return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
+    createData(classNmbr, course, course_id, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
+    return { classNmbr, course, course_id, section, faculty, day, startTime, endTime, room, capacity, enrolled };
     }
 
     handleOfferingSearchInput = (e, val) =>{
@@ -90,6 +90,7 @@ class ComboBox extends React.Component{
                         var day = ''
                         var classnumber = ''
                         var course = ''
+                        var course_id = ''
                         var section = ''
                         var faculty = ''
                         var timeslot_begin = ''
@@ -101,6 +102,7 @@ class ComboBox extends React.Component{
                             days.push(offering.day)
                             classnumber = offering.classnumber
                             course = offering.course
+                            course_id = offering.course_id
                             section = offering.section
                             faculty = offering.faculty
                             timeslot_begin = offering.timeslot_begin
@@ -112,7 +114,7 @@ class ComboBox extends React.Component{
                         days.map(day_code => {
                             day += day_code;
                         })
-                        const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                        const offering = this.createData(classnumber, course, course_id, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
                         offeringList.push(offering);
                         }
                     })

@@ -212,7 +212,7 @@ class Login extends Component {
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         {/* Email */}
                         <br/>
-                        <TextField id="outlined-basic" helperText="Please use your DLSU email address" label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")}/>
+                        <TextField id="outlined-basic"label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")}/>
                         {/* <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}></input> */}
                         <span className="error">{this.state.errors["email"]}</span>
 
@@ -221,7 +221,7 @@ class Login extends Component {
 
                         {/* Password */}
                         <br/>
-                        <TextField type="password" helperText="Must be a minimum of 8 characters" id="outlined-basic" label="Password" variant="outlined" name="pass" placeholder="●●●●●●●●" value={this.state.fields["pass"]} onChange={this.handleChange.bind(this, "pass")}/>
+                        <TextField type="password" id="outlined-basic" label="Password" variant="outlined" name="pass" placeholder="●●●●●●●●" value={this.state.fields["pass"]} onChange={this.handleChange.bind(this, "pass")}/>
                         {/* <input type="password" name="pass" placeholder="●●●●●●●●" onChange={this.handleChange.bind(this, "pass")} value={this.state.fields["pass"]}></input> */}
                         <span className="error">{this.state.errors["pass"]}</span>
 

@@ -17,7 +17,7 @@ import { HashLink as Link } from 'react-router-hash-link';
 
 import Badge from '@material-ui/core/Badge';
 import axios from 'axios'
-
+import Skeleton from '@material-ui/lab/Skeleton';
 
 class Notifications extends React.Component{
 
@@ -34,8 +34,15 @@ class Notifications extends React.Component{
             ],
             polling: true,
             pollingInterval: 5000,
-            newNotifs: 0
+            newNotifs: 0,
+            notifRefresh: props.notifRefresh,
+            skeletons: [...Array(2).keys()],
+            dataReceived: false,
         }
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({notifRefresh: props.notifRefresh})
     }
 
     createData(category, message, seen, date, icon, bgColor, id) {
@@ -69,11 +76,27 @@ class Notifications extends React.Component{
             var newNotifs = this.state.newNotifs;
             res.data.map(notif=> {
                 const database = this.state.database;
-                database.push(this.createData(notif.category, notif.content, notif.seen, notif.date, "", "", notif.id))
+                let difference = Math.floor((Date.now() - Date.parse(notif.date)) /1000 /60 /60)
+                let timePassed = ''
+                if(difference <= 24){
+                    timePassed = difference + 'h'
+                }else{
+                    difference = Math.floor(difference/24)
+                    if(difference <= 7){
+                        timePassed = difference + 'd'
+                    }else{
+                        difference = Math.floor(difference/7)
+                        timePassed = difference + 'w'
+                    }
+                }
+                database.push(this.createData(notif.category, notif.content, notif.seen, timePassed, "", "", notif.id))
                 if(!notif.seen){
                     newNotifs += 1;
                 }
-                this.setState({database})
+                if(notif.category == 'Friend'){
+                    this.setState({notifRefresh: true})
+                }
+                this.setState({database, dataReceived: true})
             })
             this.setState({newNotifs})
             this.poll()
@@ -140,8 +163,9 @@ class Notifications extends React.Component{
                 </Badge>
                 </DropdownToggle>
                 
+                {this.state.dataReceived ?
                 <DropdownMenu right id="dropdownMenu">
-                    <DropdownItem header id="notifSettings">
+                    <DropdownItem header id="notifSettings" className="headerSticky">
                         
                         <Link to="profile#notifs-container" id="headerLink">Settings</Link>
                     </DropdownItem>
@@ -162,6 +186,23 @@ class Notifications extends React.Component{
                         </DropdownItem>
                     }
                 </DropdownMenu>
+                :
+                <DropdownMenu right id="dropdownMenu">
+                    <DropdownItem header id="notifSettings" className="headerSticky">
+                        
+                        <Link to="profile#notifs-container" id="headerLink">Settings</Link>
+                    </DropdownItem>
+
+                    {this.state.skeletons.map(option => (
+                        <DropdownItem disabled className="notifItem">
+                            <DropdownItem divider />
+                            <span> <Skeleton width={'100%'} height={'100%'}></Skeleton> </span>
+                            <span> <Skeleton width={'100%'} height={'100%'}></Skeleton> </span>
+                        </DropdownItem>
+                    ))}
+
+                </DropdownMenu>
+                }
             </UncontrolledDropdown>
         );
     }

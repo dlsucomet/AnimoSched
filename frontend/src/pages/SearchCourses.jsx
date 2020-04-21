@@ -78,11 +78,12 @@ class SearchCourses extends Component {
         allSiteData: [],
         selectedCourses: [],
         loading: false,
-        radioVal: '',
+        radioVal: 'all',
         dataReceived: false,
         skeletons: [...Array(8).keys()],
         rowStyle: "",
         openModalCourseInfo: false,
+        showPlaceholder: true,
       }
       this.radioRef = React.createRef()
     }
@@ -109,10 +110,8 @@ class SearchCourses extends Component {
       this.setState({fields});
     }
 
-    handleFilter = (field, e) => {
-      let option = e.target.value;
-      this.setState({radioVal: option})
-
+    setFilter = () => {
+      let option = this.state.radioVal;
       let filteredList = [];
 
       if(option == "all"){
@@ -153,17 +152,23 @@ class SearchCourses extends Component {
 
         console.log(filteredList);
       }
+    }
 
+    handleFilter = (field, e) => {
+      this.setState({radioVal: e.target.value}, () => {
+        this.setFilter()
+      })
     }
 
     searchCourses = () =>{
       //start loading
-      this.setState({radioVal: ''})
+
       if(this.state.selectedCourses.length > 0){
         this.setState({siteData: []})
-        this.setState({loading: true});
+        this.setState({showPlaceholder: false},()=>{
+          this.setState({loading: true});
+        });
       }
-
 
       const selectedCourses = []
       this.state.selectedCourses.map(course => {
@@ -211,10 +216,11 @@ class SearchCourses extends Component {
               newSiteData.push(offering);
             }
           })
-        this.setState({siteData: newSiteData})
-        this.setState({allSiteData: newSiteData})
+        this.setState({siteData: newSiteData, allSiteData: newSiteData},() => {
+          this.setFilter()
+          this.setState({loading: false});
+        })
         //Finish Loading
-        this.setState({loading: false});
       }).catch(err => {
         console.log(err.response)
       })
@@ -255,6 +261,7 @@ class SearchCourses extends Component {
         },
         body: {
           fontSize: 14,
+          borderBottom: "1px solid white",
         },
       }))(TableCell);
       
@@ -309,8 +316,21 @@ class SearchCourses extends Component {
                     </center>
                 </div>
                 
-                {this.state.siteData.length > 0 ?
-                <div className="viewCourses">
+                <div className="legend">
+                    <div className="legendItems">
+                        <center>
+                            <div>Open Sections - <Paper style={{backgroundColor: "#B8D4CD", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Green</div> 
+                       </center>
+                    </div>
+                  
+                    <div  className="legendItems">
+                        <center>
+                            <div>Close Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
+                        </center>
+                    </div>
+                </div>
+                
+                <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
                   <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                       <TableHead>
@@ -393,10 +413,10 @@ class SearchCourses extends Component {
                   </Modal> 
                 </div>
                 
-                    :
-                <div className={"noContent"}>
+                
+                <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
                     <center><img style={{width:"30%"}} src={searchIMG}/></center>
-                </div>}
+                </div>
             </div>
                      
             : 
