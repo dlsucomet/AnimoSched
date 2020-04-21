@@ -146,6 +146,7 @@ class FriendPage extends Component {
             selectedFriendId: "",
             hasSelectedFriend: false, //right side
             contentSelected: false,
+            fromModalIndex: "",
             schedules: [],
             profList: [],
 
@@ -300,16 +301,18 @@ class FriendPage extends Component {
                 requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
             })
             this.setState({requests, dataReceived: true})
+//            if(this.state.fromModalIndex == "" && ){
+                this.handleClick("clickaway", this.props.location.state.index)
+//            }
             
-//            console.log(this.props.location.state.index);
-//            console.log(this.props.location.state.selectedFriend);
-           this.handleClick("clickaway", this.props.location.state.index)
-//            console.log(requests[this.props.location.state.index]);
+
         })
         
         
 
     }
+
+    
 
     handleClickOpenAlert = (friend) => {
         this.setState({openAlert: true});
@@ -325,6 +328,7 @@ class FriendPage extends Component {
         const requests = this.state.requests
         this.setState({contentSelected: true})
         this.setState({selectedFriendId: requests[i].id})
+        this.setState({hasSelectedFriend: false});
         axios.get('https://archerone-backend.herokuapp.com/api/schedulelist/'+requests[i].id+'/')
         .then(res => {
             const schedules = []
@@ -460,6 +464,8 @@ class FriendPage extends Component {
                 this.setState({sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
                     this.setSchedInfo();
                 })
+                
+                this.setState({hasSelectedFriend: true});
             });
             // this.setState({success: true});
             // this.setState({loading: false});
@@ -470,6 +476,16 @@ class FriendPage extends Component {
             // this.setState({loading: false});
         })
 
+    }
+    
+    componentWillReceiveProps(nextProps){
+         if (this.props.number !== nextProps.number) {
+          this.handleClick("clickaway", this.props.location.state.index)
+        }
+      
+//        console.log(this.props.location.state.index);
+//            console.log(this.props.location.state.selectedFriend);
+//           this.handleClick("clickaway", this.props.location.state.index)
     }
        
     render() {
