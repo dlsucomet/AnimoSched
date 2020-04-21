@@ -49,6 +49,7 @@ class Friends extends React.Component{
             polling: true,
             pollingInterval: 5000,
             newRequests: 0,
+            message: "hello from friends modal"
         }
     }
 
@@ -305,13 +306,13 @@ class Friends extends React.Component{
         }else if(currentPanel == "list"){
             this.state.changePanel = 
                 <div className="cardPanel">
-                    {friendList.map(friend => (
+                    {friendList.map((friend, index) => (
                         <DropdownItem className="panelItem">
-                            {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="8"></circle>
-                            </svg> */}
-                            <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
-                            <span> {friend.firstName} {friend.lastName} </span>
+                            <Link className="friendItem" to={"/view_friends"} /*to={{pathname: "/view_friends", state:{message: "hello from friend modal"}}} className="friendItem"*/>
+                         
+                                <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
+                                <span> {friend.firstName} {friend.lastName} </span>
+                            </Link>
                         </DropdownItem>
                     ))}
 

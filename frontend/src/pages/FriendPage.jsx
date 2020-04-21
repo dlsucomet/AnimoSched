@@ -49,6 +49,8 @@ import Avatar from 'react-avatar';
 
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { withRouter } from "react-router";
+
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -227,6 +229,8 @@ class FriendPage extends Component {
             earliest_class_time: '',
             latest_class_time: '',
             break_length: '',
+            firstName: 'FirstName',
+            lastName: 'LastName',
 
         }
 
@@ -297,6 +301,8 @@ class FriendPage extends Component {
             })
             this.setState({requests, dataReceived: true})
         })
+        
+        console.log(this.props.location);
     }
 
     handleClickOpenAlert = (friend) => {
@@ -574,7 +580,7 @@ class FriendPage extends Component {
                                 <Tab eventKey="details" title="Details">
                                     <div className="friendName">
                                         <Typography gutterBottom variant="h4" align="center" style={{color:"black"}}>
-                                            Name                
+                                            {this.state.firstName} {this.state.lastName}
                                         </Typography>
                                         {/* <center><h1> Name </h1></center> */}
                                     </div>
@@ -828,4 +834,4 @@ class FriendPage extends Component {
     classes: PropTypes.object.isRequired,
   };
 
-  export default withStyles(styles)(FriendPage);
+  export default withStyles(styles); withRouter(FriendPage);

@@ -66,3 +66,13 @@
 #dropdownFooter {
     color: #006A4E;
 }
+
+.friendItem{
+    text-decoration: none;
+    color: black
+}
+
+.friendItem:hover{
+    color: gray;
+    text-decoration: none;
+}
