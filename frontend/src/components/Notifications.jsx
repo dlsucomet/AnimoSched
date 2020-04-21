@@ -96,9 +96,10 @@ class Notifications extends React.Component{
                 if(notif.category == 'Friend'){
                     this.setState({notifRefresh: true})
                 }
-                this.setState({database, dataReceived: true})
+                this.setState({database})
             })
             this.setState({newNotifs})
+            this.setState({dataReceived: true})
             this.poll()
         })
     }
