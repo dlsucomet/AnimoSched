@@ -141,7 +141,7 @@ class Notifications extends React.Component{
                 </DropdownToggle>
                 
                 <DropdownMenu right id="dropdownMenu">
-                    <DropdownItem header id="notifSettings">
+                    <DropdownItem header id="notifSettings" className="headerSticky">
                         
                         <Link to="profile#notifs-container" id="headerLink">Settings</Link>
                     </DropdownItem>

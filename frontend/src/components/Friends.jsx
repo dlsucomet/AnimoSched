@@ -21,6 +21,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Avatar from 'react-avatar';
 
+import Paper from '@material-ui/core/Paper';
+
 class Friends extends React.Component{
 
     constructor(props){
@@ -47,6 +49,7 @@ class Friends extends React.Component{
             polling: true,
             pollingInterval: 5000,
             newRequests: 0,
+            message: "hello from friends modal"
         }
     }
 
@@ -303,19 +306,19 @@ class Friends extends React.Component{
         }else if(currentPanel == "list"){
             this.state.changePanel = 
                 <div className="cardPanel">
-                    {friendList.map(friend => (
+                    {friendList.map((friend, index) => (
                         <DropdownItem className="panelItem">
-                            {/* <svg class="bi bi-circle-fill" id='profileLink' width="32" height="32" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="8"></circle>
-                            </svg> */}
-                            <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
-                            <span> {friend.firstName} {friend.lastName} </span>
+                            <Link className="friendItem" /*to={"/view_friends"}*/ to={{pathname: "/view_friends", state:{index: index, selectedFriend: friend}}}>
+                         
+                                <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
+                                <span> {friend.firstName} {friend.lastName} </span>
+                            </Link>
                         </DropdownItem>
                     ))}
 
                     {friendList.length != 0 &&
-                        <DropdownItem header> 
-                            <Link to={"/view_friends"} id="dropdownFooter">More Details</Link>
+                        <DropdownItem header style={{ position: "sticky", bottom: "0", backgroundColor: "white", padding: "5px", marginLeft: "10px", marginTop: "10px"}}> 
+                            <div><Link to={"/view_friends"} id="dropdownFooter">More Details</Link></div>
                         </DropdownItem>
                     }
 
@@ -369,7 +372,7 @@ class Friends extends React.Component{
                 <DropdownMenu right id="dropdownMenu">
 
                         {this.state.panel == "list" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
@@ -379,7 +382,7 @@ class Friends extends React.Component{
                         }
 
                         {this.state.panel == "find" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>
@@ -389,7 +392,7 @@ class Friends extends React.Component{
                         }
 
                         {this.state.panel == "requests" &&
-                            <DropdownItem header className="dropdownHeader">
+                            <DropdownItem header className="dropdownHeader" id="headerSticky">
                                 <a href='javascript:void(0)' className="dropdownOption" id="activeOption" onClick={(e) => this.handleClick(e,"requests")}>Friend Requests</a>
                                 |
                                 <a href='javascript:void(0)' className="dropdownOption" onClick={(e) => this.handleClick(e,"list")}>Friend List</a>

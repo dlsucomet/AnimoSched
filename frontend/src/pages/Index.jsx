@@ -965,7 +965,7 @@ class Index extends Component {
                               Enter your courses, 
                               set your schedule, 
                               and choose your schedule, 
-                              generate automatically
+                              generated automatically
                           </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -993,7 +993,7 @@ class Index extends Component {
             <Grid item xs={3}>
                             <Typography variant="body1" gutterBottom>
                             Customize the look of your
-                            schedule and save it as an image.
+                            schedule and save it as an image
                           </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -1014,8 +1014,7 @@ class Index extends Component {
         
             <Grid item xs={3}>
                             <Typography variant="body1" gutterBottom>
-                            Share your schedules,
-                            view your friends' schedules, 
+                            Share your schedules and view your friends' schedules,
                             making schedule coordination easier
                             {/* collaborate with friends
                             and create schedules

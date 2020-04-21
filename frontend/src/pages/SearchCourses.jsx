@@ -78,7 +78,7 @@ class SearchCourses extends Component {
         radioVal: '',
         dataReceived: false,
         skeletons: [...Array(8).keys()],
-        rowStyle: "",
+        showPlaceholder: true,
       }
       this.radioRef = React.createRef()
     }
@@ -217,6 +217,7 @@ class SearchCourses extends Component {
     }
 
     handleSearch = (e, val) =>{
+        this.setState({showPlaceholder: false});
       this.setState({selectedCourses: val})
     }
 
@@ -230,6 +231,7 @@ class SearchCourses extends Component {
         },
         body: {
           fontSize: 14,
+          borderBottom: "1px solid white",
         },
       }))(TableCell);
       
@@ -284,8 +286,21 @@ class SearchCourses extends Component {
                     </center>
                 </div>
                 
-                {this.state.siteData.length > 0 ?
-                <div className="viewCourses">
+                <div className="legend">
+                    <div className="legendItems">
+                        <center>
+                            <div>Open Sections - <Paper style={{backgroundColor: "#B8D4CD", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Green</div> 
+                       </center>
+                    </div>
+                  
+                    <div  className="legendItems">
+                        <center>
+                            <div>Close Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
+                        </center>
+                    </div>
+                </div>
+                
+                <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
                   <TableContainer component={Paper}>
                     <Table aria-label="customized table">
                       <TableHead>
@@ -338,10 +353,10 @@ class SearchCourses extends Component {
                   </TableContainer>
                 </div>
                 
-                    :
-                <div className={"noContent"}>
+                
+                <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
                     <center><img style={{width:"30%"}} src={searchIMG}/></center>
-                </div>}
+                </div>
             </div>
                      
             : 
