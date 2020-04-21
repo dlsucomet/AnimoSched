@@ -1,10 +1,10 @@
-import '../fonts/VarelaRound-Regular.ttf'
+import './fonts/VarelaRound-Regular.ttf'
 
 @font-face {
-  font-family: 'Varela';
+  font-family: 'Varela Round';
   font-style: normal;
   font-weight: 400;
-  src: local('Varela'), url(../fonts/VarelaRound-Regular.ttf) format('truetype');
+  src: local('Varela Round'), url(/fonts/VarelaRound-Regular.ttf) format('truetype');
     
 /*    font-family: 'Varela';*/
 /*  font-style: normal;*/
@@ -179,5 +179,5 @@ import '../fonts/VarelaRound-Regular.ttf'
 }
 
 *{
-    font-family: 'Varela', sans-serif!important;
+    font-family: 'Varela Round', sans-serif !important;
 }
