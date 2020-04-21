@@ -69,7 +69,20 @@ class Notifications extends React.Component{
             var newNotifs = this.state.newNotifs;
             res.data.map(notif=> {
                 const database = this.state.database;
-                database.push(this.createData(notif.category, notif.content, notif.seen, notif.date, "", "", notif.id))
+                let difference = Math.floor((Date.now() - Date.parse(notif.date)) /1000 /60 /60)
+                let timePassed = ''
+                if(difference <= 24){
+                    timePassed = difference + 'h'
+                }else{
+                    difference = Math.floor(difference/24)
+                    if(difference <= 7){
+                        timePassed = difference + 'd'
+                    }else{
+                        difference = Math.floor(difference/7)
+                        timePassed = difference + 'w'
+                    }
+                }
+                database.push(this.createData(notif.category, notif.content, notif.seen, timePassed, "", "", notif.id))
                 if(!notif.seen){
                     newNotifs += 1;
                 }
