@@ -362,7 +362,7 @@ class Friends extends React.Component{
 
                         {friendList.map((friend, index) => (
                             <DropdownItem className="panelItem">
-                                <Link className="friendItem" /*to={"/view_friends"}*/ to={{pathname: "/view_friends", state:{index: index, selectedFriend: friend}}}>
+                                <Link className="friendItem" /*to={"/view_friends"}*/ to={{pathname: "/view_friends", state:{selectedFriendId: friend.id}}}>
                                     <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "12px",}} />
                                     <span> {friend.firstName} {friend.lastName} </span>
                                 </Link>
@@ -371,7 +371,7 @@ class Friends extends React.Component{
 
                         {friendList.length != 0 &&
                             <DropdownItem header style={{ position: "sticky", bottom: "0", backgroundColor: "white", padding: "5px", marginLeft: "10px", marginTop: "10px"}}> 
-                                <div><Link to={"/view_friends"} id="dropdownFooter">More Details</Link></div>
+                                <div><Link to={{pathname: "/view_friends", state:{selectedFriendId: -1}}} id="dropdownFooter">More Details</Link></div>
                             </DropdownItem>
                         }
 
