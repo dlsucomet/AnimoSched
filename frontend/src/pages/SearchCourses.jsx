@@ -11,6 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ComboBox from '../components/ComboBox.jsx';
 import axios from 'axios';
@@ -31,6 +32,8 @@ import ReactLoading from 'react-loading';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import searchIMG from '../assets/search_engine.png';
+
+import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const styles = theme => ({
   root: {
@@ -78,6 +81,8 @@ class SearchCourses extends Component {
         radioVal: 'all',
         dataReceived: false,
         skeletons: [...Array(8).keys()],
+        rowStyle: "",
+        openModalCourseInfo: false,
         showPlaceholder: true,
       }
       this.radioRef = React.createRef()
@@ -225,6 +230,27 @@ class SearchCourses extends Component {
       this.setState({selectedCourses: val})
     }
 
+    handleClick = (id, column) => {
+      return (event) => {
+        console.log(`You clicked on row with id ${id}, in column ${column}.`);
+      }
+    }
+
+    handleCloseModalCourseInfo = ()=>{
+      this.setState({openModalCourseInfo: false})
+    }
+  
+    handleOpenModalCourseInfo = ()=>{
+      console.log("Hello opening modal");
+      this.setState({openModalCourseInfo: true})
+      console.log(this.state.openModalCourseInfo);
+    }
+  
+    toggleModal = () => {
+      var openModalVar = this.state.openModalCourseInfo;
+      this.setState({openModalCourseInfo: !openModalVar});
+    }
+
     render() {
       const { classes } = this.props;
 
@@ -339,9 +365,9 @@ class SearchCourses extends Component {
                       : 
                       <TableBody>
                         {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#BBE1FA"} : {backgroundColor: "#B8D4CD"}}>
+                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#DFF7FA"} : {backgroundColor: "#CFF0CC"}}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
-                            <StyledTableCell> {row.course} </StyledTableCell>
+                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={{cursor: "pointer"}}> {row.course} </StyledTableCell></Tooltip>
                             <StyledTableCell> {row.section} </StyledTableCell>
                             <StyledTableCell> {row.faculty} </StyledTableCell>
                             <StyledTableCell> {row.day} </StyledTableCell>
@@ -351,10 +377,40 @@ class SearchCourses extends Component {
                             <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
                           </StyledTableRow>
                         ))}
-                        </TableBody>
-                        }
+                      </TableBody>
+                      }
                     </Table>
                   </TableContainer>
+
+                  <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                      <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
+                      
+                      <ModalBody>
+                        <h4>INOVATE</h4>
+                        <h5>Technology and Innovation Management</h5>
+                        <br/>
+
+                        <u><h5>Description</h5></u>
+                        <p>This course covers entrepreneurship in technology ventures, and takes the student through the commercializaiton of technology ideas into viable enterprises. The course examines how technology ideas may be developed into opportunities and eventually into viable businesses; it takes the students through the process of crafting the business model canvas, which will be the final (team) output in this course.</p>
+                        <br/>
+
+                        <u><h5>Pre-requisite/s</h5></u>
+                        <p>N/A</p>
+                        <br/>
+
+                        <u><h5>Co-requisite/s</h5></u>
+                        <p>N/A</p>
+                        <br/>
+
+                        <u><h5>Course Equivalent</h5></u>
+                        <p>CCINOV8</p>
+                        <br/>
+
+                        <u><h5>Number of Units</h5></u>
+                        <p>3</p>
+                      </ModalBody>
+                      
+                  </Modal> 
                 </div>
                 
                 

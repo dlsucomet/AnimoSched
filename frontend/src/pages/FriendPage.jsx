@@ -230,10 +230,11 @@ class FriendPage extends Component {
             earliest_class_time: '',
             latest_class_time: '',
             break_length: '',
-            firstName: 'FirstName',
-            lastName: 'LastName',
+            firstName: '',
+            lastName: '',
 
         }
+        console.log(props)
 
     }
     createTimeslot = (day, hour, minute) =>{
@@ -292,26 +293,6 @@ class FriendPage extends Component {
         });
     
       }
-    
-    componentDidMount(){
-        axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
-        .then(res => {
-            const requests = []
-            res.data.map(friend => {
-                requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
-            })
-            this.setState({requests, dataReceived: true})
-//            if(this.state.fromModalIndex == "" && ){
-                this.handleClick("clickaway", this.props.location.state.index)
-//            }
-            
-
-        })
-        
-        
-
-    }
-
     
 
     handleClickOpenAlert = (friend) => {
@@ -461,7 +442,7 @@ class FriendPage extends Component {
                     }
                 })
                 console.log(profList)
-                this.setState({sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+                this.setState({firstName: requests[i].firstName, lastName: requests[i].lastName, sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
                     this.setSchedInfo();
                 })
                 
@@ -478,10 +459,60 @@ class FriendPage extends Component {
 
     }
     
-    componentWillReceiveProps(nextProps){
-         if (this.props.number !== nextProps.number) {
-          this.handleClick("clickaway", this.props.location.state.index)
+    componentDidMount(){
+        axios.get('https://archerone-backend.herokuapp.com/api/friendlist/'+localStorage.getItem('user_id')+'/')
+        .then(res => {
+            const requests = []
+            res.data.map(friend => {
+                requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
+            })
+            this.setState({requests}, () => {
+                if(this.props.location.state != undefined){
+                    let selectedFriendId = this.props.location.state.selectedFriendId;
+                    if(selectedFriendId != -1){
+                        requests.map((friend,index) => {
+                            if(friend.id == selectedFriendId){
+                                this.handleClick(null, index)
+                            }
+                        })
+                    }
+                    const {location, history} = this.props;
+                    //use the state via location.state
+                    //and replace the state via
+                    location.state = undefined
+                    history.replace() 
+                }
+                this.setState({dataReceived: true})
+            })
+//            if(this.state.fromModalIndex == "" && ){
+                // this.handleClick("clickaway", this.props.location.state.index)
+//            }
+        })
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({dataReceived: false})
+        if(props.location.state != undefined){
+            let selectedFriendId = props.location.state.selectedFriendId;
+            if(selectedFriendId != -1){
+                this.state.requests.map((friend,index) => {
+                    if(friend.id == selectedFriendId){
+                        this.handleClick(null, index)
+                    }
+                })
+            }else{
+                this.setState({selectedFriendId: '', contentSelected: false, hasSelectedFriend: false})
+            }
+            const {location, history} = props;
+            //use the state via location.state
+            //and replace the state via
+            location.state = undefined
+            history.replace() 
         }
+        this.setState({dataReceived: true})
+        //  if (this.props.number !== nextProps.number) {
+        //   this.handleClick("clickaway", this.props.location.state.index)
+        // }
       
 //        console.log(this.props.location.state.index);
 //            console.log(this.props.location.state.selectedFriend);
@@ -533,7 +564,7 @@ class FriendPage extends Component {
 
                             <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
                                 {friendList.map((friend, index) => (
-                                    <ListGroupItem type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
+                                    <ListGroupItem color={this.state.selectedFriendId == friend.id ? 'success' : ''} type="button" tag="a" onClick={(e) => this.handleClick(e, index)} action>
                                         <Row>
                                             <Col xs={6} md={1}>
                                                 <Avatar name={friend.firstName +" "+ friend.lastName} textSizeRatio={2.30} round={true} size="25" style={{marginRight: "5px",}} />

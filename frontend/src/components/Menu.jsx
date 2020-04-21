@@ -22,7 +22,8 @@ class Menu extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            currentPage: props.currentPage
+            currentPage: props.currentPage,
+            notifRefresh: false
         }
     }
 
@@ -36,6 +37,11 @@ class Menu extends React.Component{
     //     this.setState({activePage});
     //     console.log(activePage);
     // }
+
+    handleRefreshFriends = () => {
+
+    }
+
     render (){
         const loggedIn = () => {
             return(
@@ -54,10 +60,10 @@ class Menu extends React.Component{
                        {this.props.first_name} 
                     </Nav.Link>
                     <Nav.Link>
-                        <Friends/>
+                        <Friends notifRefresh={this.state.notifRefresh} />
                     </Nav.Link>
                     <Nav.Link>
-                        <NotifCenter/>
+                        <NotifCenter notifRefresh={this.state.notifRefresh} />
                     </Nav.Link>
                     <UncontrolledDropdown nav inNavbar>
                         <DropdownToggle nav caret>
