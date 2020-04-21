@@ -35,7 +35,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+
 
 import html2canvas from 'html2canvas';
 
@@ -64,6 +64,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Chip } from "@material-ui/core";
 import ComboBox from "../components/ComboBox.jsx";
 
+import MuiAlert from '@material-ui/lab/Alert';
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }

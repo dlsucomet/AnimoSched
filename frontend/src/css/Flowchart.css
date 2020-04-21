@@ -11,9 +11,9 @@ body {
 .sidemenu {
     height: 100%;
     overflow-y: hidden;
-    padding-top: 10%;
+    padding-top: 12%;
 
-    width: 20%;
+    width: 12%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -23,13 +23,14 @@ body {
 }
 
 .sidemenu-main {
-    margin-left: 23%;
+    margin-left: 12%;
     /* overflow-y: scroll; */
 }
 
 .flowchart-area {
     margin-top: 2%;
     overflow: auto;
+    width: 90%;
 }
 
 .flowchart-header-parent {
@@ -70,4 +71,18 @@ body {
 .change-flowchart {
     margin-top: 3%;
     margin-bottom: 3%;
+}
+
+.exportmenu {
+    height: 100%;
+    overflow-y: hidden;
+    padding-top: 11%;
+
+    width: 12%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+
+    background-color: white;
 }

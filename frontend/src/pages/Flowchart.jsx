@@ -11,6 +11,16 @@ import PropTypes from 'prop-types';
 
 import ReactLoading from 'react-loading';
 
+import Button from '@material-ui/core/Button';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import html2canvas from 'html2canvas';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const styles = theme => ({
   flowchartText:{
       overflow: 'hidden',
@@ -21,7 +31,50 @@ const styles = theme => ({
       '&:hover': {
           color: "green"
         },
-  }
+  },
+    buttonStyle:{
+        fontSize: "95%",
+      textTransform: "none",
+      width: "80%",
+      borderRadius: "25px",
+//      padding: "10px",
+      paddingLeft: "5%",
+      paddingRight: "3%",
+      backgroundColor: "#16775D",
+      border: "none",
+      color: "white",
+      boxShadow: "6px 5px #e8f4ea",
+      borderStyle: "solid",
+      borderColor: "#16775D",
+//      marginTop: "20px",
+      justifyContent: 'center',
+      '&:hover': {
+          backgroundColor: "white",
+          color: "#16775D"
+        },
+    },
+     buttonStyleOption:{
+      textTransform: "none",
+      width: "55%",
+      borderRadius: "25px",
+//      padding: "10px",
+      paddingLeft: "5%",
+      paddingRight: "3%",
+      backgroundColor: "white",
+        border: "solid 2px #16775D",
+      color: "#16775D",
+      boxShadow: "6px 5px #e8f4ea",
+      borderStyle: "solid",
+      borderColor: "#16775D",
+//      marginTop: "20px",
+      justifyContent: 'center',
+      '&:hover': {
+          
+          backgroundColor: "#16775D",
+          border: "none",
+          color: "white",
+        },
+    }
 });
 
 class Flowchart extends Component {
@@ -33,7 +86,8 @@ class Flowchart extends Component {
         flowpoints: [],
         degreekey: '1',
         batchkey: '116',
-        dataReceived: false
+        dataReceived: false,
+        snackbar: false,
       }
     }
 
@@ -87,7 +141,61 @@ class Flowchart extends Component {
         })
         this.setState({dataReceived: true})
       })
-    }  
+    }
+    
+    exportSched = () => {
+        window.scrollTo(0, 0);
+        html2canvas(document.querySelector("#flowchart-area")).then(canvas => {
+    //      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+            var filename = "flowchart" + ".png";
+         
+            this.saveAs(canvas.toDataURL(), filename); 
+
+
+        });
+        
+        this.setState({snackbar: true});
+
+//        let snackBarVariables = [...this.state.snackBarVariables];
+//        this.setState({snackbarMsg: "Your schedule image is downloading!"});
+//        snackBarVariables[0].snackBarSuccess = true;
+        // snackBarVariables[1].snackBarFailed = true;
+//        this.setState({snackBarVariables});
+//        console.log(snackBarVariables);
+  }
+  
+  saveAs = (uri, filename) => {
+
+    var link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+
+        link.href = uri;
+        link.download = filename;
+
+        //Firefox requires the link to be in the body
+        document.body.appendChild(link);
+
+        //simulate click
+        link.click();
+
+        //remove the link when done
+        document.body.removeChild(link);
+
+    } else {
+
+        window.open(uri);
+
+    }
+}
+
+  handleCloseBar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({snackbar: false});
+    }
 
     render() {
       const { classes } = this.props;
@@ -97,16 +205,25 @@ class Flowchart extends Component {
 
             {this.state.dataReceived ? 
             <div>
-              <div class="sidemenu">
-                  <center><input type="submit" class="btn btn-success change-flowchart" value="CCS 116 CS" /></center>
+              <div class="sidemenu"  /*style={{display:"none", width: "0%", marginLeft: "0%"}}*/>
+                  <center>
+                      {/*<Button
+                      variant="contained"
+                      className={classes.buttonStyleOption}
+                         // style={{display:"none", width: "0%", margin: "none"}}
+                      >
+                      CSS 116 CS
+                    </Button>*/}
+                      <input type="submit" class="btn btn-success change-flowchart" value="CCS 116 CS" />
+                  </center>
                   {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
                   {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
               </div>
 
               <div class="sidemenu-main">
                 <br/>
-                  <center><h2>YOUR FLOWCHART</h2></center>
-                  <div class="flowchart-area">
+                  <center><h2 style={{width: "80%"}}>YOUR FLOWCHART</h2></center>
+                  <div class="flowchart-area" id="flowchart-area">
                     <div class="flowchart-header-parent">
                       <div class="header-year-parent">
                         <div class="header-year">Year 1</div>
@@ -141,7 +258,7 @@ class Flowchart extends Component {
                         </div>
                       </div>
                     </div>
-                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'visible', height:"100%", width:"100%" }}>
+                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'visible', height:"100%", width:"100" }}>
                         {
                           Object.keys(this.state.flowpoints).map(key => {
                             const point = this.state.flowpoints[key]
@@ -181,6 +298,22 @@ class Flowchart extends Component {
                     </Flowspace>
                   </div>
               </div>
+                
+                <div class="exportmenu" >
+                  <center><Button
+                      variant="contained"
+                      className={classes.buttonStyle}
+                      onClick={this.exportSched}
+                      endIcon={ <GetAppIcon/>}
+                      >
+                      Export
+                    </Button></center>
+                    <Snackbar open={this.state.snackbar} autoHideDuration={4000} onClose={this.handleCloseBar}>
+                    <Alert onClose={this.handleCloseBar} severity="success">
+                    Your flowchart image is downloading!
+                    </Alert>
+                </Snackbar>
+                </div>
             </div>
             : 
             <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh"}}>
