@@ -11,6 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ComboBox from '../components/ComboBox.jsx';
 import axios from 'axios';
@@ -220,6 +221,12 @@ class SearchCourses extends Component {
       this.setState({selectedCourses: val})
     }
 
+    handleClick = (id, column) => {
+      return (event) => {
+        console.log(`You clicked on row with id ${id}, in column ${column}.`);
+      }
+    }
+
     render() {
       const { classes } = this.props;
 
@@ -322,7 +329,7 @@ class SearchCourses extends Component {
                         {this.state.siteData.map(row => (
                           <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#DFF7FA"} : {backgroundColor: "#CFF0CC"}}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
-                            <StyledTableCell> {row.course} </StyledTableCell>
+                            <Tooltip title="More Details" placement="bottom-start"><StyledTableCell onClick={this.handleClick(row.classNmbr, row.course)}> {row.course} </StyledTableCell></Tooltip>
                             <StyledTableCell> {row.section} </StyledTableCell>
                             <StyledTableCell> {row.faculty} </StyledTableCell>
                             <StyledTableCell> {row.day} </StyledTableCell>
@@ -332,8 +339,8 @@ class SearchCourses extends Component {
                             <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
                           </StyledTableRow>
                         ))}
-                        </TableBody>
-                        }
+                      </TableBody>
+                      }
                     </Table>
                   </TableContainer>
                 </div>
