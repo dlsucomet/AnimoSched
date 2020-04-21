@@ -319,13 +319,13 @@ class SearchCourses extends Component {
                 <div className="legend">
                     <div className="legendItems">
                         <center>
-                            <div>Open Sections - <Paper style={{backgroundColor: "#B8D4CD", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Green</div> 
+                            <div>Open Sections - <Paper style={{backgroundColor:"#006600", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Green</div> 
                        </center>
                     </div>
                   
                     <div  className="legendItems">
                         <center>
-                            <div>Closed Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
+                            <div>Closed Sections - <Paper style={{backgroundColor:  "#0099CC", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
                         </center>
                     </div>
                 </div>
@@ -365,16 +365,16 @@ class SearchCourses extends Component {
                       : 
                       <TableBody>
                         {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#DFF7FA"} : {color: "#CFF0CC"}}>
-                            <StyledTableCell> {row.classNmbr} </StyledTableCell>
-                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={{cursor: "pointer"}}> {row.course} </StyledTableCell></Tooltip>
-                            <StyledTableCell> {row.section} </StyledTableCell>
-                            <StyledTableCell> {row.faculty} </StyledTableCell>
-                            <StyledTableCell> {row.day} </StyledTableCell>
-                            <StyledTableCell> {row.startTime} - {row.endTime} </StyledTableCell>
-                            <StyledTableCell> {row.room} </StyledTableCell>
-                            <StyledTableCell align="right"> {row.capacity} </StyledTableCell>
-                            <StyledTableCell align="right"> {row.enrolled} </StyledTableCell>
+                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
+                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer"} : {color: "#006600", cursor: "pointer"}} > {row.course} </StyledTableCell></Tooltip>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
+                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
+                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
+                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
                           </StyledTableRow>
                         ))}
                       </TableBody>
