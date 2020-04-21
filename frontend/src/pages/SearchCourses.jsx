@@ -231,6 +231,7 @@ class SearchCourses extends Component {
         },
         body: {
           fontSize: 14,
+          borderBottom: "1px solid white",
         },
       }))(TableCell);
       
@@ -285,6 +286,19 @@ class SearchCourses extends Component {
                     </center>
                 </div>
                 
+                <div className="legend">
+                    <div className="legendItems">
+                        <center>
+                            <div>Open Sections - <Paper style={{backgroundColor: "#B8D4CD", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Green</div> 
+                       </center>
+                    </div>
+                  
+                    <div  className="legendItems">
+                        <center>
+                            <div>Close Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
+                        </center>
+                    </div>
+                </div>
                 
                 <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
                   <TableContainer component={Paper}>

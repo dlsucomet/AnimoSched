@@ -32,6 +32,14 @@
 .dropdownHeader {
     text-align: center;
     padding: 10px;
+    
+}
+
+#headerSticky{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: white;
 }
 
 #dropdownMenu {
