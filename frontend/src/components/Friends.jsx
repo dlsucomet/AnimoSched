@@ -91,9 +91,10 @@ class Friends extends React.Component{
                 if(!request.seen){
                     newRequests += 1;
                 }
-                this.setState({requests, dataReceived: true})
+                this.setState({requests})
             })
             this.setState({newRequests})
+            this.setState({dataReceived: true})
             // axios.get('https://archerone-backend.herokuapp.com/api/users/'+localStorage.getItem('user_id')+'/')
             // .then(res => {
             //     const friends = res.data.friends;
