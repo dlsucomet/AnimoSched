@@ -75,7 +75,7 @@ class SearchCourses extends Component {
         allSiteData: [],
         selectedCourses: [],
         loading: false,
-        radioVal: '',
+        radioVal: 'all',
         dataReceived: false,
         skeletons: [...Array(8).keys()],
         showPlaceholder: true,
@@ -105,10 +105,8 @@ class SearchCourses extends Component {
       this.setState({fields});
     }
 
-    handleFilter = (field, e) => {
-      let option = e.target.value;
-      this.setState({radioVal: option})
-
+    setFilter = () => {
+      let option = this.state.radioVal;
       let filteredList = [];
 
       if(option == "all"){
@@ -149,17 +147,23 @@ class SearchCourses extends Component {
 
         console.log(filteredList);
       }
+    }
 
+    handleFilter = (field, e) => {
+      this.setState({radioVal: e.target.value}, () => {
+        this.setFilter()
+      })
     }
 
     searchCourses = () =>{
       //start loading
-      this.setState({radioVal: ''})
+
       if(this.state.selectedCourses.length > 0){
         this.setState({siteData: []})
-        this.setState({loading: true});
+        this.setState({showPlaceholder: false},()=>{
+          this.setState({loading: true});
+        });
       }
-
 
       const selectedCourses = []
       this.state.selectedCourses.map(course => {
@@ -207,17 +211,17 @@ class SearchCourses extends Component {
               newSiteData.push(offering);
             }
           })
-        this.setState({siteData: newSiteData})
-        this.setState({allSiteData: newSiteData})
+        this.setState({siteData: newSiteData, allSiteData: newSiteData},() => {
+          this.setFilter()
+          this.setState({loading: false});
+        })
         //Finish Loading
-        this.setState({loading: false});
       }).catch(err => {
         console.log(err.response)
       })
     }
 
     handleSearch = (e, val) =>{
-        this.setState({showPlaceholder: false});
       this.setState({selectedCourses: val})
     }
 
