@@ -258,7 +258,7 @@ class Flowchart extends Component {
                         </div>
                       </div>
                     </div>
-                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'visible', height:"100%", width:"100" }}>
+                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'hidden', height:"100%", width:"100" }}>
                         {
                           Object.keys(this.state.flowpoints).map(key => {
                             const point = this.state.flowpoints[key]

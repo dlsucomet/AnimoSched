@@ -24,13 +24,13 @@ body {
 
 .sidemenu-main {
     margin-left: 12%;
+    margin-right: 12%;
     /* overflow-y: scroll; */
 }
 
 .flowchart-area {
     margin-top: 2%;
     overflow: auto;
-    width: 90%;
 }
 
 .flowchart-header-parent {
