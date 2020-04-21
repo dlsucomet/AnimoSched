@@ -325,7 +325,7 @@ class SearchCourses extends Component {
                   
                     <div  className="legendItems">
                         <center>
-                            <div>Close Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
+                            <div>Closed Sections - <Paper style={{backgroundColor:  "#BBE1FA", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
                         </center>
                     </div>
                 </div>
@@ -365,7 +365,7 @@ class SearchCourses extends Component {
                       : 
                       <TableBody>
                         {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {backgroundColor: "#DFF7FA"} : {backgroundColor: "#CFF0CC"}}>
+                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#DFF7FA"} : {color: "#CFF0CC"}}>
                             <StyledTableCell> {row.classNmbr} </StyledTableCell>
                             <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={{cursor: "pointer"}}> {row.course} </StyledTableCell></Tooltip>
                             <StyledTableCell> {row.section} </StyledTableCell>
