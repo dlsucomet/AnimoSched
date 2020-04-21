@@ -1,3 +1,17 @@
+import '../fonts/VarelaRound-Regular.ttf'
+
+@font-face {
+  font-family: 'Varela';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Varela'), url(../fonts/VarelaRound-Regular.ttf) format('truetype');
+    
+/*    font-family: 'Varela';*/
+/*  font-style: normal;*/
+/*  font-weight: 400;*/
+/*  src: url('./fonts/VarelaRound-Regular.ttf');*/
+}
+
 .sidemenuHome {
     height: 600px;
     /* overflow-y: hidden; */
@@ -162,4 +176,8 @@
     border: 2px solid #16775D;
     padding: 10px;
     margin-bottom: 15px;
+}
+
+*{
+    font-family: 'Varela', sans-serif!important;
 }
