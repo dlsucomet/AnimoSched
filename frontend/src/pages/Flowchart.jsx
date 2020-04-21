@@ -220,7 +220,7 @@ class Flowchart extends Component {
                   {/* <center><input type="submit" class="btn btn-success change-flowchart" value="ID Number, Course" /></center> */}
               </div>
 
-              <div class="sidemenu-main">
+              <div class="sidemenu-main-flow">
                 <br/>
                   <center><h2 style={{width: "80%"}}>YOUR FLOWCHART</h2></center>
                   <div class="flowchart-area" id="flowchart-area">
