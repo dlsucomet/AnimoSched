@@ -80,6 +80,7 @@ class Friends extends React.Component{
     }
 
     getInfo(){
+        this.refreshFriends();
         axios.get('https://archerone-backend.herokuapp.com/api/friendrequestlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
             this.setState({requests: []})
@@ -105,6 +106,7 @@ class Friends extends React.Component{
     }
 
     refreshFriends(){
+        console.log('friends refreshing')
         axios.get('https://archerone-backend.herokuapp.com/api/sentrequestlist/'+localStorage.getItem('user_id')+'/')
         .then(res => {
             const sentRequests = [];
