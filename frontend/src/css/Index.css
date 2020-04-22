@@ -82,6 +82,12 @@ import './fonts/VarelaRound-Regular.ttf'
     position: absolute;
 }
 
+.viewCoursesHomepage{
+    width: 65%;
+    margin-top: 20px;
+    position: absolute;
+}
+
 .savedSchedContent{
 /*    width: 800px;*/
     height: auto;
