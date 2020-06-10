@@ -64,7 +64,9 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Chip } from "@material-ui/core";
 import ComboBox from "../components/ComboBox.jsx";
 
+import { Redirect } from "react-router-dom";
 import MuiAlert from '@material-ui/lab/Alert';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -180,7 +182,8 @@ var sectionStyle = {
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   overflow: "hidden",
-  backgroundImage:  "url(" + Background + ")"
+  backgroundImage: "linear-gradient(#086e53, #579d8b)"
+
 };
 
 class Index extends Component {
@@ -217,6 +220,8 @@ class Index extends Component {
         snackbarMsg: "",
         allowEdit: true,
         scheduleChanged: true,
+        goToSearch: false,
+        goToCreate: false
 //        this.scheduleRef = React.createRef();
         
       }
@@ -436,6 +441,7 @@ class Index extends Component {
 
     this.setState({generatedContents: newArray});
     this.setState({currentContent: newContent});
+    window.location.reload();
   }
 
  deleteSchedule=()=>{
@@ -664,7 +670,7 @@ class Index extends Component {
       // snackBarVariables[1].snackBarFailed = true;
       this.setState({snackBarVariables});
       console.log(snackBarVariables);
-      this.retrieveSchedInfo()
+      window.location.reload();
     }).catch(err => {
       console.log(err.response)
     })
@@ -679,7 +685,23 @@ class Index extends Component {
     this.setState({currentClasses})
 
   }
+
+  goToCreateSchedule = () => {
+    this.setState({goToCreate: true});
+  }
   
+  goToSearchCourse = () => {
+    this.setState({goToSearch: true});
+  }
+
+  renderRedirect = () => {
+    if(this.state.goToSearch){
+      return <Redirect to='/search_courses/'/>
+    }else if(this.state.goToCreate){
+      return <Redirect to='/login/'/>
+    }
+
+  }
 
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
@@ -979,10 +1001,10 @@ class Index extends Component {
                 <Button
                   variant="contained"
                   className={classes.buttonStyle}
-     
+                  onClick={this.goToSearchCourse}
                   // style={{backgroundColor: "green"}}
                   >
-                  Create Schedule
+                  Search Course Offerings
                 </Button>
               </center>
             </Grid>
@@ -1032,16 +1054,17 @@ class Index extends Component {
                 <Button
                   variant="contained"
                   className={classes.buttonStyle}
-     
+                  onClick={this.goToCreateSchedule}
                   // style={{backgroundColor: "green"}}
                   >
-                  Check Flowchart
+                  Create Schedule
                 </Button>
               </center>
             </Grid>
             <Grid item xs={1}>
             </Grid>
           </Grid>
+          {this.renderRedirect()}
           </div>
         </div>        
       );

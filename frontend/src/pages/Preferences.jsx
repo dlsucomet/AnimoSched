@@ -66,7 +66,52 @@ class Preferences extends Component {
             selectedProfs: [],
             profList: [],
             selectedSections: [],
-            sectionList: [],
+            sectionList: [
+                // {
+                //     id: 0,
+                //     section_code: "C"
+                // },
+                // {
+                //     id: 1,
+                //     section_code: "K"
+                // },
+                // {
+                //     id: 2,
+                //     section_code: "S"
+                // },
+                // {
+                //     id: 3,
+                //     section_code: "L"
+                // },
+                // {
+                //     id: 4,
+                //     section_code: "E"
+                // },
+                // {
+                //     id: 5,
+                //     section_code: "A"
+                // },
+                // {
+                //     id: 6,
+                //     section_code: "N"
+                // },
+                // {
+                //     id: 7,
+                //     section_code: "V"
+                // },
+                // {
+                //     id: 8,
+                //     section_code: "M"
+                // },
+                // {
+                //     id: 9,
+                //     section_code: "X"
+                // },
+                // {
+                //     id: 10,
+                //     section_code: "G"
+                // },
+            ],
             
             selectedDate: "",
 
@@ -222,12 +267,14 @@ class Preferences extends Component {
         axios.get('https://archerone-backend.herokuapp.com/api/sections/')
         .then(res => {
             res.data.map(section => {
-                var section = {'id': section.id, 'sectionName': section.section_code} 
-                this.setState(state =>{
-                    const sectionList = state.sectionList;
-                    sectionList.push(section);
-                    return {sectionList}
-                })
+                if(section.section_code.length == 1){
+                    var section = {'id': section.id, 'sectionName': section.section_code} 
+                    this.setState(state =>{
+                        const sectionList = state.sectionList;
+                        sectionList.push(section);
+                        return {sectionList}
+                    })
+                }
             })
         });
             axios.get('https://archerone-backend.herokuapp.com/api/preferencelist/'+id+'/')

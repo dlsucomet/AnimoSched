@@ -24,6 +24,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import ReactLoading from 'react-loading';
 import ComboBox from '../components/ComboBox.jsx';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -80,6 +82,15 @@ const styles = theme => ({
     }
   });
 
+  const GreenCheckbox = withStyles({
+    root: {
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
+
 class GenerateSchedule extends Component {
 
     constructor(props) {
@@ -118,6 +129,9 @@ class GenerateSchedule extends Component {
             loading: false,
             success: false,
             courseAdded: true,
+            filterFull: true,
+
+            courseOfferings: []
      
         };
 
@@ -344,13 +358,20 @@ class GenerateSchedule extends Component {
           }else{
             this.setState({success: true});
             this.setState({loading: false});
-          } 
+        } 
+        this.setState({savedScheds: [], hideGenContent: true, generatedContents: [], currentContent: ""});
+
+        this.setState({saveButtonLabel: "Save Schedule"});
+        const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
+        this.setState({saveButtonStyle: styleChange});
 
         axios.post('https://archerone-backend.herokuapp.com/api/generateschedule/',
         {
             highCourses: this.state.highCourses, 
             lowCourses: this.state.lowCourses,
-            user_id: localStorage.getItem('user_id')
+            user_id: localStorage.getItem('user_id'),
+            filterFull: this.state.filterFull,
+            courseOfferings: this.state.courseOfferings
         })
         .then(res => {
             console.log(res)
@@ -546,6 +567,14 @@ class GenerateSchedule extends Component {
     
         this.setState({snackBar: false});
       }
+    
+    handleFilterFull = () => {
+        this.setState({filterFull: !this.state.filterFull});
+    }
+    
+    handleCourseOfferingChange =(e, val)=>{
+        this.setState({courseOfferings: val});
+    }
 
     render() { 
         let search_field = this.props.search_field;
@@ -605,6 +634,13 @@ class GenerateSchedule extends Component {
                                     </Column>
                                 </Row>
                             </div>
+                            <Row horizontal='center' style={{margin: "20px"}}>
+                                <ComboBox page={"edit"} value={this.state.courseOfferings} onChange={this.handleCourseOfferingChange}></ComboBox>
+                            </Row>
+                            <Row horizontal='center' style={{margin: "20px"}}>
+                                <FormControlLabel
+                                control = {<GreenCheckbox checked={this.state.filterFull} onChange={this.handleFilterFull} color="primary"/>}label="Filter out closed classes" />
+                            </Row>
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div className={classes.root}>
                                     <div className={classes.wrapper}> 
