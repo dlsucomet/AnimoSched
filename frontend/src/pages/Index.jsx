@@ -616,7 +616,7 @@ class Index extends Component {
     this.setState({openModalCustomize: false});
     
     let snackBarVariables = [...this.state.snackBarVariables];
-    this.setState({snackbarMsg: "Your schedule customization changes has been successfully saved!"});
+    this.setState({snackbarMsg: "Your schedule customization changes have been successfully saved!"});
     snackBarVariables[0].snackBarSuccess = true;
     // snackBarVariables[1].snackBarFailed = true;
     this.setState({snackBarVariables});
