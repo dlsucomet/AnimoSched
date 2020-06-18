@@ -1002,7 +1002,7 @@ class Index extends Component {
                   variant="contained"
                   className={classes.buttonStyle}
                   onClick={this.goToSearchCourse}
-                  // style={{backgroundColor: "green"}}
+                    style={{width: "210px"}}
                   >
                   Search Course Offerings
                 </Button>
@@ -1024,10 +1024,16 @@ class Index extends Component {
             <Grid item xs={4}>
             </Grid>
             <Grid item xs={2} style={{zIndex:"100"}}>
-              <br></br>
-              <Typography variant="body1" gutterBottom align="center" style={{color:"gray"}}>
-                OR
-              </Typography>
+               <center>
+                <Button
+                  variant="contained"
+                  className={classes.buttonStyle}
+                  onClick={this.goToCreateSchedule}
+                  // style={{backgroundColor: "green"}}
+                  >
+                  Create Schedule
+                </Button>
+              </center>
             </Grid>
             <Grid item xs={1}>
             </Grid>
@@ -1050,16 +1056,7 @@ class Index extends Component {
             </Grid>
             <Grid item xs={2} style={{zIndex:"100"}}>
               {/* <center><button type="button" class="btn btn-success">Check Flowchart</button></center> */}
-              <center>
-                <Button
-                  variant="contained"
-                  className={classes.buttonStyle}
-                  onClick={this.goToCreateSchedule}
-                  // style={{backgroundColor: "green"}}
-                  >
-                  Create Schedule
-                </Button>
-              </center>
+             
             </Grid>
             <Grid item xs={1}>
             </Grid>
