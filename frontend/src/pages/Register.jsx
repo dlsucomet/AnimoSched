@@ -235,7 +235,7 @@ class Register extends Component {
                   this.setState({loading: false});
                   if(res.status == 400){
                     for (var key in res.data) {
-                      this.setState({snackBarText: res.data[key][0]})
+                      this.setState({snackBarText: key + ': ' + res.data[key][0]})
                     }
                   }else{
                       this.setState({snackBarText: "Account already exists."})
