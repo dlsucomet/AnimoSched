@@ -64,6 +64,7 @@ class Login extends Component {
             snackBar: false,
             loading: false,
             success: false,
+            snackBarText: "",
      
         }
 
@@ -161,9 +162,16 @@ class Login extends Component {
               password: this.state.fields["pass"]
           }
           this.props.handle_login(data, (res) => {
-            if(res){
+            if(res == null){
               this.setRedirect();
             }else{
+              if(res.status == 400){
+                for (var key in res.data) {
+                  this.setState({snackBarText: res.data[key][0]})
+                }
+              }else{
+                  this.setState({snackBarText: "Account does not exist."})
+              }
               this.setState({snackBar: true})
               this.setState({loading: false})
             }
@@ -250,7 +258,7 @@ class Login extends Component {
                     </form>
                     <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
                       <Alert onClose={this.handleCloseSnackBar} severity="error">
-                      Failed to login
+                        {this.state.snackBarText}
                       </Alert>
                     </Snackbar>
                     <br/>
