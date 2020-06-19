@@ -61,6 +61,7 @@ class Register extends Component {
             degrees: [],
             snackBar: false,
             snackBarSucess: false,
+            snackBarText: "",
             loading: false,
             success: false,
         }
@@ -225,13 +226,20 @@ class Register extends Component {
             };
             console.log(data);
             this.props.handle_register(data, (res) => {
-                if(res){
+                if(res == null){
                     this.setState({success: true});
                     this.setState({loading: false});
                     this.setState({snackBarSuccess: true})
                 }else{
                   this.setState({success: false});
                   this.setState({loading: false});
+                  if(res.status == 400){
+                    for (var key in res.data) {
+                      this.setState({snackBarText: res.data[key][0]})
+                    }
+                  }else{
+                      this.setState({snackBarText: "Account already exists."})
+                  }
                   this.setState({snackBar: true})
                 }
             });
@@ -371,7 +379,7 @@ class Register extends Component {
                     </form>
                     <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
                       <Alert onClose={this.handleCloseSnackBar} severity="error">
-                      Failed to register 
+                      {this.state.snackBarText}
                       </Alert>
                     </Snackbar>
                     <Snackbar open={this.state.snackBarSuccess} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
