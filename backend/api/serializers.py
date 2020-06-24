@@ -3,7 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
-from .models import College, Degree, Course, Faculty, FlowchartTerm, Section, Building, Room, Day, Timeslot, CourseOffering, CoursePriority, Schedule, User, Preference
+from .models import College, FriendRequest, Notification, Degree, Course, Faculty, FlowchartTerm, Section, Building, Room, Day, Timeslot, CourseOffering, CoursePriority, Schedule, User, Preference
 
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
@@ -21,7 +21,7 @@ class DegreeSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:
     model = Course 
-    fields = ('id', 'course_code', 'course_name', 'course_desc', 'college', 'units', 'prerequisite_to')
+    fields = ('id', 'course_code', 'course_name', 'course_desc', 'college', 'units', 'prerequisite_to', 'soft_prerequisite_to', 'co_requisite')
 
 class FacultySerializer(serializers.ModelSerializer):
   class Meta:
@@ -77,6 +77,16 @@ class ScheduleSerializer(serializers.ModelSerializer):
   class Meta:
     model = Schedule 
     fields = ('id', 'title', 'courseOfferings', 'user')
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = FriendRequest 
+    fields = ('id', 'from_user', 'seen', 'accepted', 'date', 'notified', 'to_user')
+
+class NotificationSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Notification 
+    fields = ('id', 'content', 'date', 'seen', 'category', 'to_user')
 
 class PreferenceSerializer(serializers.ModelSerializer):
   class Meta:
