@@ -264,11 +264,11 @@ class Preferences extends Component {
                 })
             })
         });
-        axios.get('https://archerone-backend.herokuapp.com/api/sections/')
+        axios.get('https://archerone-backend.herokuapp.com/api/colleges/')
         .then(res => {
-            res.data.map(section => {
-                if(section.section_code.length == 1){
-                    var section = {'id': section.id, 'sectionName': section.section_code} 
+            res.data.map(college => {
+                if(college.section_code.length == 1){
+                    var section = {'id': college.id, 'sectionName': college.section_code, 'collegeCode': college.college_code} 
                     this.setState(state =>{
                         const sectionList = state.sectionList;
                         sectionList.push(section);
@@ -835,7 +835,7 @@ class Preferences extends Component {
                                     id="tags-outlined"
                                     options={this.state.sectionList}
                                     defaultValue={this.state.selectedSections}
-                                    getOptionLabel={option => option.sectionName}
+                                    getOptionLabel={option => option.sectionName + ' (' + option.collegeCode + ')'}
                                     //   style={{ width: 500 }}
                                     filterSelectedOptions
                                     renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
