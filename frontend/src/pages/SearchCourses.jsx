@@ -404,7 +404,7 @@ class SearchCourses extends Component {
                         {this.state.siteData.map(row => (
                           <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer"} : {color: "#006600", cursor: "pointer"}} > {row.course} </StyledTableCell></Tooltip>
+                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
