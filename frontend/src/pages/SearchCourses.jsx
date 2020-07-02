@@ -34,6 +34,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import searchIMG from '../assets/search_engine.png';
 
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import Switch from '@material-ui/core/Switch';
 
 const styles = theme => ({
   root: {
@@ -68,6 +69,20 @@ const GreenRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
+const GreenSwitch = withStyles({
+  switchBase: {
+    // color: green[600],
+    '&$checked': {
+      color: green[600],
+    },
+    '&$checked + $track': {
+      backgroundColor: green[600],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 class SearchCourses extends Component {
     constructor(props){
       super(props);
@@ -84,6 +99,7 @@ class SearchCourses extends Component {
         rowStyle: "",
         openModalCourseInfo: false,
         showPlaceholder: true,
+        applyPreference: false
       }
       this.radioRef = React.createRef()
     }
@@ -176,7 +192,9 @@ class SearchCourses extends Component {
       })
      
       axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
-        courses: selectedCourses
+        courses: selectedCourses,
+        applyPreference: this.state.applyPreference,
+        user_id: localStorage.getItem('user_id')
       })
       .then(res => {
           const newSiteData = [];
@@ -244,6 +262,10 @@ class SearchCourses extends Component {
       console.log("Hello opening modal");
       this.setState({openModalCourseInfo: true})
       console.log(this.state.openModalCourseInfo);
+    }
+
+    handleApplyPreference = () => {
+      this.setState({applyPreference: !this.state.applyPreference})
     }
   
     toggleModal = () => {
@@ -315,7 +337,22 @@ class SearchCourses extends Component {
                   </FormControl>
                     </center>
                 </div>
-                
+                <div>
+                    <center>
+                      {/* <span className="filterLabel">Filters:</span> */}
+                  <FormControl component="fieldset">
+                    <FormControlLabel value="closed" control={
+                      <GreenSwitch
+                      checked={this.state.applyPreference}
+                      onChange={this.handleApplyPreference}
+                      color="primary"
+                      name="checkedB"
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                      />
+                    } label="Apply Preferences" />
+                  </FormControl>
+                    </center>
+                </div>
                 <div className="legend">
                     <div className="legendItems">
                         <center>
