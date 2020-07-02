@@ -27,6 +27,8 @@ import ComboBox from '../components/ComboBox.jsx';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -101,6 +103,7 @@ class GenerateSchedule extends Component {
         this.generatedRef = React.createRef();
         this.handleScrollToGen = this.handleScrollToGen.bind(this);
         this.handleSaveChange = this.handleSaveChange.bind(this);
+      
         // this.updateSchedTitle = this.updateSchedTitle.bind(this);
         this.state = {
             highPriorityId: "1",
@@ -131,7 +134,10 @@ class GenerateSchedule extends Component {
             courseAdded: true,
             filterFull: true,
 
-            courseOfferings: []
+            courseOfferings: [],
+            
+            openModalCourseOfferings: false,
+            modalCourseName: "",
      
         };
 
@@ -575,6 +581,31 @@ class GenerateSchedule extends Component {
     handleCourseOfferingChange =(e, val)=>{
         this.setState({courseOfferings: val});
     }
+    
+    triggerModal=(courseName)=>{
+        this.setState({openModalCourseOfferings: true});
+        this.setState({modalCourseName: courseName});
+    }
+
+    handleCloseModalCourseOfferings = ()=>{
+      this.setState({openModalCourseOfferings: false})
+    }
+  
+    handleOpenModalCourseOfferings = ()=>{
+      console.log("Hello opening modal");
+      this.setState({openModalCourseOfferings: true})
+      console.log(this.state.openModalCourseOfferings);
+    }
+  
+    toggleModal = () => {
+      var openModalVar = this.state.openModalCourseOfferings;
+      this.setState({openModalCourseOfferings: !openModalVar});
+    }
+    
+    handleSaveCourseOfferings = () =>{
+        console.log("Course Offerings changes saved");
+        this.setState({openModalCourseOfferings: false});
+      } 
 
     render() { 
         let search_field = this.props.search_field;
@@ -625,7 +656,7 @@ class GenerateSchedule extends Component {
                                 <Row vertical = 'center'>
                                     <Column flexGrow={1} horizontal = 'center'>
                                         <h3 className='priortyTitle'>Highest Priority</h3>
-                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriority} handleCourseDelete={this.handleCourseDelete}/>
+                                        <CourseDnD idTag={this.state.highPriorityId} courses={this.state.highCourses} updateFunction={this.updateHighPriority} handleCourseDelete={this.handleCourseDelete} triggerModal={this.triggerModal}/>
 
                                     </Column>
                                     <Column flexGrow={1} horizontal = 'center'>
@@ -634,6 +665,27 @@ class GenerateSchedule extends Component {
                                     </Column>
                                 </Row>
                             </div>
+                            {/*============MODAL EXERPIMENT HERE======================*/}
+                            <Modal isOpen={this.state.openModalCourseOfferings} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                              <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
+
+                              <ModalBody>
+                                <h4>{this.state.modalCourseName}</h4>
+                                <br/>
+
+                                <u><h5>Description</h5></u>
+                                <p>This course covers entrepreneurship in technology ventures, and takes the student through the commercializaiton of technology ideas into viable enterprises. The course examines how technology ideas may be developed into opportunities and eventually into viable businesses; it takes the students through the process of crafting the business model canvas, which will be the final (team) output in this course.</p>
+                                <br/>
+
+                              </ModalBody>
+                                
+                                <ModalFooter>
+                                  <Button color="primary" onClick={this.handleSaveCourseOfferings}>Save Changes</Button>{' '}
+                                  <Button style={{color: "gray"}}onClick={this.toggleModal}>Cancel</Button>
+                                </ModalFooter>
+
+                          </Modal> 
+                            
                             <Row horizontal='center' style={{margin: "20px"}}>
                                 <ComboBox page={"edit"} value={this.state.courseOfferings} onChange={this.handleCourseOfferingChange}></ComboBox>
                             </Row>
