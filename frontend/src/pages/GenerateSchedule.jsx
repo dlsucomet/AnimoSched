@@ -29,6 +29,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -673,9 +682,56 @@ class GenerateSchedule extends Component {
                                 <h4>{this.state.modalCourseName}</h4>
                                 <br/>
 
-                                <u><h5>Description</h5></u>
-                                <p>This course covers entrepreneurship in technology ventures, and takes the student through the commercializaiton of technology ideas into viable enterprises. The course examines how technology ideas may be developed into opportunities and eventually into viable businesses; it takes the students through the process of crafting the business model canvas, which will be the final (team) output in this course.</p>
-                                <br/>
+                                <TableContainer component={Paper}>
+                                    <Table aria-label="customized table">
+                                      <TableHead>
+                                        <TableRow>
+                                          <StyledTableCell> Class Number </StyledTableCell>
+                                          <StyledTableCell> Course </StyledTableCell>
+                                          <StyledTableCell> Section </StyledTableCell>
+                                          <StyledTableCell> Faculty </StyledTableCell>
+                                          <StyledTableCell> Day </StyledTableCell>
+                                          <StyledTableCell> Time </StyledTableCell>
+                                          <StyledTableCell> Room </StyledTableCell>
+                                          <StyledTableCell> Capacity </StyledTableCell>
+                                          <StyledTableCell> Enrolled </StyledTableCell>
+                                        </TableRow>
+                                      </TableHead>
+                                      {this.state.loading ? 
+                                      <TableBody>
+                                          {this.state.skeletons.map(skeleton =>(
+                                            <StyledTableRow>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                            </StyledTableRow>
+                                          ))}
+                                      </TableBody>
+                                      : 
+                                      <TableBody>
+                                        {this.state.siteData.map(row => (
+                                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
+                                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
+                                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
+                                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
+                                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
+                                          </StyledTableRow>
+                                        ))}
+                                      </TableBody>
+                                      }
+                                    </Table>
+                                  </TableContainer>
 
                               </ModalBody>
                                 
