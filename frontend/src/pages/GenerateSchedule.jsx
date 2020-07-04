@@ -101,6 +101,16 @@ const styles = theme => ({
     },
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
+     
+     const WhiteCheckbox = withStyles({
+    root: {
+        color: "white",
+      '&$checked': {
+        color: "white",
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
 
 class GenerateSchedule extends Component {
 
@@ -147,6 +157,59 @@ class GenerateSchedule extends Component {
             
             openModalCourseOfferings: false,
             modalCourseName: "",
+            siteData: [
+            {
+                id: 3,
+                classNmbr: 1234,
+                course: "CSSERVM",
+                section: "S15",
+                startDate: new Date(2018, 5, 26, 10, 0),
+                endDate: new Date(2018, 5, 26, 11, 0),
+                room: "G302",
+                faculty: "Flowers, Fritz",
+                startTime: "09:30AM",
+                endTime: "11:30AM",
+                day: 'TH',
+                capacity: 40,
+                enrolled: 20,
+                checked: true,
+           
+              },
+              {
+                classNmbr: 1246,
+                course: "INOVATE",
+                section: "EB14",
+                startDate: new Date(2018, 5, 26, 12, 0),
+                endDate: new Date(2018, 5, 26, 13, 30),
+                id: 4,
+                room: "G305",
+                faculty: "Tuazon, James Dean",
+                startTime: "12:00PM",
+                endTime: "01:30PM",
+                day: 'TH',
+                capacity: 40,
+                enrolled: 20,
+                checked: true,
+     
+              },
+              {
+                  classNmbr: 984,
+                  course: "HUMAART",
+                  section: "S17",
+                  startDate: new Date(2018, 5, 27, 9, 30),
+                  endDate: new Date(2018, 5, 27, 11, 30),
+                  id: 0,
+                  room: "G302",
+                  faculty: "Sangi, April",
+                  startTime: "09:30AM",
+                  endTime: "11:30AM",
+                  day: 'MW',
+                  capacity: 40,
+                  enrolled: 40,
+                  checked: true,
+        
+                  },
+          ]
      
         };
 
@@ -620,6 +683,25 @@ class GenerateSchedule extends Component {
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
         const { classes } = this.props;
+        
+        const StyledTableCell = withStyles(theme => ({
+            head: {
+              backgroundColor: '#006A4E',
+              color: theme.palette.common.white,
+            },
+            body: {
+              fontSize: 14,
+              borderBottom: "1px solid white",
+            },
+          }))(TableCell);
+
+          const StyledTableRow = withStyles(theme => ({
+            root: {
+              '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.background.default,
+              },
+            },
+          }))(TableRow);
 
         return (
             <div>
@@ -675,7 +757,7 @@ class GenerateSchedule extends Component {
                                 </Row>
                             </div>
                             {/*============MODAL EXERPIMENT HERE======================*/}
-                            <Modal isOpen={this.state.openModalCourseOfferings} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                            <Modal dialogClassName="modal-90w" size="lg" style={{maxWidth: '1600px', width: '80%'}} isOpen={this.state.openModalCourseOfferings} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
                               <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
 
                               <ModalBody>
@@ -686,6 +768,7 @@ class GenerateSchedule extends Component {
                                     <Table aria-label="customized table">
                                       <TableHead>
                                         <TableRow>
+                                            <StyledTableCell> <WhiteCheckbox checked={true}/> </StyledTableCell>
                                           <StyledTableCell> Class Number </StyledTableCell>
                                           <StyledTableCell> Course </StyledTableCell>
                                           <StyledTableCell> Section </StyledTableCell>
@@ -710,15 +793,19 @@ class GenerateSchedule extends Component {
                                               <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
                                               <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
                                               <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
                                             </StyledTableRow>
                                           ))}
                                       </TableBody>
                                       : 
                                       <TableBody>
                                         {this.state.siteData.map(row => (
+                                                
                                           <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
+                                            <StyledTableCell> <GreenCheckbox checked={row.checked}/></StyledTableCell>
+                                                    
                                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
+                                            <StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell>
                                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
                                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
                                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
