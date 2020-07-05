@@ -4,6 +4,7 @@ import { applyDrag, generateItems } from '../components/ultils.jsx';
 import '../css/CourseDnD.css';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import axios from "axios";
+import Tooltip from '@material-ui/core/Tooltip';
 
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
@@ -105,7 +106,9 @@ triggerUpdate=(e)=>{
                     <Draggable key={p.id}>
                     <div className="draggable-item">
                         <DragHandleIcon style={{ marginBottom: "5px", float: "left", marginTop: "12px", marginLeft: "16px"}}/>
-                        <a onClick={() => this.triggerModal(p.data)}>{p.data}</a>
+                        <Tooltip title="Select sections" placement="left">
+                            <a className = "card-courseName" onClick={() => this.triggerModal(p.data)} style={{cursor: "pointer", textDecorationLine: 'underline'}}>{p.data}</a>
+                        </Tooltip>
                         <Button close  style={{ marginTop: "11px", marginRight: "10px"}} onClick={() => this.removeCourse(index)}/>
                     </div>
                     </Draggable>
