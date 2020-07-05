@@ -69,7 +69,7 @@ class Register extends Component {
             errorLastName: false,
             helperLastName: "",
             errorEmail: false,
-            helperEmail: "Please use your DLSU email address",
+            helperEmail: "",
             errorID: false,
             helperID: "",
             errorCollege: false,
@@ -144,7 +144,7 @@ class Register extends Component {
             formIsValid = false;
             errors["firstName"] = "Required First Name"
             this.setState({errorFirstName: true})
-            this.setState({helperFirstName: "Required First Name"})
+            this.setState({helperFirstName: "This field is required"})
         }else{
             this.setState({errorFirstName: false})
             this.setState({helperFirstName: ""})
@@ -155,7 +155,7 @@ class Register extends Component {
             formIsValid = false;
             errors["lastName"] = "Required Last Name"
             this.setState({errorLastName: true})
-            this.setState({helperLastName: "Required Last Name"})
+            this.setState({helperLastName: "This field is required"})
         }else{
             this.setState({errorLastName: false})
             this.setState({helperLastName: ""})
@@ -166,10 +166,10 @@ class Register extends Component {
           formIsValid = false;
           errors["email"] = "Required Email"
             this.setState({errorEmail: true})
-            this.setState({helperFirstName: "Required Email"})
+            this.setState({helperEmail: "This field is required"})
         }else{
             this.setState({errorEmail: false})
-            this.setState({helperEmail: "Please use your DLSU email address"})
+            this.setState({helperEmail: "This field is required"})
         }
   
         if(typeof fields["email"] !== "undefined"){
@@ -180,10 +180,10 @@ class Register extends Component {
             formIsValid = false;
             errors["email"] = "Invalid Email";
             this.setState({errorEmail: true})
-            this.setState({helperFirstName: "Invalid Email"})
+            this.setState({helperEmail: "Enter a valid DLSU email"})
           }else{
                 this.setState({errorEmail: false})
-                this.setState({helperEmail: "Please use your DLSU email address"})
+                this.setState({helperEmail: "Enter a valid DLSU email"})
             }
         }
 
@@ -192,7 +192,7 @@ class Register extends Component {
             formIsValid = false;
             errors["idNo"] = "Required ID Number"
             this.setState({errorID: true})
-            this.setState({helperID: "Required ID Number"})
+            this.setState({helperID: "This field is required"})
         }else{
             this.setState({errorID: false})
             this.setState({helperID: ""})
@@ -203,7 +203,7 @@ class Register extends Component {
           formIsValid = false;
           errors["pass"] = "Required Password"
             this.setState({errorPassword: true})
-            this.setState({helperPassword: "Required Password"})
+            this.setState({helperPassword: "This field is required"})
         }else{
             this.setState({errorPassword: false})
             this.setState({helperPassword: "Must be a minimum of 8 characters"})
@@ -214,17 +214,17 @@ class Register extends Component {
             formIsValid = false;
             errors["passCon"] = "Required Confirm Password"
             this.setState({errorConPassword: true})
-            this.setState({helperConPassword: "Required Confirm Password"})
+            this.setState({helperConPassword: "This field is required"})
         }else{
             this.setState({errorConPassword: false})
-            this.setState({helperConPassword: "Re-type your password here"})
+            this.setState({helperConPassword: "Re-enter your password here"})
         }
 
         if(!fields["college"]){
             formIsValid = false;
             errors["college"] = "Required College"
             this.setState({errorCollege: true})
-            this.setState({helperCollege: "Required College"})
+            this.setState({helperCollege: "This field is required"})
         }else{
             this.setState({errorCollege: false})
             this.setState({helperCollege: ""})
@@ -357,7 +357,7 @@ class Register extends Component {
 
                         {/* Email Address */}
                         <br/>
-                        <TextField error={this.state.errorEmail} helperText={this.state.helperEmail} id="outlined-basic" label="Email Address" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")} style={{marginRight: "15%"}}/>
+                        <TextField error={this.state.errorEmail} helperText={this.state.helperEmail} id="outlined-basic" label="DLSU Email" variant="outlined" name="email" placeholder="john_delacruz@dlsu.edu.ph" value={this.state.fields["email"]} onChange={this.handleChange.bind(this, "email")} style={{marginRight: "15%"}}/>
                         {/* <input name="email" placeholder="john_delacruz@dlsu.edu.ph" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]}/> */}
                         {/* <span className="error" style={{marginRight: "15%"}}>{this.state.errors["email"]}</span>*/}
                        
