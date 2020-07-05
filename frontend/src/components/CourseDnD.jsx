@@ -56,6 +56,10 @@ removeCourse = (index) =>{
   this.props.updateFunction(newCourses);
 }
 
+triggerModal =(courseName)=>{
+    this.props.triggerModal(courseName);
+}
+
 triggerUpdate=(e)=>{
   if(e.removedIndex == null){
     if(e.addedIndex != null){
@@ -101,7 +105,7 @@ triggerUpdate=(e)=>{
                     <Draggable key={p.id}>
                     <div className="draggable-item">
                         <DragHandleIcon style={{ marginBottom: "5px", float: "left", marginTop: "12px", marginLeft: "16px"}}/>
-                        {p.data}
+                        <a onClick={() => this.triggerModal(p.data)}>{p.data}</a>
                         <Button close  style={{ marginTop: "11px", marginRight: "10px"}} onClick={() => this.removeCourse(index)}/>
                     </div>
                     </Draggable>
