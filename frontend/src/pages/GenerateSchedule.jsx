@@ -743,6 +743,10 @@ class GenerateSchedule extends Component {
 
                                 </div>
                             </Row>
+                            <Row horizontal='center' style={{margin: "20px"}}>
+                                <FormControlLabel
+                                control = {<GreenCheckbox checked={this.state.filterFull} onChange={this.handleFilterFull} color="primary"/>}label="Filter out closed classes" />
+                            </Row>
                             <div className={"DnDContainer"}>
                                 <Row vertical = 'center'>
                                     <Column flexGrow={1} horizontal = 'center'>
@@ -829,13 +833,9 @@ class GenerateSchedule extends Component {
 
                           </Modal> 
                             
-                            <Row horizontal='center' style={{margin: "20px"}}>
+                            {/* <Row horizontal='center' style={{margin: "20px"}}>
                                 <ComboBox page={"edit"} value={this.state.courseOfferings} onChange={this.handleCourseOfferingChange}></ComboBox>
-                            </Row>
-                            <Row horizontal='center' style={{margin: "20px"}}>
-                                <FormControlLabel
-                                control = {<GreenCheckbox checked={this.state.filterFull} onChange={this.handleFilterFull} color="primary"/>}label="Filter out closed classes" />
-                            </Row>
+                            </Row> */}
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div className={classes.root}>
                                     <div className={classes.wrapper}> 
