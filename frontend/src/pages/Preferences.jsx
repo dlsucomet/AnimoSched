@@ -377,13 +377,13 @@ class Preferences extends Component {
     }
 
     handleSectionPrefChange = (e, val) =>{
-        const sectionList = this.state.sectionList
-        this.state.selectedSections.map(section => {
-            if(!(val.includes(section))){
-                sectionList.push(section)
-            }
-        })
-        this.setState({selectedSections: val, sectionList: sectionList})
+        // const sectionList = this.state.sectionList
+        // // this.state.selectedSections.map(section => {
+        // //     // if(!(val.includes(section))){
+        // //     //     sectionList.push(section)
+        // //     // }
+        // // })
+        this.setState({selectedSections: val})
       }
     
 

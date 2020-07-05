@@ -258,10 +258,9 @@ class SearchCourses extends Component {
       this.setState({openModalCourseInfo: false})
     }
   
-    handleOpenModalCourseInfo = ()=>{
-      console.log("Hello opening modal");
+    handleOpenModalCourseInfo = (courseCode, courseName, courseUnits)=>{
+      this.setState({courseCode, courseName, courseUnits})
       this.setState({openModalCourseInfo: true})
-      console.log(this.state.openModalCourseInfo);
     }
 
     handleApplyPreference = () => {
@@ -404,7 +403,7 @@ class SearchCourses extends Component {
                         {this.state.siteData.map(row => (
                           <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
+                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
@@ -423,28 +422,28 @@ class SearchCourses extends Component {
                       <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
                       
                       <ModalBody>
-                        <h4>INOVATE</h4>
-                        <h5>Technology and Innovation Management</h5>
+                        <h4>{this.state.courseCode}</h4>
+                        <h5>{this.state.courseName}</h5>
                         <br/>
 
                         <u><h5>Description</h5></u>
-                        <p>This course covers entrepreneurship in technology ventures, and takes the student through the commercializaiton of technology ideas into viable enterprises. The course examines how technology ideas may be developed into opportunities and eventually into viable businesses; it takes the students through the process of crafting the business model canvas, which will be the final (team) output in this course.</p>
+                        <p>{this.state.courseDesc}</p>
                         <br/>
 
                         <u><h5>Pre-requisite/s</h5></u>
-                        <p>N/A</p>
+                        <p>{this.state.coursePre}</p>
                         <br/>
 
                         <u><h5>Co-requisite/s</h5></u>
-                        <p>N/A</p>
+                        <p>{this.state.courseCo}</p>
                         <br/>
 
                         <u><h5>Course Equivalent</h5></u>
-                        <p>CCINOV8</p>
+                        <p>{this.state.courseEq}</p>
                         <br/>
 
                         <u><h5>Number of Units</h5></u>
-                        <p>3</p>
+                        <p>{this.state.courseUnits}</p>
                       </ModalBody>
                       
                   </Modal> 
