@@ -530,7 +530,7 @@ class FriendPage extends Component {
             if(this.state.requests[i].status == "accept")
                 friendList.push(this.state.requests[i]);
         }
-        
+    
         return (
             <div>
                 {this.props.menu()}
