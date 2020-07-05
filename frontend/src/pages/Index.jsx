@@ -665,7 +665,7 @@ class Index extends Component {
       user_id
     }).then(res => {
       console.log(res.data)
-      this.setState({snackbarMsg: "Your schedule changes has been successfully saved!"});
+      this.setState({snackbarMsg: "Your schedule changes have been successfully saved!"});
       snackBarVariables[0].snackBarSuccess = true;
       // snackBarVariables[1].snackBarFailed = true;
       this.setState({snackBarVariables});
@@ -986,11 +986,8 @@ class Index extends Component {
               <img src={calendarIcon} className={"iconStyle"}/>
             </Grid>
             <Grid item xs={3}>
-                            <Typography variant="body1" gutterBottom>
-                              Enter your courses, 
-                              set your schedule, 
-                              and choose your schedule, 
-                              generated automatically
+                          <Typography variant="body1" gutterBottom>
+                            Enter your courses and select an automatically-generated schedule
                           </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -1029,6 +1026,7 @@ class Index extends Component {
                   variant="contained"
                   className={classes.buttonStyle}
                   onClick={this.goToCreateSchedule}
+                  style={{width: "210px"}}
                   // style={{backgroundColor: "green"}}
                   >
                   Create Schedule
@@ -1045,8 +1043,7 @@ class Index extends Component {
         
             <Grid item xs={3}>
                             <Typography variant="body1" gutterBottom>
-                            Share your schedules and view your friends' schedules,
-                            making schedule coordination easier
+                            Share and compare schedules with your friends
                             {/* collaborate with friends
                             and create schedules
                             as a group. */}
