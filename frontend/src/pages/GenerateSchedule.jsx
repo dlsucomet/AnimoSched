@@ -38,6 +38,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import groupArray from 'group-array'
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -157,62 +159,140 @@ class GenerateSchedule extends Component {
             
             openModalCourseOfferings: false,
             modalCourseName: "",
-            siteData: [
-            {
-                id: 3,
-                classNmbr: 1234,
-                course: "CSSERVM",
-                section: "S15",
-                startDate: new Date(2018, 5, 26, 10, 0),
-                endDate: new Date(2018, 5, 26, 11, 0),
-                room: "G302",
-                faculty: "Flowers, Fritz",
-                startTime: "09:30AM",
-                endTime: "11:30AM",
-                day: 'TH',
-                capacity: 40,
-                enrolled: 20,
-                checked: true,
-           
-              },
-              {
-                classNmbr: 1246,
-                course: "INOVATE",
-                section: "EB14",
-                startDate: new Date(2018, 5, 26, 12, 0),
-                endDate: new Date(2018, 5, 26, 13, 30),
-                id: 4,
-                room: "G305",
-                faculty: "Tuazon, James Dean",
-                startTime: "12:00PM",
-                endTime: "01:30PM",
-                day: 'TH',
-                capacity: 40,
-                enrolled: 20,
-                checked: true,
+            siteData: [],
+            siteDataArray: [],
      
-              },
-              {
-                  classNmbr: 984,
-                  course: "HUMAART",
-                  section: "S17",
-                  startDate: new Date(2018, 5, 27, 9, 30),
-                  endDate: new Date(2018, 5, 27, 11, 30),
-                  id: 0,
-                  room: "G302",
-                  faculty: "Sangi, April",
-                  startTime: "09:30AM",
-                  endTime: "11:30AM",
-                  day: 'MW',
-                  capacity: 40,
-                  enrolled: 40,
-                  checked: true,
-        
-                  },
-          ]
-     
+            skeletons: [...Array(8).keys()]
         };
 
+    }
+
+    getLowCourseOfferings(id, val, newCourses, _callback){
+        if(val.course_code.trim() != ''){
+            const offeringList = [];
+            const courses = [];
+            axios.get('https://archerone-backend.herokuapp.com/api/searchcourse/'+val.course_code.trim()+'/')
+            .then(res => {
+                res.data.map(course => {
+                    courses.push(course.id)
+                })
+                console.log(courses)
+                axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
+                    courses,
+                    applyPreference: false,
+                    user_id: localStorage.getItem('user_id')
+                }).then(res => {
+                    res.data.map(bundle => {
+                        var arranged = groupArray(bundle, 'classnumber');
+                        for (let key in arranged) {
+                        var days = []
+                        var day = ''
+                        var classnumber = ''
+                        var course = ''
+                        var course_id = ''
+                        var section = ''
+                        var faculty = ''
+                        var timeslot_begin = ''
+                        var timeslot_end = ''
+                        var room = ''
+                        var max_enrolled = ''
+                        var current_enrolled = ''
+                        arranged[key].map(offering => {
+                            days.push(offering.day)
+                            classnumber = offering.classnumber
+                            course = offering.course
+                            course_id = offering.course_id
+                            section = offering.section
+                            faculty = offering.faculty
+                            timeslot_begin = offering.timeslot_begin
+                            timeslot_end = offering.timeslot_end
+                            room = offering.room
+                            max_enrolled = offering.max_enrolled
+                            current_enrolled = offering.current_enrolled
+                        })
+                        days.map(day_code => {
+                            day += day_code;
+                        })
+                        const offering = this.createData(classnumber, course, course_id, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                        offeringList.push(offering);
+                        }
+                    })
+                    newCourses.push({'id':id, 'course_id':val.id, 'data':val.course_code, 'siteData': offeringList})
+                    this.setState({lowCourses: newCourses}, () => {
+                        _callback()
+                    })
+                })
+            })
+        }else{
+            newCourses.push({'id':id, 'course_id':val.id, 'data':val.course_code, 'siteData': []})
+            this.setState({lowCourses: newCourses}, () => {
+                _callback()
+            })
+        }
+    }
+
+    getCourseOfferings(id, val, newCourses, _callback){
+        if(val.course_code.trim() != ''){
+            const offeringList = [];
+            const courses = [];
+            axios.get('https://archerone-backend.herokuapp.com/api/searchcourse/'+val.course_code.trim()+'/')
+            .then(res => {
+                res.data.map(course => {
+                    courses.push(course.id)
+                })
+                console.log(courses)
+                axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
+                    courses,
+                    applyPreference: false,
+                    user_id: localStorage.getItem('user_id')
+                }).then(res => {
+                    res.data.map(bundle => {
+                        var arranged = groupArray(bundle, 'classnumber');
+                        for (let key in arranged) {
+                        var days = []
+                        var day = ''
+                        var classnumber = ''
+                        var course = ''
+                        var course_id = ''
+                        var section = ''
+                        var faculty = ''
+                        var timeslot_begin = ''
+                        var timeslot_end = ''
+                        var room = ''
+                        var max_enrolled = ''
+                        var current_enrolled = ''
+                        arranged[key].map(offering => {
+                            days.push(offering.day)
+                            classnumber = offering.classnumber
+                            course = offering.course
+                            course_id = offering.course_id
+                            section = offering.section
+                            faculty = offering.faculty
+                            timeslot_begin = offering.timeslot_begin
+                            timeslot_end = offering.timeslot_end
+                            room = offering.room
+                            max_enrolled = offering.max_enrolled
+                            current_enrolled = offering.current_enrolled
+                        })
+                        days.map(day_code => {
+                            day += day_code;
+                        })
+                        const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled, true);
+                        offeringList.push(offering);
+                        }
+                    })
+                    newCourses.push({'id':id, 'course_id':val.id, 'data':val.course_code, 'siteData': offeringList})
+                    this.setState({highCourses: newCourses}, () => {
+                        _callback()
+                    })
+                })
+            })
+        }else{
+            newCourses.push({'id':id, 'course_id':val.id, 'data':val.course_code, 'siteData': []})
+            this.setState({highCourses: newCourses}, () => {
+                _callback()
+            })
+        }
     }
 
     componentDidMount(){
@@ -228,6 +308,8 @@ class GenerateSchedule extends Component {
             axios.get('https://archerone-backend.herokuapp.com/api/courseprioritylist/'+id+'/')
             .then(res => {
                 console.log(res.data)
+                var total = res.data.length;
+                var done = 0;
                 res.data.map(coursepriority => {
                     const id = coursepriority.id
                     const priority = coursepriority.priority
@@ -235,24 +317,28 @@ class GenerateSchedule extends Component {
                     this.state.courseList.map(course =>{
                         if(course.id == coursepriority.courses){
                             if(priority){
-                                var courses = this.state.highCourses;
-                                courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
-                                this.setState({highCourses: courses})
+                                this.getCourseOfferings(id, course, this.state.highCourses, () => {
+                                    done += 1;
+                                    if(total == done){
+                                        this.setState({dataReceived: true})
+                                    }
+                                })
                             }else{
-                                var courses = this.state.lowCourses;
-                                courses.push({'id':id, 'course_id':course.id, 'data':course.course_code})
-                                this.setState({lowCourses: courses})
+                                this.getCourseOfferings(id, course, this.state.lowCourses, () => {
+                                    done += 1;
+                                    if(total == done){
+                                        this.setState({dataReceived: true})
+                                    }
+                                })
                             }
                         }else{
                             newCourseList.push(course)
                         }
-
                     })
                     this.setState({courseList:newCourseList})
                 })
                 console.log(this.state.highCourses)
                 console.log(this.state.lowCourses)
-                this.setState({dataReceived: true})
             });
         })
     }
@@ -354,7 +440,7 @@ class GenerateSchedule extends Component {
                     })
                     .then(res => {
                         console.log(res)
-                        const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':course.course_code}; 
+                        const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':course.course_code,'siteData':"hello"}; 
                         this.setState(state =>{
                             const highCourses = state.highCourses.concat(newCourse);
                             return{highCourses};
@@ -425,8 +511,8 @@ class GenerateSchedule extends Component {
         this.handleScrollToGen();
     }
 
-    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled) {
-        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled };
+    createData(classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled, checked) {
+        return { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled, checked };
     }
 
     createSchedInfo = () =>{
@@ -449,7 +535,7 @@ class GenerateSchedule extends Component {
             lowCourses: this.state.lowCourses,
             user_id: localStorage.getItem('user_id'),
             filterFull: this.state.filterFull,
-            courseOfferings: this.state.courseOfferings
+            courseOfferings: [] 
         })
         .then(res => {
             console.log(res)
@@ -654,7 +740,8 @@ class GenerateSchedule extends Component {
         this.setState({courseOfferings: val});
     }
     
-    triggerModal=(courseName)=>{
+    triggerModal=(courseName, siteData)=>{
+        this.setState({siteData})
         this.setState({openModalCourseOfferings: true});
         this.setState({modalCourseName: courseName});
     }
