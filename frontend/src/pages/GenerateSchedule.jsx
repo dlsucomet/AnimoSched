@@ -295,6 +295,74 @@ class GenerateSchedule extends Component {
         }
     }
 
+    getSingleCourseOfferings(id, val, _callback){
+        if(val.course_code.trim() != ''){
+            const offeringList = [];
+            const courses = [];
+            axios.get('https://archerone-backend.herokuapp.com/api/searchcourse/'+val.course_code.trim()+'/')
+            .then(res => {
+                res.data.map(course => {
+                    courses.push(course.id)
+                })
+                console.log(courses)
+                axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
+                    courses,
+                    applyPreference: false,
+                    user_id: localStorage.getItem('user_id')
+                }).then(res => {
+                    res.data.map(bundle => {
+                        var arranged = groupArray(bundle, 'classnumber');
+                        for (let key in arranged) {
+                        var days = []
+                        var day = ''
+                        var classnumber = ''
+                        var course = ''
+                        var course_id = ''
+                        var section = ''
+                        var faculty = ''
+                        var timeslot_begin = ''
+                        var timeslot_end = ''
+                        var room = ''
+                        var max_enrolled = ''
+                        var current_enrolled = ''
+                        arranged[key].map(offering => {
+                            days.push(offering.day)
+                            classnumber = offering.classnumber
+                            course = offering.course
+                            course_id = offering.course_id
+                            section = offering.section
+                            faculty = offering.faculty
+                            timeslot_begin = offering.timeslot_begin
+                            timeslot_end = offering.timeslot_end
+                            room = offering.room
+                            max_enrolled = offering.max_enrolled
+                            current_enrolled = offering.current_enrolled
+                        })
+                        days.map(day_code => {
+                            day += day_code;
+                        })
+                        const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled, true);
+                        offeringList.push(offering);
+                        }
+                    })
+                    const newCourse = {'id':id,'course_id':val.id,'data':val.course_code,'siteData':offeringList}; 
+                    this.setState(state =>{
+                        const highCourses = state.highCourses.concat(newCourse);
+                        return{highCourses};
+                    });
+                    _callback()
+                })
+            })
+        }else{
+            const newCourse = {'id':id,'course_id':val.id,'data':val.course_code,'siteData':[]}; 
+            this.setState(state =>{
+                const highCourses = state.highCourses.concat(newCourse);
+                return{highCourses};
+            });
+            _callback()
+        }
+    }
+
     componentDidMount(){
         const id = localStorage.getItem('user_id');
         axios.get('https://archerone-backend.herokuapp.com/api/courses/')
@@ -319,14 +387,14 @@ class GenerateSchedule extends Component {
                             if(priority){
                                 this.getCourseOfferings(id, course, this.state.highCourses, () => {
                                     done += 1;
-                                    if(total == done){
+                                    if(total <= done){
                                         this.setState({dataReceived: true})
                                     }
                                 })
                             }else{
                                 this.getCourseOfferings(id, course, this.state.lowCourses, () => {
                                     done += 1;
-                                    if(total == done){
+                                    if(total <= done){
                                         this.setState({dataReceived: true})
                                     }
                                 })
@@ -337,6 +405,9 @@ class GenerateSchedule extends Component {
                     })
                     this.setState({courseList:newCourseList})
                 })
+                if(total <= done){
+                    this.setState({dataReceived: true})
+                }
                 console.log(this.state.highCourses)
                 console.log(this.state.lowCourses)
             });
@@ -439,12 +510,10 @@ class GenerateSchedule extends Component {
                         }
                     })
                     .then(res => {
-                        console.log(res)
-                        const newCourse = {'id':res.data.id,'course_id':res.data.courses,'data':course.course_code,'siteData':"hello"}; 
-                        this.setState(state =>{
-                            const highCourses = state.highCourses.concat(newCourse);
-                            return{highCourses};
-                        });
+                        this.getSingleCourseOfferings(res.data.id, course, () => {
+
+                        })
+
                     })
                     .catch(error => {
                         console.log(error.response)
