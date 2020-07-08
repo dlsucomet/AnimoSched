@@ -598,100 +598,123 @@ class GenerateSchedule extends Component {
         const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
         this.setState({saveButtonStyle: styleChange});
 
-        axios.post('https://archerone-backend.herokuapp.com/api/generateschedule/',
-        {
-            highCourses: this.state.highCourses, 
-            lowCourses: this.state.lowCourses,
-            user_id: localStorage.getItem('user_id'),
-            filterFull: this.state.filterFull,
-            courseOfferings: [] 
-        })
-        .then(res => {
-            console.log(res)
-            const schedules = []
-            var schedCount = 0;
-            res.data.map(newSchedule =>{
-                var count = 0;
-                const scheduleContent = []
-                const tableContent = []
-                var earliest = 9
-                var latest = 17
+        const courseOfferings = []
 
-
-                newSchedule.offerings.map(offering=>{
-                    var startTime = offering.timeslot_begin.split(':');
-                    var endTime = offering.timeslot_end.split(':');
-                    const newContent = 
-                    {
-                        id: count,
-                        title: offering.course + ' ' + offering.section,
-                        section: offering.section,
-                        startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                        endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                        priorityId: 3,
-                        location: offering.room,
-                        professor: offering.faculty,
-                        startTime: offering.timeslot_begin,
-                        endTime: offering.timeslot_end,
-                        days: offering.day,
-                        classCode: offering.classnumber 
-                    }
-                    if(earliest > Number(startTime[0])){
-                        earliest = Number(startTime[0])
-                    }
-                    if(latest < Number(endTime[0]) + 1){
-                        latest = Number(endTime[0]) + 1
-                    }
-                    scheduleContent.push(newContent);
-                    var day = ''
-                    var classnumber = ''
-                    var course = ''
-                    var section = ''
-                    var faculty = ''
-                    var timeslot_begin = ''
-                    var timeslot_end = ''
-                    var room = ''
-                    var max_enrolled = ''
-                    var current_enrolled = ''
-
-                    day = offering.day
-                    classnumber = offering.classnumber
-                    course = offering.course
-                    section = offering.section
-                    faculty = offering.faculty
-                    timeslot_begin = offering.timeslot_begin
-                    timeslot_end = offering.timeslot_end
-                    room = offering.room
-                    max_enrolled = offering.max_enrolled
-                    current_enrolled = offering.current_enrolled
-                    const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                    // tableContent.push(newTableContent)
-                    count += 1;
-                })
-                schedCount += 1;
-                schedules.push({
-                    id: schedCount,
-                    title: "Schedule "+schedCount.toString(),
-                    scheduleContent: scheduleContent,
-                    tableContent: tableContent,
-                    prefContent: [],
-                    prefContent: newSchedule.preferences,
-                    conflictsContent: newSchedule.information,
-                    earliest: earliest,
-                    latest: latest,
-                    offerings: newSchedule.offerings
-                });
+        this.state.highCourses.map(course => {
+            course.siteData.map(c => {
+                if(!c.checked){
+                    courseOfferings.push(c)
+                }
             })
-            console.log(schedules)
-            this.setState({schedules});
-            this.setSchedInfo();
-            this.setState({success: true});
-            this.setState({loading: false});
-        }).catch(error => {
-            console.log(error.response)
-            this.setState({success: false});
-            this.setState({loading: false});
         })
+
+        this.state.lowCourses.map(course => {
+            course.siteData.map(c => {
+                if(!c.checked){
+                    courseOfferings.push(c)
+                }
+            })
+        })
+
+        this.setState({courseOfferings:courseOfferings}, () => {
+            console.log(courseOfferings)
+            axios.post('https://archerone-backend.herokuapp.com/api/generateschedule/',
+            {
+                highCourses: this.state.highCourses, 
+                lowCourses: this.state.lowCourses,
+                user_id: localStorage.getItem('user_id'),
+                filterFull: this.state.filterFull,
+                courseOfferings: courseOfferings 
+            })
+            .then(res => {
+                console.log(res)
+                const schedules = []
+                var schedCount = 0;
+                res.data.map(newSchedule =>{
+                    var count = 0;
+                    const scheduleContent = []
+                    const tableContent = []
+                    var earliest = 9
+                    var latest = 17
+
+
+                    newSchedule.offerings.map(offering=>{
+                        var startTime = offering.timeslot_begin.split(':');
+                        var endTime = offering.timeslot_end.split(':');
+                        const newContent = 
+                        {
+                            id: count,
+                            title: offering.course + ' ' + offering.section,
+                            section: offering.section,
+                            startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                            endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                            priorityId: 3,
+                            location: offering.room,
+                            professor: offering.faculty,
+                            startTime: offering.timeslot_begin,
+                            endTime: offering.timeslot_end,
+                            days: offering.day,
+                            classCode: offering.classnumber 
+                        }
+                        if(earliest > Number(startTime[0])){
+                            earliest = Number(startTime[0])
+                        }
+                        if(latest < Number(endTime[0]) + 1){
+                            latest = Number(endTime[0]) + 1
+                        }
+                        scheduleContent.push(newContent);
+                        var day = ''
+                        var classnumber = ''
+                        var course = ''
+                        var section = ''
+                        var faculty = ''
+                        var timeslot_begin = ''
+                        var timeslot_end = ''
+                        var room = ''
+                        var max_enrolled = ''
+                        var current_enrolled = ''
+
+                        day = offering.day
+                        classnumber = offering.classnumber
+                        course = offering.course
+                        section = offering.section
+                        faculty = offering.faculty
+                        timeslot_begin = offering.timeslot_begin
+                        timeslot_end = offering.timeslot_end
+                        room = offering.room
+                        max_enrolled = offering.max_enrolled
+                        current_enrolled = offering.current_enrolled
+                        const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                        // tableContent.push(newTableContent)
+                        count += 1;
+                    })
+                    schedCount += 1;
+                    schedules.push({
+                        id: schedCount,
+                        title: "Schedule "+schedCount.toString(),
+                        scheduleContent: scheduleContent,
+                        tableContent: tableContent,
+                        prefContent: [],
+                        prefContent: newSchedule.preferences,
+                        conflictsContent: newSchedule.information,
+                        earliest: earliest,
+                        latest: latest,
+                        offerings: newSchedule.offerings
+                    });
+                })
+                console.log(schedules)
+                this.setState({schedules});
+                this.setSchedInfo();
+                this.setState({success: true});
+                this.setState({loading: false});
+            }).catch(error => {
+                console.log(error.response)
+                this.setState({success: false});
+                this.setState({loading: false});
+            })
+        })
+
+
     }
 
     updateHighPriority(courseUpdate){
@@ -803,6 +826,15 @@ class GenerateSchedule extends Component {
     
     handleFilterFull = () => {
         this.setState({filterFull: !this.state.filterFull});
+    }
+
+    handleCheckbox = (index) => {
+        this.setState(state =>{
+            const siteData  = state.siteData
+            siteData[index].checked = !siteData[index].checked
+            return{siteData};
+        });
+        console.log(this.state.siteData[index]) 
     }
     
     handleCourseOfferingChange =(e, val)=>{
@@ -959,10 +991,10 @@ class GenerateSchedule extends Component {
                                       </TableBody>
                                       : 
                                       <TableBody>
-                                        {this.state.siteData.map(row => (
+                                        {this.state.siteData.map((row, index) => (
                                                 
                                           <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
-                                            <StyledTableCell> <GreenCheckbox checked={row.checked}/></StyledTableCell>
+                                            <StyledTableCell> <GreenCheckbox onClick={() => this.handleCheckbox(index)} checked={row.checked}/></StyledTableCell>
                                                     
                                             <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
                                             <StyledTableCell onClick={this.handleOpenModalCourseInfo} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}} > {row.course} </StyledTableCell>
