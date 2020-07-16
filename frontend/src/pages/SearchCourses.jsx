@@ -65,8 +65,12 @@ const GreenRadio = withStyles({
     '&$checked': {
       color: green[600],
     },
+    // '&label': {
+    //   color: green[600],
+    // }
   },
   checked: {},
+  // label: {},
 })((props) => <Radio color="default" {...props} />);
 
 const GreenSwitch = withStyles({
@@ -248,6 +252,12 @@ class SearchCourses extends Component {
       this.setState({selectedCourses: val})
     }
 
+    // handleKeyPress = () => {
+      // if(target.charCode==13) {
+        // console.log("Test?")
+      // }  
+    // }
+
     handleClick = (id, column) => {
       return (event) => {
         console.log(`You clicked on row with id ${id}, in column ${column}.`);
@@ -310,12 +320,13 @@ class SearchCourses extends Component {
                 <div className="searchBar">
                   <h2>Search all your courses in one go!</h2>
                     <div style={{display: "flex", justifyContent: "center"}}>
-                      <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch}/>
+                    {/* <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch}/> */}
+                      <div className="barArea"><ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} onKeyPress={this.searchCourses}/></div>
                       <div className={classes.root}>
                           <div className={classes.wrapper} >
                             <Button
                                   variant="contained"
-                                  color = "Primary"
+                                  color="Primary"
                                   disabled={this.state.loading}
                                   style={{backgroundColor: "green", color:"white", height:"55px"}}
                                   onClick={this.searchCourses}>
@@ -323,12 +334,9 @@ class SearchCourses extends Component {
                             </Button>
                             {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
                           </div>
-                      </div>
-                      
+                      </div>                    
                     </div>
-                    
-                  
-                </div>
+                </div>                
 
                 <div className="filters">
                     <center>
@@ -365,96 +373,105 @@ class SearchCourses extends Component {
                        </center>
                     </div>
                   
-                    <div  className="legendItems">
+                    <div className="legendItems">
                         <center>
                             <div>Closed Sections - <Paper style={{backgroundColor:  "#0099CC", height: "15px", width: "15px", display: "inline-flex"}}> </Paper> Blue</div>
                         </center>
                     </div>
                 </div>
                 
-                <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
-                  <TableContainer component={Paper}>
-                    <Table aria-label="customized table">
-                      <TableHead>
-                        <TableRow>
-                          <StyledTableCell> Class Number </StyledTableCell>
-                          <StyledTableCell> Course </StyledTableCell>
-                          <StyledTableCell> Section </StyledTableCell>
-                          <StyledTableCell> Faculty </StyledTableCell>
-                          <StyledTableCell> Day </StyledTableCell>
-                          <StyledTableCell> Time </StyledTableCell>
-                          <StyledTableCell> Room </StyledTableCell>
-                          <StyledTableCell> Capacity </StyledTableCell>
-                          <StyledTableCell> Enrolled </StyledTableCell>
-                        </TableRow>
-                      </TableHead>
-                      {this.state.loading ? 
-                      <TableBody>
-                          {this.state.skeletons.map(skeleton =>(
-                            <StyledTableRow>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
-                              <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                {this.state.siteData.length ?
+                  <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
+                    <TableContainer component={Paper}>
+                      <Table aria-label="customized table">
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell> Class Number </StyledTableCell>
+                            <StyledTableCell> Course </StyledTableCell>
+                            <StyledTableCell> Section </StyledTableCell>
+                            <StyledTableCell> Faculty </StyledTableCell>
+                            <StyledTableCell> Day </StyledTableCell>
+                            <StyledTableCell> Time </StyledTableCell>
+                            <StyledTableCell> Room </StyledTableCell>
+                            <StyledTableCell> Capacity </StyledTableCell>
+                            <StyledTableCell> Enrolled </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        {this.state.loading ? 
+                        <TableBody>
+                            {this.state.skeletons.map(skeleton =>(
+                              <StyledTableRow>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              </StyledTableRow>
+                            ))}
+                        </TableBody>
+                        : 
+                        <TableBody>
+                          {this.state.siteData.map(row => (
+                            <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
+                              <StyledTableCell onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > <Tooltip title="More Details" placement="bottom-end"><div>{row.course}</div></Tooltip> </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
+                              <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
+                              <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
                             </StyledTableRow>
                           ))}
-                      </TableBody>
-                      : 
-                      <TableBody>
-                        {this.state.siteData.map(row => (
-                          <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                            <Tooltip title="More Details" placement="left"><StyledTableCell onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > {row.course} </StyledTableCell></Tooltip>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
-                            <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
-                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
-                            <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
-                          </StyledTableRow>
-                        ))}
-                      </TableBody>
-                      }
-                    </Table>
-                  </TableContainer>
+                        </TableBody>
+                        }
+                      </Table>
+                    </TableContainer>
 
-                  <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
-                      <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
-                      
-                      <ModalBody>
-                        <h4>{this.state.courseCode}</h4>
-                        <h5>{this.state.courseName}</h5>
-                        <br/>
+                    <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
+                        <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
+                        
+                        <ModalBody>
+                          <h4>{this.state.courseCode}</h4>
+                          <h5>{this.state.courseName}</h5>
+                          <br/>
 
-                        <u><h5>Description</h5></u>
-                        <p>{this.state.courseDesc}</p>
-                        <br/>
+                          <u><h5>Description</h5></u>
+                          <p>{this.state.courseDesc}</p>
+                          <br/>
 
-                        <u><h5>Pre-requisite/s</h5></u>
-                        <p>{this.state.coursePre}</p>
-                        <br/>
+                          <u><h5>Pre-requisite/s</h5></u>
+                          <p>{this.state.coursePre}</p>
+                          <br/>
 
-                        <u><h5>Co-requisite/s</h5></u>
-                        <p>{this.state.courseCo}</p>
-                        <br/>
+                          <u><h5>Co-requisite/s</h5></u>
+                          <p>{this.state.courseCo}</p>
+                          <br/>
 
-                        <u><h5>Course Equivalent</h5></u>
-                        <p>{this.state.courseEq}</p>
-                        <br/>
+                          <u><h5>Course Equivalent</h5></u>
+                          <p>{this.state.courseEq}</p>
+                          <br/>
 
-                        <u><h5>Number of Units</h5></u>
-                        <p>{this.state.courseUnits}</p>
-                      </ModalBody>
-                      
-                  </Modal> 
-                </div>
-                
+                          <u><h5>Number of Units</h5></u>
+                          <p>{this.state.courseUnits}</p>
+                        </ModalBody>
+                        
+                    </Modal> 
+                  </div>                  
+                  :
+                  <div>                  
+                    {this.state.loading || !this.state.showPlaceholder ?
+                      <div class="noResults"><h5>There is no available information on course offerings for your search.</h5></div>
+                      :
+                      <div class="noResults"></div>
+                    }
+                  </div>
+                }
                 
                 <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
                     <center><img style={{width:"30%"}} src={searchIMG}/></center>
