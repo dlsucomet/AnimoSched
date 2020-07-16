@@ -542,16 +542,18 @@ class Preferences extends Component {
         const { classes } = this.props;
       return (
         <div>
-            <div class="prefIntro">
-                <a href="/">
-                    <HomeIcon className="homeIcon" fontSize="large" className={classes.homeButton}/>
+            {this.props.menu('profile')}
+
+            {/* <div class="prefIntro"> */}
+                {/* <a href="/"> */}
+                    {/* <HomeIcon className="homeIcon" fontSize="large" className={classes.homeButton}/> */}
                     {/* <svg class="bi bi-house" width="3em" height="3em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M9.646 3.146a.5.5 0 01.708 0l6 6a.5.5 0 01.146.354v7a.5.5 0 01-.5.5h-4.5a.5.5 0 01-.5-.5v-4H9v4a.5.5 0 01-.5.5H4a.5.5 0 01-.5-.5v-7a.5.5 0 01.146-.354l6-6zM4.5 9.707V16H8v-4a.5.5 0 01.5-.5h3a.5.5 0 01.5.5v4h3.5V9.707l-5.5-5.5-5.5 5.5z" clip-rule="evenodd"></path>
                         <path fill-rule="evenodd" d="M15 4.5V8l-2-2V4.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z" clip-rule="evenodd"></path>
                     </svg> */}
-                </a>
+                {/* </a> */}
                 
-                <div class="introduction">
+                {/* <div class="introduction"> */}
                     <h2>Preferences</h2>
                     <p>Disclaimer: Adding your preferences will help our system identify the schedules that best suit you among all possible schedules. Take note that this will not necessarily guarantee that all your preferences will be satisfied, as taking into account the courses you need is our upmost priority.</p>
                     {this.state.dataSaved ?
@@ -559,15 +561,15 @@ class Preferences extends Component {
                     :
                     <center><button onClick={this.handleSave} class="btn btn-success change-flowchart">Save</button></center>
                     }
-                </div>
+                {/* </div> */}
                 <Snackbar open={this.state.savedPrefBar} autoHideDuration={4000} onClose={this.handleCloseSaveBar}>
                     <Alert onClose={this.handleCloseSaveBar} severity="success">
                     Your preferences have been successfully saved!
                     </Alert>
                 </Snackbar>
-            </div>
+            {/* </div> */}
 
-            <div class="prefIntro-main">
+            {/* <div class="prefIntro-main"> */}
                 {this.state.dataReceived ? 
                 <div className="preference-category">
                     <div className="timePreferences">
@@ -852,7 +854,7 @@ class Preferences extends Component {
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}>
                     <ReactLoading type={'spin'} color={'#9BCFB8'} height={'5%'} width={'5%'}/>
                 </div> }
-            </div>
+            {/* </div> */}
         </div>        
       );
     }
