@@ -644,7 +644,7 @@ class Preferences extends Component {
                                 </form>
                             
                             <div className={'days-preference'}>
-                                Preferred Days
+                                <div className={'subheader'}>Preferred Days</div>
                                 <FormGroup row>
                                     <FormControlLabel
                                         control = {<GreenCheckbox checked={this.state.daysList[0].checked} onChange={this.handleDayChange} id={this.state.daysList[0].id} color="primary"/>}label="M" />
@@ -662,7 +662,6 @@ class Preferences extends Component {
                             </div>
 
                             {/* Break Length */}
-                            <br/>
                             <div className={'break-preference'}>
                                 <TextField
                                     id="outlined-select-break"
@@ -755,11 +754,9 @@ class Preferences extends Component {
 
                            
                             <div className={'building-preference'}>
-                                Building Preferences
-                                <br/><br/>
+                            <div className={'subheader'}>Building Preferences</div>
                                 <Grid container spacing={6}>
                                     <Grid item xs={6}>
-
                                     <FormGroup>
                                         <FormControlLabel
                                         control = {<GreenCheckbox checked={this.state.buildingList[0].checked} onChange={this.handleBuildingChange} id={this.state.buildingList[0].id}  color="primary"/>}label={this.state.buildingList[0].building} />
