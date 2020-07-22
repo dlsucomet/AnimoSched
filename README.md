@@ -1,4 +1,4 @@
-# ArcherOne
+# AnimoSched
 
 ## Prerequisites
 
