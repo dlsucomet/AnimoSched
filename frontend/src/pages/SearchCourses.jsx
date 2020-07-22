@@ -225,8 +225,8 @@ class SearchCourses extends Component {
                 course = offering.course
                 section = offering.section
                 faculty = offering.faculty
-                timeslot_begin = offering.timeslot_begin
-                timeslot_end = offering.timeslot_end
+                timeslot_begin = offering.timeslot_begin.substring(0, offering.timeslot_begin.length - 3)
+                timeslot_end = offering.timeslot_end.substring(0, offering.timeslot_end.length - 3)
                 room = offering.room
                 max_enrolled = offering.max_enrolled
                 current_enrolled = offering.current_enrolled
@@ -433,8 +433,8 @@ class SearchCourses extends Component {
                       </Table>
                     </TableContainer>
 
-                    <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop="static" data-keyboard="false">
-                        <ModalHeader toggle={this.toggleModal}>Course Information</ModalHeader>
+                    <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
+                        <ModalHeader toggle={this.toggleModal}><h4>Course Information</h4></ModalHeader>
                         
                         <ModalBody>
                           <h4>{this.state.courseCode}</h4>

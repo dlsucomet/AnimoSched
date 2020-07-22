@@ -737,6 +737,7 @@ class Preferences extends Component {
                         
                         <div className="preference-category-content">
                             <div className="professor-preference">
+                                <div className={'subheader'}>Faculty Preferences</div>
                                 <Autocomplete
                                     multiple
                                     id="tags-outlined"
@@ -745,7 +746,8 @@ class Preferences extends Component {
                                     getOptionLabel={option => option.profName}
                                     //   style={{ width: 500 }}
                                     filterSelectedOptions
-                                    renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
+                                    renderInput={params => <TextField {...params} variant="outlined" />}
+                                    // renderInput={params => <TextField {...params} label="Faculty Preferences" variant="outlined" />}
                                     onChange={this.handleProfPrefChange}
                                     // onKeyPress={this.handleProfPrefress}
                                     />
@@ -754,7 +756,7 @@ class Preferences extends Component {
 
                            
                             <div className={'building-preference'}>
-                            <div className={'subheader'}>Building Preferences</div>
+                                <div className={'subheader'}>Building Preferences</div>
                                 <Grid container spacing={6}>
                                     <Grid item xs={6}>
                                     <FormGroup>
@@ -829,6 +831,7 @@ class Preferences extends Component {
                             <label className="checkbox-description" for=""> Br. Andrew Gonzales Hall </label><br/><br/> */}
 
                             <div className="section-preference">
+                                <div className={'subheader'}>Section Preferences</div>
                                 <Autocomplete
                                     multiple
                                     id="tags-outlined"
@@ -837,7 +840,8 @@ class Preferences extends Component {
                                     getOptionLabel={option => option.sectionName + ' (' + option.collegeCode + ')'}
                                     //   style={{ width: 500 }}
                                     filterSelectedOptions
-                                    renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
+                                    renderInput={params => <TextField {...params} variant="outlined" />}
+                                    // renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
                                     onChange={this.handleSectionPrefChange}
                                     // onKeyPress={this.handleSectionPrefress}
                                     />
