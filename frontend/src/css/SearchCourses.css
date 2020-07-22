@@ -65,6 +65,6 @@
     margin-bottom: 3%;
     margin-left: 5%;
     margin-right: 5%;
-    animation: cssAnimation 0s 2s forwards;
+    animation: cssAnimation 3s;
     visibility: hidden;
 }

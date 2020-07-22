@@ -683,8 +683,8 @@ class GenerateSchedule extends Component {
                             priorityId: 3,
                             location: offering.room,
                             professor: offering.faculty,
-                            startTime: offering.timeslot_begin,
-                            endTime: offering.timeslot_end,
+                            startTime: offering.timeslot_begin.substring(0, offering.timeslot_begin.length - 3),
+                            endTime: offering.timeslot_end.substring(0, offering.timeslot_end.length - 3),
                             days: offering.day,
                             classCode: offering.classnumber 
                         }
