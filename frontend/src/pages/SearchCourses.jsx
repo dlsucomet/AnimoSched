@@ -103,7 +103,8 @@ class SearchCourses extends Component {
         rowStyle: "",
         openModalCourseInfo: false,
         showPlaceholder: true,
-        applyPreference: false
+        applyPreference: false,
+        noResults: false,
       }
       this.radioRef = React.createRef()
     }
@@ -251,6 +252,13 @@ class SearchCourses extends Component {
     handleSearch = (e, val) =>{
       this.setState({selectedCourses: val})
     }
+    
+    handleSearchPress = (e) => {
+        const val = this.state.currentCourse;
+        if(e.key === 'Enter'){
+          this.searchCourses()
+        }
+    }
 
     // handleKeyPress = () => {
       // if(target.charCode==13) {
@@ -321,7 +329,7 @@ class SearchCourses extends Component {
                   <h2>Search all your courses in one go!</h2>
                     <div style={{display: "flex", justifyContent: "center"}}>
                     {/* <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch}/> */}
-                      <div className="barArea"><ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} onKeyPress={this.searchCourses}/></div>
+                      <div className="barArea"><ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} onKeyPress={this.handleSearchPress}/></div>
                       <div className={classes.root}>
                           <div className={classes.wrapper} >
                             <Button
@@ -380,7 +388,6 @@ class SearchCourses extends Component {
                     </div>
                 </div>
                 
-                {this.state.siteData.length ?
                   <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
                     <TableContainer component={Paper}>
                       <Table aria-label="customized table">
@@ -463,19 +470,15 @@ class SearchCourses extends Component {
                         
                     </Modal> 
                   </div>                  
-                  :
-                  <div>                  
-                    {this.state.loading || !this.state.showPlaceholder ?
-                      <div class="noResults"><h5>There is no available information on course offerings for your search.</h5></div>
-                      :
-                      <div class="noResults"></div>
-                    }
-                  </div>
-                }
                 
                 <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
                     <center><img style={{width:"30%"}} src={searchIMG}/></center>
                 </div>
+                {this.state.siteData.length == 0 ? 
+                null
+                :
+                <div class="noResults"><h5>There is no available information on course offerings for your search.</h5></div>
+                }
             </div>
                      
             : 

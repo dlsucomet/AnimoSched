@@ -174,8 +174,9 @@ class ComboBox extends React.Component{
                     />
                 )}
                 //   renderInput={params => <TextField {...params} label="Search Courses" variant="outlined" />}
-                  onChange={this.props.onChange}
-                  onInputChange={this.handleSearchInputThrottled}
+                onChange={this.props.onChange}
+                onKeyPress={this.props.onKeyPress}
+                onInputChange={this.handleSearchInputThrottled}
                 />
             );
         } else if(this.props.page == "search_simple"){
