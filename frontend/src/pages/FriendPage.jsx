@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../css/FriendPage.css';
-import { Row, Col, Tabs, Tab } from 'react-bootstrap';
+import { Row, Col, Tabs, Tab, DropdownButton, Dropdown } from 'react-bootstrap';
 import SidebarIMG from '../images/FriendPage.svg';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -50,6 +50,7 @@ import Avatar from 'react-avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { withRouter } from "react-router";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const styles = theme => ({
     pencilIcon:{ 
@@ -151,6 +152,7 @@ class FriendPage extends Component {
             fromModalIndex: "",
             schedules: [],
             profList: [],
+            dropdownOpen: false,
 
             daysList:[
                 {   id: 1,
@@ -444,8 +446,10 @@ class FriendPage extends Component {
                         sectionList.push(section);
                     }
                 })
-                console.log(profList)
-                this.setState({firstName: requests[i].firstName, lastName: requests[i].lastName, sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: requests[i].id_num}, () => {
+                console.log(profList);
+                var idnum = requests[i].id_num;
+                var idnumber = idnum.toString().slice(0, 3);
+                this.setState({firstName: requests[i].firstName, lastName: requests[i].lastName, sectionList, profList, schedules, college: requests[i].college, degree: requests[i].degree, idnum: idnumber}, () => {
                     this.setSchedInfo();
                 })
                 
@@ -521,6 +525,11 @@ class FriendPage extends Component {
 //            console.log(this.props.location.state.selectedFriend);
 //           this.handleClick("clickaway", this.props.location.state.index)
     }
+
+    toggleDrop = () => {
+        var dropdownOpen = this.state.dropdownOpen;
+        this.setState({dropdownOpen: !dropdownOpen});
+      }
        
     render() {
         const friendList = [];
@@ -530,6 +539,20 @@ class FriendPage extends Component {
             if(this.state.requests[i].status == "accept")
                 friendList.push(this.state.requests[i]);
         }
+
+        const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+            <a
+                ref={ref}
+              onClick={(e) => {
+                e.preventDefault();
+                onClick(e);
+              }}
+            >
+              {children}
+              <ArrowDropDownIcon fontSize="large"/>
+              {/* &#x25bc; */}
+            </a>
+          ));
     
         return (
             <div>
@@ -587,12 +610,19 @@ class FriendPage extends Component {
 
                                                         <CheckIcon fontSize="small"/>
                                                     </Button> */}
-                                                     <Tooltip title="Unfriend">
+                                                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDrop}>
+                                                        <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                                                        <Dropdown.Menu right>
+                                                        <Dropdown.Item eventKey="1" onClick={()=>this.handleClickOpenAlert(friend)}>Unfriend</Dropdown.Item>
+                                                        </Dropdown.Menu>
+                                                        </Dropdown.Toggle>
+                                                    </Dropdown>
+                                                     {/* <Tooltip title="Unfriend">
                                                     <svg onClick={()=>this.handleClickOpenAlert(friend)} class="bi bi-check-circle" width="24" height="24" viewBox="0 0 16 16" fill="#006A4E" xmlns="http://www.w3.org/2000/svg" className={"svgUnfriend"}>
                                                         <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"></path>
                                                         <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"></path>
                                                     </svg>
-                                                    </Tooltip>
+                                                    </Tooltip> */}
                                                 </div>
                                             </Col>
                                         </Row>            
