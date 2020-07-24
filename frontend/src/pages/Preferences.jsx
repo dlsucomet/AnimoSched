@@ -546,7 +546,7 @@ class Preferences extends Component {
 
       return (
         <div>
-            {this.props.menu('profile')}
+            {this.props.menu('preferences')}
 
             {/* <div class="prefIntro"> */}
                 {/* <a href="/"> */}
