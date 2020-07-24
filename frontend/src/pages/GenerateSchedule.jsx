@@ -163,7 +163,9 @@ class GenerateSchedule extends Component {
             siteDataArray: [],
             allCheckBox: true,
      
-            skeletons: [...Array(8).keys()]
+            skeletons: [...Array(8).keys()],
+
+            openModalWait: false,
         };
 
     }
@@ -577,7 +579,7 @@ class GenerateSchedule extends Component {
             return {currentPage};
             });
 
-        // this.handleScrollToGen();
+        this.handleScrollToGen();
 
         if(this.state.savedScheds.includes(this.state.generatedContents[index].key)){
             this.setState({saveButtonLabel: "Saved"});
@@ -628,9 +630,12 @@ class GenerateSchedule extends Component {
         if(!this.state.loading){
             this.setState({loading: true});
             this.setState({success: false});
+            this.toggleModalWait();
+            //modal popped out here
           }else{
             this.setState({success: true});
             this.setState({loading: false});
+            this.toggleModalWait();
         } 
         this.setState({savedScheds: [], hideGenContent: true, generatedContents: [], currentContent: ""});
 
@@ -747,10 +752,12 @@ class GenerateSchedule extends Component {
                 this.setSchedInfo();
                 this.setState({success: true});
                 this.setState({loading: false});
+                this.toggleModalWait();
             }).catch(error => {
                 console.log(error.response)
                 this.setState({success: false});
                 this.setState({loading: false});
+                this.toggleModalWait();
             })
         })
 
@@ -917,7 +924,11 @@ class GenerateSchedule extends Component {
         console.log("Course Offerings changes saved");
         this.setState({openModalCourseOfferings: false});
       } 
-
+    
+    toggleModalWait = () => {
+        var openModalVar = this.state.openModalWait;
+        this.setState({openModalWait: !openModalVar});
+      }
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
@@ -1078,13 +1089,13 @@ class GenerateSchedule extends Component {
                             </Row> */}
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div className={classes.root}>
-                                    <div className={classes.wrapper}> 
+                                    <div className={classes.wrapper} ref={this.generatedRef}> 
                                         <Button
                                         variant="contained"
                                         className={classes.schedButton}
                                         disabled={this.state.loading || this.state.highCourses.length + this.state.lowCourses.length <= 0}
                                         onClick={()=>this.createSchedInfo()}
-                                        
+                                         
                                         // style={{backgroundColor: "green"}}
                                         >
                                         Generate Schedule
@@ -1094,9 +1105,18 @@ class GenerateSchedule extends Component {
                                 </div>
                                 {/* <button className="schedButton" onClick={()=>this.createSchedInfo()} style={{marginTop: "20px"}}>Generate Schedule</button> */}
                             </Row>
+
+                            <Modal isOpen={this.state.openModalWait} toggle={this.toggleModalWait} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" centered={true}>
+                                <ModalHeader toggle={this.toggleModalWait}><p>Please wait...In the process of making your schedule</p></ModalHeader>
+                                
+                                {/* <ModalBody>
+                                
+                                </ModalBody> */}
+                                
+                            </Modal> 
                         </div>
 
-                        <div  ref={this.generatedRef}  className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
+                        <div   className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">

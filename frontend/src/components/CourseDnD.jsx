@@ -111,7 +111,7 @@ triggerUpdate=(e)=>{
                     <div className="draggable-item">
                         <DragHandleIcon style={{ marginBottom: "5px", float: "left", marginTop: "12px", marginLeft: "16px"}}/>
                         <Tooltip title="Select sections" placement="left">
-                            <a className = "card-courseName" onClick={() => this.triggerModal(p.data, p.siteData)} style={{cursor: "pointer", textDecorationLine: 'underline'}}>{p.data}</a>
+                            <a className = "card-courseName" onClick={() => this.triggerModal(p.data, p.siteData)} /*style={{cursor: "pointer", textDecorationLine: 'underline'}}*/>{p.data}</a>
                         </Tooltip>
                         <Button close  style={{ marginTop: "11px", marginRight: "10px"}} onClick={() => this.removeCourse(index)}/>
                     </div>
