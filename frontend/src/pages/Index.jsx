@@ -400,7 +400,6 @@ class Index extends Component {
   setSchedInfo = () => {
     console.log(this.state.schedules)
     if(this.state.schedules.length > 0){      
-      console.log(this.state.schedules[0].scheduleContent[0].startTime);
       const palette = JSON.parse(localStorage.getItem('palette'))
       var generatedContents = this.state.schedules.map((item, index) =>
           <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
@@ -671,7 +670,7 @@ class Index extends Component {
       // snackBarVariables[1].snackBarFailed = true;
       this.setState({snackBarVariables});
       console.log(snackBarVariables);
-      window.location.reload();
+      // window.location.reload();
     }).catch(err => {
       console.log(err.response)
     })

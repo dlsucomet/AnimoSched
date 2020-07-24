@@ -7,6 +7,8 @@ import axios from "axios";
 import Tooltip from '@material-ui/core/Tooltip';
 
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import Skeleton from '@material-ui/lab/Skeleton';
+import ReactLoading from 'react-loading';
 
 const groupStyle = {
     marginLeft: '50px',
@@ -100,6 +102,7 @@ triggerUpdate=(e)=>{
 
         <div className="simple-page1" style={{ display: 'flex', justifyContent: 'center'}}>
           <div className= "card-container" style={{height:"452px", overflow: "auto", width: "270px"}}>
+            {!this.props.loading ? 
             <Container groupName="1" getChildPayload={i => this.state.courses[i]} onDrop={this.triggerUpdate} style={{height:"100%"}}>
                 {this.state.courses.map((p, index) => {
                 console.log(p)
@@ -116,6 +119,11 @@ triggerUpdate=(e)=>{
                 );
                 })}
             </Container>
+            :
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "40vh"}}>
+              <ReactLoading type={'spin'} color={'#9BCFB8'} height={'20%'} width={'20%'}/>
+            </div> 
+            }
         </div>
         </div>
  
