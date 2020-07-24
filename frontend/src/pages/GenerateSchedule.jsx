@@ -577,7 +577,7 @@ class GenerateSchedule extends Component {
             return {currentPage};
             });
 
-        // this.handleScrollToGen();
+        this.handleScrollToGen();
 
         if(this.state.savedScheds.includes(this.state.generatedContents[index].key)){
             this.setState({saveButtonLabel: "Saved"});
@@ -1078,13 +1078,13 @@ class GenerateSchedule extends Component {
                             </Row> */}
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div className={classes.root}>
-                                    <div className={classes.wrapper}> 
+                                    <div className={classes.wrapper} ref={this.generatedRef}> 
                                         <Button
                                         variant="contained"
                                         className={classes.schedButton}
                                         disabled={this.state.loading || this.state.highCourses.length + this.state.lowCourses.length <= 0}
                                         onClick={()=>this.createSchedInfo()}
-                                        
+                                         
                                         // style={{backgroundColor: "green"}}
                                         >
                                         Generate Schedule
@@ -1096,7 +1096,7 @@ class GenerateSchedule extends Component {
                             </Row>
                         </div>
 
-                        <div  ref={this.generatedRef}  className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
+                        <div   className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                         
                             <div className = "paginationContainer">
