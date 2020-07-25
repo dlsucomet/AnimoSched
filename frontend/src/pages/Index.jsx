@@ -469,7 +469,7 @@ class Index extends Component {
     this.setState({openAlert: false});
 
     let snackBarVariables = [...this.state.snackBarVariables];
-    this.setState({snackbarMsg: "Your schedule has been successfully discarded!"});
+    this.setState({snackbarMsg: "Your schedule has been successfully deleted!"});
     snackBarVariables[0].snackBarSuccess = true;
     // snackBarVariables[1].snackBarFailed = true;
     this.setState({snackBarVariables});
@@ -894,7 +894,7 @@ class Index extends Component {
 
                       <Snackbar open={this.state.snackBarVariables[0].snackBarSuccess} autoHideDuration={4000} onClose={(event, reason)=>this.handleCloseSnackBar(event, reason,0)}>
                         <Alert onClose={(event, reason)=>this.handleCloseSnackBar(event, reason, 0)} severity="success">
-                          {this.state.snackbarMsg}{/* Your schedule has been successfully discarded! */}
+                          {this.state.snackbarMsg}{/* Your schedule has been successfully deleted! */}
                         </Alert>
                       </Snackbar>
 

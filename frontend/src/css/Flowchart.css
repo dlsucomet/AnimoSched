@@ -112,3 +112,24 @@ body {
     margin-right: 5%;
     background-color: white;
 }
+
+.legendEntry {
+    font-size: 0.85em;
+    display: inline-block;
+    margin-right: 2%;
+}
+
+.legendEntryFlowchart {
+    font-size: 0.85em;
+    display: inline-block;
+    margin-right: 2%;
+}
+
+.flowchartLegendLine {
+    width: 120px;
+}
+
+.legendArea {
+    color: black;
+    margin-bottom: 2%;
+}
