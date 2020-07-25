@@ -224,7 +224,7 @@ class Login extends Component {
     render() {
       const { classes } = this.props;
       return (
-        <div style={{backgroundColor: "#9bcfb8"}}>
+        <div style={{backgroundImage: "linear-gradient(#086e53, #579d8b)"}}>
                 
                   <div className={"backBtn"}>
                   <a className="backBtn" href="/">
@@ -242,7 +242,7 @@ class Login extends Component {
                     <Row>
                       <Col />
                       <Col lg="8">
-                        <Jumbotron style={{padding: 32, backgroundColor: "white"}}>
+                        <Jumbotron style={{padding: 32, backgroundColor: "white", marginLeft: "15%", marginRight: "15%", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                           <h3>
                             Log in to your account!
                           </h3>
