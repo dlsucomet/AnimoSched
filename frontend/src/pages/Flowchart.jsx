@@ -17,6 +17,16 @@ import html2canvas from 'html2canvas';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+
+import { Row, Col, Tabs, Tab } from 'react-bootstrap';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -106,9 +116,13 @@ class Flowchart extends Component {
                 var tempCoursesList = [];
                 // termsList.push(newTerm);
                 term.courses.map((course, j) => {
+                  var tempCourse = course;
+                  tempCourse.year = term.year;
+                  tempCourse.term = term.term;
+                  // console.log(tempCourse);
                   // var outputsList = {};
-                  coursesList.push(course);
-                  tempCoursesList.push(course);
+                  coursesList.push(tempCourse);
+                  tempCoursesList.push(tempCourse);
                   // course.prerequisite_to.map((prereq_to) => {
                   //   outputsList[prereq_to] = { output: "right", input: "left" }                    
                   // })            
@@ -134,7 +148,22 @@ class Flowchart extends Component {
                   })
                   flowpointsList.push({'key': tempCoursesList[k].id, 'name': tempCoursesList[k].course_code, 'units': tempCoursesList[k].units, 'startPosition': { x:(currentTerm-1)*85, y:tracks[k]*50 }, 'width': 70, 'height': 40, 'dragX': false, 'dragY': false, 'outputs': outputsList, 'year': term.year, 'term': term.term});
                 }
-                console.log(tempCoursesList)               
+                coursesList.sort(function (a, b) {
+                  if(a.year == b.year) {
+                    if(a.term == b.term) {
+                      return (a.units < b.units) ? 1 : -1;
+                    }
+                    else {                    
+                      return (a.term > b.term) ? 1 : -1;
+                    }
+                  }
+                  else {
+                      return (a.year > b.year) ? 1 : -1;
+                  }
+                });         
+
+                // console.log(tempCoursesList)
+                console.log(coursesList)
                 // this.setState({terms: termsList})
                 this.setState({courses: coursesList})
                 this.setState({flowpoints: flowpointsList})                
@@ -143,15 +172,12 @@ class Flowchart extends Component {
       })
     }
     
-    exportSched = () => {
+    exportFlowchart = () => {
         window.scrollTo(0, 0);
         html2canvas(document.querySelector("#flowchart-area")).then(canvas => {
     //      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
             var filename = "flowchart" + ".png";
-         
             this.saveAs(canvas.toDataURL(), filename); 
-
-
         });
         
         this.setState({snackbar: true});
@@ -163,6 +189,17 @@ class Flowchart extends Component {
 //        this.setState({snackBarVariables});
 //        console.log(snackBarVariables);
   }
+    
+  exportFlowchartTable = () => {
+      window.scrollTo(0, 0);
+      html2canvas(document.querySelector("#flowchart-table-area")).then(canvas => {
+  //      document.location.href = canvas.toDataURL().replace('image/png', 'image/octet-stream');
+          var filename = "flowchart" + ".png";
+          this.saveAs(canvas.toDataURL(), filename); 
+      });
+      
+      this.setState({snackbar: true});
+}
   
   saveAs = (uri, filename) => {
 
@@ -199,6 +236,26 @@ class Flowchart extends Component {
 
     render() {
       const { classes } = this.props;
+        
+      const StyledTableCell = withStyles(theme => ({
+        head: {
+          backgroundColor: '#006A4E',
+          color: theme.palette.common.white,
+        },
+        body: {
+          fontSize: 12,
+          // borderBottom: "1px solid white",
+        },
+      }))(TableCell);
+
+      const StyledTableRow = withStyles(theme => ({
+        root: {
+          '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.background.default,
+          },
+        },
+      }))(TableRow);
+
       return (
         <div>
             {this.props.menu('flowchart')}
@@ -224,93 +281,145 @@ class Flowchart extends Component {
                 <br/>
                   <center><h2 style={{width: "80%"}}>YOUR FLOWCHART</h2></center>
                   <center><h3>CCS 116 CS</h3></center>
-                  <center><Button
-                      variant="contained"
-                      className={classes.buttonStyle}
-                      onClick={this.exportSched}
-                      endIcon={ <GetAppIcon/>}
-                      >
-                      Export
-                    </Button></center>
-                    <Snackbar open={this.state.snackbar} autoHideDuration={4000} onClose={this.handleCloseBar}>
-                    <Alert onClose={this.handleCloseBar} severity="success">
-                    Your flowchart image is downloading!
-                    </Alert>
-                </Snackbar>
-                  <div class="flowchart-area" id="flowchart-area">
-                    <div class="flowchart-header-parent">
-                      <div class="header-year-parent">
-                        <div class="header-year">Year 1</div>
-                        <div class="header-term-parent">
-                          <div class="header-term">Term 1</div>
-                          <div class="header-term">Term 2</div>
-                          <div class="header-term">Term 3</div>
-                        </div>
-                      </div>
-                      <div class="header-year-parent">
-                        <div class="header-year">Year 2</div>
-                        <div class="header-term-parent">
-                          <div class="header-term">Term 1</div>
-                          <div class="header-term">Term 2</div>
-                          <div class="header-term">Term 3</div>
-                        </div>
-                      </div>
-                      <div class="header-year-parent">
-                        <div class="header-year">Year 3</div>
-                        <div class="header-term-parent">
-                          <div class="header-term">Term 1</div>
-                          <div class="header-term">Term 2</div>
-                          <div class="header-term">Term 3</div>
-                        </div>
-                      </div>
-                      <div class="header-year-parent">
-                        <div class="header-year">Year 4</div>
-                        <div class="header-term-parent">
-                          <div class="header-term">Term 1</div>
-                          <div class="header-term">Term 2</div>
-                          <div class="header-term">Term 3</div>
-                        </div>
-                      </div>
-                    </div>
-                      <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'hidden', height:"100%", width:"100",}}>
-                        {
-                          Object.keys(this.state.flowpoints).map(key => {
-                            const point = this.state.flowpoints[key]
-                            return (
-                              <Flowpoint
-                                key={point.key}
-                                startPosition={point.startPosition} 
-                                width={point.width} 
-                                height={point.height} 
-                                dragX={point.dragX} 
-                                dragY={point.dragY} 
-                                outputs={point.outputs}>
-                                <div className={classes.flowchartText}>{point.name}<br />{point.units}</div>
-                              </Flowpoint>
 
-                              // <Flowpoint
-                              //   key={key}
-                              //   startPosition={point.pos}
-                              //   onClick={() => {
-                              //     var selected_point = this.state.selected_point
-                              //     if (selected_point === key) {
-                              //       selected_point = null
-                              //     } else {
-                              //       selected_point = key
-                              //     }
-                              //     this.setState({selected_point})
-                              //   }}
-                              //   onDrag={position => {
-                              //     var flowpoints = this.state.flowpoints
-                              //     flowpoints[key].position = position
-                              //     this.setState({flowpoints})
-                              //   }}>                                
-                              // </Flowpoint>
-                            )
-                          })
-                        }
-                    </Flowspace>
-                  </div>
+                  <Tabs defaultActiveKey="visual" id="uncontrolled-tab-example">
+                    <Tab eventKey="visual" title="Visual">
+                      <div class="tabArea">
+                        <center>
+                          <Button
+                            variant="contained"
+                            className={classes.buttonStyle}
+                            onClick={this.exportFlowchart}
+                            endIcon={ <GetAppIcon/>}
+                            >
+                            Export
+                          </Button>
+                        </center>
+                        <Snackbar open={this.state.snackbar} autoHideDuration={4000} onClose={this.handleCloseBar}>
+                          <Alert onClose={this.handleCloseBar} severity="success">
+                          Your flowchart image is downloading!
+                          </Alert>
+                        </Snackbar>
+                        <div class="flowchart-area" id="flowchart-area">
+                          <div class="flowchart-header-parent">
+                            <div class="header-year-parent">
+                              <div class="header-year">Year 1</div>
+                              <div class="header-term-parent">
+                                <div class="header-term">Term 1</div>
+                                <div class="header-term">Term 2</div>
+                                <div class="header-term">Term 3</div>
+                              </div>
+                            </div>
+                            <div class="header-year-parent">
+                              <div class="header-year">Year 2</div>
+                              <div class="header-term-parent">
+                                <div class="header-term">Term 1</div>
+                                <div class="header-term">Term 2</div>
+                                <div class="header-term">Term 3</div>
+                              </div>
+                            </div>
+                            <div class="header-year-parent">
+                              <div class="header-year">Year 3</div>
+                              <div class="header-term-parent">
+                                <div class="header-term">Term 1</div>
+                                <div class="header-term">Term 2</div>
+                                <div class="header-term">Term 3</div>
+                              </div>
+                            </div>
+                            <div class="header-year-parent">
+                              <div class="header-year">Year 4</div>
+                              <div class="header-term-parent">
+                                <div class="header-term">Term 1</div>
+                                <div class="header-term">Term 2</div>
+                                <div class="header-term">Term 3</div>
+                              </div>
+                            </div>
+                          </div>
+                            <Flowspace theme="green" variant="paper" background="white" connectionSize="2" style={{ overflow: 'hidden', height:"100%", width:"100",}}>
+                              {
+                                Object.keys(this.state.flowpoints).map(key => {
+                                  const point = this.state.flowpoints[key]
+                                  return (
+                                    <Flowpoint
+                                      key={point.key}
+                                      startPosition={point.startPosition} 
+                                      width={point.width} 
+                                      height={point.height} 
+                                      dragX={point.dragX} 
+                                      dragY={point.dragY} 
+                                      outputs={point.outputs}>
+                                      <div className={classes.flowchartText}>{point.name}<br />{point.units}</div>
+                                    </Flowpoint>
+
+                                    // <Flowpoint
+                                    //   key={key}
+                                    //   startPosition={point.pos}
+                                    //   onClick={() => {
+                                    //     var selected_point = this.state.selected_point
+                                    //     if (selected_point === key) {
+                                    //       selected_point = null
+                                    //     } else {
+                                    //       selected_point = key
+                                    //     }
+                                    //     this.setState({selected_point})
+                                    //   }}
+                                    //   onDrag={position => {
+                                    //     var flowpoints = this.state.flowpoints
+                                    //     flowpoints[key].position = position
+                                    //     this.setState({flowpoints})
+                                    //   }}>                                
+                                    // </Flowpoint>
+                                  )
+                                })
+                              }
+                          </Flowspace>
+                        </div>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="table" title="Table">
+                    <div class="tabArea">
+                    <center>
+                      <Button
+                        variant="contained"
+                        className={classes.buttonStyle}
+                        onClick={this.exportFlowchartTable}
+                        endIcon={ <GetAppIcon/>}
+                        >
+                        Export
+                      </Button>
+                    </center>
+                    <Snackbar open={this.state.snackbar} autoHideDuration={4000} onClose={this.handleCloseBar}>
+                      <Alert onClose={this.handleCloseBar} severity="success">
+                      Your flowchart image is downloading!
+                      </Alert>
+                    </Snackbar>
+                    <div class="flowchart-table-area" id="flowchart-table-area">
+                    <TableContainer component={Paper}>
+                      <Table aria-label="customized table">
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell> Code </StyledTableCell>
+                            <StyledTableCell> Title </StyledTableCell>
+                            <StyledTableCell> Units </StyledTableCell>
+                            <StyledTableCell> Prerequisites </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {this.state.courses.map((row, index) => (                                  
+                            <StyledTableRow key={row.course_name} style={{color: "#006600", height: '30px'}}>
+                              <StyledTableCell style={{color: "#006600"}}> {row.course_code} </StyledTableCell>
+                              <StyledTableCell style={{color: "#006600"}}> {row.course_name} </StyledTableCell>
+                              <StyledTableCell style={{color: "#006600"}}> {row.units} </StyledTableCell>
+                              <StyledTableCell style={{color: "#006600"}}> {row.name} </StyledTableCell>
+                            </StyledTableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    </div>
+                    </div>
+                  </Tab>
+                  </Tabs>
               </div>
                 <div class="sideRight" >
                 </div>
