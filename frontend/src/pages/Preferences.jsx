@@ -649,7 +649,7 @@ class Preferences extends Component {
                                             <form className={"timeContainer"} noValidate>
                                                 <TextField
                                                     id="time"
-                                                    label="Earliest Time"
+                                                    label="No Classes Before"
                                                     type="time"
                                                     value={this.state.earliest_class_time}
                                                     className={"earliestTimeField"}
@@ -672,7 +672,7 @@ class Preferences extends Component {
                                             <form className={"timeContainer"} noValidate>
                                                 <TextField
                                                     id="time"
-                                                    label="Latest Time"
+                                                    label="No Classes After"
                                                     type="time"
                                                     value={this.state.latest_class_time}
                                                     className={"lastestTimeField"}
