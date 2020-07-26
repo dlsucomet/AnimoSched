@@ -312,9 +312,9 @@ class SearchCourses extends Component {
       
       const StyledTableRow = withStyles(theme => ({
         root: {
-          // '&:nth-of-type(odd)': {
-          //   backgroundColor: theme.palette.background.default,
-          // },
+          '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.background.default,
+          },
           "&:hover": {
             backgroundColor: "#efefef"
           },
