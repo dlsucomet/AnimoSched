@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'underscore';
 import axios from 'axios'
-import groupArray from 'group-array'
+import groupArray from 'group-array';
 
 class ComboBox extends React.Component{
     constructor(props){
@@ -154,6 +154,7 @@ class ComboBox extends React.Component{
                   options={this.state.courseList}
                   getOptionLabel={option => option.course_code}
                 //   style={{ width: 500 }}
+                  defaultValue={this.props.defaultValue}
                   filterSelectedOptions
                   loading={this.state.loading}
                   noOptionsText={"Start typing to search a course!"}

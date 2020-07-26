@@ -280,17 +280,19 @@ class Preferences extends Component {
                 })
             })
         });
-        axios.get('https://archerone-backend.herokuapp.com/api/colleges/')
+        axios.get('https://archerone-backend.herokuapp.com/api/sections/')
         .then(res => {
-            res.data.map(college => {
-                if(college.section_code.length == 1){
-                    var section = {'id': college.id, 'sectionName': college.section_code, 'collegeCode': college.college_code} 
-                    this.setState(state =>{
-                        const sectionList = state.sectionList;
-                        sectionList.push(section);
-                        return {sectionList}
-                    })
+            res.data.map(section => {
+                if(section.section_code.length == 1){
+                    var section = {'id': section.id, 'sectionName': section.section_code + " (All sections)"} 
+                }else{
+                    var section = {'id': section.id, 'sectionName': section.section_code} 
                 }
+                this.setState(state =>{
+                    const sectionList = state.sectionList;
+                    sectionList.push(section);
+                    return {sectionList}
+                })
             })
         });
             axios.get('https://archerone-backend.herokuapp.com/api/preferencelist/'+id+'/')
@@ -563,10 +565,16 @@ class Preferences extends Component {
               ...option,
             };
           });
-
+        const sectionOptions = this.state.sectionList.map((option) => {
+            const firstLetter = option.sectionName[0].toUpperCase();
+            return {
+              firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+              ...option,
+            };
+          });
       return (
         <div>
-            {this.props.menu('profile')}
+            {this.props.menu('preferences')}
 
             <button onClick={() => this.handleOpenModalHelp()}>Help</button>
             <IconButton aria-label="help" disabled color="primary" onClick={() => this.handleOpenModalHelp()}>
@@ -888,19 +896,21 @@ class Preferences extends Component {
 
                                     <div className="section-preference">
                                         <div className={'subheader'}>Section Preferences</div>
-                                        <Autocomplete
+                                          <Autocomplete
                                             multiple
                                             id="tags-outlined"
                                             options={this.state.sectionList}
+                                            options={sectionOptions.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                                             defaultValue={this.state.selectedSections}
-                                            getOptionLabel={option => option.sectionName + ' (' + option.collegeCode + ')'}
+                                            groupBy={(option) => option.firstLetter}
+                                            getOptionLabel={option => option.sectionName}
                                             //   style={{ width: 500 }}
                                             filterSelectedOptions
                                             renderInput={params => <TextField {...params} variant="outlined" />}
                                             // renderInput={params => <TextField {...params} label="Section Preferences" variant="outlined" />}
                                             onChange={this.handleSectionPrefChange}
                                             // onKeyPress={this.handleSectionPrefress}
-                                            />
+                                          />
                                     </div>
                                 </div>
                             </div>
