@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'underscore';
 import axios from 'axios'
-import groupArray from 'group-array'
+import groupArray from 'group-array';
 
 class ComboBox extends React.Component{
     constructor(props){
@@ -154,6 +154,7 @@ class ComboBox extends React.Component{
                   options={this.state.courseList}
                   getOptionLabel={option => option.course_code}
                 //   style={{ width: 500 }}
+                  defaultValue={this.props.defaultValue}
                   filterSelectedOptions
                   loading={this.state.loading}
                   noOptionsText={"Start typing to search for a course!"}
@@ -174,8 +175,9 @@ class ComboBox extends React.Component{
                     />
                 )}
                 //   renderInput={params => <TextField {...params} label="Search Courses" variant="outlined" />}
-                  onChange={this.props.onChange}
-                  onInputChange={this.handleSearchInputThrottled}
+                onChange={this.props.onChange}
+                onKeyPress={this.props.onKeyPress}
+                onInputChange={this.handleSearchInputThrottled}
                 />
             );
         } else if(this.props.page == "search_simple"){
@@ -216,6 +218,7 @@ class ComboBox extends React.Component{
             <Autocomplete
             multiple
             options={this.state.courseList}
+            disabled={this.props.disabled}
             getOptionLabel={option => option.course_code}
             filterSelectedOptions
             noOptionsText={"Start typing to add a course!"}
@@ -248,7 +251,7 @@ class ComboBox extends React.Component{
             <Autocomplete
             multiple
             options={this.state.offeringList}
-            getOptionLabel={option => option.course + ' ' + option.section + ' (' + option.classNmbr + ')'}
+            getOptionLabel={option => option.course + ' ' + option.section + ' (' + option.classNmbr + ') ' + option.day + ' ' + option.startTime + ' - ' + option.endTime}
             filterSelectedOptions
             noOptionsText={"Start typing to search for a course offering!"}
             style={{ width: 500 }}

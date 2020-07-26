@@ -103,7 +103,8 @@ class SearchCourses extends Component {
         rowStyle: "",
         openModalCourseInfo: false,
         showPlaceholder: true,
-        applyPreference: false
+        applyPreference: false,
+        noResults: false,
       }
       this.radioRef = React.createRef()
     }
@@ -117,6 +118,11 @@ class SearchCourses extends Component {
         //         this.setState({courseList: courses, dataReceived: true})
         //     })
         // })
+        var selectedCourses = JSON.parse(localStorage.getItem('selectedCourses'))
+        console.log(selectedCourses)
+        if(selectedCourses != null){
+          this.setState({selectedCourses})
+        }
         this.setState({dataReceived: true})
     }
 
@@ -249,7 +255,16 @@ class SearchCourses extends Component {
     }
 
     handleSearch = (e, val) =>{
-      this.setState({selectedCourses: val})
+      this.setState({selectedCourses: val}, () => {
+        localStorage.setItem('selectedCourses', JSON.stringify(val))
+      })
+    }
+    
+    handleSearchPress = (e) => {
+        const val = this.state.currentCourse;
+        if(e.key === 'Enter'){
+          this.searchCourses()
+        }
     }
 
     // handleKeyPress = () => {
@@ -307,6 +322,9 @@ class SearchCourses extends Component {
           '&:nth-of-type(odd)': {
             backgroundColor: theme.palette.background.default,
           },
+          "&:hover": {
+            backgroundColor: "#efefef"
+          },
         },
       }))(TableRow);
 
@@ -321,7 +339,7 @@ class SearchCourses extends Component {
                   <h2>Search all your courses in one go!</h2>
                     <div style={{display: "flex", justifyContent: "center"}}>
                     {/* <ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch}/> */}
-                      <div className="barArea"><ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} onKeyPress={this.searchCourses}/></div>
+                      <div className="barArea"><ComboBox style={{width: "-webkit-fill-available"}} page="search" onChange={this.handleSearch} onKeyPress={this.handleSearchPress} defaultValue={this.state.selectedCourses}/></div>
                       <div className={classes.root}>
                           <div className={classes.wrapper} >
                             <Button
@@ -380,7 +398,6 @@ class SearchCourses extends Component {
                     </div>
                 </div>
                 
-                {this.state.siteData.length ?
                   <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
                     <TableContainer component={Paper}>
                       <Table aria-label="customized table">
@@ -416,16 +433,16 @@ class SearchCourses extends Component {
                         : 
                         <TableBody>
                           {this.state.siteData.map(row => (
-                            <StyledTableRow key={row.classNmbr} style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                              <StyledTableCell onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={(row.capacity == row.enrolled) ? {color: "#0099CC", cursor: "pointer", textDecorationLine: 'underline'} : {color: "#006600", cursor: "pointer", textDecorationLine: 'underline'}} > <Tooltip title="More Details" placement="bottom-end"><div>{row.course}</div></Tooltip> </StyledTableCell>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
-                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
-                              <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
-                              <StyledTableCell align="right" style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
+                            <StyledTableRow key={row.classNmbr} onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={{cursor: "pointer"}}>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity == row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> <Tooltip title="More Details" placement="bottom-end"><div>{row.course}</div></Tooltip> </StyledTableCell>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
+                              <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
+                              <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
+                              <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
                             </StyledTableRow>
                           ))}
                         </TableBody>
@@ -463,19 +480,15 @@ class SearchCourses extends Component {
                         
                     </Modal> 
                   </div>                  
-                  :
-                  <div>                  
-                    {this.state.loading || !this.state.showPlaceholder ?
-                      <div class="noResults"><h5>There is no available information on course offerings for your search.</h5></div>
-                      :
-                      <div class="noResults"></div>
-                    }
-                  </div>
-                }
                 
                 <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
                     <center><img style={{width:"30%"}} src={searchIMG}/></center>
                 </div>
+                {this.state.siteData.length == 0 ? 
+                null
+                :
+                <div class="noResults"><h5>There is no available information on course offerings for your search.</h5></div>
+                }
             </div>
                      
             : 
