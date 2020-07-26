@@ -120,7 +120,9 @@ class SearchCourses extends Component {
         // })
         var selectedCourses = JSON.parse(localStorage.getItem('selectedCourses'))
         console.log(selectedCourses)
-        this.setState({selectedCourses})
+        if(selectedCourses != null){
+          this.setState({selectedCourses})
+        }
         this.setState({dataReceived: true})
     }
 
