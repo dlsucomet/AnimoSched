@@ -609,9 +609,9 @@ class Preferences extends Component {
             {/* <div class="prefIntro-main"> */}
                 {this.state.dataReceived ? 
                 // <div className="preference-category">
-                <div>
-                    <Row xs="2">
-                        <Col>
+                <div className="preference-category">
+                    {/* <Row xs="2"> */}
+                        {/* <Col> */}
                             <div className="timePreferences">
                                 <h2>Time Preferences</h2>
                                 
@@ -660,6 +660,7 @@ class Preferences extends Component {
                                                     inputProps={{
                                                     step: 900, // 5 min
                                                     }}
+                                                    style={{width: 200}}
                                                 />
                                             </form>
                                         </Col>
@@ -683,11 +684,13 @@ class Preferences extends Component {
                                                     inputProps={{
                                                     step: 300, // 5 min
                                                     }}
+                                                    style={{width: 200}}
                                                 />
                                             </form>
                                         </Col>
                                     </Row>
 
+                                    <br/>
                                     <div className={'days-preference'}>
                                         <div className={'subheader'}>Preferred Days</div>
                                         <FormGroup row>
@@ -705,6 +708,7 @@ class Preferences extends Component {
                                                 control = {<GreenCheckbox checked={this.state.daysList[5].checked} onChange={this.handleDayChange} id={this.state.daysList[5].id} color="primary"/>}label="S" />
                                         </FormGroup>
                                     </div>
+                                    <br/>
 
                                     {/* Break Length */}
                                     <div className={'break-preference'}>
@@ -788,13 +792,13 @@ class Preferences extends Component {
                                     
                                 </div>
                             </div>
-                        </Col>
+                        {/* </Col> */}
 
                         {/* <Col>
                             
                         </Col> */}
 
-                        <Col>
+                        {/* <Col> */}
                             <div className="classDetails">
                                 <h2>Class Details</h2>
                                 
@@ -914,9 +918,9 @@ class Preferences extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </Col>
+                        {/* </Col> */}
 
-                    </Row>
+                    {/* </Row> */}
 
                 </div>
                 : 
