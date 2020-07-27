@@ -187,7 +187,7 @@ class SchedViewHome extends Component {
                     </center>
                   
                   <Row horizontal='center' flexShrink={1}>
-                    <div className="viewCoursesHome">
+                    <div className="viewCoursesHome" id="viewCoursesHome">
                       <TableContainer component={Paper} style={{maxHeight: "428px", overflowY: "auto", overflowX: "auto", width: "auto"}}>
                         <Table aria-label="customized table" fixedHeader={false} style={{ tableLayout: 'auto' }} >
                           <TableHead>

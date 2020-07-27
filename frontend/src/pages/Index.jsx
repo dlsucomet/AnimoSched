@@ -908,7 +908,7 @@ class Index extends Component {
               </Grid>
 
               <Grid item xs={12} justify="center" alignItems="center">
-                <div className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+                <div id="viewCoursesHome" className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
                       <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                           <PaginationItem disabled={this.state.currentPage <= 0}>
                               <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
