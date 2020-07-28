@@ -384,6 +384,14 @@ class Register extends Component {
                     <Row>
                       <Col />
                       <Col lg="8">
+                      <h1 style={{color: "white"}}>
+                            <img
+                            alt=""
+                            src="/logo.svg"
+                            width="40"
+                            height="40"
+                            className="d-inline-block align-top"/> 
+                        AnimoSched</h1>
                         <Jumbotron className={"jumboClass"} style={{padding: 32, backgroundColor: "white", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                           <h3>
                             Account Registration
