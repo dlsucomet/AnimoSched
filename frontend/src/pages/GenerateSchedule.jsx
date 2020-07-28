@@ -172,6 +172,10 @@ class GenerateSchedule extends Component {
             openModalWait: false,
         };
 
+        if(localStorage.getItem('hints') == null){
+            localStorage.setItem('hints',true)
+        }
+
     }
 
     getLowCourseOfferings(id, val, newCourses, _callback){
@@ -529,13 +533,13 @@ class GenerateSchedule extends Component {
     handleAddCoursePriority = () => {
         console.log(this.state.currentCourse)
         const val = this.state.currentCourse;
-        this.setState({AutoCompleteValue: []})
-        this.setState({currentCourse: []})
-        this.setState({courseAdded: false})
-        this.setState({loading: true})
-        const newCourseList = [];
 
-        if(val != undefined && val != []){
+        if(val != undefined && val != [] && val.length != 0){
+            this.setState({AutoCompleteValue: []})
+            this.setState({currentCourse: []})
+            this.setState({courseAdded: false})
+            this.setState({loading: true})
+            const newCourseList = [];
             // this.state.courseList.map(course => {
             //     if(course.id != val.id){
             //         newCourseList.push(course)
