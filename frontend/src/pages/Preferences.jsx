@@ -41,7 +41,13 @@ const styles = theme => ({
         '&:hover': {
             color: "#79c879"
           },
-    }
+    },
+    iconStyle:{ 
+        margin: "10px", 
+          '&:hover': {
+            color: green[500],
+        },
+    },
   });
 
 const GreenCheckbox = withStyles({
@@ -576,10 +582,7 @@ class Preferences extends Component {
         <div>
             {this.props.menu('preferences')}
 
-            <button onClick={() => this.handleOpenModalHelp()}>Help</button>
-            <IconButton aria-label="help" disabled color="primary" onClick={() => this.handleOpenModalHelp()}>
-                <HelpIcon />
-            </IconButton>
+            <HelpIcon className={classes.iconStyle} onClick={() => this.handleOpenModalHelp()}/>
 
             <Modal isOpen={this.state.openModalHelp} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
                 <ModalHeader toggle={this.toggleModal}><h4>Preferences</h4></ModalHeader>
