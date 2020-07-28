@@ -576,11 +576,6 @@ class Preferences extends Component {
         <div>
             {this.props.menu('preferences')}
 
-            <button onClick={() => this.handleOpenModalHelp()}>Help</button>
-            <IconButton aria-label="help" disabled color="primary" onClick={() => this.handleOpenModalHelp()}>
-                <HelpIcon />
-            </IconButton>
-
             <Modal isOpen={this.state.openModalHelp} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
                 <ModalHeader toggle={this.toggleModal}><h4>Preferences</h4></ModalHeader>
                 
@@ -610,11 +605,17 @@ class Preferences extends Component {
                 {this.state.dataReceived ? 
                 // <div className="preference-category">
                 <div className="preference-category">
+
                     {/* <Row xs="2"> */}
                         {/* <Col> */}
+                        <div>
+                        </div>
                             <div className="timePreferences">
-                                <h2>Time Preferences</h2>
-                                
+                                <h2>Time Preferences
+                                <IconButton aria-label="help" onClick={() => this.handleOpenModalHelp()}>
+                                    <HelpIcon />
+                                </IconButton>
+                                </h2>
                                 <div className="preference-category-content">
                                     {/* Earliest Time
                                     <br/> */}

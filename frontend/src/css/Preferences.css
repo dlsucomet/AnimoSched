@@ -177,3 +177,7 @@ body {
 .timePreferences, .workloadPreferences, .classDetails {
     margin: 10px;
 }
+
+.timePreferences {
+    margin-top: 40px;
+}
