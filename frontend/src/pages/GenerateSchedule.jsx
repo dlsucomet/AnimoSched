@@ -40,6 +40,10 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 import groupArray from 'group-array'
 
+import { Steps, Hints } from 'intro.js-react';
+import 'intro.js/introjs.css';
+import '../css/introjs-modern.css';
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -402,6 +406,7 @@ class GenerateSchedule extends Component {
         var AutoCompleteValue = JSON.parse(localStorage.getItem('addCourses'))
         if(AutoCompleteValue != null){
             this.setState({AutoCompleteValue})
+            this.setState({currentCourse: AutoCompleteValue});
         }
         axios.get('https://archerone-backend.herokuapp.com/api/courses/')
         .then(res => {
@@ -557,7 +562,8 @@ class GenerateSchedule extends Component {
                         this.getSingleCourseOfferings(res.data.id, course, () => {
                             count += 1
                             if(max >= count){
-                                this.setState({loading: false})
+                                this.setState({loading: false}, () => {
+                                })
                             }
 
                         })
@@ -573,7 +579,6 @@ class GenerateSchedule extends Component {
     }
 
     handlePageChange = (e,index) => {
-  
         this.setState(state =>{
             var currentContent = state.generatedContents[index];
             return {currentContent};
@@ -959,6 +964,14 @@ class GenerateSchedule extends Component {
             },
           }))(TableRow);
 
+          const hints = [
+                    {
+                        element: '#launch',
+                        hint:"Click here to filter out your classes!",
+                        hintPosition: 'left',
+                    }
+                ];
+
         return (
             <div>
                 {this.props.menu('generateSchedule')}
@@ -969,6 +982,11 @@ class GenerateSchedule extends Component {
                             <Row horizontal = 'center'>
                                 <h1>SECOND TRIMESTER, AY 2019 - 2020</h1>
                             </Row>
+                            <Hints
+                                enabled={(localStorage.getItem('hints') == 'true')}
+                                hints={hints}
+                                onClose={() => {localStorage.setItem('hints',false)}}
+                            />
                             <Row horizontal = 'center' style={{margin: "20px"}}>
                                 <div id="search_container">
                                     {/* <Input
@@ -995,6 +1013,7 @@ class GenerateSchedule extends Component {
                                         color = "Primary"
                                         disabled={this.state.loading}
                                         style={{backgroundColor: "green", color:"white", height:"56px"}}
+                                        data-hint="hello"
                                         onClick={this.handleAddCoursePriority}>
                                         <AddIcon fontSize="medium"/>  
                                     </Button>
