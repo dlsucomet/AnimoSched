@@ -49,7 +49,7 @@ const styles = theme => ({
           '&:hover': {
             color: green[500],
         },
-
+    },
     buttonStyle:{
         marginBottom: "50px",
         textTransform: "none",
@@ -69,10 +69,9 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: "white",
             color: "#16775D"
-          },
-
-    },
-  });
+        },
+    }
+});
 
 const GreenCheckbox = withStyles({
     root: {
@@ -606,7 +605,7 @@ class Preferences extends Component {
         <div>
             {this.props.menu('preferences')}
 
-            <HelpIcon className={classes.iconStyle} onClick={() => this.handleOpenModalHelp()}/>
+            {/* <HelpIcon className={classes.iconStyle} onClick={() => this.handleOpenModalHelp()}/> */}
 
             <Modal isOpen={this.state.openModalHelp} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
                 <ModalHeader toggle={this.toggleModal}><h4>Preferences</h4></ModalHeader>
