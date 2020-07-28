@@ -43,6 +43,13 @@ const styles = theme => ({
             color: "#79c879"
           },
     },
+
+    iconStyle:{ 
+        margin: "10px", 
+          '&:hover': {
+            color: green[500],
+        },
+
     buttonStyle:{
         marginBottom: "50px",
         textTransform: "none",
@@ -63,6 +70,7 @@ const styles = theme => ({
             backgroundColor: "white",
             color: "#16775D"
           },
+
     },
   });
 
@@ -597,6 +605,8 @@ class Preferences extends Component {
       return (
         <div>
             {this.props.menu('preferences')}
+
+            <HelpIcon className={classes.iconStyle} onClick={() => this.handleOpenModalHelp()}/>
 
             <Modal isOpen={this.state.openModalHelp} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
                 <ModalHeader toggle={this.toggleModal}><h4>Preferences</h4></ModalHeader>
