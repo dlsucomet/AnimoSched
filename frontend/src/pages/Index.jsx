@@ -36,8 +36,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Snackbar from '@material-ui/core/Snackbar';
 
-
 import html2canvas from 'html2canvas';
+import { Steps, Hints } from 'intro.js-react';
+import 'intro.js/introjs.css';
+import '../css/introjs-modern.css';
 
 // import Modal from '@material-ui/core/Modal';
 
@@ -277,6 +279,9 @@ class Index extends Component {
       }
       if(localStorage.getItem('palette') == undefined){
         localStorage.setItem('palette', JSON.stringify(['#9BCFB8', '#7FB174', '#689C97', '#072A24', '#D1DDDB', '#85B8CB', '#1D6A96', '#283B42','#FFB53C', '#EEB3A3', '#F3355C', '#FAA98B', '#E6AECF', '#AEE0DD', '#01ACBD','#FED770', ' #F29F8F', '#FB7552', '#076A67','#324856', '#4A746A', '#D18237', '#D66C44', '#FFA289', '#6A92CC', '#706FAB', '#50293C']))
+      }
+      if(localStorage.getItem('steps') == undefined){
+        localStorage.setItem('steps',true)
       }
       
     }
@@ -753,11 +758,41 @@ class Index extends Component {
 
   }
 
+  tutorialDone = () => {
+    localStorage.setItem('steps',false)
+  }
+
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
 
         const { classes } = this.props;
+        
+        const steps = [
+          {
+            intro: 'Welcome to AnimoSched!',
+          },
+          {
+            element: '#searchStep',
+            intro: 'You search up which classes are available!',
+            // position: 'right',
+            // tooltipClass: 'myTooltipClass',
+            // highlightClass: 'myHighlightClass',
+          },
+          {
+            element: '#preferencesStep',
+            intro: 'You can set your preferences to help in making a schedule!',
+          },
+          {
+            element: '#genschedStep',
+            intro: 'You can make schedules quickly!',
+          },
+          {
+            // element: '',
+            // position: 'bottom-right-aligned',
+            intro: 'Explore the site!',
+          },
+        ];
 
       return (
         <div style={!this.props.logged_in? sectionStyle : {}}>
@@ -767,7 +802,14 @@ class Index extends Component {
           <div className={"homepage"} style={this.props.logged_in ? {} : {display: "none"}}>
             <div className={"hasContent"} style={(this.state.generatedContents.length > 0) ? {} : {display: "none"}}>
 
-              
+
+            <Steps
+              enabled={localStorage.getItem('steps') == 'true' && this.state.generatedContents.length <= 0}
+              steps={steps}
+              initialStep={0}
+              onExit={this.tutorialDone}
+              onComplete={this.tutorialDone}
+            />
             <Grid container>
               <Grid item xs={12}>
                 <br></br>
@@ -1023,6 +1065,7 @@ class Index extends Component {
             <Column style={{marginLeft:"30px"}}>
                 <a href="/search_courses" style={{textDecoration: "none"}}>
                     <Button
+                      id="searchStep"
                       variant="contained"
                       className={classes.testbuttonStyle}
                       startIcon={<SearchIcon fontSize="large"/>}
@@ -1035,6 +1078,7 @@ class Index extends Component {
               <Column style={{marginLeft:"30px"}}>
                 <a href="/preferences" style={{textDecoration: "none"}}>
                     <Button
+                      id="preferencesStep"
                       variant="contained"
                       className={classes.testbuttonStyle}
                       startIcon={<StarIcon fontSize="large"/>}
@@ -1047,6 +1091,7 @@ class Index extends Component {
               <Column style={{marginLeft:"30px"}}>
                 <a href="/generateSchedule" style={{textDecoration: "none"}}>
                   <Button
+                    id="genschedStep"
                     variant="contained"
                     className={classes.testbuttonStyle}
                     startIcon={<TodayIcon fontSize="large"/>}
