@@ -128,12 +128,12 @@ prefbuttonStyle:{
 testbuttonStyle:{
   fontSize: "1vw",
   textTransform: "none",
-  width: "110%",
-  height: "120%",
+  width: "100%",
+  height: "100%",
   borderRadius: "10px",
-  padding: "2%",
-  paddingLeft: "15px",
-  paddingRight: "15px",
+  // padding: "2%",
+  // paddingLeft: "15px",
+  // paddingRight: "15px",
   border: "2px solid #16775D",
   // backgroundColor: "white",
   backgroundColor: "#16775D",
@@ -142,8 +142,8 @@ testbuttonStyle:{
   boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
   // borderStyle: "solid",
   // borderColor: "#16775D",
-  marginTop: "20px",
-  justifyContent: 'center',
+  // marginTop: "20px",
+  // justifyContent: 'center',
   '&:hover': {
     // backgroundColor: "#16775D",
     // color: "white",
@@ -1026,9 +1026,9 @@ class Index extends Component {
                       variant="contained"
                       className={classes.testbuttonStyle}
                       startIcon={<SearchIcon fontSize="large"/>}
+                      size="large"
                       >
-                      
-                      <span style={{float: "bottom"}}>Search Classes</span>
+                      Search Classes
                     </Button>
                   </a>
               </Column>
@@ -1038,9 +1038,9 @@ class Index extends Component {
                       variant="contained"
                       className={classes.testbuttonStyle}
                       startIcon={<StarIcon fontSize="large"/>}
+                      size="large"
                       >
-                      
-                      <span style={{float: "bottom"}}>Set Preferences</span>
+                      Set Preferences
                     </Button>
                   </a>
               </Column>
@@ -1050,13 +1050,12 @@ class Index extends Component {
                     variant="contained"
                     className={classes.testbuttonStyle}
                     startIcon={<TodayIcon fontSize="large"/>}
+                      size="large"
                     >
-                    
-                    <span style={{float: "bottom"}}>Create Schedule</span>
+                    Create Schedule
                   </Button>
                 </a>
               </Column>
- 
             </Row>
 
             </div>

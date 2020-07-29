@@ -533,6 +533,7 @@ class GenerateSchedule extends Component {
     handleAddCoursePriority = () => {
         console.log(this.state.currentCourse)
         const val = this.state.currentCourse;
+        localStorage.removeItem('addCourses')
 
         if(val != undefined && val != [] && val.length != 0){
             this.setState({AutoCompleteValue: []})
