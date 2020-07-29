@@ -973,7 +973,7 @@ class GenerateSchedule extends Component {
                     {
                         element: '#launch',
                         hint:"Click here to filter out your classes!",
-                        hintPosition: 'left',
+                        hintPosition: 'top-middle',
                     }
                 ];
 
