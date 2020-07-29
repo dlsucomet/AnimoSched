@@ -102,11 +102,14 @@ class CompareSchedule extends Component {
             console.log(friend)
             var userContent = user[i].props.tableContent
             var friendContent = friend[j].props.tableContent
+            var newMatched = [];
             for(var k = 0 ; k < userContent.length ; k++){
               for(var l = 0 ; l < friendContent.length ; l++){
                 if(userContent[k].classNmbr == friendContent[l].classNmbr){
                   user[i].props.tableContent[k].compareMatch = true
                   friend[j].props.tableContent[l].compareMatch = true
+                  newMatched.push(user[i].title);
+                  
                   this.setState({generatedContentsUser: user})
                   this.setState({generatedContentsFriend: friend})
                   console.log(user)
@@ -122,6 +125,11 @@ class CompareSchedule extends Component {
             }
           }
         }
+        console.log(newMatched);
+        this.setState({matched: newMatched});
+        this.state.currentContentUser.props = newMatched;
+        this.state.currentContentFriend.props = newMatched;
+        console.log(this.state.matched);
     }
 
     componentDidMount(){
@@ -133,6 +141,7 @@ class CompareSchedule extends Component {
                 var count = 0;
                 const scheduleContent = []
                 const tableContent = []
+                var matched = []
                 var earliest = 9
                 var latest = 17
                 var arranged = groupArray(newSchedule.courseOfferings, 'classnumber');
@@ -352,7 +361,7 @@ setSchedInfo = () => {
     
         console.log(this.state.schedulesUser)
          var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={this.state.matched}/>
         );
         // this.setState({hideGenContent: false});
         this.setState({generatedContentsUser}, ()=>{
@@ -367,7 +376,7 @@ setSchedInfo = () => {
 
         console.log(this.state.schedulesFriend)
          var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}  matched={this.state.matched}/>
         );
         // this.setState({hideGenContent: false});
         this.setState({generatedContentsFriend}, ()=>{
@@ -381,21 +390,25 @@ setSchedInfo = () => {
          });
         var user = this.state.generatedContentsUser;
         var friend = this.state.generatedContentsFriend;
+        var newMatched = [];
         for(var i = 0 ; i < user.length ; i++){
           for(var j = 0 ; j < friend.length ; j++){
             console.log(user)
             console.log(friend)
             var userContent = user[i].props.tableContent
             var friendContent = friend[j].props.tableContent
+            var newMatched = [];
             for(var k = 0 ; k < userContent.length ; k++){
               for(var l = 0 ; l < friendContent.length ; l++){
                 if(userContent[k].classNmbr == friendContent[l].classNmbr){
                   user[i].props.tableContent[k].compareMatch = true
                   friend[j].props.tableContent[l].compareMatch = true
+                  newMatched.push(userContent[k].course);
                   this.setState({generatedContentsUser: user})
                   this.setState({generatedContentsFriend: friend})
                   console.log(user)
                   console.log(friend)
+                 
                 }else{
                   // user[i].props.tableContent.compareMatch = false
                   // friend[i].props.tableContent.compareMatch = false
@@ -407,7 +420,11 @@ setSchedInfo = () => {
             }
           }
         }
-
+        console.log(newMatched);
+        this.setState({matched: newMatched});
+        // this.state.currentContentUser.props = newMatched;
+        // this.state.currentContentFriend.props = newMatched;
+        console.log(this.state.matched); 
   }
     
     render() {
