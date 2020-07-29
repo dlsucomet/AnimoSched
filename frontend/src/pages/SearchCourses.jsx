@@ -195,11 +195,15 @@ class SearchCourses extends Component {
           this.setState({loading: true});
         });
       }
-
+      
       const selectedCourses = []
       this.state.selectedCourses.map(course => {
         selectedCourses.push(course.id)
+        axios.get('https://archerone-backend.herokuapp.com/api/courseinfo/'+course.id).then(res => {
+          this.setState({courseInfo: res.data})
+        })
       })
+
      
       axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
         courses: selectedCourses,
