@@ -44,12 +44,16 @@ function createData(name) {
     return { name };
 }
 
-const rows = [
-    createData('Frozen yoghurt'),
-    createData('Ice cream sandwich'),
-    createData('Eclair'),
-    createData('Cupcake'),
-    createData('Gingerbread'),
+const rowsPref = [
+    createData('INTFILO does not satisfy your time preference.'),
+    createData('GREATWK is not in your preferred days.'),
+    createData('Maximum capacity per day has been reached.'),
+];
+
+const rowsConflict = [
+    createData('GELITPH has the same time as CSGRTWK.'),
+    createData('JAPALA1 does not fit in your schedule.'),
+    createData('Your schedule is loaded.'),
 ];
 
 const styles = theme => ({
@@ -170,24 +174,23 @@ class GenSchedInfo extends Component {
                         </Row> */}
                         <Row horizontal = 'center'>
                             <Column horizontal = 'center' style={{marginLeft: "10px"}}>
-                                Preferences
-                                
-                                <BoxInfo content={this.state.prefContent } id={1+this.state.id}/>
+                                {/* Preferences
+                                <BoxInfo content={this.state.prefContent } id={1+this.state.id}/> */}
     
-                                <TableContainer component={Paper}>
+                                <TableContainer component={Paper} style={{width: 250}}>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
-                                                <StyledTableCell>Preferences</StyledTableCell>
+                                                <StyledTableCell><center>Preferences</center></StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         
                                         <TableBody>
-                                            {rows.map((row) => (
+                                            {rowsPref.map((row) => (
                                                 <StyledTableRow key={row.name}>
-                                                <StyledTableCell component="th" scope="row">
-                                                    {row.name}
-                                                </StyledTableCell>
+                                                    <StyledTableCell component="th" scope="row">
+                                                        {row.name}
+                                                    </StyledTableCell>
                                                 </StyledTableRow>
                                             ))}
                                         </TableBody>
@@ -195,9 +198,31 @@ class GenSchedInfo extends Component {
                                 </TableContainer>
 
                             </Column>
+
                             <Column horizontal = 'center' style={{marginLeft: "20px"}}>
-                                Course Conflict
-                                <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/>
+                                {/* Course Conflict
+                                <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/> */}
+
+                                <TableContainer component={Paper} style={{width: 250}}>
+                                    <Table className={classes.table} aria-label="customized table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <StyledTableCell><center>Course Conflict</center></StyledTableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        
+                                        <TableBody>
+                                            {rowsConflict.map((row) => (
+                                                <StyledTableRow key={row.name}>
+                                                    <StyledTableCell component="th" scope="row">
+                                                        {row.name}
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+
                             </Column>
                         </Row>
                             

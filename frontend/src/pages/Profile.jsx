@@ -399,7 +399,7 @@ class Profile extends Component {
                     </Row>
 
                     <center>
-                        <input class="btn btn-success submit-form" type="submit" value="Save Changes"/>
+                        <input class="btn btn-success submit-form" type="submit" value="Save"/>
                     </center>
 
                 </div>
