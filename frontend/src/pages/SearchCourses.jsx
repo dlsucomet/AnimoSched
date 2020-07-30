@@ -105,6 +105,7 @@ class SearchCourses extends Component {
         showPlaceholder: true,
         applyPreference: false,
         noResults: false,
+        testGroupedData: [],
         courseInfo: {}
       }
       this.radioRef = React.createRef()
@@ -120,7 +121,7 @@ class SearchCourses extends Component {
         //     })
         // })
         var selectedCourses = JSON.parse(localStorage.getItem('selectedCourses'))
-        console.log(selectedCourses)
+        // console.log(selectedCourses)
         if(selectedCourses != null){
           this.setState({selectedCourses})
         }
@@ -142,15 +143,31 @@ class SearchCourses extends Component {
       let filteredList = [];
 
       if(option == "all"){
-        console.log("all");
+        // console.log("all");
         filteredList = this.state.allSiteData;
+
+        // start of grouping
+        const togroupdata = filteredList;
+
+        const groupedSiteData = togroupdata.reduce((coursesSoFar, { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled }) => {
+          if(!coursesSoFar[course])
+            coursesSoFar[course] = [];
+          
+          coursesSoFar[course].push({ classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled });
+
+          return coursesSoFar;
+        }, {});
+
+        console.log("GROUPED IN ALL");
+        console.log(groupedSiteData);
+        // end of grouping
 
         this.setState({siteData: filteredList});
 
-        console.log(filteredList);
+        // console.log(filteredList);
       }
       else if(option == "open"){
-        console.log("open");
+        // console.log("open");
 
         var i;
         for(i = 0; i < this.state.allSiteData.length; i++) {
@@ -160,12 +177,29 @@ class SearchCourses extends Component {
           }
         }
 
+        // start of grouping
+        const togroupdata = filteredList;
+
+        const groupedSiteData = togroupdata.reduce((coursesSoFar, { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled }) => {
+          if(!coursesSoFar[course])
+            coursesSoFar[course] = [];
+          
+          coursesSoFar[course].push({ classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled });
+
+          return coursesSoFar;
+        }, {});
+
+        console.log("GROUPED IN OPEN");
+        console.log(groupedSiteData);
+        // end of grouping
+
+
         this.setState({siteData: filteredList});
 
-        console.log(filteredList);
+        // console.log(filteredList);
       }
       else{
-        console.log("closed");
+        // console.log("closed");
 
         var i;
         for(i = 0; i < this.state.allSiteData.length; i++) {
@@ -175,9 +209,25 @@ class SearchCourses extends Component {
           }
         }
 
-        this.setState({siteData: filteredList});
+        // console.log(filteredList);
 
-        console.log(filteredList);
+        // start of grouping
+        const togroupdata = filteredList;
+
+        const groupedSiteData = togroupdata.reduce((coursesSoFar, { classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled }) => {
+          if(!coursesSoFar[course])
+            coursesSoFar[course] = [];
+          
+          coursesSoFar[course].push({ classNmbr, course, section, faculty, day, startTime, endTime, room, capacity, enrolled });
+
+          return coursesSoFar;
+        }, {});
+
+        console.log("GROUPED IN CLOSED");
+        console.log(groupedSiteData);
+        // end of grouping
+
+        this.setState({siteData: filteredList});
       }
     }
 
@@ -214,12 +264,12 @@ class SearchCourses extends Component {
       })
       .then(res => {
           const newSiteData = [];
-          console.log(res.data)
+          // console.log(res.data)
           res.data.map(bundle => {
             var arranged = groupArray(bundle, 'classnumber');
-            console.log(arranged)
+            // console.log(arranged)
             for (let key in arranged) {
-              console.log(key, arranged[key]);
+              // console.log(key, arranged[key]);
               var days = []
               var day = ''
               var classnumber = ''
@@ -250,10 +300,13 @@ class SearchCourses extends Component {
               newSiteData.push(offering);
             }
           })
+
         this.setState({siteData: newSiteData, allSiteData: newSiteData},() => {
-          this.setFilter()
+          console.log(this.state.siteData);
+          this.setFilter();
           this.setState({loading: false});
         })
+
         //Finish Loading
       }).catch(err => {
         console.log(err.response)
@@ -436,22 +489,23 @@ class SearchCourses extends Component {
                     </div>
                 </div>
                 
-                  <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
-                    <TableContainer component={Paper}>
-                      <Table aria-label="customized table">
-                        <TableHead>
-                          <TableRow>
-                            <StyledTableCell> Class Number </StyledTableCell>
-                            <StyledTableCell> Course </StyledTableCell>
-                            <StyledTableCell> Section </StyledTableCell>
-                            <StyledTableCell> Faculty </StyledTableCell>
-                            <StyledTableCell> Day </StyledTableCell>
-                            <StyledTableCell> Time </StyledTableCell>
-                            <StyledTableCell> Room </StyledTableCell>
-                            <StyledTableCell> Capacity </StyledTableCell>
-                            <StyledTableCell> Enrolled </StyledTableCell>
-                          </TableRow>
-                        </TableHead>
+                {/* start of table */}
+                <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
+                  <TableContainer component={Paper}>
+                    <Table aria-label="customized table">
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell> Class Number </StyledTableCell>
+                          <StyledTableCell> Course </StyledTableCell>
+                          <StyledTableCell> Section </StyledTableCell>
+                          <StyledTableCell> Faculty </StyledTableCell>
+                          <StyledTableCell> Day </StyledTableCell>
+                          <StyledTableCell> Time </StyledTableCell>
+                          <StyledTableCell> Room </StyledTableCell>
+                          <StyledTableCell> Capacity </StyledTableCell>
+                          <StyledTableCell> Enrolled </StyledTableCell>
+                        </TableRow>
+                      </TableHead>
                         {this.state.loading ? 
                         <TableBody>
                             {this.state.skeletons.map(skeleton =>(
@@ -509,7 +563,7 @@ class SearchCourses extends Component {
                   </div>                  
                 
                 <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>
-                    <center><img style={{width:"30%"}} src={searchIMG}/></center>
+                  <center><img style={{width:"30%"}} src={searchIMG}/></center>
                 </div>
 
             </div>
