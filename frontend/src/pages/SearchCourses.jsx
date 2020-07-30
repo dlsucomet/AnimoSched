@@ -105,6 +105,7 @@ class SearchCourses extends Component {
         showPlaceholder: true,
         applyPreference: false,
         noResults: false,
+        courseInfo: {}
       }
       this.radioRef = React.createRef()
     }
@@ -199,12 +200,13 @@ class SearchCourses extends Component {
       const selectedCourses = []
       this.state.selectedCourses.map(course => {
         selectedCourses.push(course.id)
+        const courseInfo = this.state.courseInfo
         axios.get('https://archerone-backend.herokuapp.com/api/courseinfo/'+course.id).then(res => {
-          this.setState({courseInfo: res.data})
+          courseInfo[course.course_code] = res.data
+          this.setState({courseInfo})
         })
       })
 
-     
       axios.post('https://archerone-backend.herokuapp.com/api/courseofferingslist/',{
         courses: selectedCourses,
         applyPreference: this.state.applyPreference,
@@ -288,13 +290,9 @@ class SearchCourses extends Component {
     }
   
     handleOpenModalCourseInfo = (courseCode, courseName, courseUnits)=>{
-      courseName = "Lorem ipsum"
-      var courseDesc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      var coursePre = "N/A"
-      var courseCo = "N/A"
-      var courseEq = "N/A"
-      this.setState({courseCode, courseName, courseUnits})
-      this.setState({courseDesc, coursePre, courseCo, courseEq})
+      this.setState({courseCode, courseName, courseUnits}, () => {
+        console.log(this.state.courseInfo[this.state.courseCode]['course_code'])
+      })
       this.setState({openModalCourseInfo: true})
     }
 
@@ -332,25 +330,40 @@ class SearchCourses extends Component {
         },
       }))(TableRow);
       const loadedData = () => {
-          return(
-          <TableBody>
-            {this.state.siteData.map(row => (
-              <Tooltip title="More Details" placement="bottom">
-                <StyledTableRow key={row.classNmbr} onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={{cursor: "pointer"}}>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.course} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
-                  <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
-                  <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
-                  <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
-                </StyledTableRow>
-              </Tooltip>
-            ))}
-          </TableBody>
-          )
+          if(this.state.siteData.length > 0){
+            return(
+            <TableBody>
+              {this.state.siteData.map(row => (
+                <Tooltip title="More Details" placement="bottom">
+                  <StyledTableRow key={row.classNmbr} onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={{cursor: "pointer"}}>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.course} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.section} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.faculty} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.day} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.startTime} - {row.endTime} </StyledTableCell>
+                    <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.room} </StyledTableCell>
+                    <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.capacity} </StyledTableCell>
+                    <StyledTableCell align="right" style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.enrolled} </StyledTableCell>
+                  </StyledTableRow>
+                </Tooltip>
+              ))}
+            </TableBody>
+            )
+          }else{
+            return(
+            <TableBody>
+              <StyledTableRow>
+                <StyledTableCell colSpan={9}>
+                  <p>
+                    No available course offerings.
+                  </p>
+                </StyledTableCell>
+              </StyledTableRow>
+            </TableBody>
+            )
+        }
+
       };
 
       return (
@@ -461,35 +474,38 @@ class SearchCourses extends Component {
                       </Table>
                     </TableContainer>
 
+                    {this.state.openModalCourseInfo ?
                     <Modal isOpen={this.state.openModalCourseInfo} toggle={this.toggleModal} returnFocusAfterClose={false} backdrop={true} data-keyboard="false">
                         <ModalHeader toggle={this.toggleModal}><h4>Course Information</h4></ModalHeader>
                         
                         <ModalBody>
-                          <h4>{this.state.courseCode}</h4>
-                          <h5>{this.state.courseName}</h5>
+                          <h4>{this.state.courseInfo[this.state.courseCode]['course_code']}</h4>
+                          <h5>{this.state.courseInfo[this.state.courseCode]['course_name']}</h5>
                           <br/>
 
                           <u><h5>Description</h5></u>
-                          <p>{this.state.courseDesc}</p>
+                          <p>{this.state.courseInfo[this.state.courseCode]['course_desc']}</p>
                           <br/>
 
                           <u><h5>Pre-requisite/s</h5></u>
-                          <p>{this.state.coursePre}</p>
+                          <p>{this.state.courseInfo[this.state.courseCode]['prerequisite_to'].toString()}</p>
+                          <p>{this.state.courseInfo[this.state.courseCode]['soft_prerequisite_to'].toString()}</p>
                           <br/>
 
                           <u><h5>Co-requisite/s</h5></u>
-                          <p>{this.state.courseCo}</p>
+                          <p>{this.state.courseInfo[this.state.courseCode]['co_requisite'].toString()}</p>
                           <br/>
 
-                          <u><h5>Course Equivalent</h5></u>
+                          {/* <u><h5>Course Equivalent</h5></u>
                           <p>{this.state.courseEq}</p>
-                          <br/>
+                          <br/> */}
 
                           <u><h5>Number of Units</h5></u>
-                          <p>{this.state.courseUnits}</p>
+                          <p>{this.state.courseInfo[this.state.courseCode]['units']}</p>
                         </ModalBody>
                         
                     </Modal> 
+                    : null}
                   </div>                  
                 
                 <div className={"noContent"} style={this.state.showPlaceholder ? {} : {display: "none"}}>

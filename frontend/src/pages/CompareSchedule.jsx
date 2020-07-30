@@ -69,7 +69,8 @@ class CompareSchedule extends Component {
             schedulesUser: [],
             schedulesFriend: [],
             dataReceived: false,
-            friendName: ""
+            friendName: "",
+            matched: []
         }
     }
 
@@ -361,22 +362,13 @@ setSchedInfo = () => {
     
         console.log(this.state.schedulesUser)
          var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={this.state.matched}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
-        this.setState({generatedContentsUser}, ()=>{
-            this.setState({currentContentUser: generatedContentsUser[0]}, () => {
-//                this.setState({hasSelectedFriend: true})
-              console.log(this.state.currentContentUser)
-
-            })
-            this.setState({pagesCountUser: generatedContentsUser.length});
-            this.setState({currentPageUser: 0})
-        });
 
         console.log(this.state.schedulesFriend)
          var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette}  matched={this.state.matched}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
         this.setState({generatedContentsFriend}, ()=>{
@@ -388,6 +380,16 @@ setSchedInfo = () => {
             this.setState({pagesCountFriend: generatedContentsFriend.length});
             this.setState({currentPageFriend: 0})
          });
+        this.setState({generatedContentsUser}, ()=>{
+            this.setState({currentContentUser: generatedContentsUser[0]}, () => {
+//                this.setState({hasSelectedFriend: true})
+              console.log(this.state.currentContentUser)
+
+            })
+            this.setState({pagesCountUser: generatedContentsUser.length});
+            this.setState({currentPageUser: 0})
+        });
+
         var user = this.state.generatedContentsUser;
         var friend = this.state.generatedContentsFriend;
         var newMatched = [];
@@ -403,9 +405,10 @@ setSchedInfo = () => {
                 if(userContent[k].classNmbr == friendContent[l].classNmbr){
                   user[i].props.tableContent[k].compareMatch = true
                   friend[j].props.tableContent[l].compareMatch = true
-                  newMatched.push(userContent[k].course);
-                  this.setState({generatedContentsUser: user})
-                  this.setState({generatedContentsFriend: friend})
+                  // user[i].props.matched
+                  // friend[j].props.matched
+                  user[i].props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                  friend[i].props.matched.push(userContent[k].course + ' ' + userContent[k].section);
                   console.log(user)
                   console.log(friend)
                  
@@ -420,11 +423,10 @@ setSchedInfo = () => {
             }
           }
         }
+        this.setState({generatedContentsUser: user})
+        this.setState({generatedContentsFriend: friend})
         console.log(newMatched);
-        this.setState({matched: newMatched});
-        // this.state.currentContentUser.props = newMatched;
-        // this.state.currentContentFriend.props = newMatched;
-        console.log(this.state.matched); 
+
   }
     
     render() {
