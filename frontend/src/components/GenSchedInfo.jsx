@@ -44,18 +44,6 @@ function createData(name) {
     return { name };
 }
 
-const rowsPref = [
-    createData('INTFILO does not satisfy your time preference.'),
-    createData('GREATWK is not in your preferred days.'),
-    createData('Maximum capacity per day has been reached.'),
-];
-
-const rowsConflict = [
-    createData('GELITPH has the same time as CSGRTWK.'),
-    createData('JAPALA1 does not fit in your schedule.'),
-    createData('Your schedule is loaded.'),
-];
-
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -85,6 +73,8 @@ class GenSchedInfo extends Component {
             tableContent: props.tableContent,
             conflictsContent: props.conflictsContent,
             prefContent: props.prefContent,
+            rowsPref: props.prefContent,
+            rowsConflict: props.conflictsContent,
             id: props.id,
             schedTitle: props.titleName,
             earliest: props.earliest,
@@ -101,6 +91,8 @@ class GenSchedInfo extends Component {
             tableContent: props.tableContent,
             conflictsContent: props.conflictsContent,
             prefContent: props.prefContent,
+            rowsPref: props.prefContent,
+            rowsConflict: props.conflictsContent,
             id: props.id,
             schedTitle: props.titleName,
             earliest: props.earliest,
@@ -145,6 +137,10 @@ class GenSchedInfo extends Component {
 
     render() { 
         const { classes } = this.props;
+
+        console.log(this.state.rowsPref)
+        console.log(this.state.rowsConflict)
+
         return (
             <Column>
                 <Row verticle = 'center' className = "RowSchedInfoContainer">
@@ -177,7 +173,7 @@ class GenSchedInfo extends Component {
                                 {/* Preferences
                                 <BoxInfo content={this.state.prefContent } id={1+this.state.id}/> */}
     
-                                <TableContainer component={Paper} style={{width: 250}}>
+                                <TableContainer component={Paper} className="boxinfoContainer" style={{width: 250}}>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
@@ -186,10 +182,17 @@ class GenSchedInfo extends Component {
                                         </TableHead>
                                         
                                         <TableBody>
-                                            {rowsPref.map((row) => (
-                                                <StyledTableRow key={row.name}>
+                                            {this.state.rowsPref.length == 0 ?
+                                            <StyledTableRow key={'empty'}>
+                                                <StyledTableCell rowSpan={3}>
+                                                    All preferences were met.
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                            : null }
+                                            {this.state.rowsPref.map((row) => (
+                                                <StyledTableRow key={row}>
                                                     <StyledTableCell component="th" scope="row">
-                                                        {row.name}
+                                                        {row}
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                             ))}
@@ -203,7 +206,7 @@ class GenSchedInfo extends Component {
                                 {/* Course Conflict
                                 <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/> */}
 
-                                <TableContainer component={Paper} style={{width: 250}}>
+                                <TableContainer component={Paper} className="boxinfoContainer" style={{width: 250}}>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
@@ -212,10 +215,17 @@ class GenSchedInfo extends Component {
                                         </TableHead>
                                         
                                         <TableBody>
-                                            {rowsConflict.map((row) => (
-                                                <StyledTableRow key={row.name}>
+                                            {this.state.rowsConflict.length == 0 ?
+                                            <StyledTableRow key={'empty'}>
+                                                <StyledTableCell rowSpan={3}>
+                                                    No course conflicts.
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                            : null}
+                                            {this.state.rowsConflict.map((row) => (
+                                                <StyledTableRow key={row}>
                                                     <StyledTableCell component="th" scope="row">
-                                                        {row.name}
+                                                        {row}
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                             ))}

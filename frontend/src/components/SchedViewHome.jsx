@@ -185,7 +185,7 @@ class SchedViewHome extends Component {
                   </Row>
                 }
                     <center>
-                      <ScheduleView height='300px' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest} palette={this.state.palette} matched={this.state.matched}/>
+                      <ScheduleView height='300px' content={this.state.scheduleContent} earliest={this.state.earliest} latest={this.state.latest} palette={this.state.palette} matched={this.props.matched}/>
                     </center>
                   
                   <Row horizontal='center' flexShrink={1}>
