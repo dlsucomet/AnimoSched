@@ -408,9 +408,9 @@ class SearchCourses extends Component {
             <TableBody>
               <StyledTableRow>
                 <StyledTableCell colSpan={9}>
-                  <p>
+                  <center><p>
                     No available course offerings.
-                  </p>
+                  </p></center>
                 </StyledTableCell>
               </StyledTableRow>
             </TableBody>
