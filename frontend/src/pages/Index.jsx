@@ -774,18 +774,18 @@ class Index extends Component {
           },
           {
             element: '#searchStep',
-            intro: 'You search up which classes are available!',
+            intro: 'Use the course search to find available classes!',
             // position: 'right',
             // tooltipClass: 'myTooltipClass',
             // highlightClass: 'myHighlightClass',
           },
           {
             element: '#preferencesStep',
-            intro: 'You can set your preferences to help in making a schedule!',
+            intro: 'Setting your preferences allows us to generate the schedules that suit you best!',
           },
           {
             element: '#genschedStep',
-            intro: 'You can make schedules quickly!',
+            intro: 'Generate and save a schedule!',
           },
           {
             // element: '',
