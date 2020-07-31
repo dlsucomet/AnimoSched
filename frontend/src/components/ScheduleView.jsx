@@ -230,14 +230,14 @@ class ScheduleView extends Component {
           console.log(data.color);
           changeColor = <Appointments.Appointment
               {...restProps}
-              style={this.state.matched.includes(data.title) ? { ...style, backgroundColor: data.color, whiteSpace: 'normal', border: 'dashed'} : { ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
+              style={this.state.matched.includes(data.title) ? { ...style, backgroundColor: data.color, whiteSpace: 'normal', border: 'dashed #65656f'} : { ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
               // className="CLASS_ROOM1"
               data={restProps.data.title}
             />
           return (
             <Appointments.Appointment
               {...restProps}
-              style={data.title in this.state.matched ? { ...style, backgroundColor: data.color, whiteSpace: 'normal', border: 'dashed'} : { ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
+              style={data.title in this.state.matched ? { ...style, backgroundColor: data.color, whiteSpace: 'normal', border: 'dashed #65656f'} : { ...style, backgroundColor: data.color, whiteSpace: 'normal'}}
               // className="CLASS_ROOM1"
               data={restProps.data.title}
             />
