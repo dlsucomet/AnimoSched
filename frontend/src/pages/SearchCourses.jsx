@@ -158,8 +158,6 @@ class SearchCourses extends Component {
           return coursesSoFar;
         }, {});
 
-        console.log("GROUPED IN ALL");
-        console.log(groupedSiteData["INTFILO"][0]);
 
         // const newGroupTest = [];
         // for(var i=0; i < this.state.selectedCourses.length; i++){
@@ -174,7 +172,6 @@ class SearchCourses extends Component {
         // end of grouping
 
         this.setState({siteData: filteredList, testGroupedData: groupedSiteData},() => {
-          console.log(this.state.testGroupedData["INTFILO"][0].classNmbr);
         });
 
         // console.log(filteredList);
