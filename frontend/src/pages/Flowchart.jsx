@@ -111,22 +111,6 @@ class Flowchart extends Component {
       }
     }
 
-    handlePageChange = (e,index) => {
-      this.setState(state =>{
-        var currentContent = state.generatedContents[index];
-        return {currentContent};
-      });
-
-      this.setState({currentPage: index});
-      this.setState(state =>{
-        var currentPage = index;
-        return {currentPage};
-      });
-      console.log("soy");
-      console.log(this.state.generatedContents[index]);
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
     componentDidMount() {
       // const degreekey = '1';
       // const batchkey = '116';
@@ -236,8 +220,18 @@ class Flowchart extends Component {
         console.log(this.state.terms);
 
         this.setFlowchartTables();
+        this.setState({currentPage: 0})
+        this.setState({currentContent: this.state.generatedContents[0]});
         this.setState({dataReceived: true})
       })
+    }
+
+    componentDidUpdate(prevProp, prevState) {
+      if(prevState.currentPage != this.state.currentPage){    
+        console.log("blah");
+        this.setState({currentContent: this.state.generatedContents[this.state.currentPage]});
+        this.handleScrollToGen();
+      }     
     }
 
     exportFlowchart = () => {
@@ -330,11 +324,36 @@ class Flowchart extends Component {
         </TableContainer>
         );
 
-        this.setState({currentPage: 0})
-        this.setState({generatedContents});
+        this.setState({generatedContents: generatedContents});
         this.setState({pagesCount: generatedContents.length});
-        this.setState({currentContent: generatedContents[0]});
+        console.log("created stuff");
+        // this.setState({currentPage: 0})
+        // this.setState({currentContent: generatedContents[0]});
       }
+    }
+
+    handlePageChange = (e, index) => {
+      this.setState({currentContent: ""});
+      // this.setState({currentContent: this.state.generatedContents[index]});      
+      // this.setState(state =>{
+      //     var currentContent = state.generatedContents[index];
+      //     return {currentContent};
+      // });
+      this.setState({currentPage: index});
+      // this.setState(state =>{
+      //   var currentPage = index;
+      //   return {currentPage};
+      // });
+
+      console.log("soy");
+      // console.log(this.state.currentPage);
+      // console.log(this.state.currentContent);
+
+      // this.handleScrollToGen();
+    }
+    
+    handleScrollToGen = () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
   
   saveAs = (uri, filename) => {
@@ -360,20 +379,21 @@ class Flowchart extends Component {
         window.open(uri);
 
     }
-}
+  }
 
-  handleCloseBar = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        this.setState({snackbar: false});
+    handleCloseBar = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      this.setState({snackbar: false});
+    }
+
+    onChangePagesEnabled(event) {
+      this.setState({pagesEnabled: false});
     }
 
     render() {
-      this.state.pagesCount = this.state.generatedContents.length;
-      this.state.currentContent = this.state.generatedContents[this.state.currentPage];
-
       const { classes } = this.props;
         
       const StyledTableCell = withStyles(theme => ({
@@ -541,17 +561,11 @@ class Flowchart extends Component {
                       </Alert>
                     </Snackbar>
 
-                    {/* <div class="flowchart-table-options">
-                      <tbody>
-                        <tr>
-                            <td><input type="radio" name="pages" 
-                                      value="Page view" 
-                                      checked={this.state.pagesEnabled === true}/></td>
-                            <td><input type="radio" name="pages" 
-                                      value="Consolidated view"
-                                      checked={this.state.pagesEnabled === false}/></td>
-                        </tr>
-                      </tbody>
+                    {/* <div class="flowchart-table-options" onChange={this.onChangePagesEnabled}>
+                        <input type="radio" name="pages" 
+                                      value="true" /> Page view
+                        <input type="radio" name="pages" 
+                                      value="false"/> Consolidated view
                     </div> */}
 
                     <div class="flowchart-table-area" id="flowchart-table-area">
@@ -655,9 +669,8 @@ class Flowchart extends Component {
                                     <PaginationLink
                                         onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
                                         next
-                                    />
-                                    
-                                    </PaginationItem>
+                                    />                                   
+                                </PaginationItem>
                             </Pagination>
                       </div>
                     </Grid>
