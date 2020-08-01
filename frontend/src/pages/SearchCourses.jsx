@@ -159,10 +159,23 @@ class SearchCourses extends Component {
         }, {});
 
         console.log("GROUPED IN ALL");
-        console.log(groupedSiteData);
+        console.log(groupedSiteData["INTFILO"][0]);
+
+        // const newGroupTest = [];
+        // for(var i=0; i < this.state.selectedCourses.length; i++){
+
+        //   newGroupTest.push([]);
+
+        //   for(var j=0; j < 3; j++){
+        //     newGroupTest[i].push(j);
+        //   }
+        // }
+
         // end of grouping
 
-        this.setState({siteData: filteredList});
+        this.setState({siteData: filteredList, testGroupedData: groupedSiteData},() => {
+          console.log(this.state.testGroupedData["INTFILO"][0].classNmbr);
+        });
 
         // console.log(filteredList);
       }
@@ -194,7 +207,7 @@ class SearchCourses extends Component {
         // end of grouping
 
 
-        this.setState({siteData: filteredList});
+        this.setState({siteData: filteredList, testGroupedData: groupedSiteData});
 
         // console.log(filteredList);
       }
@@ -227,7 +240,7 @@ class SearchCourses extends Component {
         console.log(groupedSiteData);
         // end of grouping
 
-        this.setState({siteData: filteredList});
+        this.setState({siteData: filteredList, testGroupedData: groupedSiteData});
       }
     }
 
@@ -382,11 +395,19 @@ class SearchCourses extends Component {
           },
         },
       }))(TableRow);
-      const loadedData = () => {
-          if(this.state.siteData.length > 0){
+      
+      const loadedData = (index) => {
+        // console.log(this.state.testGroupedData[index])
+        // console.log(typeof(this.state.testGroupedData[index]))
+        // console.log(index)
+        // console.log(this.state.testGroupedData[index])
+        // console.log(this.state.testGroupedData[index][0])
+          if(this.state.siteData.length > 0 && this.state.testGroupedData[index] != undefined){
+            // console.log(this.state.testGroupedData[index])
+        // console.log(this.state.testGroupedData[index][0])
             return(
             <TableBody>
-              {this.state.siteData.map(row => (
+              {this.state.testGroupedData[index].map(row => (
                 <Tooltip title="More Details" placement="bottom">
                   <StyledTableRow key={row.classNmbr} onClick={() => this.handleOpenModalCourseInfo(row.course, "", "3")} style={{cursor: "pointer"}}>
                     <StyledTableCell style={(row.capacity <= row.enrolled) ? {color: "#0099CC"} : {color: "#006600"}}> {row.classNmbr} </StyledTableCell>
@@ -491,8 +512,46 @@ class SearchCourses extends Component {
                 
                 {/* start of table */}
                 <div className="viewCourses" style={!this.state.showPlaceholder ? {} : {display: "none"}}>
-                  <TableContainer component={Paper}>
-                    <Table aria-label="customized table">
+                  <TableContainer>
+
+                    {this.state.selectedCourses.map(index => (
+                      <Table aria-label="customized table" style={{marginBottom: 25}} component={Paper}>
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell> Class Number </StyledTableCell>
+                            <StyledTableCell> Course </StyledTableCell>
+                            <StyledTableCell> Section </StyledTableCell>
+                            <StyledTableCell> Faculty </StyledTableCell>
+                            <StyledTableCell> Day </StyledTableCell>
+                            <StyledTableCell> Time </StyledTableCell>
+                            <StyledTableCell> Room </StyledTableCell>
+                            <StyledTableCell> Capacity </StyledTableCell>
+                            <StyledTableCell> Enrolled </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        {this.state.loading ? 
+                        <TableBody>
+                            {this.state.skeletons.map(skeleton =>(
+                              <StyledTableRow>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                                <StyledTableCell> <Skeleton width={'100%'} height={'100%'}></Skeleton> </StyledTableCell>
+                              </StyledTableRow>
+                            ))}
+                        </TableBody>
+                        : 
+                        loadedData(index.course_code)
+                        }
+                      </Table>
+                    ))}
+
+                    {/* <Table aria-label="customized table">
                       <TableHead>
                         <TableRow>
                           <StyledTableCell> Class Number </StyledTableCell>
@@ -525,7 +584,7 @@ class SearchCourses extends Component {
                         : 
                         loadedData()
                         }
-                      </Table>
+                      </Table> */}
                     </TableContainer>
 
                     {this.state.openModalCourseInfo ?
