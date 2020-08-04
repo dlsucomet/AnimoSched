@@ -187,3 +187,7 @@ body {
 .timePreferences {
     margin-top: 40px;
 }
+
+.survey-statements{
+    font-weight: bold;
+}
