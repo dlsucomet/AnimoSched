@@ -1973,31 +1973,42 @@ class Preferences extends Component {
                                             <Grid item xs={6}>
                                               
                                             <FormGroup>
-                                              {/* {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
-                                                  <FormControlLabel
-                                                  control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />
-                                                })} */}
-                                                <FormControlLabel
-                                                control = {<GreenCheckbox checked={this.state.wordList[0].checked} onChange={this.handleWordChange} id={this.state.wordList[0].id}  color="primary"/>}label={this.state.wordList[0].word} />
-                                                <FormControlLabel
-                                                control = {<GreenCheckbox checked={this.state.wordList[1].checked} onChange={this.handleWordChange} id={this.state.wordList[1].id} color="primary"/>}label={this.state.wordList[1].word} />
-                                                <FormControlLabel
-                                                control = {<GreenCheckbox checked={this.state.wordList[2].checked} onChange={this.handleWordChange} id={this.state.wordList[2].id} color="primary"/>}label={this.state.wordList[2].word}/>
-                                                <FormControlLabel
-                                                control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} />
+                                              {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
+                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
+                                                })}
+                                            
                                             </FormGroup>
                                             </Grid>
 
                                             <Grid item xs={6}>
                                             <FormGroup>
-                                                <FormControlLabel
+                                                {this.state.wordList.filter(word => word.id >= 36 && word.id <= 70).map((filteredWord)=>{
+                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
+                                                })}
+                                                {/* <FormControlLabel
                                                 control = {<GreenCheckbox checked={this.state.wordList[0].checked} onChange={this.handleWordChange} id={this.state.wordList[0].id}  color="primary"/>}label={this.state.wordList[0].word} />
                                                 <FormControlLabel
                                                 control = {<GreenCheckbox checked={this.state.wordList[1].checked} onChange={this.handleWordChange} id={this.state.wordList[1].id} color="primary"/>}label={this.state.wordList[1].word} />
                                                 <FormControlLabel
                                                 control = {<GreenCheckbox checked={this.state.wordList[2].checked} onChange={this.handleWordChange} id={this.state.wordList[2].id} color="primary"/>}label={this.state.wordList[2].word}/>
                                                 <FormControlLabel
-                                                control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} />
+                                                control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} /> */}
+                                            </FormGroup>
+                                            </Grid>
+
+                                            <Grid item xs={6}>
+                                            <FormGroup>
+                                                {this.state.wordList.filter(word => word.id > 70 && word.id <= 105).map((filteredWord)=>{
+                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
+                                                })}
+                                                {/* <FormControlLabel
+                                                control = {<GreenCheckbox checked={this.state.wordList[0].checked} onChange={this.handleWordChange} id={this.state.wordList[0].id}  color="primary"/>}label={this.state.wordList[0].word} />
+                                                <FormControlLabel
+                                                control = {<GreenCheckbox checked={this.state.wordList[1].checked} onChange={this.handleWordChange} id={this.state.wordList[1].id} color="primary"/>}label={this.state.wordList[1].word} />
+                                                <FormControlLabel
+                                                control = {<GreenCheckbox checked={this.state.wordList[2].checked} onChange={this.handleWordChange} id={this.state.wordList[2].id} color="primary"/>}label={this.state.wordList[2].word}/>
+                                                <FormControlLabel
+                                                control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} /> */}
                                             </FormGroup>
                                             </Grid>
                                         </Grid>
