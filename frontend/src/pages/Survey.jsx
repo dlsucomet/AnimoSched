@@ -732,57 +732,111 @@ class Preferences extends Component {
             )
         }
 
-        ueqScale = (negative, positive) => {
-            return (
-            <div className="scale">
-                <RadioGroup row aria-label="position" name="position" >
-                    <span>{negative}</span>
-                    <FormControlLabel
-                    value="-3"
-                    control={<GreenRadio/>}
-                    label="1"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="-2"
-                    control={<GreenRadio/>}
-                    label="2"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="-1"
-                    control={<GreenRadio/>}
-                    label="3"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="0"
-                    control={<GreenRadio/>}
-                    label="4"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="1"
-                    control={<GreenRadio/>}
-                    label="5"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="2"
-                    control={<GreenRadio/>}
-                    label="6"
-                    labelPlacement="top"
-                    />
-                    <FormControlLabel
-                    value="3"
-                    control={<GreenRadio/>}
-                    label="7"
-                    labelPlacement="top"
-                    />
-                <span>{positive}</span>
-                </RadioGroup>
-            </div>
-            )
+        ueqScale = (left, right, type) => {
+            if(type){
+                return (
+                <div className="scale">
+                    <RadioGroup row aria-label="position" name="position" >
+                        <span>{left}</span>
+                        <FormControlLabel
+                        value="-3"
+                        control={<GreenRadio/>}
+                        label="1"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="-2"
+                        control={<GreenRadio/>}
+                        label="2"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="-1"
+                        control={<GreenRadio/>}
+                        label="3"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="0"
+                        control={<GreenRadio/>}
+                        label="4"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="1"
+                        control={<GreenRadio/>}
+                        label="5"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="2"
+                        control={<GreenRadio/>}
+                        label="6"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="3"
+                        control={<GreenRadio/>}
+                        label="7"
+                        labelPlacement="top"
+                        />
+                    <span>{right}</span>
+                    </RadioGroup>
+                </div>
+                )
+            }else{
+                return (
+                <div className="scale">
+                    <RadioGroup row aria-label="position" name="position" >
+                        <span>{left}</span>
+                        <FormControlLabel
+                        value="3"
+                        control={<GreenRadio/>}
+                        label="1"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="2"
+                        control={<GreenRadio/>}
+                        label="2"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="1"
+                        control={<GreenRadio/>}
+                        label="3"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="0"
+                        control={<GreenRadio/>}
+                        label="4"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="-1"
+                        control={<GreenRadio/>}
+                        label="5"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="-2"
+                        control={<GreenRadio/>}
+                        label="6"
+                        labelPlacement="top"
+                        />
+                        <FormControlLabel
+                        value="-3"
+                        control={<GreenRadio/>}
+                        label="7"
+                        labelPlacement="top"
+                        />
+                    <span>{right}</span>
+                    </RadioGroup>
+                </div>
+                )
+            }
+
         }
 
     render() {
@@ -839,9 +893,8 @@ class Preferences extends Component {
             'I needed to learn a lot of things before I could get going with this system confident using the system',
         ]
         const ueqStatements = [
-            ['annoying', 'enjoyable'],
-            ['not understandable', 'understandable'],
-
+            ['annoying', 'enjoyable', true],
+            ['not understandable', 'understandable', true],
         ]
 
 
@@ -850,7 +903,7 @@ class Preferences extends Component {
             {this.props.menu('preferences')}
 
                 {this.state.dataReceived ? 
-                <div className="preference-category">
+                <div className="survey-category">
                   <h1 style={{marginTop: "20px"}}>Survey</h1>
                   <span>Include descriptions about this</span>
                         <div>
@@ -870,1107 +923,21 @@ class Preferences extends Component {
                                 </h2>
                                 <div className="preference-category-content">
                                     {ueqStatements.map(statement => 
-                                        this.ueqScale(statement[0], statement[1])
+                                        this.ueqScale(statement[0], statement[1], statement[2])
                                     )}
-
-                                    <div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>creative</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>dull</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>easy to learn</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>difficult to learn</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>valuable</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>inferior</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>boring</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>exciting</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>not interesting</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>interesting</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>unpredictable</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>predictable</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>fast</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>enjoyable</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>inventive</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>conventional</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>obstructive</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>supportive</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>good</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>bad</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>complicated</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>easy</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>unlikable</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>pleasing</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>usual</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>leading edge</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>unpleasant</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>pleasant</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>secure</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>unsecure</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>motivating</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>demotivating</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>inefficient</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>efficient</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>clear</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>confusing</span>
-                                        </RadioGroup>
-                                    </div><div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>impractical</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>practical</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>organized</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>cluttered</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>attractive</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>unattractive</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>friendly</span>
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>unfriendly</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>conservative</span>
-                                            <FormControlLabel
-                                            value="-3"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="-1"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="0"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="6"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="7"
-                                            labelPlacement="top"
-                                            />
-                                        <span>innovative</span>
-                                        </RadioGroup>
-                                    </div>
                                 </div>
                             </div>
 
                             <div className="classDetails">
-                                <h2>Class Details</h2>
+                                <h2>Word Word</h2>
                                 
                                 <div className="preference-category-content">
                                 
                                     <div className={'wordlist-survey'}>
                                         <div className={'subheader'}>Word List</div>
-                                        <Grid container spacing={6}>
-                                            <Grid item xs={6}>
+                                        <Grid container spacing={1}>
+                                            {/* <Grid item xs={12}> */}
+                                            <Grid item xs={4}>
                                               
                                             <FormGroup>
                                               {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
@@ -1980,7 +947,7 @@ class Preferences extends Component {
                                             </FormGroup>
                                             </Grid>
 
-                                            <Grid item xs={6}>
+                                            <Grid item xs={4}>
                                             <FormGroup>
                                                 {this.state.wordList.filter(word => word.id >= 36 && word.id <= 70).map((filteredWord)=>{
                                                   return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
@@ -1996,7 +963,7 @@ class Preferences extends Component {
                                             </FormGroup>
                                             </Grid>
 
-                                            <Grid item xs={6}>
+                                            <Grid item xs={4}>
                                             <FormGroup>
                                                 {this.state.wordList.filter(word => word.id > 70 && word.id <= 105).map((filteredWord)=>{
                                                   return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
@@ -2011,7 +978,8 @@ class Preferences extends Component {
                                                 control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} /> */}
                                             </FormGroup>
                                             </Grid>
-                                        </Grid>
+                                            </Grid>
+                                        {/* </Grid> */}
                                     </div>
                                   </div>
                                 </div>
