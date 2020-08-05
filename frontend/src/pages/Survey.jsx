@@ -732,10 +732,66 @@ class Preferences extends Component {
             )
         }
 
+        stressScale = (statement) => {
+            return (
+            <div className="scale">
+                <span className={"survey-statements"}>{statement}</span>
+                <RadioGroup row aria-label="position" name="position" >
+                    <span >Strongly Disagree</span>
+                    <FormControlLabel
+                    value="1"
+                    control={<GreenRadio/>}
+                    label="1"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="2"
+                    control={<GreenRadio/>}
+                    label="2"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="3"
+                    control={<GreenRadio/>}
+                    label="3"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="4"
+                    control={<GreenRadio/>}
+                    label="4"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="5"
+                    control={<GreenRadio/>}
+                    label="5"
+                    labelPlacement="top"
+                    />
+                <span>Strongly Agree</span>
+                </RadioGroup>
+                <div>
+                <TextField
+                id="standard-full-width"
+                label="Explain your answer above here including the thought process you had related to it"
+                style={{ margin: 8 }}
+                placeholder="Answer here"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                />
+                </div>
+            </div>
+            )
+        }
+
         ueqScale = (left, right, type) => {
             if(type){
                 return (
-                <div className="scale">
+                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                <div className="scale" style={{placeItems: "center", justify: "center"}}>
                     <RadioGroup row aria-label="position" name="position" >
                         <span>{left}</span>
                         <FormControlLabel
@@ -783,9 +839,11 @@ class Preferences extends Component {
                     <span>{right}</span>
                     </RadioGroup>
                 </div>
+                </Row>
                 )
             }else{
                 return (
+                <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale">
                     <RadioGroup row aria-label="position" name="position" >
                         <span>{left}</span>
@@ -834,10 +892,185 @@ class Preferences extends Component {
                     <span>{right}</span>
                     </RadioGroup>
                 </div>
+                </Row>
                 )
             }
 
         }
+
+        basicScale = (statement) => {
+            return (
+            <div className="scale">
+                <span className={"survey-statements"}>{statement}</span>
+                <RadioGroup row aria-label="position" name="position" >
+                    <span >Very Difficult</span>
+                    <FormControlLabel
+                    value="1"
+                    control={<GreenRadio/>}
+                    label="1"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="2"
+                    control={<GreenRadio/>}
+                    label="2"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="3"
+                    control={<GreenRadio/>}
+                    label="3"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="4"
+                    control={<GreenRadio/>}
+                    label="4"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="5"
+                    control={<GreenRadio/>}
+                    label="5"
+                    labelPlacement="top"
+                    />
+                <span>Very Easy</span>
+                </RadioGroup>
+                <div>
+                <TextField
+                id="standard-full-width"
+                label="Explain your answer above here including the thought process you had related to it"
+                style={{ margin: 8 }}
+                placeholder="Answer here"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                />
+                </div>
+            </div>
+            )
+        }
+
+        panasScale = (statement) => {
+            return (
+            <div className="scale">
+                <span className={"survey-statements"}>{statement}</span>
+                <RadioGroup row aria-label="position" name="position" >
+                    <span >Very slightly or not at all</span>
+                    <FormControlLabel
+                    value="1"
+                    control={<GreenRadio/>}
+                    label="1"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="2"
+                    control={<GreenRadio/>}
+                    label="2"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="3"
+                    control={<GreenRadio/>}
+                    label="3"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="4"
+                    control={<GreenRadio/>}
+                    label="4"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="5"
+                    control={<GreenRadio/>}
+                    label="5"
+                    labelPlacement="top"
+                    />
+                <span>Extremely</span>
+                </RadioGroup>
+                
+            </div>
+            )
+        }
+
+        nasaScale = (type, statement) => {
+            return (
+            <div className="scale">
+                 <h5>{type}</h5>
+                <span className={"survey-statements"}>{statement}</span>
+                <RadioGroup row aria-label="position" name="position" >
+                   
+                    <span >Very Low</span>
+                    <FormControlLabel
+                    value="1"
+                    control={<GreenRadio/>}
+                    label="1"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="2"
+                    control={<GreenRadio/>}
+                    label="2"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="3"
+                    control={<GreenRadio/>}
+                    label="3"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="4"
+                    control={<GreenRadio/>}
+                    label="4"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="5"
+                    control={<GreenRadio/>}
+                    label="5"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="6"
+                    control={<GreenRadio/>}
+                    label="6"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="7"
+                    control={<GreenRadio/>}
+                    label="7"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="8"
+                    control={<GreenRadio/>}
+                    label="8"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="9"
+                    control={<GreenRadio/>}
+                    label="9"
+                    labelPlacement="top"
+                    />
+                    <FormControlLabel
+                    value="10"
+                    control={<GreenRadio/>}
+                    label="10"
+                    labelPlacement="top"
+                    />
+                <span>Very High</span>
+                </RadioGroup>
+            </div>
+            )
+        }
+
+
 
     render() {
         const { classes } = this.props;
@@ -892,9 +1125,98 @@ class Preferences extends Component {
             'I felt very confident using the system',
             'I needed to learn a lot of things before I could get going with this system confident using the system',
         ]
+
+        const cognitiveStatements = [
+            'Overall, the task of creating a schedule for yourself was?',
+            'Keeping track of the classes I like.',
+            'Keeping track of the classes I dislike.',
+            'Resolving course conflicts.',
+            'Keeping track of the schedule I want.',
+            'Adjusting my schedule based on changes.',
+            'Keeping track of all the necessary information I need to know for my schedule'
+        ]
+
+        const decisionStatements = [
+            'Efficiently weighing my options and decisions.',
+            'Picking my classes.',
+            'Picking a final schedule.',
+            'Prioritizing my preferences.',
+        ]
+
+        const collabStatements = [
+            'Coordinating with my friends to create a schedule',
+            'Coordinating with my friends with the similar classes we need',
+            'Picking a schedule my friends and I are happy with',
+        ]
+
+        const panasStatements =[
+            'Interested',
+            'Distressed',
+            'Excited',
+            'Upset',
+            'Strong',
+            'Guilty',
+            'Scared',
+            'Hostile',
+            'Enthusiastic',
+            'Proud',
+            'Irritable',
+            'Alert',
+            'Ashamed',
+            'Inspired',
+            'Nervous',
+            'Determined',
+            'Attentive',
+            'Jittery',
+            'Active', 
+            'Afraid'
+        ]
+
         const ueqStatements = [
             ['annoying', 'enjoyable', true],
             ['not understandable', 'understandable', true],
+            ['creative', 'dull', false],
+            ['easy to learn', 'difficult to learn', false],
+            ['valuable', 'inferior', false],
+            ['boring', 'exciting',true],
+            ['not interesting', 'interesting', true],
+            ['unpredictable', 'predictable', true],
+            ['fast', 'slow', false],
+            ['inventive', 'conventional', false],
+            ['obstructive', 'supportive', true],
+            ['good', 'bad', false],
+            ['complicated', 'easy', true],
+            ['unlikable', 'pleasing', true],
+            ['usual', 'leading edge', false],
+            ['unpleasant', 'pleasant', true],
+            ['secure', 'not secure', false],
+            ['motivating', 'demotivating', false],
+            ['meets expectations', 'does not meet expectations', false],
+            ['inefficient', 'efficient', true],
+            ['clear', 'confusing', false],
+            ['impractical', 'practical', true],
+            ['organized', 'cluttered', false],
+            ['attractive', 'unattractive', false],
+            ['friendly', 'friendly', false],
+            ['conservative', 'innovative', true]
+        ]
+
+        const nasaStatements = [
+            ['Mental Demand', 'How mentally demanding was the task?'],
+            ['Physical Demand', 'How physically demanding was the task?'],
+            ['Temporal Demand', 'How hurried or rushed was the pace of the task?'],
+            ['Performance', 'How successful were you in accomplishing what you were asked to do?'],
+            ['Effort', 'How hard did you have to work to accomplish your level of performance?'],
+            ['Frustration', 'How insecure, discourages, irritated, stressed, and annoyed were you?'],
+        ]
+
+        const stressStatements = [
+            'I find creating schedules for myself to be stressful',
+            'I think coordinating class schedules with my friends is stressful',
+            'I find it stressful to re-adjust just my schedule because of sudden changes',
+            'I find it stressful to re-adjust my schedule with my friends after sudden changes',
+            'It is stressful to keep track of a lot of things for creating my/our schedule',
+            
         ]
 
 
@@ -922,8 +1244,41 @@ class Preferences extends Component {
                                 <h2>User Experience Questionnaire
                                 </h2>
                                 <div className="preference-category-content">
-                                    {ueqStatements.map(statement => 
+                                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                                    <div style={{placeItems: "center"}}>
+                                        {ueqStatements.map(statement => 
                                         this.ueqScale(statement[0], statement[1], statement[2])
+                                    )}</div>
+                                </Row>
+                                </div>
+                            </div>
+
+                            <div className="nasa-survey">
+                                <h2>NASA TLX
+                                </h2>
+                                <div className="preference-category-content">
+                                        {nasaStatements.map(statement => 
+                                        this.nasaScale(statement[0], statement[1])
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="panas-survey">
+                                <h2>PANAS
+                                </h2>
+                                <div className="preference-category-content">
+                                        {panasStatements.map(statement => 
+                                        this.panasScale(statement)
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="stress-survey">
+                                <h2>Stress
+                                </h2>
+                                <div className="preference-category-content">
+                                    {stressStatements.map(statement => 
+                                        this.stressScale(statement)
                                     )}
                                 </div>
                             </div>
@@ -1012,228 +1367,9 @@ class Preferences extends Component {
                                 <h2>Cognitive Load
                                 </h2>
                                 <div className="preference-category-content">
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Overall, the task of creating a schedule for yourself was?</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Keeping track of the classes I like.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Keeping track of the classes I don't like.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Resolving course conflicts.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Keeping track of the schedule I want.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Adjusting my schedule based on changes.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
+                                    {cognitiveStatements.map(statement => 
+                                        this.basicScale(statement)
+                                    )}
                                 </div>
                             </div>
 
@@ -1241,200 +1377,30 @@ class Preferences extends Component {
                                 <h2>Decision-Making
                                 </h2>
                                 <div className="preference-category-content">
-                                  <div className="scale">
-                                        <span className={"survey-statements"}>Efficiently weighing my options and decisions.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Picking my classes.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Picking a final schedule.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>Prioritizing my preferences.</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Very Difficult</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Very Easy</span>
-                                        </RadioGroup>
-                                    </div>
+                                    {decisionStatements.map(statement => 
+                                        this.basicScale(statement)
+                                    )}
                                 </div>
                             </div>
 
-                            {/* <div className="cognitive-survey">
-                                <h2>Cognitive Load
+
+                            <div className="collab-survey">
+                                <h2>Collaboration
                                 </h2>
                                 <div className="preference-category-content">
-                                    <div className="scale">
-                                        <span className={"survey-statements"}>I think I would like to use this system frequently</span>
-                                        <RadioGroup row aria-label="position" name="position" >
-                                            <span>Strongly Disagree</span>
-                                            <FormControlLabel
-                                            value="1"
-                                            control={<GreenRadio/>}
-                                            label="1"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="2"
-                                            control={<GreenRadio/>}
-                                            label="2"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="3"
-                                            control={<GreenRadio/>}
-                                            label="3"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="4"
-                                            control={<GreenRadio/>}
-                                            label="4"
-                                            labelPlacement="top"
-                                            />
-                                            <FormControlLabel
-                                            value="5"
-                                            control={<GreenRadio/>}
-                                            label="5"
-                                            labelPlacement="top"
-                                            />
-                                        <span>Strongly Agree</span>
-                                        </RadioGroup>
-                                    </div>
+                                    {collabStatements.map(statement => 
+                                        this.basicScale(statement)
+                                    )}
                                 </div>
-                            </div> */}
+                            </div>
+
+                            <center><Button
+                                variant="contained"
+                                className={classes.buttonStyle}
+                                onClick={this.handleSave}
+                                >
+                                SUBMIT
+                            </Button></center>
 
                 </div>
                 : 
