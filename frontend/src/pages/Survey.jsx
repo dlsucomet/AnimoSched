@@ -292,63 +292,79 @@ class Preferences extends Component {
         ueqScale = (left, right, type) => {
             if(type){
                 return (
-                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale" style={{placeItems: "center", justify: "center"}}>
                     <RadioGroup row aria-label="position" name="position" >
-                        <span>{left}</span>
-                        <FormControlLabel
-                        value="-3"
-                        control={<GreenRadio/>}
-                        label="1"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="-2"
-                        control={<GreenRadio/>}
-                        label="2"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="-1"
-                        control={<GreenRadio/>}
-                        label="3"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="0"
-                        control={<GreenRadio/>}
-                        label="4"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="1"
-                        control={<GreenRadio/>}
-                        label="5"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="2"
-                        control={<GreenRadio/>}
-                        label="6"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="3"
-                        control={<GreenRadio/>}
-                        label="7"
-                        labelPlacement="top"
-                        />
-                    <span>{right}</span>
+                        <Grid container spacing={1}>
+                                            
+                            <Grid item xs={2}>
+                            <span>{left}</span>
+                            </Grid>
+
+                            <Grid item xs={8}>
+                            <FormControlLabel
+                            value="-3"
+                            control={<GreenRadio/>}
+                            label="1"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="-2"
+                            control={<GreenRadio/>}
+                            label="2"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="-1"
+                            control={<GreenRadio/>}
+                            label="3"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="0"
+                            control={<GreenRadio/>}
+                            label="4"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="1"
+                            control={<GreenRadio/>}
+                            label="5"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="2"
+                            control={<GreenRadio/>}
+                            label="6"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="3"
+                            control={<GreenRadio/>}
+                            label="7"
+                            labelPlacement="top"
+                            />
+                            </Grid>
+                        <Grid item xs={2}>
+                        <span>{right}</span>
+                        </Grid>
+                    </Grid>
                     </RadioGroup>
                 </div>
-                </Row>
+                // </Row>
                 )
             }else{
                 return (
-                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale">
                     <RadioGroup row aria-label="position" name="position" >
+                    <Grid container spacing={1}>
+                                            
+                        <Grid item xs={2}>
                         <span>{left}</span>
+                        </Grid>
+
+                        <Grid item xs={8}>
                         <FormControlLabel
                         value="3"
                         control={<GreenRadio/>}
@@ -391,10 +407,14 @@ class Preferences extends Component {
                         label="7"
                         labelPlacement="top"
                         />
-                    <span>{right}</span>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <span>{right}</span>
+                        </Grid>
+                    </Grid>
                     </RadioGroup>
                 </div>
-                </Row>
+                // </Row>
                 )
             }
 
