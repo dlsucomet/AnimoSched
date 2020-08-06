@@ -163,7 +163,7 @@ class Preferences extends Component {
     componentDidMount(){
         var id = 1;
         const wordList = []
-        this.state.words.map(word => {
+        this.state.words.sort().map(word => {
             wordList.push(
                 {
                     id: id,
@@ -843,11 +843,12 @@ class Preferences extends Component {
                                 
                                     <div className={'wordlist-survey'}>
                                         <div className={'subheader'}>Word List</div>
+                                        <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
+                                        words that best describe your experience with it. You can choose as many words as you wish. </p>
                                         <Grid container spacing={1}>
                                             {/* <Grid item xs={12}> */}
                                             <Grid item xs={4}>
-                                            <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
-                                        words that best describe your experience with it. You can choose as many words as you wish. </p>
+                                            
                                             <FormGroup>
                                               {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
                                                   return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
