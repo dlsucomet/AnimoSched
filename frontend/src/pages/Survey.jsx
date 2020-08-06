@@ -774,12 +774,6 @@ class Preferences extends Component {
                     label="4"
                     labelPlacement="top"
                     />
-                    <FormControlLabel
-                    value="5"
-                    control={<GreenRadio/>}
-                    label="5"
-                    labelPlacement="top"
-                    />
                 <span>Strongly Agree</span>
                 </RadioGroup>
                 <div>
@@ -1295,6 +1289,7 @@ class Preferences extends Component {
                             <div className="nasa-survey">
                                 <h2>NASA TLX
                                 </h2>
+                                <span>This questionnaire assesses the work load you've experienced with the tasks.</span>
                                 <div className="preference-category-content">
                                         {nasaStatements.map(statement => 
                                         this.nasaScale(statement[0], statement[1])
@@ -1305,7 +1300,7 @@ class Preferences extends Component {
                             <div className="workloadPreferences">
                                 <h2>Subjective Mental Effort Questionnaire (SMEQ)
                                 </h2>
-                                <span>How difficult was the task for you?</span>
+                                <span>Use the slider to specify the amount of mental effort you exerted in the tasks.</span>
                                 <div className="preference-category-content" >
 
                                 <div className="scale" style={{height: 500}}>
@@ -1326,6 +1321,7 @@ class Preferences extends Component {
                             <div className="panas-survey">
                                 <h2>PANAS
                                 </h2>
+                                <span>Below is a scale of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
                                 <div className="preference-category-content">
                                         {panasStatements.map(statement => 
                                         this.panasScale(statement)
@@ -1345,7 +1341,10 @@ class Preferences extends Component {
 
                             <div className="classDetails">
                                 <h2>Word Word</h2>
-                                
+                                <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
+                                    words that best describe your experience with it. You can choose as many words as you wish. </p>
+                                <p>Step 2: Now look at the words you have ticked. Circle five of these words that you think are most
+                                    descriptive of the product. </p>
                                 <div className="preference-category-content">
                                 
                                     <div className={'wordlist-survey'}>
