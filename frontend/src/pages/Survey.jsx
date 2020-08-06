@@ -156,7 +156,21 @@ class Preferences extends Component {
             dataReceived: true,
             currentWords: [],
             words: ['Accessible', 'Effortless', 'Ordinary', 'Advanced', 'Empowering', 'Organised', 'Ambiguous', 'Energetic', 'Overwhelming', 'Annoying', 'Engaging', 'Patronising', 'Appealing', 'Entertaining', 'Poor quality', 'Approachable', 'Exciting', 'Powerful', 'Attractive', 'Expected', 'Predictable', 'Awkward', 'Familiar', 'Professional', 'Boring', 'Fast', 'Relevant', 'Bright', 'Faulty', 'Reliable', 'Business-like', 'Flexible', 'Responsive', 'Busy', 'Fresh', 'Rigid', 'Clean', 'Friendly', 'Satisfying', 'Clear', 'Frustrating', 'Secure', 'Cluttered', 'Fun', 'Simple', 'Compelling', 'Hard to Use', 'Simplistic', 'Complex', 'High quality', 'Slow', 'Comprehensive', 'Illogical', 'Sophisticated', 'Confusing', 'Impressive', 'Stable', 'Consistent', 'Inadequate', 'Stimulating', 'Contradictory', 'Incomprehensible', 'Straightforward', 'Controllable', 'Inconsistent', 'Stressful', 'Convenient', 'Ineffective', 'System-oriented', 'Counter-intuitive', 'Innovative', 'Time-consuming', 'Creative', 'Insecure', 'Time-saving', 'Credible', 'Intimidating', 'Too technical', 'Cutting edge', 'Intuitive', 'Trustworthy', 'Dated', 'Irrelevant', 'Unattractive', 'Desirable', 'Meaningful', 'Unconventional', 'Difficult', 'Misleading', 'Understandable', 'Distracting', 'Motivating', 'Unpredictable', 'Dull', 'New', 'Unrefined', 'Easy to use', 'Non-standard', 'Usable', 'Effective', 'Obscure', 'Useful', 'Efficient', 'Old', 'Vague'],
-            wordList : []
+            wordList : [],
+            susResult: [{question: "I think I would like to use this system frequently", value: "4"}],
+            ueqResult: [{question: "annoying/enjoyable", value:"3"}],
+            nasaReult: [{question: "demand", value:"3"}],
+            smeqResult: 30,
+            panasResult: [{question: "interested", value: "2"}],
+            stressResult: [{question: "I find creating schedules for myself to be stressful", value: "1"}],
+            wordResult:[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}],
+            cognitiveResult: [],
+            decisionResult: [],
+            groupResult: [],
+            comments: "",
+
+
+
         }
     }
 
@@ -586,6 +600,23 @@ class Preferences extends Component {
             )
         }
 
+ 
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        
+        // if (value === 'best') {
+        //   setHelperText('You got it!');
+        //   setError(false);
+        // } else if (value === 'worst') {
+        //   setHelperText('Sorry, wrong answer!');
+        //   setError(true);
+        // } else {
+        //   setHelperText('Please select an option.');
+        //   setError(true);
+        // }
+      };
+
 
 
     render() {
@@ -742,10 +773,13 @@ class Preferences extends Component {
 
                 {this.state.dataReceived ? 
                 <div className="survey-category">
-                  <h1 style={{marginTop: "20px"}}>Survey</h1>
-                  <span>Please make sure to answer all the questions in the questionnaires below, you're not allowed to skip any questions. All of these questions are related to the method you used for the experiment and your experience with it. Thank you!</span>
+                   <div>
+                   <form onSubmit={this.handleSubmit}>
+                    <h1 style={{marginTop: "20px"}}>Survey</h1>
+                    <span>Please make sure to answer all the questions in the questionnaires below, you're not allowed to skip any questions. All of these questions are related to the method you used for the experiment and your experience with it. Thank you!</span>
                     <div>
                     <br></br>
+                    
                     <h3>Participant Details</h3>
                     <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}}></TextField>
                     <br></br>
@@ -1006,10 +1040,12 @@ class Preferences extends Component {
                                 variant="contained"
                                 className={classes.buttonStyle}
                                 onClick={this.handleSave}
+                                type="submit"
                                 >
                                 SUBMIT
                             </Button></center>
-
+                    </form>
+                    </div>             
                 </div>
                 : 
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}>
