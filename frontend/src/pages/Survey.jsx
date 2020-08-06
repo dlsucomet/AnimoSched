@@ -1388,7 +1388,23 @@ class Preferences extends Component {
                                                 control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} /> */}
                                             </FormGroup>
                                             </Grid>
-                                            </Grid>
+                                        </Grid>
+                                        <Autocomplete
+                                            multiple
+                                            id="tags-outlined"
+                                            options={this.state.currentWords}
+                                            getOptionLabel={(option) => option.word}
+                                            // defaultValue={}
+                                            filterSelectedOptions
+                                            renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="outlined"
+                                                label=""
+                                                // placeholder=""
+                                            />
+                                            )}
+                                        />
                                         {/* </Grid> */}
                                     </div>
                                   </div>
