@@ -154,6 +154,7 @@ class Preferences extends Component {
 
             selectedValue: 0,
             dataReceived: true,
+            currentWords: [],
             wordList:[
               {
                 id: 1,
@@ -688,19 +689,25 @@ class Preferences extends Component {
 
     handleChange = (e) => {
         this.setState({selectedValue: e.target.value})
-        
+
 
     }
 
     handleWordChange = (event) => {
-      var newWordList = [...this.state.wordList];
-      newWordList.map(value=>{
-          if(value.id === Number(event.target.id)){
-              value.checked = event.target.checked;
-          }
-      })
-      this.setState({wordList: newWordList});
-      // this.setState({[event.target.name]: event.target.checked });
+      var newWordList = this.state.wordList;
+      var newCurrentWords = [];
+      newWordList[event.target.id - 1].checked = event.target.checked;
+      if(event.target.checked){
+        newCurrentWords = this.state.currentWords;
+        newCurrentWords.push(newWordList[event.target.id - 1]);
+      }else{
+        this.state.currentWords.map(word => {
+            if(event.target.id != word.id){
+                newCurrentWords.push(word)
+            }
+        })
+      }
+      this.setState({wordList: newWordList, currentWords: newCurrentWords});
    };
         susScale = (statement) => {
             return (
@@ -1365,7 +1372,7 @@ class Preferences extends Component {
                                             <Grid item xs={4}>
                                             <FormGroup>
                                                 {this.state.wordList.filter(word => word.id >= 36 && word.id <= 70).map((filteredWord)=>{
-                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
+                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/> } label={filteredWord.word} />;
                                                 })}
                                                 {/* <FormControlLabel
                                                 control = {<GreenCheckbox checked={this.state.wordList[0].checked} onChange={this.handleWordChange} id={this.state.wordList[0].id}  color="primary"/>}label={this.state.wordList[0].word} />
@@ -1393,7 +1400,23 @@ class Preferences extends Component {
                                                 control = {<GreenCheckbox checked={this.state.wordList[3].checked} onChange={this.handleWordChange} id={this.state.wordList[3].id} color="primary"/>}label={this.state.wordList[3].word} /> */}
                                             </FormGroup>
                                             </Grid>
-                                            </Grid>
+                                        </Grid>
+                                        <Autocomplete
+                                            multiple
+                                            id="tags-outlined"
+                                            options={this.state.currentWords}
+                                            getOptionLabel={(option) => option.word}
+                                            // defaultValue={}
+                                            filterSelectedOptions
+                                            renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="outlined"
+                                                label=""
+                                                // placeholder=""
+                                            />
+                                            )}
+                                        />
                                         {/* </Grid> */}
                                     </div>
                                   </div>
