@@ -750,6 +750,7 @@ class Preferences extends Component {
                             <div className="timePreferences">
                                 <h2>SUS Survey
                                 </h2>
+                                <p>*note: System refers to the method or processed you use to create a schedule in this experiment.</p>
                                 <div className="preference-category-content">
                                     {susStatements.map(statement => 
                                         this.susScale(statement)
@@ -837,10 +838,7 @@ class Preferences extends Component {
 
                             <div className="classDetails">
                                 <h2>Word Word</h2>
-                                <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
-                                    words that best describe your experience with it. You can choose as many words as you wish. </p>
-                                <p>Step 2: Now look at the words you have ticked. Circle five of these words that you think are most
-                                    descriptive of the product. </p>
+                                
                                 <div className="preference-category-content">
                                 
                                     <div className={'wordlist-survey'}>
@@ -848,7 +846,8 @@ class Preferences extends Component {
                                         <Grid container spacing={1}>
                                             {/* <Grid item xs={12}> */}
                                             <Grid item xs={4}>
-                                              
+                                            <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
+                                        words that best describe your experience with it. You can choose as many words as you wish. </p>
                                             <FormGroup>
                                               {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
                                                   return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
@@ -889,6 +888,10 @@ class Preferences extends Component {
                                             </FormGroup>
                                             </Grid>
                                         </Grid>
+
+                                        
+                                        <p>Step 2: Now look at the words you have ticked. Input five of these words in the box below that you think are most
+                                    descriptive of the product. </p>
                                         <Autocomplete
                                             multiple
                                             id="tags-outlined"
@@ -941,6 +944,24 @@ class Preferences extends Component {
                                     {collabStatements.map(statement => 
                                         this.basicScale(statement)
                                     )}
+                                </div>
+                            </div>
+                            
+                            <div className="comments-survey">
+                                <h2>Comments
+                                </h2>
+                                <div className="preference-category-content">
+                                    <TextField
+                                    id="standard-full-width"
+                                    label="You can specify here any interesting comments or insights you have about process"
+                                    style={{ margin: 8 }}
+                                    placeholder="Answer here"
+                                    fullWidth
+                                    margin="normal"
+                                    // InputLabelProps={{
+                                    //     shrink: true,
+                                    // }}
+                                    />
                                 </div>
                             </div>
 
