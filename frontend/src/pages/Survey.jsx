@@ -154,6 +154,7 @@ class Preferences extends Component {
 
             selectedValue: 0,
             dataReceived: true,
+            currentWords: [],
             wordList:[
               {
                 id: 1,
@@ -694,8 +695,19 @@ class Preferences extends Component {
 
     handleWordChange = (event) => {
       var newWordList = this.state.wordList;
+      var newCurrentWords = [];
       newWordList[event.target.id - 1].checked = event.target.checked;
-      this.setState({wordList: newWordList});
+      if(event.target.checked){
+        newCurrentWords = this.state.currentWords;
+        newCurrentWords.push(newWordList[event.target.id - 1]);
+      }else{
+        this.state.currentWords.map(word => {
+            if(event.target.id != word.id){
+                newCurrentWords.push(word)
+            }
+        })
+      }
+      this.setState({wordList: newWordList, currentWords: newCurrentWords});
    };
         susScale = (statement) => {
             return (
