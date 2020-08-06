@@ -163,7 +163,7 @@ class Preferences extends Component {
     componentDidMount(){
         var id = 1;
         const wordList = []
-        this.state.words.map(word => {
+        this.state.words.sort().map(word => {
             wordList.push(
                 {
                     id: id,
@@ -292,63 +292,79 @@ class Preferences extends Component {
         ueqScale = (left, right, type) => {
             if(type){
                 return (
-                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale" style={{placeItems: "center", justify: "center"}}>
                     <RadioGroup row aria-label="position" name="position" >
-                        <span>{left}</span>
-                        <FormControlLabel
-                        value="-3"
-                        control={<GreenRadio/>}
-                        label="1"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="-2"
-                        control={<GreenRadio/>}
-                        label="2"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="-1"
-                        control={<GreenRadio/>}
-                        label="3"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="0"
-                        control={<GreenRadio/>}
-                        label="4"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="1"
-                        control={<GreenRadio/>}
-                        label="5"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="2"
-                        control={<GreenRadio/>}
-                        label="6"
-                        labelPlacement="top"
-                        />
-                        <FormControlLabel
-                        value="3"
-                        control={<GreenRadio/>}
-                        label="7"
-                        labelPlacement="top"
-                        />
-                    <span>{right}</span>
+                        <Grid container spacing={1}>
+                                            
+                            <Grid item xs={2}>
+                            <span>{left}</span>
+                            </Grid>
+
+                            <Grid item xs={8}>
+                            <FormControlLabel
+                            value="-3"
+                            control={<GreenRadio/>}
+                            label="1"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="-2"
+                            control={<GreenRadio/>}
+                            label="2"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="-1"
+                            control={<GreenRadio/>}
+                            label="3"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="0"
+                            control={<GreenRadio/>}
+                            label="4"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="1"
+                            control={<GreenRadio/>}
+                            label="5"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="2"
+                            control={<GreenRadio/>}
+                            label="6"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="3"
+                            control={<GreenRadio/>}
+                            label="7"
+                            labelPlacement="top"
+                            />
+                            </Grid>
+                        <Grid item xs={2}>
+                        <span>{right}</span>
+                        </Grid>
+                    </Grid>
                     </RadioGroup>
                 </div>
-                </Row>
+                // </Row>
                 )
             }else{
                 return (
-                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale">
                     <RadioGroup row aria-label="position" name="position" >
+                    <Grid container spacing={1}>
+                                            
+                        <Grid item xs={2}>
                         <span>{left}</span>
+                        </Grid>
+
+                        <Grid item xs={8}>
                         <FormControlLabel
                         value="3"
                         control={<GreenRadio/>}
@@ -391,10 +407,14 @@ class Preferences extends Component {
                         label="7"
                         labelPlacement="top"
                         />
-                    <span>{right}</span>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <span>{right}</span>
+                        </Grid>
+                    </Grid>
                     </RadioGroup>
                 </div>
-                </Row>
+                // </Row>
                 )
             }
 
@@ -723,9 +743,10 @@ class Preferences extends Component {
                 {this.state.dataReceived ? 
                 <div className="survey-category">
                   <h1 style={{marginTop: "20px"}}>Survey</h1>
-                  <span>Please accomplish all the questions with the first answer you think of. All of these questions pertain to the method you used for the experiment.
-                      Feel free to ask for clarifications if you do not understand the question. Thank you!</span>
+                  <span>Please make sure to answer all the questions in the questionnaires below, you're not allowed to skip any questions. All of these questions are related to the method you used for the experiment and your experience with it. Thank you!</span>
                     <div>
+                    <br></br>
+                    <h3>Participant Details</h3>
                     <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}}></TextField>
                     <br></br>
                     <br></br>
@@ -750,7 +771,10 @@ class Preferences extends Component {
                             <div className="timePreferences">
                                 <h2>SUS Survey
                                 </h2>
-                                <p>*note: System refers to the method or processed you use to create a schedule in this experiment.</p>
+                                <p>Please accomplish all the questions with the first answer you think of. All of these questions pertain to the method you used for the experiment.
+                                    Feel free to ask for clarifications if you do not understand the question. Thank you!</p>
+                                <p>*note: System refers to the method or process you use to create a schedule in this experiment.</p>
+                                
                                 <div className="preference-category-content">
                                     {susStatements.map(statement => 
                                         this.susScale(statement)
@@ -763,14 +787,14 @@ class Preferences extends Component {
                                 </h2>
                                 <p>For the assessment of the method or process you used for this experiment, please fill out the following questionnaire.
                                     The questionnaire consists of pairs of contrasting attributes that may apply to
-                                    the product. The circles between the attributes represent gradations between
+                                    the process. The circles between the attributes represent gradations between
                                     the opposites. You can express your agreement with the attributes by ticking
                                     the circle that most closely reflects your impression</p>
                                 <p>Please decide spontaneously. Don’t think too long about your decision to
                                     make sure that you convey your original impression.</p>
                                 <p>Sometimes you may not be completely sure about your agreement with a
                                     particular attribute or you may find that the attribute does not apply completely
-                                    to the particular product. Nevertheless, please tick a circle in every line.</p>
+                                    to the particular process. Nevertheless, please tick a circle in every line.</p>
                                 <p>It is your personal opinion that counts. Please remember: there is no wrong or
                                     right answer!</p>
                                 <div className="preference-category-content">
@@ -797,10 +821,11 @@ class Preferences extends Component {
                             <div className="workloadPreferences">
                                 <h2>Subjective Mental Effort Questionnaire (SMEQ)
                                 </h2>
-                                <span>Use the slider to specify the amount of mental effort you exerted in the tasks.</span>
+                                <span>To assess mental effort you exerted in the tasks, use the slider that goes from 0-150 to specify the difficulty. The levels of difficulty is also found in the slider.</span>
                                 <div className="preference-category-content" >
-
-                                <div className="scale" style={{height: 500}}>
+                                
+                                <Row horizontal = 'center' style={{justifyContent: "center"}}>
+                                <div className="scale" style={{height: 500, placeItems: "center"}}>
                                 <PrettoSlider
                                 valueLabelDisplay="auto"
                                 orientation="vertical"
@@ -811,14 +836,14 @@ class Preferences extends Component {
                                 max={150}
                                 />
                                 </div>
-                                    
+                                </Row>
                                 </div>
                             </div>
 
                             <div className="panas-survey">
                                 <h2>PANAS
                                 </h2>
-                                <span>Below is a scale of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
+                                <span>This questionnaire contains 20-items of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
                                 <div className="preference-category-content">
                                         {panasStatements.map(statement => 
                                         this.panasScale(statement)
@@ -829,6 +854,7 @@ class Preferences extends Component {
                             <div className="stress-survey">
                                 <h2>Stress
                                 </h2>
+                                <p>We want to understand which specific parts of the process makes you feel stressed. Please answer the scale and explain your answer so we may understand what your logic and thought process was behind it.</p>
                                 <div className="preference-category-content">
                                     {stressStatements.map(statement => 
                                         this.stressScale(statement)
@@ -837,17 +863,18 @@ class Preferences extends Component {
                             </div>
 
                             <div className="classDetails">
-                                <h2>Word Word</h2>
+                                <h2>Word List</h2>
                                 
                                 <div className="preference-category-content">
                                 
                                     <div className={'wordlist-survey'}>
                                         <div className={'subheader'}>Word List</div>
+                                        <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
+                                        words that best describe your experience with it. You can choose as many words as you wish. </p>
                                         <Grid container spacing={1}>
                                             {/* <Grid item xs={12}> */}
                                             <Grid item xs={4}>
-                                            <p>Step 1: Read over the following list of words. Considering the method you have just used, tick those
-                                        words that best describe your experience with it. You can choose as many words as you wish. </p>
+                                            
                                             <FormGroup>
                                               {this.state.wordList.filter(word => word.id < 36).map((filteredWord)=>{
                                                   return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
@@ -919,6 +946,9 @@ class Preferences extends Component {
                             <div className="cognitive-survey">
                                 <h2>Cognitive Load
                                 </h2>
+                                <p>
+                                We want to understand which specific parts of the process makes you feel overwhelmed with cogntive load. Please answer the scale and explain your answer so we may understand what your logic and thought process was behind it.
+                                </p>
                                 <div className="preference-category-content">
                                     {cognitiveStatements.map(statement => 
                                         this.basicScale(statement)
@@ -929,6 +959,9 @@ class Preferences extends Component {
                             <div className="decision-survey">
                                 <h2>Decision-Making
                                 </h2>
+                                <p>
+                                We want to understand your thoughts in decision-making when creating schedules with the given method or process. Please answer the scale and explain your answer so we may understand what your logic and thought process was behind it.
+                                </p>
                                 <div className="preference-category-content">
                                     {decisionStatements.map(statement => 
                                         this.basicScale(statement)
@@ -938,8 +971,11 @@ class Preferences extends Component {
 
 
                             <div className="collab-survey">
-                                <h2>Collaboration
+                                <h2>Group Schedule Coordination
                                 </h2>
+                                <p>
+                                We want to understand your thoughts in coordinating with your friends when creating schedules with the given method or process. Please answer the scale and explain your answer so we may understand what your logic and thought process was behind it.
+                                </p>
                                 <div className="preference-category-content">
                                     {collabStatements.map(statement => 
                                         this.basicScale(statement)
@@ -950,10 +986,11 @@ class Preferences extends Component {
                             <div className="comments-survey">
                                 <h2>Comments
                                 </h2>
+                                <p>Feel free to leave any interesting comments and insights here if it was not covered in any of the questions above.</p>
                                 <div className="preference-category-content">
                                     <TextField
                                     id="standard-full-width"
-                                    label="You can specify here any interesting comments or insights you have about process"
+                                    label="Comments, insights, realizations"
                                     style={{ margin: 8 }}
                                     placeholder="Answer here"
                                     fullWidth
