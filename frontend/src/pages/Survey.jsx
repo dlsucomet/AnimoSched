@@ -1254,6 +1254,7 @@ class Preferences extends Component {
                             <div className="timePreferences">
                                 <h2>SUS Survey
                                 </h2>
+                                <p>*note: System refers to the method or processed you use to create a schedule in this experiment.</p>
                                 <div className="preference-category-content">
                                     {susStatements.map(statement => 
                                         this.susScale(statement)
@@ -1429,6 +1430,24 @@ class Preferences extends Component {
                                     {collabStatements.map(statement => 
                                         this.basicScale(statement)
                                     )}
+                                </div>
+                            </div>
+                            
+                            <div className="comments-survey">
+                                <h2>Comments
+                                </h2>
+                                <div className="preference-category-content">
+                                    <TextField
+                                    id="standard-full-width"
+                                    label="You can specify here any interesting comments or insights about process you have"
+                                    style={{ margin: 8 }}
+                                    placeholder="Answer here"
+                                    fullWidth
+                                    margin="normal"
+                                    // InputLabelProps={{
+                                    //     shrink: true,
+                                    // }}
+                                    />
                                 </div>
                             </div>
 
