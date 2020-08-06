@@ -38,6 +38,10 @@ import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Slider from '@material-ui/core/Slider';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const GreenRadio = withStyles({
     root: {
@@ -116,6 +120,14 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: "white",
             color: "#16775D"
+        },
+    
+        formControl: {
+        margin: theme.spacing(1),
+        minWidth: 500,
+        },
+        selectEmpty: {
+        marginTop: theme.spacing(2),
         },
     }
 });
@@ -778,9 +790,9 @@ class Preferences extends Component {
                 placeholder="Answer here"
                 fullWidth
                 margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
+                // InputLabelProps={{
+                //     shrink: true,
+                // }}
                 />
                 </div>
             </div>
@@ -928,12 +940,6 @@ class Preferences extends Component {
                     label="4"
                     labelPlacement="top"
                     />
-                    <FormControlLabel
-                    value="5"
-                    control={<GreenRadio/>}
-                    label="5"
-                    labelPlacement="top"
-                    />
                 <span>Very Easy</span>
                 </RadioGroup>
                 <div>
@@ -944,9 +950,9 @@ class Preferences extends Component {
                 placeholder="Answer here"
                 fullWidth
                 margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
+                // InputLabelProps={{
+                //     shrink: true,
+                // }}
                 />
                 </div>
             </div>
@@ -1227,7 +1233,28 @@ class Preferences extends Component {
                 {this.state.dataReceived ? 
                 <div className="survey-category">
                   <h1 style={{marginTop: "20px"}}>Survey</h1>
-                  <span>Include descriptions about this</span>
+                  <span>Please accomplish all the questions with the first answer you think of. All of these questions pertain to the method you used for the experiment.
+                      Feel free to ask for clarifications if you do not understand the question. Thank you!</span>
+                    <div>
+                    <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}}></TextField>
+                    <br></br>
+                    <br></br>
+                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}}></TextField>
+                    <br></br>
+                    <br></br>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Method Used</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        style={{width: "230px"}}
+                      
+                        >
+                        <MenuItem value={"Traditional Method"}>Your own usual method</MenuItem>
+                        <MenuItem value={"AnimoSched Method"}>AnimoSched method</MenuItem>
+                        </Select>
+                    </FormControl>
+                    </div>
                         <div>
                         </div>
                             <div className="timePreferences">
@@ -1243,6 +1270,18 @@ class Preferences extends Component {
                             <div className="ueq-survey">
                                 <h2>User Experience Questionnaire
                                 </h2>
+                                <p>For the assessment of the method or process you used for this experiment, please fill out the following questionnaire.
+                                    The questionnaire consists of pairs of contrasting attributes that may apply to
+                                    the product. The circles between the attributes represent gradations between
+                                    the opposites. You can express your agreement with the attributes by ticking
+                                    the circle that most closely reflects your impression</p>
+                                <p>Please decide spontaneously. Don’t think too long about your decision to
+                                    make sure that you convey your original impression.</p>
+                                <p>Sometimes you may not be completely sure about your agreement with a
+                                    particular attribute or you may find that the attribute does not apply completely
+                                    to the particular product. Nevertheless, please tick a circle in every line.</p>
+                                <p>It is your personal opinion that counts. Please remember: there is no wrong or
+                                    right answer!</p>
                                 <div className="preference-category-content">
                                 <Row horizontal = 'center' style={{justifyContent: "center"}}>
                                     <div style={{placeItems: "center"}}>
@@ -1260,6 +1299,27 @@ class Preferences extends Component {
                                         {nasaStatements.map(statement => 
                                         this.nasaScale(statement[0], statement[1])
                                     )}
+                                </div>
+                            </div>
+
+                            <div className="workloadPreferences">
+                                <h2>Subjective Mental Effort Questionnaire (SMEQ)
+                                </h2>
+                                <span>How difficult was the task for you?</span>
+                                <div className="preference-category-content" >
+
+                                <div className="scale" style={{height: 500}}>
+                                <PrettoSlider
+                                valueLabelDisplay="auto"
+                                orientation="vertical"
+                                // getAriaValueText={valuetext}
+                                defaultValue={0}
+                                aria-labelledby="vertical-slider"
+                                marks={marks}
+                                max={150}
+                                />
+                                </div>
+                                    
                                 </div>
                             </div>
 
@@ -1339,29 +1399,8 @@ class Preferences extends Component {
                                   </div>
                                 </div>
 
-                            <h1 style={{marginTop: "20px"}}>Experiment A - Solo Schedule Creation</h1>
-                            <span>Include descriptions about this</span>
 
-                            <div className="workloadPreferences">
-                                <h2>Subjective Mental Effort Questionnaire (SMEQ)
-                                </h2>
-                                
-                                <div className="preference-category-content" >
-
-                                <div className="scale" style={{height: 500}}>
-                                <PrettoSlider
-                                valueLabelDisplay="auto"
-                                orientation="vertical"
-                                // getAriaValueText={valuetext}
-                                defaultValue={0}
-                                aria-labelledby="vertical-slider"
-                                marks={marks}
-                                max={150}
-                                />
-                                </div>
-                                    
-                                </div>
-                            </div>
+                            
                           
                             <div className="cognitive-survey">
                                 <h2>Cognitive Load
