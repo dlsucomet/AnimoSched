@@ -688,19 +688,14 @@ class Preferences extends Component {
 
     handleChange = (e) => {
         this.setState({selectedValue: e.target.value})
-        
+
 
     }
 
     handleWordChange = (event) => {
-      var newWordList = [...this.state.wordList];
-      newWordList.map(value=>{
-          if(value.id === Number(event.target.id)){
-              value.checked = event.target.checked;
-          }
-      })
+      var newWordList = this.state.wordList;
+      newWordList[event.target.id - 1].checked = event.target.checked;
       this.setState({wordList: newWordList});
-      // this.setState({[event.target.name]: event.target.checked });
    };
         susScale = (statement) => {
             return (
@@ -1365,7 +1360,7 @@ class Preferences extends Component {
                                             <Grid item xs={4}>
                                             <FormGroup>
                                                 {this.state.wordList.filter(word => word.id >= 36 && word.id <= 70).map((filteredWord)=>{
-                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/>}label={filteredWord.word} />;
+                                                  return <FormControlLabel control = {<GreenCheckbox checked={filteredWord.checked} onChange={this.handleWordChange} id={filteredWord.id}  color="primary"/> } label={filteredWord.word} />;
                                                 })}
                                                 {/* <FormControlLabel
                                                 control = {<GreenCheckbox checked={this.state.wordList[0].checked} onChange={this.handleWordChange} id={this.state.wordList[0].id}  color="primary"/>}label={this.state.wordList[0].word} />
