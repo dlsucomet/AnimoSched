@@ -24,6 +24,7 @@ import ViewFriendsPage from "./pages/FriendPage.jsx";
 import SurveyPage from "./pages/Survey.jsx";
 import Menu from "./components/Menu.jsx";
 import CompareSchedulePage from "./pages/CompareSchedule.jsx";
+import EmailVerificationCompletePage from "./pages/EmailVerificationComplete.jsx";
 
 import axios from 'axios';
 
@@ -328,6 +329,12 @@ class App extends Component {
     )
   }
 
+  emailVerificationCompletePage = () => {
+    return (
+      <EmailVerificationCompletePage/>
+    );
+  }
+
   render() {
 
     return (
@@ -346,6 +353,7 @@ class App extends Component {
           }
           <Route exact path="/search_courses" component={this.searchCoursesPage} />
           <Route exact path="/register" component={this.registerPage} />
+          <Route exact path="/email_verified" component={this.emailVerificationCompletePage} />
           <Route exact path="/password_reset" component={this.resetPasswordPage} />
           <Route exact path="/password_reset_done" component={this.resetPasswordDonePage} />
           <Route path="/reset/:uidb64/:token" component={this.resetPasswordConfirmPage} />
