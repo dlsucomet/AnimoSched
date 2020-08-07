@@ -157,13 +157,13 @@ class Preferences extends Component {
             currentWords: [],
             words: ['Accessible', 'Effortless', 'Ordinary', 'Advanced', 'Empowering', 'Organised', 'Ambiguous', 'Energetic', 'Overwhelming', 'Annoying', 'Engaging', 'Patronising', 'Appealing', 'Entertaining', 'Poor quality', 'Approachable', 'Exciting', 'Powerful', 'Attractive', 'Expected', 'Predictable', 'Awkward', 'Familiar', 'Professional', 'Boring', 'Fast', 'Relevant', 'Bright', 'Faulty', 'Reliable', 'Business-like', 'Flexible', 'Responsive', 'Busy', 'Fresh', 'Rigid', 'Clean', 'Friendly', 'Satisfying', 'Clear', 'Frustrating', 'Secure', 'Cluttered', 'Fun', 'Simple', 'Compelling', 'Hard to Use', 'Simplistic', 'Complex', 'High quality', 'Slow', 'Comprehensive', 'Illogical', 'Sophisticated', 'Confusing', 'Impressive', 'Stable', 'Consistent', 'Inadequate', 'Stimulating', 'Contradictory', 'Incomprehensible', 'Straightforward', 'Controllable', 'Inconsistent', 'Stressful', 'Convenient', 'Ineffective', 'System-oriented', 'Counter-intuitive', 'Innovative', 'Time-consuming', 'Creative', 'Insecure', 'Time-saving', 'Credible', 'Intimidating', 'Too technical', 'Cutting edge', 'Intuitive', 'Trustworthy', 'Dated', 'Irrelevant', 'Unattractive', 'Desirable', 'Meaningful', 'Unconventional', 'Difficult', 'Misleading', 'Understandable', 'Distracting', 'Motivating', 'Unpredictable', 'Dull', 'New', 'Unrefined', 'Easy to use', 'Non-standard', 'Usable', 'Effective', 'Obscure', 'Useful', 'Efficient', 'Old', 'Vague'],
             wordList : [],
-            susResult: [{question: "I think I would like to use this system frequently", value: "4"}],
-            ueqResult: [{question: "annoying/enjoyable", value:"3"}],
-            nasaReult: [{question: "demand", value:"3"}],
+            susResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "I think I would like to use this system frequently", value: "4"}]*/,
+            ueqResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "annoying/enjoyable", value:"3"}]*/,
+            nasaResult: [0, 0, 0, 0, 0, 0,] /*[{question: "demand", value:"3"}]*/,
             smeqResult: 30,
-            panasResult: [{question: "interested", value: "2"}],
-            stressResult: [{question: "I find creating schedules for myself to be stressful", value: "1"}],
-            wordResult:[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}],
+            panasResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "interested", value: "2"}]*/,
+            stressResult: [] /*[{question: "I find creating schedules for myself to be stressful", value: "1"}]*/,
+            wordResult: []/*[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}]*/,
             cognitiveResult: [],
             decisionResult: [],
             groupResult: [],
@@ -212,11 +212,11 @@ class Preferences extends Component {
       }
       this.setState({wordList: newWordList, currentWords: newCurrentWords});
    };
-        susScale = (statement) => {
+        susScale = (statement, id) => {
             return (
             <div className="scale">
                 <span className={"survey-statements"}>{statement}</span>
-                <RadioGroup row aria-label="position" name="position" >
+                <RadioGroup row aria-label="position" name={"sus"+id}  onChange={(event)=>this.handleRadioChange(event, "sus", id)}>
                     <span >Strongly Disagree</span>
                     <FormControlLabel
                     value="1"
@@ -303,12 +303,12 @@ class Preferences extends Component {
             )
         }
 
-        ueqScale = (left, right, type) => {
+        ueqScale = (left, right, type, id) => {
             if(type){
                 return (
                 // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale" style={{placeItems: "center", justify: "center"}}>
-                    <RadioGroup row aria-label="position" name="position" >
+                    <RadioGroup row aria-label="position" name={"ueq"+id}  onChange={(event)=>this.handleRadioChange(event, "ueq", id)}>
                         <Grid container spacing={1}>
                                             
                             <Grid item xs={2}>
@@ -371,7 +371,7 @@ class Preferences extends Component {
                 return (
                 // <Row horizontal = 'center' style={{justifyContent: "center"}}>
                 <div className="scale">
-                    <RadioGroup row aria-label="position" name="position" >
+                    <RadioGroup row aria-label="position" name={"ueq"+id}  onChange={(event)=>this.handleRadioChange(event, "ueq", id)}>
                     <Grid container spacing={1}>
                                             
                         <Grid item xs={2}>
@@ -483,11 +483,11 @@ class Preferences extends Component {
             )
         }
 
-        panasScale = (statement) => {
+        panasScale = (statement, id) => {
             return (
             <div className="scale">
                 <span className={"survey-statements"}>{statement}</span>
-                <RadioGroup row aria-label="position" name="position" >
+                <RadioGroup row aria-label="position" name={"panas"+id}  onChange={(event)=>this.handleRadioChange(event, "panas", id)}>
                     <span >Very slightly or not at all</span>
                     <FormControlLabel
                     value="1"
@@ -526,12 +526,12 @@ class Preferences extends Component {
             )
         }
 
-        nasaScale = (type, statement) => {
+        nasaScale = (type, statement, id) => {
             return (
             <div className="scale">
                  <h5>{type}</h5>
                 <span className={"survey-statements"}>{statement}</span>
-                <RadioGroup row aria-label="position" name="position" >
+                <RadioGroup row aria-label="position" name={"nasa"+id}  onChange={(event)=>this.handleRadioChange(event, "nasa", id)}>
                    
                     <span >Very Low</span>
                     <FormControlLabel
@@ -601,10 +601,47 @@ class Preferences extends Component {
         }
 
  
+    handleRadioChange = (event, type, index) => {
+        console.log(event.target.value);
+        console.log(type);
+        console.log(index);
+        var score = event.target.value;
+        if(type == "sus"){
+            var susResult = this.state.susResult;
+            susResult.splice(index, 1, score);
+            console.log(susResult);
+            console.log(this.state.susResult);
+            // this.setState({susResult});
+        }else if(type == "ueq"){
+            var ueqResult = this.state.ueqResult;
+            ueqResult.splice(index, 1, score);
+            console.log(ueqResult);
+            console.log(this.state.ueqResult);
+        }else if (type == "nasa"){
+            var nasaResult = this.state.nasaResult;
+            nasaResult.splice(index, 1, score);
+            console.log(nasaResult);
+            console.log(this.state.nasaResult);
+        }else if (type == "panas"){
+            var panasResult = this.state.panasResult;
+            panasResult.splice(index, 1, score);
+            console.log(panasResult);
+            console.log(this.state.panasResult);
+        }else if (type == "smeq"){
+            this.setState({smeqResult: score});
+        }else if (type == "cognitive"){
+            
+        }else if (type == "decision"){
+            
+        }else if (type == "group"){
+            
+        }
 
+        
+        }
     handleSubmit = (event) => {
         event.preventDefault();
-        
+        console.log("submit pressed")
         // if (value === 'best') {
         //   setHelperText('You got it!');
         //   setError(false);
@@ -615,6 +652,7 @@ class Preferences extends Component {
         //   setHelperText('Please select an option.');
         //   setError(true);
         // }
+        
       };
 
 
@@ -810,8 +848,8 @@ class Preferences extends Component {
                                 <p>*note: System refers to the method or process you use to create a schedule in this experiment.</p>
                                 
                                 <div className="preference-category-content">
-                                    {susStatements.map(statement => 
-                                        this.susScale(statement)
+                                    {susStatements.map((statement, index)=> 
+                                        this.susScale(statement, index)
                                     )}
                                 </div>
                             </div>
@@ -834,8 +872,8 @@ class Preferences extends Component {
                                 <div className="preference-category-content">
                                 <Row horizontal = 'center' style={{justifyContent: "center"}}>
                                     <div style={{placeItems: "center"}}>
-                                        {ueqStatements.map(statement => 
-                                        this.ueqScale(statement[0], statement[1], statement[2])
+                                        {ueqStatements.map((statement, index )=> 
+                                        this.ueqScale(statement[0], statement[1], statement[2], index)
                                     )}</div>
                                 </Row>
                                 </div>
@@ -846,8 +884,8 @@ class Preferences extends Component {
                                 </h2>
                                 <span>This questionnaire assesses the work load you've experienced with the tasks.</span>
                                 <div className="preference-category-content">
-                                        {nasaStatements.map(statement => 
-                                        this.nasaScale(statement[0], statement[1])
+                                        {nasaStatements.map((statement, index )=> 
+                                        this.nasaScale(statement[0], statement[1], index)
                                     )}
                                 </div>
                             </div>
@@ -879,8 +917,8 @@ class Preferences extends Component {
                                 </h2>
                                 <span>This questionnaire contains 20-items of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
                                 <div className="preference-category-content">
-                                        {panasStatements.map(statement => 
-                                        this.panasScale(statement)
+                                        {panasStatements.map((statement, index) => 
+                                        this.panasScale(statement, index)
                                     )}
                                 </div>
                             </div>
