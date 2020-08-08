@@ -147,7 +147,7 @@ function Alert(props) {
 
 
 
-class Preferences extends Component {
+class Survey extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -1022,7 +1022,7 @@ class Preferences extends Component {
     }
   }
 
-  Preferences.propTypes={
+  Survey.propTypes={
     classes: PropTypes.object.isRequired,
   };
-export default withStyles(styles)(Preferences);
+export default withStyles(styles)(Survey);

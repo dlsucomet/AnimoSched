@@ -22,6 +22,7 @@ import SearchCoursesSimplePage from "./pages/SearchCoursesSimple.jsx";
 import SearchCoursesGuestPage from "./pages/SearchCoursesGuest.jsx";
 import ViewFriendsPage from "./pages/FriendPage.jsx";
 import SurveyPage from "./pages/Survey.jsx";
+import AdminPage from "./pages/Admin.jsx";
 import Menu from "./components/Menu.jsx";
 import CompareSchedulePage from "./pages/CompareSchedule.jsx";
 
@@ -328,6 +329,14 @@ class App extends Component {
     )
   }
 
+  adminPage = (props) => {
+    return (
+      <AdminPage
+        params={props.match.params}
+      />
+    )
+  }
+
   render() {
 
     return (
@@ -335,6 +344,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" render={this.mainPage} />
           <Route exact path="/survey" render={this.surveyPage} />
+          <Route exact path="/admin" render={this.adminPage} />
           {!this.state.logged_in &&
           <Route exact path="/login" component={this.loginPage}/>
           }
