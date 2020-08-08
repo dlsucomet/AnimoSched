@@ -162,16 +162,19 @@ class Preferences extends Component {
             nasaResult: [0, 0, 0, 0, 0, 0,] /*[{question: "demand", value:"3"}]*/,
             smeqResult: 30,
             panasResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "interested", value: "2"}]*/,
-            stressResult: [] /*[{question: "I find creating schedules for myself to be stressful", value: "1"}]*/,
+            stressResult: [0,0,0,0,0,0,0,] /*[{question: "I find creating schedules for myself to be stressful", value: "1"}]*/,
             wordResult: []/*[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}]*/,
             cognitiveResult: [0,0,0,0,0,0,0,],
             decisionResult: [0,0,0,0,],
             groupResult: [0,0,0,],
             comments: "",
-            stressExplanation: [],
-            cognitiveExplanation: [],
-            decisionExplanation: [],
-            groupExplanation: [],
+            stressExplanation: [0,0,0,0,0,0,0,],
+            cognitiveExplanation: [0,0,0,0,0,0,0,],
+            decisionExplanation: [0,0,0,0,],
+            groupExplanation: [0,0,0,],
+            name: "",
+            groupno: "",
+            method: "",
 
 
 
@@ -478,6 +481,7 @@ class Preferences extends Component {
                 placeholder="Answer here"
                 fullWidth
                 margin="normal"
+                onChange={(event)=>this.handleField(event, "type", id)}
                 // InputLabelProps={{
                 //     shrink: true,
                 // }}
@@ -653,6 +657,42 @@ class Preferences extends Component {
 
         
         }
+    
+    handleName=(event)=>{
+        this.setState({name: event.target.value});
+    }
+    handleField=(event, type, index)=>{
+        var explanation = event.target.value;
+        if(type == "name"){
+            this.setState({name: explanation});
+            console.log(event.target.value);
+        }else if (type == "groupno"){
+            this.setState({groupno: explanation});
+        }else if(type == "method"){
+            this.setState({method: explanation});
+        }else if (type == "cogntive"){
+            var cognitiveExplanation = this.state.cognitiveExplanation;
+            cognitiveExplanation.splice(index, 1, explanation);
+            console.log(cognitiveExplanation);
+            console.log(this.state.cognitiveExplanation);
+
+        }else if (type == "decision"){
+            var decisionExplanation = this.state.decisionExplanation;
+            decisionExplanation.splice(index, 1, explanation);
+            console.log(decisionExplanation);
+            console.log(this.state.decisionExplanation);
+
+        }else if (type == "group"){
+            var groupExplanation = this.state.groupExplanation;
+            groupExplanation.splice(index, 1, explanation);
+            console.log(groupExplanation);
+            console.log(this.state.groupExplanation);
+
+        }else if (type == "comments"){
+            this.setState({comments: event.target.value});
+
+        }
+    }
     handleSubmit = (event) => {
         event.preventDefault();
         console.log("submit pressed")
@@ -834,10 +874,10 @@ class Preferences extends Component {
                     <br></br>
                     
                     <h3>Participant Details</h3>
-                    <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}}></TextField>
+                    <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "name", "none")}></TextField>
                     <br></br>
                     <br></br>
-                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}}></TextField>
+                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}} value={this.state.name} onChange={(event)=>this.handleField(event, "groupno", "none")}></TextField>
                     <br></br>
                     <br></br>
                     <FormControl className={classes.formControl}>
@@ -846,7 +886,7 @@ class Preferences extends Component {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         style={{width: "230px"}}
-                      
+                        onChange={(event)=>this.handleField(event, "method", "none")}
                         >
                         <MenuItem value={"Traditional Method"}>Your own usual method</MenuItem>
                         <MenuItem value={"AnimoSched Method"}>AnimoSched method</MenuItem>
@@ -908,7 +948,7 @@ class Preferences extends Component {
                             <div className="workloadPreferences">
                                 <h2>Subjective Mental Effort Questionnaire (SMEQ)
                                 </h2>
-                                <span>To assess mental effort you exerted in the tasks, use the slider that goes from 0-150 to specify the difficulty. The levels of difficulty is also found in the slider.</span>
+                                <span>To assess mental effort you exerted in the tasks, use the slider that goes from 0-150 to specify the difficulty. The levels of difficulty are also found in the slider.</span>
                                 <div className="preference-category-content" >
                                 
                                 <Row horizontal = 'center' style={{justifyContent: "center"}}>
@@ -930,7 +970,7 @@ class Preferences extends Component {
                             <div className="panas-survey">
                                 <h2>PANAS
                                 </h2>
-                                <span>This questionnaire contains 20-items of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
+                                <span>This questionnaire contains 10-items of emotions. Please answer them based on all the emotions you've felt throughout the tasks.</span>
                                 <div className="preference-category-content">
                                         {panasStatements.map((statement, index) => 
                                         this.panasScale(statement, index)
