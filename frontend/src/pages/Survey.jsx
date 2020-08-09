@@ -161,7 +161,7 @@ class Survey extends Component {
             susResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "I think I would like to use this system frequently", value: "4"}]*/,
             ueqResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "annoying/enjoyable", value:"3"}]*/,
             nasaResult: [0, 0, 0, 0, 0, 0,] /*[{question: "demand", value:"3"}]*/,
-            smeqResult: 30,
+            smeqResult: 0,
             panasResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "interested", value: "2"}]*/,
             stressResult: [0,0,0,0,0,0,0,] /*[{question: "I find creating schedules for myself to be stressful", value: "1"}]*/,
             wordResult: []/*[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}]*/,
@@ -176,7 +176,6 @@ class Survey extends Component {
             name: "",
             groupno: "",
             method: "",
-
         }
     }
 
@@ -581,16 +580,19 @@ class Survey extends Component {
 
  
     handleRadioChange = (event, type, index) => {
-        console.log(event.target.value);
-        console.log(type);
-        console.log(index);
-        var score = event.target.value;
+        // console.log(event.target.value);
+        // console.log(type);
+        // console.log(index);
+        if(type == "smeq"){
+            this.state.smeqResult = event;
+        }else{
+            var score = event.target.value;
+        }
         if(type == "sus"){
             var susResult = this.state.susResult;
             susResult.splice(index, 1, score);
             console.log(susResult);
             console.log(this.state.susResult);
-            // this.setState({susResult});
         }else if(type == "ueq"){
             var ueqResult = this.state.ueqResult;
             ueqResult.splice(index, 1, score);
@@ -606,10 +608,6 @@ class Survey extends Component {
             panasResult.splice(index, 1, score);
             console.log(panasResult);
             console.log(this.state.panasResult);
-        }else if (type == "smeq"){
-            this.setState({smeqResult: score});
-            console.log(score);
-            console.log(this.state.smeqResult);
         }else if (type == "cognitive"){
             var cognitiveResult = this.state.cognitiveResult;
             cognitiveResult.splice(index, 1, score);
@@ -620,7 +618,6 @@ class Survey extends Component {
             decisionResult.splice(index, 1, score);
             console.log(decisionResult);
             console.log(this.state.decisionResult);
-            
         }else if (type == "group"){
             var groupResult = this.state.groupResult;
             groupResult.splice(index, 1, score);
@@ -641,13 +638,14 @@ class Survey extends Component {
     handleFieldChange = (event, type) => {
         var explanation = event.target.value;
         if(type == "name"){
-            this.name = explanation;
+            this.state.name = explanation;
+            console.log(this.state.name)
             // this.setState({name: explanation});
         }else if (type == "groupno"){
-            this.groupno = explanation;
+            this.state.groupno = explanation;
             // this.setState({groupno: explanation});
         }else if(type == "method"){
-            this.method = explanation;
+            this.state.method = explanation;
             // this.setState({method: explanation});
         }else if (type == "cogntive"){
             // var cognitiveExplanation = this.state.cognitiveExplanation;
@@ -668,13 +666,34 @@ class Survey extends Component {
             // console.log(this.state.groupExplanation);
 
         }else if (type == "comments"){
-            // this.setState({comments: event.target.value});
+            this.state.comments = explanation;
 
         }
     }
     handleSubmit = (event) => {
         event.preventDefault();
         console.log("submit pressed")
+        var results = {
+            susResult: this.state.susResult,
+            ueqResult: this.state.ueqResult,
+            nasaResult: this.state.nasaResult,
+            smeqResult: this.state.smeqResult,
+            panasResult: this.state.panasResult,
+            stressResult: this.state.stressResult,
+            cognitiveResult: this.state.cognitiveResult,
+            decisionResult: this.state.decisionResult,
+            groupResult: this.state.groupResult,
+            comments: this.state.comments,
+            name: this.state.name,
+            groupno: this.state.groupno,
+            method: this.state.method
+        }
+        console.log(results)
+        axios.post('https://archerone-backend.herokuapp.com/api/survey/',results)
+        .then(res => {
+            window.location.reload()
+        }).catch(err => {
+        })
         // if (value === 'best') {
         //   setHelperText('You got it!');
         //   setError(false);
@@ -954,7 +973,7 @@ class Survey extends Component {
                                 aria-labelledby="vertical-slider"
                                 marks={marks}
                                 max={150}
-                                onChange={(event)=>this.handleRadioChange(event, "smeq", "none")}
+                                onChange={(event, value)=>this.handleRadioChange(value , "smeq", "none")}
                                 />
                                 </div>
                                 </Row>
@@ -1151,6 +1170,7 @@ class Survey extends Component {
                                     placeholder="Answer here"
                                     fullWidth
                                     margin="normal"
+                                    onChange={(event) => this.handleField(event, "comments")}
                                     // InputLabelProps={{
                                     //     shrink: true,
                                     // }}
