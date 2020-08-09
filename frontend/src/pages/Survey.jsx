@@ -634,6 +634,8 @@ class Survey extends Component {
             console.log(this.state.panasResult);
         }else if (type == "smeq"){
             this.setState({smeqResult: score});
+            console.log(score);
+            console.log(this.state.smeqResult);
         }else if (type == "cognitive"){
             var cognitiveResult = this.state.cognitiveResult;
             cognitiveResult.splice(index, 1, score);
@@ -770,25 +772,39 @@ class Survey extends Component {
 
         const cognitiveStatements = [
             'Overall, the task of creating a schedule for yourself was?',
-            'Keeping track of the classes I like.',
-            'Keeping track of the classes I dislike.',
-            'Resolving course conflicts.',
-            'Keeping track of the schedule I want.',
-            'Adjusting my schedule based on changes.',
-            'Keeping track of all the necessary information I need to know for my schedule',
-            'Determining which are the similar classes I have with my friends'
+            'Keeping track of the classes I like was?',
+            'Keeping track of the classes I dislike was?',
+            'Keeping track of all the necessary information I need to create my schedule was?',
+            "Keeping track of the classes I can't get (full or unavailable) was?",
+            "Keeping track of what I want in a schedule was?",
+            "Organizing my choices and options was?",
+            "Visualizing my schedule was?",
+            'Resolving course conflicts was?',
+            'Creating different schedule possibilities was?',
+            "Keeping track of the different schedule possibilities was?",
+            "Keeping track of the schedule I want was?",
+            'Adjusting my schedule based on changes was?',
+           
         ]
 
         const decisionStatements = [
-            'Efficiently weighing my options and decisions.',
-            'Picking my classes.',
-            'Picking a final schedule.',
-            'Prioritizing my preferences.',
+            'Overall, making decisions while creating a schedule was?',
+            'Efficiently weighing my choices and options was?',
+            'Picking my classes was?',
+            'Picking a final schedule was?',
+            'Picking between equally good choices was?',
+            'Picking between equally bad choices was?',
         ]
 
         const collabStatements = [
-            'Coordinating with my friends to create a schedule',
-            'Coordinating with my friends with the similar classes we need',
+            'Overall, the task of creating a schedule with your friends was?',
+            'Coordinating with my friends to create a schedule was?',
+            'Coordinating possible similar classes with all of my friends was?',
+            "Factoring in my friends' preferences in my schedule was?",
+            "Keeping track and resolving possible conflicts between our schedules was?",
+            "Creating multiple possible schedules with my friends was?",
+            "Adjusting my schedule due to sudden changes with my friends was?",
+            "Comparing my schedule with my friends' schedule was?",
             'Picking a schedule my friends and I are happy with',
         ]
 
@@ -964,6 +980,7 @@ class Survey extends Component {
                                 aria-labelledby="vertical-slider"
                                 marks={marks}
                                 max={150}
+                                onChange={(event)=>this.handleRadioChange(event, "smeq", "none")}
                                 />
                                 </div>
                                 </Row>
