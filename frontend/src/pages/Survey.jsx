@@ -43,6 +43,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import _ from 'underscore';
+import { Redirect } from "react-router";
 
 const GreenRadio = withStyles({
     root: {
@@ -176,6 +177,8 @@ class Survey extends Component {
             name: "",
             groupno: "",
             method: "",
+            snackBar: false,
+            redirect: false
         }
     }
 
@@ -688,11 +691,15 @@ class Survey extends Component {
             groupno: this.state.groupno,
             method: this.state.method
         }
-        console.log(results)
-        axios.post('https://archerone-backend.herokuapp.com/api/survey/',results)
+        console.log(JSON.stringify(results).length)
+        axios.post('https://archerone-backend.herokuapp.com/api/surveys/',{
+            data: JSON.stringify(results)
+        })
         .then(res => {
-            window.location.reload()
+            this.setState({redirect: true})
         }).catch(err => {
+            console.log(err.response)
+            this.setState({snackBar: true})
         })
         // if (value === 'best') {
         //   setHelperText('You got it!');
@@ -707,6 +714,9 @@ class Survey extends Component {
         
       };
 
+      handleCloseSnackBar = () => {
+          this.setState({snackBar: false})
+      }
 
 
     render() {
@@ -879,6 +889,9 @@ class Survey extends Component {
                 {this.state.dataReceived ? 
                 <div className="survey-category">
                    <div>
+                    {this.state.redirect ?
+                    <Redirect to="/surveythanks"></Redirect>
+                    : null}
                    <form onSubmit={this.handleSubmit}>
                     <h1 style={{marginTop: "20px"}}>Survey</h1>
                     <span>Please make sure to answer all the questions in the questionnaires below, you're not allowed to skip any questions. All of these questions are related to the method you used for the experiment and your experience with it. Thank you!</span>
@@ -1188,6 +1201,11 @@ class Survey extends Component {
                             </Button></center>
                     </form>
                     </div>             
+                              <Snackbar open={this.state.snackBar} autoHideDuration={4000} onClose={this.handleCloseSnackBar}>
+                                <Alert onClose={this.handleCloseSnackBar} severity="error">
+                                  {"Error in submitting form."}
+                                </Alert>
+                              </Snackbar>
                 </div>
                 : 
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh"}}>
