@@ -42,6 +42,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import _ from 'underscore';
 
 const GreenRadio = withStyles({
     root: {
@@ -176,8 +177,6 @@ class Survey extends Component {
             groupno: "",
             method: "",
 
-
-
         }
     }
 
@@ -199,26 +198,24 @@ class Survey extends Component {
 
     handleChange = (e) => {
         this.setState({selectedValue: e.target.value})
-
-
     }
 
-    handleWordChange = (event) => {
-      var newWordList = this.state.wordList;
-      var newCurrentWords = [];
-      newWordList[event.target.id - 1].checked = event.target.checked;
-      if(event.target.checked){
-        newCurrentWords = this.state.currentWords;
-        newCurrentWords.push(newWordList[event.target.id - 1]);
-      }else{
-        this.state.currentWords.map(word => {
-            if(event.target.id != word.id){
-                newCurrentWords.push(word)
-            }
-        })
-      }
-      this.setState({wordList: newWordList, currentWords: newCurrentWords});
-   };
+//     handleWordChange = (event) => {
+//       var newWordList = this.state.wordList;
+//       var newCurrentWords = [];
+//       newWordList[event.target.id - 1].checked = event.target.checked;
+//       if(event.target.checked){
+//         newCurrentWords = this.state.currentWords;
+//         newCurrentWords.push(newWordList[event.target.id - 1]);
+//       }else{
+//         this.state.currentWords.map(word => {
+//             if(event.target.id != word.id){
+//                 newCurrentWords.push(word)
+//             }
+//         })
+//       }
+//       this.setState({wordList: newWordList, currentWords: newCurrentWords});
+//    };
         susScale = (statement, id) => {
             return (
             <div className="scale">
@@ -663,33 +660,39 @@ class Survey extends Component {
     }
     handleField=(event, type, index)=>{
         var explanation = event.target.value;
+        this.handleFieldChange(event, type, index)
+    }
+    handleFieldChange = (event, type, index) => {
+        var explanation = event.target.value;
         if(type == "name"){
-            this.setState({name: explanation});
-            console.log(event.target.value);
+            this.name = explanation;
+            // this.setState({name: explanation});
         }else if (type == "groupno"){
-            this.setState({groupno: explanation});
+            this.groupno = explanation;
+            // this.setState({groupno: explanation});
         }else if(type == "method"){
-            this.setState({method: explanation});
+            this.method = explanation;
+            // this.setState({method: explanation});
         }else if (type == "cogntive"){
-            var cognitiveExplanation = this.state.cognitiveExplanation;
-            cognitiveExplanation.splice(index, 1, explanation);
-            console.log(cognitiveExplanation);
-            console.log(this.state.cognitiveExplanation);
+            // var cognitiveExplanation = this.state.cognitiveExplanation;
+            // cognitiveExplanation.splice(index, 1, explanation);
+            // console.log(cognitiveExplanation);
+            // console.log(this.state.cognitiveExplanation);
 
         }else if (type == "decision"){
-            var decisionExplanation = this.state.decisionExplanation;
-            decisionExplanation.splice(index, 1, explanation);
-            console.log(decisionExplanation);
-            console.log(this.state.decisionExplanation);
+            // var decisionExplanation = this.state.decisionExplanation;
+            // decisionExplanation.splice(index, 1, explanation);
+            // console.log(decisionExplanation);
+            // console.log(this.state.decisionExplanation);
 
         }else if (type == "group"){
-            var groupExplanation = this.state.groupExplanation;
-            groupExplanation.splice(index, 1, explanation);
-            console.log(groupExplanation);
-            console.log(this.state.groupExplanation);
+            // var groupExplanation = this.state.groupExplanation;
+            // groupExplanation.splice(index, 1, explanation);
+            // console.log(groupExplanation);
+            // console.log(this.state.groupExplanation);
 
         }else if (type == "comments"){
-            this.setState({comments: event.target.value});
+            // this.setState({comments: event.target.value});
 
         }
     }
@@ -877,7 +880,7 @@ class Survey extends Component {
                     <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "name", "none")}></TextField>
                     <br></br>
                     <br></br>
-                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}} value={this.state.name} onChange={(event)=>this.handleField(event, "groupno", "none")}></TextField>
+                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "groupno", "none")}></TextField>
                     <br></br>
                     <br></br>
                     <FormControl className={classes.formControl}>

@@ -19,8 +19,8 @@ class Admin extends Component {
         }
     }
 
-    createData(course, classnumber, idnum, enrolled, capacity) {
-        return { course, classnumber, idnum, enrolled, capacity};
+    createData(course, section, classnumber, idnum, enrolled, capacity) {
+        return { course, section, classnumber, idnum, enrolled, capacity};
     }
 
     componentDidMount(){
@@ -29,12 +29,15 @@ class Admin extends Component {
         axios.get('https://archerone-backend.herokuapp.com/api/carts/').then(res => {
             res.data.map(cart => {
                 axios.get('https://archerone-backend.herokuapp.com/api/getclass/'+cart.classnumber).then(res => {
-                    var data = res.data[0]
-                    rows.push(data.course, data.classnumber, cart.idnum, data.current_enrolled, data.max_enrolled)
-                    // this.setState({rows, dataReceived: true})
+                    var data = res.data[0][0]
+                    console.log(res.data)
+                    if(data != undefined){
+                        rows.push(this.createData(data.course, data.section, data.classnumber, cart.idnum, data.current_enrolled, data.max_enrolled))
+                        this.setState({rows, dataReceived: true})
+                        console.log(rows)
+                    }
                 })
             })
-            console.log(rows)
         })
     }
 
@@ -57,7 +60,7 @@ class Admin extends Component {
                 {this.state.rows.map((row) => (
                     <TableRow key={row.course}>
                     <TableCell component="th" scope="row">
-                        {row.course}
+                        {row.course + ' ' + row.section}
                     </TableCell>
                     <TableCell align="right">{row.classnumber}</TableCell>
                     <TableCell align="right">{row.idnum}</TableCell>
