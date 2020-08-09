@@ -830,7 +830,7 @@ class Survey extends Component {
             ['impractical', 'practical', true],
             ['organized', 'cluttered', false],
             ['attractive', 'unattractive', false],
-            ['friendly', 'friendly', false],
+            ['friendly', 'unfriendly', false],
             ['conservative', 'innovative', true]
         ]
 
@@ -980,18 +980,7 @@ class Survey extends Component {
                                     {stressStatements.map(statement => 
                                         this.stressScale(statement)
                                     )}
-                                     <div>
-                                        <h5>Please include any other insights you had about stress and your explanation for how you answered the questions above.</h5>
-                                        <TextField
-                                        id="standard-full-width"
-                                        label="Explain your answers above here including the thought process you had related to it"
-                                        style={{ margin: 8 }}
-                                        placeholder="Answer here"
-                                        fullWidth
-                                        margin="normal"
-                                        onChange={(event)=>this.handleField(event, "stress")}
-                                        />
-                                    </div>
+                                     
                                 </div>
                             </div>
 
@@ -1077,31 +1066,29 @@ class Survey extends Component {
                             
                           
                             <div className="cognitive-survey">
-                                <h2>Cognitive Load
+                                <h2>Cognitive Load & Decision-making
                                 </h2>
                                 <p>
-                                We want to understand which specific parts of the process makes you feel overwhelmed with cogntive load. Please answer the scale and explain your answer so we may understand what your logic and thought process was behind it.
+                                We want to understand which specific parts of the process makes you feel overwhelmed (cognitive load) and your thoughts on decision-making. 
                                 </p>
                                 <div className="preference-category-content">
                                     {cognitiveStatements.map((statement, index )=> 
                                         this.basicScale(statement, index, "cognitive")
                                     )}
-                                    <div>
-                                    <h5>Please include any other insights you had about cognitive load and your explanation for how you answered the questions above.</h5>
-                                        <TextField
-                                        id="standard-full-width"
-                                        label="Explain your answer above here including the thought process you had related to it"
-                                        style={{ margin: 8 }}
-                                        placeholder="Answer here"
-                                        fullWidth
-                                        margin="normal"
-                                        onChange={(event)=>this.handleField(event, "cognitive")}
-                                        />
-                                    </div>
+                                   
+                                    {decisionStatements.map((statement, index )=> 
+                                        this.basicScale(statement, index, "decision")
+                                    )}
+                                 
+                                    {collabStatements.map((statement, index) => 
+                                        this.basicScale(statement, index, "group")
+                                    )}
+                             
                                 </div>
+                                     
                             </div>
 
-                            <div className="decision-survey">
+                            {/* <div className="decision-survey">
                                 <h2>Decision-Making
                                 </h2>
                                 <p>
@@ -1150,7 +1137,7 @@ class Survey extends Component {
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             
                             <div className="comments-survey">
                                 <h2>Comments
