@@ -980,18 +980,7 @@ class Survey extends Component {
                                     {stressStatements.map(statement => 
                                         this.stressScale(statement)
                                     )}
-                                     <div>
-                                        <h5>Please include any other insights you had about stress and your explanation for how you answered the questions above.</h5>
-                                        <TextField
-                                        id="standard-full-width"
-                                        label="Explain your answers above here including the thought process you had related to it"
-                                        style={{ margin: 8 }}
-                                        placeholder="Answer here"
-                                        fullWidth
-                                        margin="normal"
-                                        onChange={(event)=>this.handleField(event, "stress")}
-                                        />
-                                    </div>
+                                     
                                 </div>
                             </div>
 
@@ -1148,7 +1137,7 @@ class Survey extends Component {
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             
                             <div className="comments-survey">
                                 <h2>Comments
@@ -1167,7 +1156,7 @@ class Survey extends Component {
                                     // }}
                                     />
                                 </div>
-                            </div> */}
+                            </div>
 
                             <center><Button
                                 variant="contained"
