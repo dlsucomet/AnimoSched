@@ -165,14 +165,14 @@ class Survey extends Component {
             panasResult: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,] /*[{question: "interested", value: "2"}]*/,
             stressResult: [0,0,0,0,0,0,0,] /*[{question: "I find creating schedules for myself to be stressful", value: "1"}]*/,
             wordResult: []/*[{word: "Accessible", value: "5"}, {word: "Appealing", value: "1"}]*/,
-            cognitiveResult: [0,0,0,0,0,0,0,],
-            decisionResult: [0,0,0,0,],
-            groupResult: [0,0,0,],
+            cognitiveResult: [0,0,0,0,0,0,0,0,0,0,0,0,0,],
+            decisionResult: [0,0,0,0,0,0,],
+            groupResult: [0,0,0,0,0,0,0,0,0,],
             comments: "",
-            stressExplanation: [0,0,0,0,0,0,0,],
-            cognitiveExplanation: [0,0,0,0,0,0,0,],
-            decisionExplanation: [0,0,0,0,],
-            groupExplanation: [0,0,0,],
+            stressComments: "",
+            cognitiveComments: "",
+            decisionComments: "",
+            groupComments: "",
             name: "",
             groupno: "",
             method: "",
@@ -290,19 +290,6 @@ class Survey extends Component {
                     />
                 <span>Strongly Agree</span>
                 </RadioGroup>
-                <div>
-                <TextField
-                id="standard-full-width"
-                label="Explain your answer above here including the thought process you had related to it"
-                style={{ margin: 8 }}
-                placeholder="Answer here"
-                fullWidth
-                margin="normal"
-                // InputLabelProps={{
-                //     shrink: true,
-                // }}
-                />
-                </div>
             </div>
             )
         }
@@ -470,20 +457,7 @@ class Survey extends Component {
                     />
                 <span>Very Easy</span>
                 </RadioGroup>
-                <div>
-                <TextField
-                id="standard-full-width"
-                label="Explain your answer above here including the thought process you had related to it"
-                style={{ margin: 8 }}
-                placeholder="Answer here"
-                fullWidth
-                margin="normal"
-                onChange={(event)=>this.handleField(event, "type", id)}
-                // InputLabelProps={{
-                //     shrink: true,
-                // }}
-                />
-                </div>
+                
             </div>
             )
         }
@@ -660,11 +634,11 @@ class Survey extends Component {
     handleName=(event)=>{
         this.setState({name: event.target.value});
     }
-    handleField=(event, type, index)=>{
+    handleField=(event, type)=>{
         var explanation = event.target.value;
-        this.handleFieldChange(event, type, index)
+        this.handleFieldChange(event, type)
     }
-    handleFieldChange = (event, type, index) => {
+    handleFieldChange = (event, type) => {
         var explanation = event.target.value;
         if(type == "name"){
             this.name = explanation;
@@ -893,10 +867,10 @@ class Survey extends Component {
                     <br></br>
                     
                     <h3>Participant Details</h3>
-                    <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "name", "none")}></TextField>
+                    <TextField id="outlined-basic" label="Last Name, First Name"  name="fullName" placeholder="Velasco, John" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "name")}></TextField>
                     <br></br>
                     <br></br>
-                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "groupno", "none")}></TextField>
+                    <TextField id="outlined-basic" label="Group Number"  name="Group Number" placeholder="A1" style={{marginRight: "25", width: "750"}} onChange={(event)=>this.handleField(event, "groupno")}></TextField>
                     <br></br>
                     <br></br>
                     <FormControl className={classes.formControl}>
@@ -905,7 +879,7 @@ class Survey extends Component {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         style={{width: "230px"}}
-                        onChange={(event)=>this.handleField(event, "method", "none")}
+                        onChange={(event)=>this.handleField(event, "method")}
                         >
                         <MenuItem value={"Traditional Method"}>Your own usual method</MenuItem>
                         <MenuItem value={"AnimoSched Method"}>AnimoSched method</MenuItem>
@@ -1006,6 +980,18 @@ class Survey extends Component {
                                     {stressStatements.map(statement => 
                                         this.stressScale(statement)
                                     )}
+                                     <div>
+                                        <h5>Please include any other insights you had about stress and your explanation for how you answered the questions above.</h5>
+                                        <TextField
+                                        id="standard-full-width"
+                                        label="Explain your answers above here including the thought process you had related to it"
+                                        style={{ margin: 8 }}
+                                        placeholder="Answer here"
+                                        fullWidth
+                                        margin="normal"
+                                        onChange={(event)=>this.handleField(event, "stress")}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -1100,6 +1086,18 @@ class Survey extends Component {
                                     {cognitiveStatements.map((statement, index )=> 
                                         this.basicScale(statement, index, "cognitive")
                                     )}
+                                    <div>
+                                    <h5>Please include any other insights you had about cognitive load and your explanation for how you answered the questions above.</h5>
+                                        <TextField
+                                        id="standard-full-width"
+                                        label="Explain your answer above here including the thought process you had related to it"
+                                        style={{ margin: 8 }}
+                                        placeholder="Answer here"
+                                        fullWidth
+                                        margin="normal"
+                                        onChange={(event)=>this.handleField(event, "cognitive")}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -1113,6 +1111,18 @@ class Survey extends Component {
                                     {decisionStatements.map((statement, index )=> 
                                         this.basicScale(statement, index, "decision")
                                     )}
+                                     <div>
+                                     <h5>Please include any other insights you had about decision-making and your explanation for how you answered the questions above.</h5>
+                                        <TextField
+                                        id="standard-full-width"
+                                        label="Explain your answer above here including the thought process you had related to it"
+                                        style={{ margin: 8 }}
+                                        placeholder="Answer here"
+                                        fullWidth
+                                        margin="normal"
+                                        onChange={(event)=>this.handleField(event, "decision")}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -1127,6 +1137,18 @@ class Survey extends Component {
                                     {collabStatements.map((statement, index) => 
                                         this.basicScale(statement, index, "group")
                                     )}
+                                     <div>
+                                     <h5>Please include any other insights you had about group schedule coordination and your explanation for how you answered the questions above.</h5>
+                                        <TextField
+                                        id="standard-full-width"
+                                        label="Explain your answer above here including the thought process you had related to it"
+                                        style={{ margin: 8 }}
+                                        placeholder="Answer here"
+                                        fullWidth
+                                        margin="normal"
+                                        onChange={(event)=>this.handleField(event, "group")}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             
