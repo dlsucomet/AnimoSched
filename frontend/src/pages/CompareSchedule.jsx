@@ -366,13 +366,13 @@ setSchedInfo = () => {
     
         console.log(this.state.schedulesUser)
          var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={paletteOne} matched={[]}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} earliest={7} latest={18} palette={paletteOne} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
 
         console.log(this.state.schedulesFriend)
          var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={paletteTwo} matched={[]}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} earliest={7} latest={18} palette={paletteTwo} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
         this.setState({generatedContentsFriend}, ()=>{
@@ -388,7 +388,6 @@ setSchedInfo = () => {
             this.setState({currentContentUser: generatedContentsUser[0]}, () => {
 //                this.setState({hasSelectedFriend: true})
               console.log(this.state.currentContentUser)
-
             })
             this.setState({pagesCountUser: generatedContentsUser.length});
             this.setState({currentPageUser: 0})
@@ -412,7 +411,7 @@ setSchedInfo = () => {
                   // user[i].props.matched
                   // friend[j].props.matched
                   user[i].props.matched.push(userContent[k].course + ' ' + userContent[k].section);
-                  friend[i].props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                  friend[j].props.matched.push(userContent[k].course + ' ' + userContent[k].section);
                   console.log(user)
                   console.log(friend)
                  

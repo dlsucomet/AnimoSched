@@ -197,11 +197,11 @@ class ScheduleView extends Component {
     }
 
     componentWillReceiveProps(props){
-      var earliest = 9;
+      var earliest = 7;
       if(props.earliest != undefined){
         earliest = props.earliest;
       }
-      var latest = 17;
+      var latest = 19;
       if(props.latest != undefined){
         latest = props.latest;
       }
