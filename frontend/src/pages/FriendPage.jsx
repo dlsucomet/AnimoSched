@@ -51,6 +51,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { withRouter } from "react-router";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import CompareIcon from '@material-ui/icons/Compare';
+
+import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import _ from 'underscore';
 
@@ -156,6 +160,7 @@ class FriendPage extends Component {
             profList: [],
             dropdownOpen: false,
             friendList: [],
+            openModalCompare: false,
 
             daysList:[
                 {   id: 1,
@@ -557,6 +562,11 @@ class FriendPage extends Component {
         window.location.reload()
         this.setState({openAlert: false});
     }
+
+    toggleModalCompare = () => {
+        var openModalVar = this.state.openModalCompare;
+        this.setState({openModalCompare: !openModalVar});
+      }
        
     render() {
         const friendList = [];
@@ -828,14 +838,39 @@ class FriendPage extends Component {
                                         
                                         <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            <Link to={'/compare_schedule/'+this.state.selectedFriendId}>
+                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
                                                     <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
+                                                    startIcon={<CompareIcon/>}
                                                     >
                                                         Compare Schedules
                                                     </Button>
-                                                </Link>
+                                                {/* </Link> */}
+                                            </center>
+                                            <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
+                                                <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>
+                                                <ModalBody>
+                                               
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                    <Button color="primary">Done</Button>
+                                                    <Button style={{color: "gray"}} onClick={this.toggleModalCompare}>Cancel</Button>
+                                                </ModalFooter>
+                                            </Modal>  
+                                        </Grid>
+
+                                        <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                            <center>
+                                          
+                                            <Button
+                                            variant="contained"
+                                            className={classes.buttonStyle}
+                                            startIcon={<FileCopyIcon/>}
+                                            >
+                                                Copy Schedule
+                                            </Button>
+                                           
                                             </center>
                                         </Grid>
 
