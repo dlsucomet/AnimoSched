@@ -361,16 +361,18 @@ componentWillMount(){
 
 setSchedInfo = () => {
     const palette = JSON.parse(localStorage.getItem('palette'))
+    const paletteOne = ['#1161c6','#136cdd','#1d79ec','#3587ee','#4d95f0','#64a3f2','#7cb1f4']
+    const paletteTwo = ['#c61a11','#dd1e13','#ec291d','#ee3f35','#f0554d','#f26c64','#f4827c']
     
         console.log(this.state.schedulesUser)
          var generatedContentsUser = this.state.schedulesUser.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={[]}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={paletteOne} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
 
         console.log(this.state.schedulesFriend)
          var generatedContentsFriend = this.state.schedulesFriend.map((item, index) =>
-        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={palette} matched={[]}/>
+        <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} allowEdit={this.state.allowEdit} palette={paletteTwo} matched={[]}/>
         );
         // this.setState({hideGenContent: false});
         this.setState({generatedContentsFriend}, ()=>{
