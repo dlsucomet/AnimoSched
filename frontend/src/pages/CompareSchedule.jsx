@@ -333,39 +333,81 @@ class CompareSchedule extends Component {
     }
     
     handlePageChange = (e,index, type) => {
-        
-      var user = this.state.currentContentUser;
-      var friend = this.state.currentContentFriend;
+        this.setState({dataReceived: false}, () => {
+          if(type == "user"){
+              var user = this.state.generatedContentsUser[index];
+              var friend = this.state.currentContentFriend;
+              var userContent = user.props.tableContent
+              var friendContent = friend.props.tableContent
+              user.props.matched.length = 0;
+              friend.props.matched.length = 0; 
+              for(var k = 0 ; k < userContent.length ; k++){
+                for(var l = 0 ; l < friendContent.length ; l++){
+                  user.props.tableContent[k].compareMatch = false
+                  friend.props.tableContent[l].compareMatch = false 
+                }
+              }
+              for(var k = 0 ; k < userContent.length ; k++){
+                for(var l = 0 ; l < friendContent.length ; l++){
+                  if(userContent[k].classNmbr == friendContent[l].classNmbr){
+                    user.props.tableContent[k].compareMatch = true
+                    friend.props.tableContent[l].compareMatch = true
+                    // user[i].props.matched
+                    // friend[j].props.matched
+                    user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                    friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                  }else{
+                
+                    // console.log("no hit")
+                  }
+                }
+              }
+              this.setState({currentContentUser: user})
+              this.setState({currentContentFriend: friend})
+              this.setState({currentPageUser: index})
+              this.setState({currentPageFriend: this.state.currentPageFriend})
+              this.setState({dataReceived: true})
+              console.log("pressed page " + index);
+          }else if (type == "friend"){
+              var user = this.state.currentContentUser;
+              var friend = this.state.generatedContentsFriend[index];
+              var userContent = user.props.tableContent
+              var friendContent = friend.props.tableContent
+              user.props.matched.length = 0;
+              friend.props.matched.length = 0;
+              for(var k = 0 ; k < userContent.length ; k++){
+                for(var l = 0 ; l < friendContent.length ; l++){
+                  user.props.tableContent[k].compareMatch = false
+                  friend.props.tableContent[l].compareMatch = false 
+                }
+              }
+              for(var k = 0 ; k < userContent.length ; k++){
+                for(var l = 0 ; l < friendContent.length ; l++){
+                  if(userContent[k].classNmbr == friendContent[l].classNmbr){
+                    user.props.tableContent[k].compareMatch = true
+                    friend.props.tableContent[l].compareMatch = true
+                    // user[i].props.matched
+                    // friend[j].props.matched
+                    user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                    friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                  }else{
+                
+                    // console.log("no hit")
+                  }
+                }
+              }
+              this.setState({currentContentUser: user})
+              this.setState({currentContentFriend: friend})
+              this.setState({currentPageUser: this.state.currentPageUser})
+              this.setState({currentPageFriend: index})
+              this.setState({dataReceived: true})
+              console.log("pressed page " + index);
+              
+          }
+        })
 
-        if(type == "user"){
-            user = this.state.generatedContentsUser[index];
-            this.setState(state =>{
-            var currentContentUser = state.generatedContentsUser[index];
-            return {currentContentUser};
-          });
 
-          this.setState({currentPageUser: index});
-          this.setState(state =>{
-            var currentPageUser = index;
-            return {currentPageUser};
-          });
-          console.log("pressed page " + index);
-        }else if (type == "friend"){
-            friend = this.state.generatedContentsFriend[index];
-            this.setState(state =>{
-            var currentContentFriend = state.generatedContentsFriend[index];
-            return {currentContentFriend};
-          });
 
-          this.setState({currentPageFriend: index});
-          this.setState(state =>{
-            var currentPageFriend = index;
-            return {currentPageFriend};
-          });
-          console.log("pressed page " + index);
-        }
-
-        
         // var newMatched = [];
         // for(var i = 0 ; i < user.length ; i++){
         //   for(var j = 0 ; j < friend.length ; j++){
@@ -401,31 +443,31 @@ class CompareSchedule extends Component {
         // this.setState({generatedContentsFriend: friend})
 
         
-                  console.log(user)
-                  console.log(friend)
-                  var userContent = user.props.tableContent
-                  var friendContent = friend.props.tableContent
-                  for(var k = 0 ; k < userContent.length ; k++){
-                    for(var l = 0 ; l < friendContent.length ; l++){
-                      if(userContent[k].classNmbr == friendContent[l].classNmbr){
-                        user.props.tableContent[k].compareMatch = true
-                        friend.props.tableContent[l].compareMatch = true
-                        // user[i].props.matched
-                        // friend[j].props.matched
-                        user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
-                        friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
-                        console.log(user)
-                        console.log(friend)
-                }else{
-               
-                  // console.log("no hit")
-                }
-              }
-            }
+        //           console.log(user)
+        //           console.log(friend)
+        //           var userContent = user.props.tableContent
+        //           var friendContent = friend.props.tableContent
+        //           for(var k = 0 ; k < userContent.length ; k++){
+        //             for(var l = 0 ; l < friendContent.length ; l++){
+        //               if(userContent[k].classNmbr == friendContent[l].classNmbr){
+        //                 user.props.tableContent[k].compareMatch = true
+        //                 friend.props.tableContent[l].compareMatch = true
+        //                 // user[i].props.matched
+        //                 // friend[j].props.matched
+        //                 user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+        //                 friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+        //                 console.log(user)
+        //                 console.log(friend)
+        //                 }else{
+                      
+        //                   // console.log("no hit")
+        //                 }
+        //               }
+        //             }
 
-        this.setState({currentContentUser: user}, ()=>{
-          this.setState({currentContentFriend: friend})
-        })
+        // this.setState({currentContentUser: user}, ()=>{
+        //   this.setState({currentContentFriend: friend})
+        // })
         
         
 
@@ -460,20 +502,43 @@ setSchedInfo = () => {
             this.setState({currentContentFriend: generatedContentsFriend[0]}, () => {
 //                this.setState({hasSelectedFriend: true})
               console.log(this.state.currentContentFriend)
-
+              this.setState({generatedContentsUser}, ()=>{
+                  this.setState({currentContentUser: generatedContentsUser[0]}, () => {
+      //                this.setState({hasSelectedFriend: true})
+                    console.log(this.state.currentContentUser)
+                      var user = this.state.currentContentUser;
+                      var friend = this.state.currentContentFriend;
+                      console.log(user)
+                      console.log(friend)
+                      var userContent = user.props.tableContent
+                      var friendContent = friend.props.tableContent
+                      for(var k = 0 ; k < userContent.length ; k++){
+                        for(var l = 0 ; l < friendContent.length ; l++){
+                          if(userContent[k].classNmbr == friendContent[l].classNmbr){
+                            user.props.tableContent[k].compareMatch = true
+                            friend.props.tableContent[l].compareMatch = true
+                            // user[i].props.matched
+                            // friend[j].props.matched
+                            user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                            friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
+                            console.log(user)
+                            console.log(friend)
+                          }else{
+                        
+                            // console.log("no hit")
+                          }
+                        }
+                      }
+                      this.setState({currentContentUser: user})
+                      this.setState({currentContentFriend: friend})
+                  })
+                  this.setState({pagesCountUser: generatedContentsUser.length});
+                  this.setState({currentPageUser: 0})
+              });
             })
             this.setState({pagesCountFriend: generatedContentsFriend.length});
             this.setState({currentPageFriend: 0})
          });
-        this.setState({generatedContentsUser}, ()=>{
-            this.setState({currentContentUser: generatedContentsUser[0]}, () => {
-//                this.setState({hasSelectedFriend: true})
-              console.log(this.state.currentContentUser)
-            })
-            this.setState({pagesCountUser: generatedContentsUser.length});
-            this.setState({currentPageUser: 0})
-        });
-
         // var user = this.state.generatedContentsUser;
         // var friend = this.state.generatedContentsFriend;
         // var newMatched = [];
@@ -496,32 +561,8 @@ setSchedInfo = () => {
         //           console.log(user)
         //           console.log(friend)
          
-                  var user = this.state.currentContentUser;
-                  var friend = this.state.currentContentFriend;
-                  console.log(user)
-                  console.log(friend)
-                  var userContent = user.props.tableContent
-                  var friendContent = friend.props.tableContent
-                  for(var k = 0 ; k < userContent.length ; k++){
-                    for(var l = 0 ; l < friendContent.length ; l++){
-                      if(userContent[k].classNmbr == friendContent[l].classNmbr){
-                        user.props.tableContent[k].compareMatch = true
-                        friend.props.tableContent[l].compareMatch = true
-                        // user[i].props.matched
-                        // friend[j].props.matched
-                        user.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
-                        friend.props.matched.push(userContent[k].course + ' ' + userContent[k].section);
-                        console.log(user)
-                        console.log(friend)
-                }else{
-               
-                  // console.log("no hit")
-                }
-              }
-            }
 
-        this.setState({currentContentUser: user})
-        this.setState({currentContentFriend: friend})
+
 
   }
     
