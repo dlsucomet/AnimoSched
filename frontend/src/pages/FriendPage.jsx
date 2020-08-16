@@ -170,6 +170,7 @@ class FriendPage extends Component {
             friendListCompare: [],
             openModalSuggest: false,
             friendListSuggest: [],
+            copyBar: false,
 
             daysList:[
                 {   id: 1,
@@ -622,6 +623,7 @@ class FriendPage extends Component {
             user: localStorage.getItem('user_id') 
         }).then(res => {
             console.log(res.data)
+            this.setState({copyBar: true});
             // axios.get('https://archerone-backend.herokuapp.com/api/users/'+user_id+'/')
             // .then(res => {
             //     const schedules = res.data.schedules;
@@ -639,7 +641,14 @@ class FriendPage extends Component {
             console.log(err.response)
         })
     }
-       
+    
+    handleCloseCopyBar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({copyBar: false});
+    }
     render() {
         const friendList = [];
         const { classes } = this.props;
@@ -923,6 +932,11 @@ class FriendPage extends Component {
                                            
                                             </center>
                                         </Grid>
+                                        <Snackbar open={this.state.copyBar} autoHideDuration={4000} onClose={this.handleCloseCopyBar}>
+                                            <Alert onClose={this.handleCloseCopyBar} severity="success">
+                                            New schedule has been copied and saved! <a href="/" style={{color:"#D3D3D3"}}>View in homepage</a>
+                                            </Alert>
+                                        </Snackbar>
                                         
                                         <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
