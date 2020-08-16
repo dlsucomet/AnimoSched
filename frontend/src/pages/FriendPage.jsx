@@ -976,7 +976,7 @@ class FriendPage extends Component {
                                         
                                         <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
+                                            <Link to={'/compare_schedule/'+this.state.selectedFriendId}>
                                                     <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
@@ -985,7 +985,7 @@ class FriendPage extends Component {
                                                     >
                                                         Compare Schedules
                                                     </Button>
-                                                {/* </Link> */}
+                                            </Link>
                                             </center>
                                             <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
                                                 <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>

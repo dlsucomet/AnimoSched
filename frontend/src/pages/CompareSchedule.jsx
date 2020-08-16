@@ -205,7 +205,7 @@ class CompareSchedule extends Component {
 
                     count += 1;
                 })
-                schedules.push({
+                schedules.unshift({
                     id: newSchedule.id,
                     title: newSchedule.title,
                     scheduleContent: scheduleContent,
@@ -286,7 +286,7 @@ class CompareSchedule extends Component {
 
                         count += 1;
                     })
-                    schedules.push({
+                    schedules.unshift({
                         id: newSchedule.id,
                         title: newSchedule.title,
                         scheduleContent: scheduleContent,
