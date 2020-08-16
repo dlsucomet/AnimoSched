@@ -262,6 +262,9 @@ class FriendPage extends Component {
             lastName: '',
             searchQuery: '',
 
+            highList: [],
+            lowList: [],
+
         }
 
         this.filterSearchFriendsThrottled = _.debounce(this.filterSearchFriends, 500)
@@ -929,6 +932,24 @@ class FriendPage extends Component {
                                                         <td>
                                                         {this.state.buildingList.map(building => (
                                                             <Chip label={building}></Chip>
+                                                        ))}
+                                                        </td>
+
+                                                    </tr>
+                                                   <tr>
+                                                        <th scope="row">High Priority Courses</th>
+                                                        <td>
+                                                        {this.state.highList.map(c => (
+                                                            <Chip label={c}></Chip>
+                                                        ))}
+                                                        </td>
+
+                                                    </tr>
+                                                   <tr>
+                                                        <th scope="row">Low Priority Courses</th>
+                                                        <td>
+                                                        {this.state.lowList.map(c => (
+                                                            <Chip label={c}></Chip>
                                                         ))}
                                                         </td>
 

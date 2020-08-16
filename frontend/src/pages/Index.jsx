@@ -294,8 +294,16 @@ class Index extends Component {
       }, () => {
         const currentClasses = [];
         const offerings = this.state.currentContent.props.offerings
-        for(var i = 0 ; i < offerings.length ; i += 2){
-          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+        for(var i = 0 ; i < offerings.length ; i += 1){
+          var alreadyAdded = false;
+          for(var j = 0 ; j < currentClasses.length ; j += 1){
+            if(offerings[i].classnumber == currentClasses[j].classnumber){
+              alreadyAdded = true
+            }
+          }
+          if(!alreadyAdded){
+            currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+          }
         }
         this.setState({currentClasses})
       });
@@ -454,7 +462,7 @@ class Index extends Component {
 
   setSchedInfo = () => {
     console.log(this.state.schedules)
-    if(this.state.schedules.length > 0){      
+    if(this.state.schedules.length > 0){ 
       const palette = JSON.parse(localStorage.getItem('palette'))
       var generatedContents = this.state.schedules.map((item, index) =>
           <SchedViewHome key={item.id} id={item.id} offerings={item.offerings} tableContent={item.tableContent} scheduleContent={item.scheduleContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} palette={palette} allowEdit={this.state.allowEdit}/>
@@ -466,8 +474,16 @@ class Index extends Component {
       this.setState({currentContent: generatedContents[0]},() => {
         const currentClasses = [];
         const offerings = this.state.currentContent.props.offerings
-        for(var i = 0 ; i < offerings.length ; i += 2){
-          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+        for(var i = 0 ; i < offerings.length ; i += 1){
+          var alreadyAdded = false;
+          for(var j = 0 ; j < currentClasses.length ; j += 1){
+            if(offerings[i].classnumber == currentClasses[j].classnumber){
+              alreadyAdded = true
+            }
+          }
+          if(!alreadyAdded){
+            currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+          }
         }
         this.setState({currentClasses, scheduleChanged: true})
       })
@@ -724,8 +740,9 @@ class Index extends Component {
       snackBarVariables[0].snackBarSuccess = true;
       // snackBarVariables[1].snackBarFailed = true;
       this.setState({snackBarVariables});
+      
       console.log(snackBarVariables);
-      // window.location.reload();
+      window.location.reload();
     }).catch(err => {
       console.log(err.response)
     })
