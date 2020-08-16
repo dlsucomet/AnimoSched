@@ -480,23 +480,23 @@ class Index extends Component {
     // var index = newArray.findIndex(this.state.currentContent);
     axios.patch('https://archerone-backend.herokuapp.com/api/schedules/'+currentContent.props.id+'/',{
       title: text
+    }).then(res => {
+      const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} earliest={currentContent.props.earliest} latest={currentContent.props.latest} titleName={text} updateSchedTitle={this.updateSchedTitle} allowEdit={this.state.allowEdit} palette={currentContent.props.palette}/>
+
+      this.state.generatedContents.map(value=>{
+          if(value.key == this.state.currentContent.key){
+              newArray.push(newContent)
+          }else{
+              newArray.push(value)
+          }
+      })
+
+      this.setState({generatedContents: newArray});
+      this.setState({currentContent: newContent});
+      window.location.reload();
     }).catch(err => {
       console.log(err.response)
     })
-
-    const newContent = <SchedViewHome key={currentContent.props.id} id={currentContent.props.id} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} earliest={currentContent.props.earliest} latest={currentContent.props.latest} titleName={text} updateSchedTitle={this.updateSchedTitle} allowEdit={this.state.allowEdit} palette={currentContent.props.palette}/>
-
-    this.state.generatedContents.map(value=>{
-        if(value.key == this.state.currentContent.key){
-            newArray.push(newContent)
-        }else{
-            newArray.push(value)
-        }
-    })
-
-    this.setState({generatedContents: newArray});
-    this.setState({currentContent: newContent});
-    window.location.reload();
   }
 
  deleteSchedule=()=>{

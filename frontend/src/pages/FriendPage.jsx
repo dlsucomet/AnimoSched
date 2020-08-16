@@ -57,8 +57,13 @@ import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
 import _ from 'underscore';
 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const styles = theme => ({
     pencilIcon:{ 
         marginLeft: "10px",
@@ -162,9 +167,9 @@ class FriendPage extends Component {
             dropdownOpen: false,
             friendList: [],
             openModalCompare: false,
-            friendListCompare: [{id: 0, checked: false}],
+            friendListCompare: [],
             openModalSuggest: false,
-            friendListSuggest: [{id: 0, checked: false}],
+            friendListSuggest: [],
 
             daysList:[
                 {   id: 1,
@@ -605,6 +610,35 @@ class FriendPage extends Component {
         this.setState({friendListSuggest});
         // this.setState({[event.target.name]: event.target.checked });
     };
+
+    handleCopy = () => {
+        const courseOfferings = []
+        this.state.currentContent.props.offerings.map(o => {
+            courseOfferings.push(o.id)
+        })
+        axios.post('https://archerone-backend.herokuapp.com/api/schedules/',{
+            title: this.state.currentContent.props.titleName + ' ('+ this.state.firstName+')',
+            courseOfferings: courseOfferings,
+            user: localStorage.getItem('user_id') 
+        }).then(res => {
+            console.log(res.data)
+            // axios.get('https://archerone-backend.herokuapp.com/api/users/'+user_id+'/')
+            // .then(res => {
+            //     const schedules = res.data.schedules;
+            //     schedules.push(sched_id);
+            //     axios.patch('https://archerone-backend.herokuapp.com/api/users/'+user_id+'/',{
+            //         schedules: schedules
+            //     }).then(res => {
+            //         console.log(res)
+                    
+            //     }).catch(err => {
+            //         console.log(err.response)
+            //     })
+            // })
+        }).catch(err => {
+            console.log(err.response)
+        })
+    }
        
     render() {
         const friendList = [];
@@ -882,6 +916,7 @@ class FriendPage extends Component {
                                             variant="contained"
                                             className={classes.buttonStyle}
                                             startIcon={<FileCopyIcon/>}
+                                            onClick={this.handleCopy}
                                             >
                                                 Copy Schedule
                                             </Button>
@@ -908,44 +943,29 @@ class FriendPage extends Component {
                                                     <h5>Who do you want to share a similar schedules with?</h5>
                                                     <p>Maximum of 4 friends</p>
                                                     <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
-                                                        <TextField
-                                                            key={"friendPage_searchFriends"}
-                                                            id="friendPage_searchFriends"
-                                                            variant= "outlined"
-                                                            // options={friendList}
-                                                            // getOptionLabel={(option) => option.firstName + " " + option.lastName}
-                                                            style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
-                                                            filterSelectedOptions
-                                                            label="Search Friends" 
-                                                            onChange={this.handleSearchCompare}
-                                                            /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
-                                                            />
-                                                            {/* <input style={{marginBottom: "10%"}}></input> */}
+                                                        <Autocomplete
+                                                            multiple
+                                                            id="checkboxes-tags-demo"
+                                                            options={friendList}
+                                                            disableCloseOnSelect
+                                                            getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                                                            renderOption={(option, { selected }) => (
+                                                                <React.Fragment>
+                                                                <Checkbox
+                                                                    icon={icon}
+                                                                    checkedIcon={checkedIcon}
+                                                                    style={{ marginRight: 8 }}
+                                                                    checked={selected}
+                                                                />
+                                                                {option.firstName + ' ' + option.lastName}
+                                                                </React.Fragment>
+                                                            )}
+                                                            // style={{ width: 500 }}
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} variant="outlined" label="Checkboxes" placeholder="Favorites" />
+                                                            )}
+                                                        />
                                                     </div>
-
-                                                    <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
-                                                        
-                                                        {friendList.map((friend, index) => (
-                                                            <ListGroupItem action>
-                                                                <Row>
-                                          
-                                                                    <Col xs={12} md={8}>
-                                                                    <FormControlLabel
-                                                                        control = {<GreenCheckbox checked={this.state.friendListCompare[index].checked} onChange={this.handleCompareChange} id={index} color="primary"/>}label={friend.firstName + " " + friend.lastName} />
-                                                                        {/* <span> {friend.firstName} {friend.lastName} </span> */}
-                                                                    </Col>
-
-                                                                    
-                                                                </Row>            
-                                                            </ListGroupItem>
-                                                        ))}
-
-                                                        {friendList.length == 0 &&
-                                                            <ListGroupItem>
-                                                                <center>No Friends</center>
-                                                            </ListGroupItem>
-                                                        }
-                                                    </ListGroup>
                                                 </ModalBody>
                                                 <ModalFooter>
                                                     <Button color="primary">Done</Button>
@@ -973,44 +993,29 @@ class FriendPage extends Component {
                                                     <h5>Generate possible schedules you can share with your friends. Who do you want to create a schedule with?</h5>
                                                     <p>Maximum of 4 friends</p>
                                                     <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
-                                                        <TextField
-                                                            key={"friendPage_searchFriends"}
-                                                            id="friendPage_searchFriends"
-                                                            variant= "outlined"
-                                                            // options={friendList}
-                                                            // getOptionLabel={(option) => option.firstName + " " + option.lastName}
-                                                            style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
-                                                            filterSelectedOptions
-                                                            label="Search Friends" 
-                                                            onChange={this.handleSearchChange}
-                                                            /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
-                                                            />
-                                                            {/* <input style={{marginBottom: "10%"}}></input> */}
+                                                        <Autocomplete
+                                                            multiple
+                                                            id="checkboxes-tags-demo"
+                                                            options={friendList}
+                                                            disableCloseOnSelect
+                                                            getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+                                                            renderOption={(option, { selected }) => (
+                                                                <React.Fragment>
+                                                                <Checkbox
+                                                                    icon={icon}
+                                                                    checkedIcon={checkedIcon}
+                                                                    style={{ marginRight: 8 }}
+                                                                    checked={selected}
+                                                                />
+                                                                {option.firstName + ' ' + option.lastName}
+                                                                </React.Fragment>
+                                                            )}
+                                                            // style={{ width: 500 }}
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} variant="outlined" label="Checkboxes" placeholder="Favorites" />
+                                                            )}
+                                                        />
                                                     </div>
-
-                                                    <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
-                                                        
-                                                        {friendList.map((friend, index) => (
-                                                            <ListGroupItem action>
-                                                                <Row>
-                                          
-                                                                    <Col xs={12} md={8}>
-                                                                    <FormControlLabel
-                                                                        control = {<GreenCheckbox checked={this.state.friendListSuggest[index].checked} onChange={this.handleSuggestChange} id={index} color="primary"/>}label={friend.firstName + " " + friend.lastName} />
-                                                                        {/* <span> {friend.firstName} {friend.lastName} </span> */}
-                                                                    </Col>
-
-                                                                    
-                                                                </Row>            
-                                                            </ListGroupItem>
-                                                        ))}
-
-                                                        {friendList.length == 0 &&
-                                                            <ListGroupItem>
-                                                                <center>No Friends</center>
-                                                            </ListGroupItem>
-                                                        }
-                                                    </ListGroup>
                                                 </ModalBody>
                                                 <ModalFooter>
                                                     <Button color="primary">Done</Button>

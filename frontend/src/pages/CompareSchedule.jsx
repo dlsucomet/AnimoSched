@@ -318,6 +318,18 @@ class CompareSchedule extends Component {
         })
 
       }
+
+      const friends = []
+      friends.push(this.props.params.id)
+      axios.post('https://archerone-backend.herokuapp.com/api/generateschedulefriends/',{
+        user_id: localStorage.getItem('user_id'),
+        filterFull: true,
+        friends: friends
+      }).then(res => {
+        console.log(res.data)
+      }).catch(err => {
+        console.log(err.response)
+      })
     }
     
     handlePageChange = (e,index, type) => {
