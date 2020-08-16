@@ -53,6 +53,7 @@ import { withRouter } from "react-router";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CompareIcon from '@material-ui/icons/Compare';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -100,9 +101,9 @@ const styles = theme => ({
     buttonStyle:{
         textTransform: "none",
         textDecoration: "none",
-        width: "25%",
+        width: "60%",
         fontSize: "95%",
-        borderRadius: "25px",
+        borderRadius: "10px",
         padding: "10px",
         paddingLeft: "10px",
         paddingRight: "10px",
@@ -161,6 +162,9 @@ class FriendPage extends Component {
             dropdownOpen: false,
             friendList: [],
             openModalCompare: false,
+            friendListCompare: [{id: 0, checked: false}],
+            openModalSuggest: false,
+            friendListSuggest: [{id: 0, checked: false}],
 
             daysList:[
                 {   id: 1,
@@ -476,11 +480,14 @@ class FriendPage extends Component {
         .then(res => {
             const requests = []
             const friendList = []
+            const friendListCompare = []
             res.data.map(friend => {
                 requests.push(this.createRequests(friend.first_name, friend.last_name, "accept", friend.id, friend.college, friend.degree, friend.id_num))
                 friendList.push(friend.id)
+                // friendListCompare.push({id: friend.id, checked: false})
             })
             this.setState({friendList})
+            // this.setState({friendListCompare})
             this.setState({requests}, () => {
                 if(this.props.location.state != undefined){
                     let selectedFriendId = this.props.location.state.selectedFriendId;
@@ -543,6 +550,10 @@ class FriendPage extends Component {
         this.filterSearchFriendsThrottled(e.target.value)
     }
 
+    handleSearchCompare = (e) => {
+        this.filterSearchFriendsThrottled(e.target.value)
+    }
+
     filterSearchFriends = (val) => {
         this.setState({searchQuery: val})
     }
@@ -567,10 +578,38 @@ class FriendPage extends Component {
         var openModalVar = this.state.openModalCompare;
         this.setState({openModalCompare: !openModalVar});
       }
+    
+    handleCompareChange = (event) => {
+        var friendListCompare = [...this.state.friendListCompare];
+        friendListCompare.map(value=>{
+            if(value.id === Number(event.target.id)){
+                value.checked = event.target.checked;
+            }
+        })
+        this.setState({friendListCompare});
+        // this.setState({[event.target.name]: event.target.checked });
+    };
+
+    toggleModalSuggest = () => {
+        var openModalVar = this.state.openModalSuggest;
+        this.setState({openModalSuggest: !openModalVar});
+      }
+    
+    handleSuggestChange = (event) => {
+        var friendListSuggest = [...this.state.friendListSuggest];
+        friendListSuggest.map(value=>{
+            if(value.id === Number(event.target.id)){
+                value.checked = event.target.checked;
+            }
+        })
+        this.setState({friendListSuggest});
+        // this.setState({[event.target.name]: event.target.checked });
+    };
        
     render() {
         const friendList = [];
         const { classes } = this.props;
+        const friendListCompare = [];
 
         for(var i=0; i < this.state.requests.length; i++){
             if(this.state.requests[i].status == "accept"){
@@ -835,32 +874,8 @@ class FriendPage extends Component {
                                                 SECOND TRIMESTER, AY 2019 - 2020
                                                 </Typography>
                                         </Grid>
-                                        
-                                        <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
-                                            <center>
-                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
-                                                    <Button
-                                                    variant="contained"
-                                                    className={classes.buttonStyle}
-                                                    startIcon={<CompareIcon/>}
-                                                    >
-                                                        Compare Schedules
-                                                    </Button>
-                                                {/* </Link> */}
-                                            </center>
-                                            <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
-                                                <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>
-                                                <ModalBody>
-                                               
-                                                </ModalBody>
-                                                <ModalFooter>
-                                                    <Button color="primary">Done</Button>
-                                                    <Button style={{color: "gray"}} onClick={this.toggleModalCompare}>Cancel</Button>
-                                                </ModalFooter>
-                                            </Modal>  
-                                        </Grid>
 
-                                        <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                        <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
                                           
                                             <Button
@@ -873,6 +888,138 @@ class FriendPage extends Component {
                                            
                                             </center>
                                         </Grid>
+                                        
+                                        <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                            <center>
+                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
+                                                    <Button
+                                                    variant="contained"
+                                                    className={classes.buttonStyle}
+                                                    startIcon={<CompareIcon/>}
+                                                    onClick={this.toggleModalCompare}
+                                                    >
+                                                        Compare Schedules
+                                                    </Button>
+                                                {/* </Link> */}
+                                            </center>
+                                            <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
+                                                <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>
+                                                <ModalBody>
+                                                    <h5>Who do you want to share a similar schedules with?</h5>
+                                                    <p>Maximum of 4 friends</p>
+                                                    <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
+                                                        <TextField
+                                                            key={"friendPage_searchFriends"}
+                                                            id="friendPage_searchFriends"
+                                                            variant= "outlined"
+                                                            // options={friendList}
+                                                            // getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                                                            style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
+                                                            filterSelectedOptions
+                                                            label="Search Friends" 
+                                                            onChange={this.handleSearchCompare}
+                                                            /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
+                                                            />
+                                                            {/* <input style={{marginBottom: "10%"}}></input> */}
+                                                    </div>
+
+                                                    <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
+                                                        
+                                                        {friendList.map((friend, index) => (
+                                                            <ListGroupItem action>
+                                                                <Row>
+                                          
+                                                                    <Col xs={12} md={8}>
+                                                                    <FormControlLabel
+                                                                        control = {<GreenCheckbox checked={this.state.friendListCompare[index].checked} onChange={this.handleCompareChange} id={index} color="primary"/>}label={friend.firstName + " " + friend.lastName} />
+                                                                        {/* <span> {friend.firstName} {friend.lastName} </span> */}
+                                                                    </Col>
+
+                                                                    
+                                                                </Row>            
+                                                            </ListGroupItem>
+                                                        ))}
+
+                                                        {friendList.length == 0 &&
+                                                            <ListGroupItem>
+                                                                <center>No Friends</center>
+                                                            </ListGroupItem>
+                                                        }
+                                                    </ListGroup>
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                    <Button color="primary">Done</Button>
+                                                    <Button style={{color: "gray"}} onClick={this.toggleModalCompare}>Cancel</Button>
+                                                </ModalFooter>
+                                            </Modal>  
+                                        </Grid>
+
+                                        <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                                            <center>
+                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
+                                                    <Button
+                                                    variant="contained"
+                                                    className={classes.buttonStyle}
+                                                    startIcon={<EventAvailableIcon/>}
+                                                    onClick={this.toggleModalSuggest}
+                                                    >
+                                                        Make Shared Schedules
+                                                    </Button>
+                                                {/* </Link> */}
+                                            </center>
+                                            <Modal isOpen={this.state.openModalSuggest} toggle={this.toggleModalSuggest} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
+                                                <ModalHeader toggle={this.toggleModalSuggest}><h4>Generate Suggested Friend Schedules</h4></ModalHeader>
+                                                <ModalBody>
+                                                    <h5>Generate possible schedules you can share with your friends. Who do you want to create a schedule with?</h5>
+                                                    <p>Maximum of 4 friends</p>
+                                                    <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
+                                                        <TextField
+                                                            key={"friendPage_searchFriends"}
+                                                            id="friendPage_searchFriends"
+                                                            variant= "outlined"
+                                                            // options={friendList}
+                                                            // getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                                                            style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
+                                                            filterSelectedOptions
+                                                            label="Search Friends" 
+                                                            onChange={this.handleSearchChange}
+                                                            /*renderInput={(params) => <TextField {...params} label="Search Friends" variant="outlined" placeholder="FirstName LastName"/>}*/
+                                                            />
+                                                            {/* <input style={{marginBottom: "10%"}}></input> */}
+                                                    </div>
+
+                                                    <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
+                                                        
+                                                        {friendList.map((friend, index) => (
+                                                            <ListGroupItem action>
+                                                                <Row>
+                                          
+                                                                    <Col xs={12} md={8}>
+                                                                    <FormControlLabel
+                                                                        control = {<GreenCheckbox checked={this.state.friendListSuggest[index].checked} onChange={this.handleSuggestChange} id={index} color="primary"/>}label={friend.firstName + " " + friend.lastName} />
+                                                                        {/* <span> {friend.firstName} {friend.lastName} </span> */}
+                                                                    </Col>
+
+                                                                    
+                                                                </Row>            
+                                                            </ListGroupItem>
+                                                        ))}
+
+                                                        {friendList.length == 0 &&
+                                                            <ListGroupItem>
+                                                                <center>No Friends</center>
+                                                            </ListGroupItem>
+                                                        }
+                                                    </ListGroup>
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                    <Button color="primary">Done</Button>
+                                                    <Button style={{color: "gray"}} onClick={this.toggleModalSuggest}>Cancel</Button>
+                                                </ModalFooter>
+                                            </Modal>  
+                                        </Grid>
+
+                                        
 
                                         <Grid item xs={12} className={'gridSavedContent'}>
                                             <div id='savedContent' className='savedContent' style={{height: "80em", color:"black"}}>
