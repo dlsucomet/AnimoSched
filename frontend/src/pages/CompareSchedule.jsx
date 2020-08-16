@@ -533,61 +533,59 @@ setSchedInfo = () => {
                            <center><h6>Your Schedule</h6></center>
                             <div className={"scheduleContent"}>
                                   <center><span>{this.state.currentContentUser}</span></center>
-                            </div>
-                         
-                              <div className = "paginationContainer" style={(this.state.generatedContentsUser != null) ? {} : {display: "none"}}>
-                                  <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
-                                      <PaginationItem disabled={this.state.currentPageUser <= 0}>
-                                          <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPageUser - 1, "user")}
-                                              previous/>
-                                      </PaginationItem>
-                                      {[...Array(this.state.pagesCountUser)].map((page, i) => 
-                                          <PaginationItem active={i === this.state.currentPageUser} key={i} className={'paginationItemStyle'}>
-                                              <PaginationLink onClick={e => this.handlePageChange(e, i, "user")} className={'paginationLinkStyle'}>
-                                              {i + 1}
-                                              </PaginationLink>
+                                  <div className = "paginationContainer" style={(this.state.generatedContentsUser != null) ? {} : {display: "none"}}>
+                                      <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                          <PaginationItem disabled={this.state.currentPageUser <= 0}>
+                                              <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPageUser - 1, "user")}
+                                                  previous/>
                                           </PaginationItem>
-                                          )}
-                                      <PaginationItem disabled={this.state.currentPageUser >= this.state.generatedContentsUser.length - 1}>
-                                          <PaginationLink
-                                              onClick={e => this.handlePageChange(e, this.state.currentPageUser + 1, "user")}
-                                              next
-                                          />
+                                          {[...Array(this.state.pagesCountUser)].map((page, i) => 
+                                              <PaginationItem active={i === this.state.currentPageUser} key={i} className={'paginationItemStyle'}>
+                                                  <PaginationLink onClick={e => this.handlePageChange(e, i, "user")} className={'paginationLinkStyle'}>
+                                                  {i + 1}
+                                                  </PaginationLink>
+                                              </PaginationItem>
+                                              )}
+                                          <PaginationItem disabled={this.state.currentPageUser >= this.state.generatedContentsUser.length - 1}>
+                                              <PaginationLink
+                                                  onClick={e => this.handlePageChange(e, this.state.currentPageUser + 1, "user")}
+                                                  next
+                                              />
 
-                                          </PaginationItem>
-                                  </Pagination>
+                                              </PaginationItem>
+                                      </Pagination>
+                                  </div>
                             </div>
+
                           </Grid>
                           <Grid item xs={6}>
   
                             <center><h6>{this.state.friendName}'s Schedule</h6></center>
                             <div className={"scheduleContent"}>
                                 <center><span>{this.state.currentContentFriend}</span></center>
-                            </div>
-                            
-                            <div className = "paginationContainer" style={(this.state.generatedContentsFriend != null) ? {} : {display: "none"}}>
-                              <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
-                                  <PaginationItem disabled={this.state.currentPageFriend <= 0}>
-                                      <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPageFriend - 1, "friend")}
-                                          previous/>
-                                  </PaginationItem>
-                                  {[...Array(this.state.pagesCountFriend)].map((page, i) => 
-                                      <PaginationItem active={i === this.state.currentPageFriend} key={i} className={'paginationItemStyle'}>
-                                          <PaginationLink onClick={e => this.handlePageChange(e, i, "friend")} className={'paginationLinkStyle'}>
-                                          {i + 1}
-                                          </PaginationLink>
+                                <div className = "paginationContainer" style={(this.state.generatedContentsFriend != null) ? {} : {display: "none"}}>
+                                  <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                                      <PaginationItem disabled={this.state.currentPageFriend <= 0}>
+                                          <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPageFriend - 1, "friend")}
+                                              previous/>
                                       </PaginationItem>
-                                      )}
-                                  <PaginationItem disabled={this.state.currentPageFriend >= this.state.generatedContentsFriend.length - 1}>
-                                      <PaginationLink
-                                          onClick={e => this.handlePageChange(e, this.state.currentPageFriend + 1, "friend")}
-                                          next
-                                      />
+                                      {[...Array(this.state.pagesCountFriend)].map((page, i) => 
+                                          <PaginationItem active={i === this.state.currentPageFriend} key={i} className={'paginationItemStyle'}>
+                                              <PaginationLink onClick={e => this.handlePageChange(e, i, "friend")} className={'paginationLinkStyle'}>
+                                              {i + 1}
+                                              </PaginationLink>
+                                          </PaginationItem>
+                                          )}
+                                      <PaginationItem disabled={this.state.currentPageFriend >= this.state.generatedContentsFriend.length - 1}>
+                                          <PaginationLink
+                                              onClick={e => this.handlePageChange(e, this.state.currentPageFriend + 1, "friend")}
+                                              next
+                                          />
 
-                                      </PaginationItem>
-                              </Pagination>
+                                          </PaginationItem>
+                                  </Pagination>
+                                </div>
                             </div>
-                      
                           </Grid>
                       </Grid>
                 </div>

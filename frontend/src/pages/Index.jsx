@@ -762,6 +762,32 @@ class Index extends Component {
     localStorage.setItem('steps',false)
   }
 
+  pagination = () => {
+    return(
+      <div id="viewCoursesHome" className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
+            <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
+                <PaginationItem disabled={this.state.currentPage <= 0}>
+                    <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
+                        previous/>
+                </PaginationItem>
+                {[...Array(this.state.pagesCount)].map((page, i) => 
+                    <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
+                        <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
+                        {i + 1}
+                        </PaginationLink>
+                    </PaginationItem>
+                    )}
+                <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                    <PaginationLink
+                        onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
+                        next
+                    />
+                    </PaginationItem>
+            </Pagination>
+      </div>
+    )
+  }
+
     render() {
         this.state.pagesCount = this.state.generatedContents.length;
         this.state.currentContent = this.state.generatedContents[this.state.currentPage];
@@ -831,6 +857,7 @@ class Index extends Component {
                   </div>
                   }
                 </div>
+                {this.pagination()}
               </Grid>
 
               {/* <Grid item xs={1}>
@@ -1000,28 +1027,7 @@ class Index extends Component {
               </Grid>
 
               <Grid item xs={12} justify="center" alignItems="center">
-                <div id="viewCoursesHome" className = "paginationContainer" style={(this.state.generatedContents != null) ? {} : {display: "none"}}>
-                      <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
-                          <PaginationItem disabled={this.state.currentPage <= 0}>
-                              <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
-                                  previous/>
-                          </PaginationItem>
-                          {[...Array(this.state.pagesCount)].map((page, i) => 
-                              <PaginationItem active={i === this.state.currentPage} key={i} className={'paginationItemStyle'}>
-                                  <PaginationLink onClick={e => this.handlePageChange(e, i)} className={'paginationLinkStyle'}>
-                                  {i + 1}
-                                  </PaginationLink>
-                              </PaginationItem>
-                              )}
-                          <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
-                              <PaginationLink
-                                  onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
-                                  next
-                              />
-                              
-                              </PaginationItem>
-                      </Pagination>
-                </div>
+
               </Grid>
 
             </Grid>

@@ -59,6 +59,8 @@ import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {BrowserRouter as Router,Route,
+    Redirect,Switch} from 'react-router-dom';
 
 import _ from 'underscore';
 
@@ -171,6 +173,10 @@ class FriendPage extends Component {
             openModalSuggest: false,
             friendListSuggest: [],
             copyBar: false,
+
+            compareList: [],
+            generateList: [],
+            doGenerate: false,
 
             daysList:[
                 {   id: 1,
@@ -649,6 +655,29 @@ class FriendPage extends Component {
     
         this.setState({copyBar: false});
     }
+
+    compareOnChange = (e, val) => {
+        const friends = []
+        val.map(f => {
+            friends.push(f.id)
+        })
+        this.setState({compareList: friends})
+        console.log(val)
+    }
+
+    generateOnChange = (e, val) => {
+        const friends = []
+        val.map(f => {
+            friends.push(f.id)
+        })
+        this.setState({generateList: friends})
+        console.log(val)
+    }
+
+    startGenerate = () => {
+        this.setState({doGenerate: true})
+    }
+
     render() {
         const friendList = [];
         const { classes } = this.props;
@@ -682,6 +711,13 @@ class FriendPage extends Component {
                 {this.props.menu()}
                 {this.state.dataReceived ? 
                 <div>
+                {this.state.doGenerate &&
+                <Redirect to={{
+                            pathname: '/coordinate_schedule',
+                            state: {friends: this.state.generateList}
+                        }}
+                />
+                }
                     <div class="friendMenu">
                         <div class="titleRow">
                             <center>
@@ -940,7 +976,7 @@ class FriendPage extends Component {
                                         
                                         <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            <Link to={'/compare_schedule/'+this.state.selectedFriendId}>
+                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
                                                     <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
@@ -949,12 +985,12 @@ class FriendPage extends Component {
                                                     >
                                                         Compare Schedules
                                                     </Button>
-                                                </Link>
+                                                {/* </Link> */}
                                             </center>
                                             <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
                                                 <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>
                                                 <ModalBody>
-                                                    <h5>Who do you want to share a similar schedules with?</h5>
+                                                    <h5>Who do you want to compare schedules with?</h5>
                                                     <p>Maximum of 4 friends</p>
                                                     <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
                                                         <Autocomplete
@@ -978,6 +1014,7 @@ class FriendPage extends Component {
                                                             renderInput={(params) => (
                                                                 <TextField {...params} variant="outlined" label="Checkboxes" placeholder="Favorites" />
                                                             )}
+                                                            onChange={this.compareOnChange}
                                                         />
                                                     </div>
                                                 </ModalBody>
@@ -1027,13 +1064,12 @@ class FriendPage extends Component {
                                                             renderInput={(params) => (
                                                                 <TextField {...params} variant="outlined" label="Checkboxes" placeholder="Favorites" />
                                                             )}
+                                                            onChange={this.generateOnChange}
                                                         />
                                                     </div>
                                                 </ModalBody>
                                                 <ModalFooter>
-                                                    <Link to={'/compare_schedule/'+this.state.selectedFriendId}> 
-                                                    <Button color="primary">Done</Button>
-                                                    </Link>
+                                                    <Button onClick={this.startGenerate} color="primary">Done</Button>
                                                     <Button style={{color: "gray"}} onClick={this.toggleModalSuggest}>Cancel</Button>
                                                 </ModalFooter>
                                             </Modal>  
