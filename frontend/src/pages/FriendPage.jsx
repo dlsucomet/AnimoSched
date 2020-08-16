@@ -926,7 +926,7 @@ class FriendPage extends Component {
                                         
                                         <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
+                                            <Link to={'/compare_schedule/'+this.state.selectedFriendId}>
                                                     <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
@@ -935,7 +935,7 @@ class FriendPage extends Component {
                                                     >
                                                         Compare Schedules
                                                     </Button>
-                                                {/* </Link> */}
+                                                </Link>
                                             </center>
                                             <Modal isOpen={this.state.openModalCompare} toggle={this.toggleModalCompare} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
                                                 <ModalHeader toggle={this.toggleModalCompare}><h4>Compare Multiple Schedules</h4></ModalHeader>
@@ -976,16 +976,15 @@ class FriendPage extends Component {
 
                                         <Grid item xs={4} justify="center" alignItems="center" justifyContent="center" alignContent="center">
                                             <center>
-                                            {/* <Link to={'/compare_schedule/'+this.state.selectedFriendId}> */}
+    
                                                     <Button
                                                     variant="contained"
                                                     className={classes.buttonStyle}
                                                     startIcon={<EventAvailableIcon/>}
                                                     onClick={this.toggleModalSuggest}
                                                     >
-                                                        Make Shared Schedules
+                                                        Coordinate Schedules
                                                     </Button>
-                                                {/* </Link> */}
                                             </center>
                                             <Modal isOpen={this.state.openModalSuggest} toggle={this.toggleModalSuggest} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
                                                 <ModalHeader toggle={this.toggleModalSuggest}><h4>Generate Suggested Friend Schedules</h4></ModalHeader>
@@ -1018,7 +1017,9 @@ class FriendPage extends Component {
                                                     </div>
                                                 </ModalBody>
                                                 <ModalFooter>
+                                                    <Link to={'/compare_schedule/'+this.state.selectedFriendId}> 
                                                     <Button color="primary">Done</Button>
+                                                    </Link>
                                                     <Button style={{color: "gray"}} onClick={this.toggleModalSuggest}>Cancel</Button>
                                                 </ModalFooter>
                                             </Modal>  
