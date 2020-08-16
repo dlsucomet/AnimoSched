@@ -452,6 +452,70 @@ setSchedInfo = () => {
                 {this.state.dataReceived ?
                 <div>
                      <Grid container style={{marginTop: "30px"}}>
+                     <Grid item xs={12} justify="center" alignItems="center" justifyContent="center" alignContent="center">
+                        {/* <center>
+
+                                <Button
+                                variant="contained"
+                                className={classes.buttonStyle}
+                                startIcon={<EventAvailableIcon/>}
+                                onClick={this.toggleModalSuggest}
+                                >
+                                    Coordinate Schedules
+                                </Button>
+                        </center>
+                              <Modal isOpen={this.state.openModalSuggest} toggle={this.toggleModalSuggest} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" >
+                                  <ModalHeader toggle={this.toggleModalSuggest}><h4>Generate Suggested Friend Schedules</h4></ModalHeader>
+                                  <ModalBody>
+                                      <h5>Generate possible schedules you can share with your friends. Who do you want to create a schedule with?</h5>
+                                      <p>Maximum of 4 friends</p>
+                                      <div style={{justifyContent:"center", justify: "center", justifyItems: "center", margin: "auto 10px"}}>
+                                          <TextField
+                                              key={"friendPage_searchFriends"}
+                                              id="friendPage_searchFriends"
+                                              variant= "outlined"
+                                              
+                                              style={{ width: "95%", marginBottom: "10%", justifyContent: "center" }}
+                                              filterSelectedOptions
+                                              label="Search Friends" 
+                                              onChange={this.handleSearchChange}
+                                             
+                                              />
+                                             
+                                      </div>
+
+                                      <ListGroup flush style={{height: "50%", overflowX: "hidden"}}>
+                                          
+                                          {friendList.map((friend, index) => (
+                                              <ListGroupItem action>
+                                                  <Row>
+                            
+                                                      <Col xs={12} md={8}>
+                                                      <FormControlLabel
+                                                          control = {<GreenCheckbox checked={this.state.friendListSuggest[index].checked} onChange={this.handleSuggestChange} id={index} color="primary"/>}label={friend.firstName + " " + friend.lastName} />
+                                                         
+                                                      </Col>
+
+                                                      
+                                                  </Row>            
+                                              </ListGroupItem>
+                                          ))}
+
+                                          {friendList.length == 0 &&
+                                              <ListGroupItem>
+                                                  <center>No Friends</center>
+                                              </ListGroupItem>
+                                          }
+                                      </ListGroup>
+                                  </ModalBody>
+                                  <ModalFooter>
+                                      <Link to={'/compare_schedule/'+this.state.selectedFriendId}> 
+                                      <Button color="primary">Done</Button>
+                                      </Link>
+                                      <Button style={{color: "gray"}} onClick={this.toggleModalSuggest}>Cancel</Button>
+                                  </ModalFooter>
+                              </Modal>   */}
+                          </Grid>
                           <Grid item xs={6}>
 
                            <center><h6>Your Schedule</h6></center>
