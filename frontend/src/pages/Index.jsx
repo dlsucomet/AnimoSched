@@ -294,9 +294,16 @@ class Index extends Component {
       }, () => {
         const currentClasses = [];
         const offerings = this.state.currentContent.props.offerings
-        for(var i = 0 ; i < offerings.length ; i += 2){
-          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
-        }
+        for(var i = 0 ; i < offerings.length ; i += 1){
+          var alreadyAdded = false;
+          for(var j = 0 ; j < currentClasses.length ; j += 1){
+            if(offerings[i].classnumber == currentClasses[j].classnumber){
+              alreadyAdded = true
+            }
+          }
+          if(!alreadyAdded){
+            currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+        }}
         this.setState({currentClasses})
       });
 
@@ -466,8 +473,16 @@ class Index extends Component {
       this.setState({currentContent: generatedContents[0]},() => {
         const currentClasses = [];
         const offerings = this.state.currentContent.props.offerings
-        for(var i = 0 ; i < offerings.length ; i += 2){
-          currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+        for(var i = 0 ; i < offerings.length ; i += 1){
+          var alreadyAdded = false;
+          for(var j = 0 ; j < currentClasses.length ; j += 1){
+            if(offerings[i].classnumber == currentClasses[j].classnumber){
+              alreadyAdded = true
+            }
+          }
+          if(!alreadyAdded){
+            currentClasses.push({title: offerings[i].course + ' ' + offerings[i].section, classnumber: offerings[i].classnumber, course: offerings[i].course_id})
+          }
         }
         this.setState({currentClasses, scheduleChanged: true})
       })
@@ -504,11 +519,11 @@ class Index extends Component {
   var currentPage = this.state.currentPage;
   var index = currentPage;
 
-  axios.delete('https://archerone-backend.herokuapp.com/api/schedules/'+this.state.currentContent.props.id+'/')
-  .catch(err => {
+  axios.delete('https://archerone-backend.herokuapp.com/api/schedules/'+this.state.currentContent.props.id+'/').then(res => {
+    window.location.reload()
+  }).catch(err => {
     console.log(err.response)
   })
-  
   if(index !== -1){
     newSchedule.splice(index, 1);
   }
@@ -725,7 +740,7 @@ class Index extends Component {
       // snackBarVariables[1].snackBarFailed = true;
       this.setState({snackBarVariables});
       console.log(snackBarVariables);
-      // window.location.reload();
+      window.location.reload();
     }).catch(err => {
       console.log(err.response)
     })
@@ -816,7 +831,7 @@ class Index extends Component {
           {
             // element: '',
             // position: 'bottom-right-aligned',
-            intro: 'Explore the site!',
+            intro: 'Explore the site! You can also compare schedules and generate schedules together with your friends!',
           },
         ];
 

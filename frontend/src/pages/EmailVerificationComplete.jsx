@@ -79,8 +79,8 @@ class EmailVerificationComplete extends Component {
     }
 
     render() {
+      const { classes } = this.props;
       return (
-        <Redirect to="/login"></Redirect>
             <div style={sectionStyle}>
                 <div className={"backBtn"}>
                 <a className="backBtn" href="/">
@@ -133,6 +133,7 @@ class EmailVerificationComplete extends Component {
                     </Row>
                 </div>
         </div>    
+      )
     
             // <div>
             //     <Redirect to="/login"></Redirect>
@@ -152,7 +153,6 @@ class EmailVerificationComplete extends Component {
             //         </div>              
             //     </div>
             // </div>        
-      );
     }
   }
 
