@@ -13,6 +13,7 @@ class EmailVerificationComplete extends Component {
     render() {
       return (
         <div>
+            <Redirect to="/login"></Redirect>
             <div class="sidenav">
                 <a className="backBtn" href="/">
                     <div className={"backBtn"}></div>
