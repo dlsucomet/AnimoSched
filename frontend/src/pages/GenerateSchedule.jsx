@@ -227,16 +227,12 @@ class GenerateSchedule extends Component {
                         days.map(day_code => {
                             day += day_code;
                         })
-                        var checked = localStorage.getItem(classnumber)
-                        if(checked == null){
+                        var checked = this.state.undesirableClass[classnumber]
+                        if(checked == null || checked){
                             checked = true;
-                            localStorage.setItem(classnumber, true);
-                        }else if(checked == 'true'){
-                            checked = true;
-                        }else if(checked == 'false'){
+                        }else{
                             checked = false;
                         }
-                        console.log(checked)
                         const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled, checked);
                         offeringList.push(offering);
                         }
@@ -302,16 +298,12 @@ class GenerateSchedule extends Component {
                         days.map(day_code => {
                             day += day_code;
                         })
-                        var checked = localStorage.getItem(classnumber)
-                        if(checked == null){
+                        var checked = this.state.undesirableClass[classnumber]
+                        if(checked == null || checked){
                             checked = true;
-                            localStorage.setItem(classnumber, true);
-                        }else if(checked == 'true'){
-                            checked = true;
-                        }else if(checked == 'false'){
+                        }else{
                             checked = false;
                         }
-                        console.log(checked)
                         const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled, checked);
                         offeringList.push(offering);
                         }
@@ -377,13 +369,10 @@ class GenerateSchedule extends Component {
                         days.map(day_code => {
                             day += day_code;
                         })
-                        var checked = localStorage.getItem(classnumber)
-                        if(checked == null){
+                        var checked = this.state.undesirableClass[classnumber]
+                        if(checked == null || checked){
                             checked = true;
-                            localStorage.setItem(classnumber, true);
-                        }else if(checked == 'true'){
-                            checked = true;
-                        }else if(checked == 'false'){
+                        }else{
                             checked = false;
                         }
                         const offering = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled, checked);
@@ -437,13 +426,12 @@ class GenerateSchedule extends Component {
                             if(priority){
                                 this.getCourseOfferings(id, course, this.state.highCourses, () => {
                                     done += 1;
-                                    if(total <= done){
-                                        this.setState({dataReceived: true})
-                                    }
+                                    this.setState({dataReceived: true})
                                 })
                             }else{
                                 this.getLowCourseOfferings(id, course, this.state.lowCourses, () => {
                                     done += 1;
+                                    console.log('test 2')
                                     if(total <= done){
                                         this.setState({dataReceived: true})
                                     }
@@ -456,17 +444,19 @@ class GenerateSchedule extends Component {
                     this.setState({courseList:newCourseList})
                 })
                 if(total <= done){
-                    axios.get('https://archerone-backend.herokuapp.com/api/undesirableclasslist/'+id+'/').then(res => {
-                        res.data.map(c => {
-                            console.log(c)
-                        })
-                    })
                     this.setState({dataReceived: true})
                 }
                 console.log(this.state.highCourses.length)
                 console.log(this.state.lowCourses.length)
                 console.log(this.state.loading || this.state.highCourses.length + this.state.lowCourses.length <= 0);
             });
+        })
+        axios.get('https://archerone-backend.herokuapp.com/api/undesirableclasslist/'+id+'/').then(res => {
+            res.data.map(c => {
+                const undesirableClass = this.state.undesirableClass
+                undesirableClass[c.undesirable_classes] = false
+                this.setState({undesirableClass})
+            })
         })
     }
 
@@ -897,13 +887,13 @@ class GenerateSchedule extends Component {
     handleAllCheckbox = () => {
         this.setState(state =>{
             const siteData = state.siteData
+            const undesirableClass = state.undesirableClass
             siteData.map(c => {
                 if(this.state.allCheckBox){
                     c.checked = false 
                 }else{
                     c.checked = true 
                 }
-                const undesirableClass = state.undesirableClass
                 undesirableClass[c.classNmbr] = c.checked
             })
             return{siteData, undesirableClass};
@@ -946,25 +936,22 @@ class GenerateSchedule extends Component {
         console.log("Course Offerings changes saved");
         const classnumber = []
         const delClassnumber = []
-        this.state.undesirableClass.map(c => {
-            if(!this.state.undesirableClass[c]){
-                classnumber.push((c))
-            }else{
-                delClassnumber.push((c))
+        for (const [key, value] of Object.entries(this.state.undesirableClass)) {
+            if(!value){
+                classnumber.push((key))
             }
-        })
-        axios.post('https://archerone-backend.herokuapp.com/api/addundesirableclass/',{
-            classnumber: classnumber,
+        }
+        console.log(classnumber)
+        axios.post('https://archerone-backend.herokuapp.com/api/removeundesirableclass/',{
             user_id: localStorage.getItem('user_id')
         }).then(res => {
-            axios.post('https://archerone-backend.herokuapp.com/api/removeundesirableclass/',{
+            axios.post('https://archerone-backend.herokuapp.com/api/addundesirableclass/',{
                 classnumber: classnumber,
                 user_id: localStorage.getItem('user_id')
             }).then(res => {
                 this.setState({openModalCourseOfferings: false});
             })
         })
-
       } 
     
     toggleModalWait = () => {
