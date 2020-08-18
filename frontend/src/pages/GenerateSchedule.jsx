@@ -1122,8 +1122,9 @@ class GenerateSchedule extends Component {
                               </ModalBody>
                                 
                                 <ModalFooter>
-                                  <Button color="primary" onClick={this.handleSaveCourseOfferings}>Save Changes</Button>{' '}
-                                  <Button style={{color: "gray"}}onClick={this.toggleModal}>Cancel</Button>
+                                    <Button style={{color: "gray"}}onClick={this.toggleModal}>Cancel</Button>
+                                    <Button color="primary" onClick={this.handleSaveCourseOfferings}>Save Changes</Button>{' '}
+                                  
                                 </ModalFooter>
 
                           </Modal> 
