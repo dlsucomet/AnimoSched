@@ -808,12 +808,13 @@ class FriendPage extends Component {
                                 </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
-                                <Button onClick={this.handleCloseAlert} color="primary">
-                                    Cancel
-                                </Button>
                                 <Button onClick={this.deleteFriend} color="primary" autoFocus>
                                     Unfriend
                                 </Button>
+                                <Button onClick={this.handleCloseAlert} color="primary">
+                                    Cancel
+                                </Button>
+                                
                                 </DialogActions>
                             </Dialog>
                         </div>
@@ -1040,8 +1041,9 @@ class FriendPage extends Component {
                                                     </div>
                                                 </ModalBody>
                                                 <ModalFooter>
-                                                    <Button color="primary">Done</Button>
                                                     <Button style={{color: "gray"}} onClick={this.toggleModalCompare}>Cancel</Button>
+                                                    <Button color="primary">Done</Button>
+                                                    
                                                 </ModalFooter>
                                             </Modal>  
                                         </Grid>
@@ -1094,8 +1096,8 @@ class FriendPage extends Component {
                                                     </Row>
                                                 </ModalBody>
                                                 <ModalFooter>
-                                                    <Button onClick={this.startGenerate} color="primary">Done</Button>
                                                     <Button style={{color: "gray"}} onClick={this.toggleModalSuggest}>Cancel</Button>
+                                                    <Button onClick={this.startGenerate} color="primary">Done</Button>
                                                 </ModalFooter>
                                             </Modal>  
                                         </Grid>
