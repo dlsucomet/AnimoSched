@@ -169,6 +169,9 @@ class GenerateSchedule extends Component {
      
             skeletons: [...Array(8).keys()],
 
+            undesirableClass: {},
+            tempUndesirableClass: {},
+
             openModalWait: false,
         };
 
@@ -453,6 +456,11 @@ class GenerateSchedule extends Component {
                     this.setState({courseList:newCourseList})
                 })
                 if(total <= done){
+                    axios.get('https://archerone-backend.herokuapp.com/api/undesirableclasslist/'+id+'/').then(res => {
+                        res.data.map(c => {
+                            console.log(c)
+                        })
+                    })
                     this.setState({dataReceived: true})
                 }
                 console.log(this.state.highCourses.length)
@@ -851,7 +859,6 @@ class GenerateSchedule extends Component {
                 // })
             }).catch(err => {
                 console.log(err.response)
-
             })
             this.setState(state=>{
                 const savedScheds = state.savedScheds.concat(state.currentContent.key);
@@ -863,15 +870,12 @@ class GenerateSchedule extends Component {
             this.setState({saveButtonStyle: styleChange});
             this.setState({snackBar: true});
         }
-        
-
     }
 
     handleCloseSnackBar = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         }
-    
         this.setState({snackBar: false});
       }
     
@@ -883,8 +887,9 @@ class GenerateSchedule extends Component {
         this.setState(state =>{
             const siteData  = state.siteData
             siteData[index].checked = !siteData[index].checked
-            localStorage.setItem(siteData[index].classNmbr, siteData[index].checked)
-            return{siteData};
+            const undesirableClass = state.undesirableClass
+            undesirableClass[siteData[index].classNmbr] = siteData[index].checked
+            return{siteData, undesirableClass};
         });
         console.log(this.state.siteData[index]) 
     }
@@ -898,9 +903,10 @@ class GenerateSchedule extends Component {
                 }else{
                     c.checked = true 
                 }
-                localStorage.setItem(c.classNmbr, c.checked)
+                const undesirableClass = state.undesirableClass
+                undesirableClass[c.classNmbr] = c.checked
             })
-            return{siteData};
+            return{siteData, undesirableClass};
         }, () => {
             this.setState({allCheckBox: !this.state.allCheckBox})
         });
@@ -938,7 +944,27 @@ class GenerateSchedule extends Component {
     
     handleSaveCourseOfferings = () =>{
         console.log("Course Offerings changes saved");
-        this.setState({openModalCourseOfferings: false});
+        const classnumber = []
+        const delClassnumber = []
+        this.state.undesirableClass.map(c => {
+            if(!this.state.undesirableClass[c]){
+                classnumber.push((c))
+            }else{
+                delClassnumber.push((c))
+            }
+        })
+        axios.post('https://archerone-backend.herokuapp.com/api/addundesirableclass/',{
+            classnumber: classnumber,
+            user_id: localStorage.getItem('user_id')
+        }).then(res => {
+            axios.post('https://archerone-backend.herokuapp.com/api/removeundesirableclass/',{
+                classnumber: classnumber,
+                user_id: localStorage.getItem('user_id')
+            }).then(res => {
+                this.setState({openModalCourseOfferings: false});
+            })
+        })
+
       } 
     
     toggleModalWait = () => {
