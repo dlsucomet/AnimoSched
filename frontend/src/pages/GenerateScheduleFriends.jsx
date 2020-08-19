@@ -46,7 +46,9 @@ import 'intro.js/introjs.css';
 import '../css/introjs-modern.css';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import FriendTable from '../components/FriendTable.jsx';
 import Link from '@material-ui/core/Link';
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -373,7 +375,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} /*type={"friend"}**/ />
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -723,6 +725,7 @@ class GenerateSchedule extends Component {
                         <center><h5>Share this link to your friends so they can can view: <Link href={linkShare}> {this.state.shareCode} </Link></h5></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
+                            <FriendTable/>
                         
                             <div className = "paginationContainer">
                                 <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
