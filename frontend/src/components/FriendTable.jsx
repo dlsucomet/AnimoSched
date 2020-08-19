@@ -75,10 +75,10 @@ class FriendTable extends Component {
 
     }
 
-    componentDidMount(){
+    // componentDidMount(){
       
        
-    }
+    // }
 
     createData(name, matched, possible, unavailable) {
       return { name, matched, possible, unavailable };
@@ -164,14 +164,14 @@ class FriendTable extends Component {
 
                 
                 {/* start of table */}
-                <div className="viewFriends" style={true ? {} : {display: "none"}}>
+                <div className="view-Friends" style={true ? {} : {display: "none"}}>
                   <TableContainer>
 
                     {this.state.friendInfo.map(index => (
                       <Table aria-label="customized table" style={{marginBottom: 25, marginTop: 25}} component={Paper}>
                         <TableHead>
                           <TableRow>
-                            <StyledTableCell> Name </StyledTableCell>
+                            <StyledTableCell> Friend </StyledTableCell>
                             <StyledTableCell> Matched Classes </StyledTableCell>
                             <StyledTableCell> Possible Classes </StyledTableCell>
                             <StyledTableCell> Clashing Courses </StyledTableCell>
