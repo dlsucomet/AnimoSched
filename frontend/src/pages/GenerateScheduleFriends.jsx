@@ -7,6 +7,7 @@ import '../css/GenerateSchedule.css';
 import GenSchedInfo from '../components/GenSchedInfo';
 import axios from 'axios';
 import ReactDOM from "react-dom";
+import { Redirect } from "react-router-dom";
 import { Pagination, PaginationItem, PaginationLink} from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -46,6 +47,8 @@ import '../css/introjs-modern.css';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FriendTable from '../components/FriendTable.jsx';
+import Link from '@material-ui/core/Link';
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -168,6 +171,7 @@ class GenerateSchedule extends Component {
 
             openModalWait: false,
             shareCode: '',
+            redirect: false,
         };
 
         if(localStorage.getItem('hints') == null){
@@ -188,88 +192,10 @@ class GenerateSchedule extends Component {
             })
             .then(res => {
                 console.log(res)
-                const schedules = []
-                var schedCount = 0;
-                this.setState({shareCode: res.data[0].shareCode}) 
-                res.data.map(newSchedule =>{
-                    var count = 0;
-                    const scheduleContent = []
-                    const tableContent = []
-                    var earliest = 9
-                    var latest = 17
-
-
-                    newSchedule.offerings.map(offering=>{
-                        var startTime = offering.timeslot_begin.split(':');
-                        var endTime = offering.timeslot_end.split(':');
-                        const newContent = 
-                        {
-                            id: count,
-                            title: offering.course + ' ' + offering.section,
-                            section: offering.section,
-                            startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                            endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                            priorityId: 3,
-                            location: offering.room,
-                            professor: offering.faculty,
-                            startTime: offering.timeslot_begin.substring(0, offering.timeslot_begin.length - 3),
-                            endTime: offering.timeslot_end.substring(0, offering.timeslot_end.length - 3),
-                            days: offering.day,
-                            classCode: offering.classnumber 
-                        }
-                        if(earliest > Number(startTime[0])){
-                            earliest = Number(startTime[0])
-                        }
-                        if(latest < Number(endTime[0]) + 1){
-                            latest = Number(endTime[0]) + 1
-                        }
-                        scheduleContent.push(newContent);
-                        var day = ''
-                        var classnumber = ''
-                        var course = ''
-                        var section = ''
-                        var faculty = ''
-                        var timeslot_begin = ''
-                        var timeslot_end = ''
-                        var room = ''
-                        var max_enrolled = ''
-                        var current_enrolled = ''
-
-                        day = offering.day
-                        classnumber = offering.classnumber
-                        course = offering.course
-                        section = offering.section
-                        faculty = offering.faculty
-                        timeslot_begin = offering.timeslot_begin
-                        timeslot_end = offering.timeslot_end
-                        room = offering.room
-                        max_enrolled = offering.max_enrolled
-                        current_enrolled = offering.current_enrolled
-                        const newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                        // tableContent.push(newTableContent)
-                        count += 1;
-                    })
-                    schedCount += 1;
-                    schedules.push({
-                        id: schedCount,
-                        title: "Schedule "+schedCount.toString(),
-                        scheduleContent: scheduleContent,
-                        tableContent: tableContent,
-                        prefContent: [],
-                        prefContent: newSchedule.preferences,
-                        conflictsContent: newSchedule.information,
-                        earliest: earliest,
-                        latest: latest,
-                        offerings: newSchedule.offerings
-                    });
+                console.log(res.data)
+                this.setState({shareCode: res.data}, () => {
+                    this.setState({redirect: true})
                 })
-                console.log(schedules)
-                this.setState({schedules});
-                this.setSchedInfo();
-                this.setState({success: true});
-                this.setState({loading: false});
-                this.setState({dataReceived: true});
-                this.toggleModalWait();
             }).catch(error => {
                 console.log(error.response)
                 this.setState({success: false});
@@ -370,7 +296,12 @@ class GenerateSchedule extends Component {
             })
         }
     }
-
+    renderRedirect = () => {
+        return <Redirect to={'/coordinate_schedule/'+this.state.shareCode+'/'}/>
+    }
+    reload = () => {
+        window.location.reload()
+    }
     saveCourses = () => {
         // const priority = res.data.priority
         // var newCourseList = []
@@ -769,7 +700,7 @@ class GenerateSchedule extends Component {
               },
             },
           }))(TableRow);
-
+        const linkShare = "https://animosched.herokuapp.com/coordinate_schedule/"+this.state.shareCode+"/"
         return (
             <div>
                 <div class="header" style={{backgroundColor: "#006A4E", padding:"10px"}}>
@@ -782,10 +713,16 @@ class GenerateSchedule extends Component {
                     </div>
                     {/* <img class='img-responsive' id='lower' src={SidebarIMG}/> */}
                 </div>
+                {this.state.redirect &&
+                    this.renderRedirect()
+                }
+                {this.state.redirect &&
+                    this.reload()
+                }
                 {this.state.dataReceived ?
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>
-                        <center><h4>{this.state.shareCode}</h4></center>
+                        <center><h5>Share this link to your friends so they can can view: <Link href={linkShare}> {this.state.shareCode} </Link></h5></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                             <FriendTable/>
@@ -843,7 +780,7 @@ class GenerateSchedule extends Component {
                       <Modal isOpen={!this.state.dataReceived} returnFocusAfterClose={false} backdrop={true} data-keyboard="false" centered={true}>
                           <ModalHeader>
                               <center>
-                                  <br></br><p>Please wait...In the process of making your schedule</p>
+                                  <br></br><p>Please wait...In the process of loading your schedules</p>
                                   <ReactLoading type={'spin'} color={'#9BCFB8'} height={'10%'} width={'10%'}/>
                               </center>
                               </ModalHeader>
