@@ -47,6 +47,7 @@ import '../css/introjs-modern.css';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Link from '@material-ui/core/Link';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -207,7 +208,9 @@ class GenerateSchedule extends Component {
                 const schedules = []
                 var schedCount = 0;
                 this.setState({shareCode: res.data[0].shareCode}) 
+                this.setState({owner: res.data[0].owner}) 
                 res.data.map(newSchedule =>{
+                    console.log(newSchedule)
                     var count = 0;
                     const scheduleContent = []
                     const tableContent = []
@@ -273,6 +276,7 @@ class GenerateSchedule extends Component {
                         tableContent: tableContent,
                         prefContent: [],
                         prefContent: newSchedule.preferences,
+                        prefFriendContent: newSchedule.friendPreferences,
                         conflictsContent: newSchedule.information,
                         earliest: earliest,
                         latest: latest,
@@ -373,7 +377,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -503,6 +507,7 @@ class GenerateSchedule extends Component {
                         tableContent: tableContent,
                         prefContent: [],
                         prefContent: newSchedule.preferences,
+                        prefFriendContent: newSchedule.friendPreferences,
                         conflictsContent: newSchedule.information,
                         earliest: earliest,
                         latest: latest,
@@ -675,6 +680,10 @@ class GenerateSchedule extends Component {
         var openModalVar = this.state.openModalWait;
         this.setState({openModalWait: !openModalVar});
       }
+
+    onCopy = () => {
+        console.log("copied")
+    }
     render() { 
         let search_field = this.props.search_field;
         // const { currentPage } = this.state;
@@ -720,7 +729,12 @@ class GenerateSchedule extends Component {
                 {this.state.dataReceived ?
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>
-                        <center><h5>Share this link to your friends so they can can view: <Link href={linkShare}> {this.state.shareCode} </Link></h5></center>
+                        <center><h5>
+                            {this.state.owner+'\'s generated schedules: '} 
+                            <CopyToClipboard text={linkShare} onCopy={this.onCopy}>
+                                <Button variant='outlined'>Copy link to clipboard</Button>
+                            </CopyToClipboard>
+                        </h5></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                         
