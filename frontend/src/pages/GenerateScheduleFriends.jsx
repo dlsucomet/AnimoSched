@@ -46,8 +46,10 @@ import 'intro.js/introjs.css';
 import '../css/introjs-modern.css';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import FriendTable from '../components/FriendTable.jsx';
 import Link from '@material-ui/core/Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -377,7 +379,11 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
+<<<<<<< HEAD
             <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+=======
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} /*type={"friend"}**/ />
+>>>>>>> feabe7db6e81ee94fbef569cad2aee9825f81434
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -737,6 +743,7 @@ class GenerateSchedule extends Component {
                         </h5></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
+                            <FriendTable/>
                         
                             <div className = "paginationContainer">
                                 <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
