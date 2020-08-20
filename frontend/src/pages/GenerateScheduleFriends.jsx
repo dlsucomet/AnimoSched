@@ -174,6 +174,7 @@ class GenerateSchedule extends Component {
             shareCode: '',
             redirect: false,
             copyLabel: "Copy link to clipboard",
+            friends: "Edward Elric, Mark Ruffalo",
         };
 
         if(localStorage.getItem('hints') == null){
@@ -742,6 +743,7 @@ class GenerateSchedule extends Component {
                                 <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                             </CopyToClipboard>
                         </h5></center>
+                        <center><h6>Coordinating with: {this.state.friends}</h6></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                             <FriendTable/>

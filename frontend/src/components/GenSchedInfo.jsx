@@ -185,7 +185,7 @@ class GenSchedInfo extends Component {
                                 <BoxInfo content={this.state.prefContent } id={1+this.state.id}/> */}
     
                                 <TableContainer component={Paper} className="boxinfoContainer" style={{width: 250}}>
-                                    <Table className={classes.table} aria-label="customized table">
+                                    <Table className={classes.table} aria-label="customized table" stickyHeader>
                                         <TableHead>
                                             <TableRow>
                                                 <StyledTableCell><center>{this.state.prefTitle}</center></StyledTableCell>
@@ -218,7 +218,7 @@ class GenSchedInfo extends Component {
                                 <BoxInfo content={this.state.conflictsContent} id={2+this.state.id}/> */}
 
                                 <TableContainer component={Paper} className="boxinfoContainer" style={{width: 250}}>
-                                    <Table className={classes.table} aria-label="customized table">
+                                    <Table className={classes.table} aria-label="customized table" stickyHeader>
                                         <TableHead>
                                             <TableRow>
                                                 <StyledTableCell><center>{this.state.conflictTitle}</center></StyledTableCell>
@@ -249,19 +249,17 @@ class GenSchedInfo extends Component {
                         {/****************TBALES FOR FRIENDS*******************/}
                         <br></br>
                         <div style={this.props.type =="friend" ?  {} : {display:"none"} }>
-                        <Row horizontal = 'center'>
-                            <Column horizontal = 'center' style={{marginLeft: "10px"}}>
-                                
-    
-                                <TableContainer component={Paper} className="boxinfoContainer" style={{width: 250}}>
-                                    <Table className={classes.table} aria-label="customized table">
+                        <Row horizontal>
+                            {/* <Column horizontal = 'center' style={{marginLeft: "10px"}}> */}
+                                <TableContainer component={Paper} className="boxinfoContainer" style={{width: "100%"}}>
+                                    <Table className={classes.table} aria-label="customized table" stickyHeader >
                                         <TableHead>
                                             <TableRow>
                                                 <StyledTableCell><center>Friends' Preferences and Conflicts</center></StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         
-                                        <TableBody>
+                                        <TableBody style={{width: "100%"}}>
                                             {this.state.rowsFriendPref != undefined ? 
                                             <div>
                                                 {this.state.rowsFriendPref.length == 0 ?
@@ -272,8 +270,8 @@ class GenSchedInfo extends Component {
                                                 </StyledTableRow>
                                                 : null }
                                                 {this.state.rowsFriendPref.map((row) => (
-                                                    <StyledTableRow key={row}>
-                                                        <StyledTableCell component="th" scope="row">
+                                                    <StyledTableRow key={row} style={{width: "100%"}}>
+                                                        <StyledTableCell component="th" scope="row" style={{width: "100%"}}>
                                                             {row}
                                                         </StyledTableCell>
                                                     </StyledTableRow>
@@ -284,7 +282,7 @@ class GenSchedInfo extends Component {
                                     </Table>
                                 </TableContainer>
 
-                            </Column>
+                            {/* </Column> */}
                             
                             {/* <Column horizontal = 'center' style={{marginLeft: "20px"}}>
                                
