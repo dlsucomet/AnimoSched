@@ -50,6 +50,8 @@ import FriendTable from '../components/FriendTable.jsx';
 import Link from '@material-ui/core/Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -743,7 +745,11 @@ class GenerateSchedule extends Component {
                                 <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                             </CopyToClipboard>
                         </h5></center>
-                        <center><h6>Coordinating with: {this.state.friends}</h6></center>
+                        <center><h6>Coordinating with: {this.state.friends}
+                        <Tooltip title="The schedule shown is in the owner's perspective. The schedule shows the list of classes you can take to maximize the classes you and your friends can take together and fit the classes your friends need. " placement="bottom">
+                            <HelpIcon />
+                        </Tooltip>
+                        </h6></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                             <FriendTable/>
