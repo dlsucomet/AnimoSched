@@ -49,7 +49,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FriendTable from '../components/FriendTable.jsx';
 import Link from '@material-ui/core/Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -173,6 +173,7 @@ class GenerateSchedule extends Component {
             openModalWait: false,
             shareCode: '',
             redirect: false,
+            copyLabel: "Copy link to clipboard",
         };
 
         if(localStorage.getItem('hints') == null){
@@ -685,6 +686,10 @@ class GenerateSchedule extends Component {
 
     onCopy = () => {
         console.log("copied")
+        this.setState({copyLabel: "Copied!"}, ()=>{
+            setTimeout(() => {  this.setState({copyLabel:  "Copy link to clipboard"}) }, 1000);
+        });
+        
     }
     render() { 
         let search_field = this.props.search_field;
@@ -734,7 +739,7 @@ class GenerateSchedule extends Component {
                         <center><h5>
                             {this.state.owner+'\'s generated schedules: '} 
                             <CopyToClipboard text={linkShare} onCopy={this.onCopy}>
-                                <Button variant='outlined'>Copy link to clipboard</Button>
+                                <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                             </CopyToClipboard>
                         </h5></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
