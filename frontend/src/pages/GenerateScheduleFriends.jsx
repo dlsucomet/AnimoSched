@@ -746,7 +746,7 @@ class GenerateSchedule extends Component {
                             </CopyToClipboard>
                         </h5></center>
                         <center><h6>Coordinating with: {this.state.friends}
-                        <Tooltip title="The schedule shown is in the owner's perspective. The schedule shows the list of classes you can take to maximize the classes you and your friends can take together and fit the classes your friends need. " placement="bottom">
+                        <Tooltip title="The schedule shown is in the owner's perspective. The schedule shows the list of classes you can get to maximize the classes you and your friends can take together and fit the classes your friends need. " placement="bottom">
                             <HelpIcon />
                         </Tooltip>
                         </h6></center>

@@ -167,7 +167,7 @@ class FriendTable extends Component {
                 <div className="view-Friends" style={true ? {} : {display: "none"}}>
                   <TableContainer>
 
-                    {this.state.friendInfo.map(index => (
+                    {/* {this.state.friendInfo.map(index => ( */}
                       <Table aria-label="customized table" style={{marginBottom: 25, marginTop: 25}} component={Paper}>
                         <TableHead>
                           <TableRow>
@@ -190,17 +190,15 @@ class FriendTable extends Component {
                         </TableBody>
                         : 
                         // <div></div>
-                        loadedData(index.name)
+                        loadedData("name")
                         }
                       </Table>
-                    ))}
+                    {/* ))} */}
 
                     </TableContainer>
 
-                  </div>                  
+              </div>                  
                 
-               
-
             </div>
                      
             : 
