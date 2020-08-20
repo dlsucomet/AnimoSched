@@ -67,9 +67,9 @@ class GenSchedInfo extends Component {
         super(props);
         var prefTitle = "Preferences";
         var conflictTitle = "Course Conflicts";
-        if(props.type != undefined){
-            prefTitle = "Your Preferences";
-            conflictTitle = "Your Course Conflicts"
+        if(props.type != undefined && props.owner!=undefined){
+            prefTitle = props.owner+'\'s Preferences';
+            conflictTitle = props.owner+'\'s Course Conflicts';
         }
         this._handleFocus = this._handleFocus.bind(this);
         this._handleFocusOut = this._handleFocusOut.bind(this);

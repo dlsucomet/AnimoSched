@@ -380,7 +380,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}  owner={this.state.owner}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -538,7 +538,7 @@ class GenerateSchedule extends Component {
          var newArray = [];
          const currentContent = this.state.currentContent;
         // var index = newArray.findIndex(this.state.currentContent);
-        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
+        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle} type={"friend"} owner={this.state.owner}/>
 
         this.state.generatedContents.map(value=>{
             if(value.key == this.state.currentContent.key){
