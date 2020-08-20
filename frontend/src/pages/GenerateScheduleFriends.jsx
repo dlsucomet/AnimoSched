@@ -49,7 +49,9 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FriendTable from '../components/FriendTable.jsx';
 import Link from '@material-ui/core/Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -173,6 +175,8 @@ class GenerateSchedule extends Component {
             openModalWait: false,
             shareCode: '',
             redirect: false,
+            copyLabel: "Copy link to clipboard",
+            friends: "Edward Elric, Mark Ruffalo",
         };
 
         if(localStorage.getItem('hints') == null){
@@ -379,7 +383,7 @@ class GenerateSchedule extends Component {
     setSchedInfo = () => {
         console.log(this.state.schedules)
         var generatedContents = this.state.schedules.map((item, index) =>
-            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+            <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle} type={"friend"}  owner={this.state.owner}/>
         );
         this.setState({currentPage: 0})
         this.setState({generatedContents});
@@ -537,7 +541,7 @@ class GenerateSchedule extends Component {
          var newArray = [];
          const currentContent = this.state.currentContent;
         // var index = newArray.findIndex(this.state.currentContent);
-        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
+        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle} type={"friend"} owner={this.state.owner}/>
 
         this.state.generatedContents.map(value=>{
             if(value.key == this.state.currentContent.key){
@@ -685,6 +689,10 @@ class GenerateSchedule extends Component {
 
     onCopy = () => {
         console.log("copied")
+        this.setState({copyLabel: "Copied!"}, ()=>{
+            setTimeout(() => {  this.setState({copyLabel:  "Copy link to clipboard"}) }, 1000);
+        });
+        
     }
     render() { 
         let search_field = this.props.search_field;
@@ -734,9 +742,14 @@ class GenerateSchedule extends Component {
                         <center><h5>
                             {this.state.owner+'\'s generated schedules: '} 
                             <CopyToClipboard text={linkShare} onCopy={this.onCopy}>
-                                <Button variant='outlined'>Copy link to clipboard</Button>
+                                <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                             </CopyToClipboard>
                         </h5></center>
+                        <center><h6>Coordinating with: {this.state.friends}
+                        <Tooltip title="The schedule shown is in the owner's perspective. The schedule shows the list of classes you can get to maximize the classes you and your friends can take together and fit the classes your friends need. " placement="bottom">
+                            <HelpIcon />
+                        </Tooltip>
+                        </h6></center>
                         <div className = "genSchedInfoContainer" style={this.state.hideGenContent ? {display: "none"} :  {margin: "40px"}}>
                             <span>{this.state.currentContent}</span>
                             <FriendTable/>
