@@ -630,7 +630,7 @@ class GenerateSchedule extends Component {
                                     <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                                 </CopyToClipboard>
                             </h5></center>
-                <center><h6>Coordinated schedules of: {this.state.friendKeys.map(friend => <span>{friend}</span>)} 
+                <center><h6>Coordinated schedules of: {this.state.friendKeys.map((friend, index) => <span>{index+1 != this.state.friendKeys.length ? friend + ", " : friend}</span>)} 
                 <Tooltip title="こんにちは！" placement="bottom">
                     <HelpIcon />
                 </Tooltip>
