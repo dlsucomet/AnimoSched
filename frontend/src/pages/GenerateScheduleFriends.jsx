@@ -397,7 +397,7 @@ class GenerateSchedule extends Component {
         );
         // this.setState({currentPage: 0})
         // this.handleScrollToGen();
-        return generatedContents[0];
+        return generatedContents
         // this.setState({generatedContents});
         // this.setState({hideGenContent: false});
         // this.setState({pagesCount: generatedContents.length});
