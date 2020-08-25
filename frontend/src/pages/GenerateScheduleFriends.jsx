@@ -607,9 +607,9 @@ class GenerateSchedule extends Component {
                                 </CopyToClipboard>
                             </h5></center>
                 <center><h6>Coordinated schedules of: {this.state.friendKeys.map((friend, index) => <span>{index+1 != this.state.friendKeys.length ? friend + ", " : friend}</span>)} 
-                <Tooltip title="こんにちは！" placement="bottom">
+                {/* <Tooltip title="こんにちは！" placement="bottom">
                     <HelpIcon />
-                </Tooltip>
+                </Tooltip> */}
             
                 </h6>
                 <div style={{marginTop: "30px"}}>
