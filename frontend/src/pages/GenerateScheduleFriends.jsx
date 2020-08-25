@@ -52,6 +52,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import HelpIcon from '@material-ui/icons/Help';
 import Tooltip from '@material-ui/core/Tooltip';
+import {Tabs, Tab } from 'react-bootstrap';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
@@ -618,21 +619,25 @@ class GenerateSchedule extends Component {
                     this.reload()
                 }
                 {this.state.dataReceived ?
+                
                 <div>
 
                     <div>
                         <Column flexGrow={1} style={{margin: "40px"}}>
                             <center><h5>
                                 {/* {this.state.owner+'\'s generated schedules: '}  */}
+                                Share with friends: 
                                 <CopyToClipboard text={linkShare} onCopy={this.onCopy}>
                                     <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                                 </CopyToClipboard>
                             </h5></center>
-                <center><h6>Coordinated schedules of: {this.state.friendKeys.map(friend => <span>{friend}</span>)} 
+                <center><h6>Coordinated schedules of: {this.state.friendKeys.map((friend, index) => <span>{index+1 != this.state.friendKeys.length ? friend + ", " : friend}</span>)} 
                 <Tooltip title="こんにちは！" placement="bottom">
                     <HelpIcon />
                 </Tooltip>
+            
                 </h6>
+                <div style={{marginTop: "30px"}}>
                 <ToggleButtonGroup
                     value={this.state.currentFriend}
                     exclusive
@@ -645,6 +650,7 @@ class GenerateSchedule extends Component {
                     </ToggleButton>
                     )}
                 </ToggleButtonGroup>
+                </div>
                 </center>
                             <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
                                 <span>{this.state.currentContent}</span>
