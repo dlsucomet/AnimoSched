@@ -626,6 +626,7 @@ class GenerateSchedule extends Component {
                         <Column flexGrow={1} style={{margin: "40px"}}>
                             <center><h5>
                                 {/* {this.state.owner+'\'s generated schedules: '}  */}
+                                Share with friends: 
                                 <CopyToClipboard text={linkShare} onCopy={this.onCopy}>
                                     <Button variant='outlined' startIcon={<FileCopyIcon/>} >{this.state.copyLabel}</Button>
                                 </CopyToClipboard>
@@ -634,7 +635,9 @@ class GenerateSchedule extends Component {
                 <Tooltip title="こんにちは！" placement="bottom">
                     <HelpIcon />
                 </Tooltip>
+            
                 </h6>
+                <div style={{marginTop: "30px"}}>
                 <ToggleButtonGroup
                     value={this.state.currentFriend}
                     exclusive
@@ -647,6 +650,7 @@ class GenerateSchedule extends Component {
                     </ToggleButton>
                     )}
                 </ToggleButtonGroup>
+                </div>
                 </center>
                             <div className = "genSchedInfoContainer" style={{margin: "40px"}}>
                                 <span>{this.state.currentContent}</span>
