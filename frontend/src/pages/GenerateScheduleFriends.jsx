@@ -192,129 +192,108 @@ class GenerateSchedule extends Component {
     componentDidMount(){
         const id = localStorage.getItem('user_id');
         console.log(this.props)
-        if(this.props.params['id'] == undefined){
-            axios.post('https://archerone-backend.herokuapp.com/api/generateschedulefriends/',
-            {
-              friends: this.props.props.location.state.friends,
-              user_id: localStorage.getItem('user_id'),
-              filterFull: true
-            })
-            .then(res => {
-                // console.log(res)
-                // console.log(res.data)
-                this.setState({shareCode: res.data}, () => {
-                    this.setState({redirect: true})
-                })
-            }).catch(error => {
-                console.log(error.response)
-                this.setState({success: false});
-                this.setState({loading: false});
-                this.toggleModalWait();
-            })
-        }else{
-            axios.get('https://archerone-backend.herokuapp.com/api/getsharecode/'+this.props.params['id']+'/')
-            .then(res => {
-                console.log(res)
-                // this.setState({owner: res.data[0].owner}) 
-                var friends = {}
-                var friendKeys = Object.keys(res.data)
-                friendKeys.map(key => {
-                    console.log(key)
-                    console.log(res.data[key])
-                    var schedules = []
-                    var schedCount = 0;
-                    this.setState({shareCode: res.data[key][0].shareCode}) 
-                    res.data[key].map(newSchedule => {
-                        console.log(newSchedule)
-                        var count = 0;
-                        var scheduleContent = []
-                        var tableContent = []
-                        var earliest = 9
-                        var latest = 17
+        axios.get('https://archerone-backend.herokuapp.com/api/getsharecode/'+this.props.params['id']+'/')
+        .then(res => {
+            console.log(res)
+            // this.setState({owner: res.data[0].owner}) 
+            var friends = {}
+            var friendKeys = Object.keys(res.data)
+            friendKeys.map(key => {
+                console.log(key)
+                console.log(res.data[key])
+                var schedules = []
+                var schedCount = 0;
+                res.data[key].map(newSchedule => {
+                    this.setState({shareCode: res.data[key].shareCode}) 
+                    console.log(newSchedule)
+                    var count = 0;
+                    var scheduleContent = []
+                    var tableContent = []
+                    var earliest = 9
+                    var latest = 17
 
-                        newSchedule.offerings.map(offering=>{
-                            var startTime = offering.timeslot_begin.split(':');
-                            var endTime = offering.timeslot_end.split(':');
-                            var newContent = 
-                            {
-                                id: count,
-                                title: offering.course + ' ' + offering.section,
-                                section: offering.section,
-                                startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
-                                endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
-                                priorityId: 3,
-                                location: offering.room,
-                                professor: offering.faculty,
-                                startTime: offering.timeslot_begin.substring(0, offering.timeslot_begin.length - 3),
-                                endTime: offering.timeslot_end.substring(0, offering.timeslot_end.length - 3),
-                                days: offering.day,
-                                classCode: offering.classnumber 
-                            }
-                            if(earliest > Number(startTime[0])){
-                                earliest = Number(startTime[0])
-                            }
-                            if(latest < Number(endTime[0]) + 1){
-                                latest = Number(endTime[0]) + 1
-                            }
-                            scheduleContent.push(newContent);
-                            var day = ''
-                            var classnumber = ''
-                            var course = ''
-                            var section = ''
-                            var faculty = ''
-                            var timeslot_begin = ''
-                            var timeslot_end = ''
-                            var room = ''
-                            var max_enrolled = ''
-                            var current_enrolled = ''
+                    newSchedule.offerings.map(offering=>{
+                        var startTime = offering.timeslot_begin.split(':');
+                        var endTime = offering.timeslot_end.split(':');
+                        var newContent = 
+                        {
+                            id: count,
+                            title: offering.course + ' ' + offering.section,
+                            section: offering.section,
+                            startDate: this.createTimeslot(offering.day,startTime[0],startTime[1]),
+                            endDate: this.createTimeslot(offering.day,endTime[0],endTime[1]),
+                            priorityId: 3,
+                            location: offering.room,
+                            professor: offering.faculty,
+                            startTime: offering.timeslot_begin.substring(0, offering.timeslot_begin.length - 3),
+                            endTime: offering.timeslot_end.substring(0, offering.timeslot_end.length - 3),
+                            days: offering.day,
+                            classCode: offering.classnumber 
+                        }
+                        if(earliest > Number(startTime[0])){
+                            earliest = Number(startTime[0])
+                        }
+                        if(latest < Number(endTime[0]) + 1){
+                            latest = Number(endTime[0]) + 1
+                        }
+                        scheduleContent.push(newContent);
+                        var day = ''
+                        var classnumber = ''
+                        var course = ''
+                        var section = ''
+                        var faculty = ''
+                        var timeslot_begin = ''
+                        var timeslot_end = ''
+                        var room = ''
+                        var max_enrolled = ''
+                        var current_enrolled = ''
 
-                            day = offering.day
-                            classnumber = offering.classnumber
-                            course = offering.course
-                            section = offering.section
-                            faculty = offering.faculty
-                            timeslot_begin = offering.timeslot_begin
-                            timeslot_end = offering.timeslot_end
-                            room = offering.room
-                            max_enrolled = offering.max_enrolled
-                            current_enrolled = offering.current_enrolled
-                            var newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
-                            // tableContent.push(newTableContent)
-                            count += 1;
-                        })
-                        schedCount += 1;
-                        schedules.push({
-                            id: schedCount,
-                            title: "Schedule "+schedCount.toString(),
-                            scheduleContent: scheduleContent,
-                            tableContent: tableContent,
-                            prefContent: [],
-                            prefContent: newSchedule.preferences,
-                            prefFriendContent: newSchedule.friendPreferences,
-                            conflictsContent: newSchedule.information,
-                            earliest: earliest,
-                            latest: latest,
-                            offerings: newSchedule.offerings,
-                            key: key 
-                        });
+                        day = offering.day
+                        classnumber = offering.classnumber
+                        course = offering.course
+                        section = offering.section
+                        faculty = offering.faculty
+                        timeslot_begin = offering.timeslot_begin
+                        timeslot_end = offering.timeslot_end
+                        room = offering.room
+                        max_enrolled = offering.max_enrolled
+                        current_enrolled = offering.current_enrolled
+                        var newTableContent = this.createData(classnumber, course, section, faculty, day, timeslot_begin, timeslot_end, room, max_enrolled, current_enrolled);
+                        // tableContent.push(newTableContent)
+                        count += 1;
                     })
-                    friends[key] = this.setSchedInfo(schedules);
+                    schedCount += 1;
+                    schedules.push({
+                        id: schedCount,
+                        title: "Schedule "+schedCount.toString(),
+                        scheduleContent: scheduleContent,
+                        tableContent: tableContent,
+                        prefContent: [],
+                        prefContent: newSchedule.preferences,
+                        prefFriendContent: newSchedule.friendPreferences,
+                        conflictsContent: newSchedule.information,
+                        earliest: earliest,
+                        latest: latest,
+                        offerings: newSchedule.offerings,
+                        key: key 
+                    });
                 })
-                console.log(friends)
-                console.log(friendKeys)
-                this.setState({friends: friends, friendKeys: friendKeys, currentContent: friends[friendKeys[0]], currentFriend: friendKeys[0]}, () => {
-                    this.setState({success: true});
-                    this.setState({loading: false});
-                    this.setState({dataReceived: true});
-                })
-                this.toggleModalWait();
-            }).catch(error => {
-                console.log(error)
-                this.setState({success: false});
-                this.setState({loading: false});
-                this.toggleModalWait();
+                friends[key] = this.setSchedInfo(schedules);
             })
-        }
+            console.log(friends)
+            console.log(friendKeys)
+            this.setState({friends: friends, friendKeys: friendKeys, currentContent: friends[friendKeys[0]], currentFriend: friendKeys[0]}, () => {
+                this.setState({success: true});
+                this.setState({loading: false});
+                this.setState({dataReceived: true});
+            })
+            this.toggleModalWait();
+        }).catch(error => {
+            console.log(error)
+            this.setState({success: false});
+            this.setState({loading: false});
+            this.toggleModalWait();
+        })
     }
     renderRedirect = () => {
         return <Redirect to={'/coordinate_schedule/'+this.state.shareCode+'/'}/>
@@ -612,12 +591,6 @@ class GenerateSchedule extends Component {
                     </div>
                     {/* <img class='img-responsive' id='lower' src={SidebarIMG}/> */}
                 </div>
-                {this.state.redirect &&
-                    this.renderRedirect()
-                }
-                {this.state.redirect &&
-                    this.reload()
-                }
                 {this.state.dataReceived ?
                 
                 <div>
