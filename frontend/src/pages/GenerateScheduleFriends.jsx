@@ -204,7 +204,7 @@ class GenerateSchedule extends Component {
                 var schedules = []
                 var schedCount = 0;
                 res.data[key].map(newSchedule => {
-                    this.setState({shareCode: res.data[key].shareCode}) 
+                    this.setState({shareCode: newSchedule.shareCode}) 
                     console.log(newSchedule)
                     var count = 0;
                     var scheduleContent = []
@@ -282,7 +282,7 @@ class GenerateSchedule extends Component {
             })
             console.log(friends)
             console.log(friendKeys)
-            this.setState({friends: friends, friendKeys: friendKeys, currentContent: friends[friendKeys[0]], currentFriend: friendKeys[0]}, () => {
+            this.setState({friends: friends, friendKeys: friendKeys, currentContent: friends[friendKeys[0]][0], currentFriend: friendKeys[0]}, () => {
                 this.setState({success: true});
                 this.setState({loading: false});
                 this.setState({dataReceived: true});
@@ -330,30 +330,7 @@ class GenerateSchedule extends Component {
        
     }
 
-    handlePageChange = (e,index) => {
-        this.setState(state =>{
-            var currentContent = state.generatedContents[index];
-            return {currentContent};
-        });
-        
-        this.setState({currentPage: index});
-        this.setState(state =>{
-            var currentPage = index;
-            return {currentPage};
-            });
 
-        this.handleScrollToGen();
-
-        if(this.state.savedScheds.includes(this.state.generatedContents[index].key)){
-            this.setState({saveButtonLabel: "Saved"});
-            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
-            this.setState({saveButtonStyle: styleChange});
-        }else{
-            this.setState({saveButtonLabel: "Save Schedule"});
-            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
-            this.setState({saveButtonStyle: styleChange});
-        }
-    }
 
     createTimeslot = (day, hour, minute) =>{
         if(day == 'M'){
@@ -375,12 +352,12 @@ class GenerateSchedule extends Component {
         var generatedContents = schedules.map((item, index) =>
             <GenSchedInfo key={item.id} id={item.id} offerings={item.offerings} scheduleContent={item.scheduleContent} tableContent={item.tableContent} prefFriendContent={item.prefFriendContent} prefContent={item.prefContent} conflictsContent={item.conflictsContent} titleName={item.title} earliest={item.earliest} latest={item.latest} updateSchedTitle={this.updateSchedTitle}/>
         );
-        // this.setState({currentPage: 0})
+        this.setState({currentPage: 0})
+        this.setState({pagesCount: generatedContents.length});
         // this.handleScrollToGen();
         return generatedContents
         // this.setState({generatedContents});
         // this.setState({hideGenContent: false});
-        // this.setState({pagesCount: generatedContents.length});
         // this.setState({currentContent: generatedContents[0]})
 
     }
@@ -393,7 +370,7 @@ class GenerateSchedule extends Component {
          var newArray = [];
          const currentContent = this.state.currentContent;
         // var index = newArray.findIndex(this.state.currentContent);
-        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle} type={"friend"}/>
+        const newContent = <GenSchedInfo key={currentContent.props.id} earliest={currentContent.props.earliest} latest={currentContent.props.latest} id={currentContent.props.id} offerings={currentContent.props.offerings} scheduleContent={currentContent.props.scheduleContent} tableContent={currentContent.props.tableContent} prefContent={currentContent.props.prefContent} conflictsContent={currentContent.props.conflictsContent} titleName={text} updateSchedTitle={this.updateSchedTitle}/>
 
         this.state.generatedContents.map(value=>{
             if(value.key == this.state.currentContent.key){
@@ -547,11 +524,36 @@ class GenerateSchedule extends Component {
         
     }
 
+    handlePageChange = (e,index) => {
+        this.setState(state =>{
+            var currentContent = this.state.friends[this.state.currentFriend][index];
+            return {currentContent};
+        });
+        
+        this.setState({currentPage: index});
+        this.setState(state =>{
+            var currentPage = index;
+            return {currentPage};
+            });
+
+        this.handleScrollToGen();
+
+        if(this.state.savedScheds.includes(this.state.friends[this.state.currentFriend].key)){
+            this.setState({saveButtonLabel: "Saved"});
+            const styleChange = {margin: "30px", backgroundColor: "white", color: "#16775D"};
+            this.setState({saveButtonStyle: styleChange});
+        }else{
+            this.setState({saveButtonLabel: "Save Schedule"});
+            const styleChange = {margin: "30px", backgroundColor: "#16775D", color: "white"};
+            this.setState({saveButtonStyle: styleChange});
+        }
+    }
+
     handleTab = (event, value) => {
         console.log("handle tab")
         console.log(value)
         this.setState({currentFriend: value})
-        this.setState({currentContent: this.state.friends[value]})
+        this.setState({currentContent: this.state.friends[value][this.state.currentPage]})
 
     }
 
@@ -629,7 +631,7 @@ class GenerateSchedule extends Component {
                                 <span>{this.state.currentContent}</span>
                                 {/* <FriendTable/> */}
                             
-                                {/* <div className = "paginationContainer">
+                                <div className = "paginationContainer">
                                     <Pagination aria-label="Page navigation example" style={{justifyContent: "center"}}>
                                         <PaginationItem disabled={this.state.currentPage <= 0}>
                                             <PaginationLink onClick={e => this.handlePageChange(e, this.state.currentPage - 1)}
@@ -642,7 +644,7 @@ class GenerateSchedule extends Component {
                                                 </PaginationLink>
                                             </PaginationItem>
                                             )}
-                                        <PaginationItem disabled={this.state.currentPage >= this.state.generatedContents.length - 1}>
+                                        <PaginationItem disabled={this.state.currentPage >= this.state.friends[this.state.currentFriend].length - 1}>
                                             <PaginationLink
                                                 onClick={e => this.handlePageChange(e, this.state.currentPage + 1)}
                                                 next
@@ -650,7 +652,7 @@ class GenerateSchedule extends Component {
                                             
                                             </PaginationItem>
                                     </Pagination>
-                                </div> */}
+                                </div>
                                 <Row horizontal='center'>
                                     <div className={classes.root}>
                                             <div className={classes.wrapper}> 
