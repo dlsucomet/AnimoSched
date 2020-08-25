@@ -52,6 +52,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import HelpIcon from '@material-ui/icons/Help';
 import Tooltip from '@material-ui/core/Tooltip';
+import {Tabs, Tab } from 'react-bootstrap';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -737,6 +738,7 @@ class GenerateSchedule extends Component {
                     this.reload()
                 }
                 {this.state.dataReceived ?
+                
                 <div>
                     <Column flexGrow={1} style={{margin: "40px"}}>
                         <center><h5>
