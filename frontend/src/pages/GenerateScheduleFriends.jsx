@@ -550,15 +550,18 @@ class GenerateSchedule extends Component {
     }
 
     handleTab = (event, value) => {
-        this.setState({currentFriend: value})
-        console.log("handle tab")
-        console.log(value)
-        this.setState(state =>{
-            var currentContent = state.friends[value][this.state.currentPage];
-            return {currentContent};
-        });
-        
-        this.handleScrollToGen();
+        // event.preventDefault();
+        if(this.state.currentFriend != value && value != undefined){
+            this.setState({currentFriend: value})
+            console.log("handle tab")
+            console.log(value)
+            this.setState(state =>{
+                var currentContent = state.friends[value][this.state.currentPage];
+                return {currentContent};
+            });
+            this.handleScrollToGen();
+        }
+
     }
 
     render() { 

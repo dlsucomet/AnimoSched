@@ -26,7 +26,7 @@ Then go to the frontend directory to install react dependencies:
 
 Additional packages that need to be installed:
 
-`yarn add simple-flexbox react-smooth-dnd react-router @devexpress/dx-react-core @devexpress/dx-react-scheduler @material-ui/core @material-ui/icons @devexpress/dx-react-scheduler-material-ui group-array react-window html2canvas flowpoints react-loading react-avatar underscore react-router-hash-link intro.js intro.js-react`
+`yarn add simple-flexbox react-smooth-dnd react-router @devexpress/dx-react-core @devexpress/dx-react-scheduler @material-ui/core @material-ui/icons @devexpress/dx-react-scheduler-material-ui group-array react-window html2canvas flowpoints react-loading react-avatar underscore react-router-hash-link intro.js intro.js-react react-copy-to-clipboard`
 
 ## Usage
 
