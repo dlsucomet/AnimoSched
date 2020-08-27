@@ -552,8 +552,11 @@ class GenerateSchedule extends Component {
     handleTab = (event, value) => {
         console.log("handle tab")
         console.log(value)
+        // event.preventDefault();
+        if(this.state.currentFriend != value && value != undefined){
         this.setState({currentFriend: value})
         this.setState({currentContent: this.state.friends[value][this.state.currentPage]})
+        }
 
     }
 
