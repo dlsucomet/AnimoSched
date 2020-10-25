@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/AnimoSched/static/css/main.f18bf2d0.chunk.css",
-    "main.js": "/AnimoSched/static/js/main.d4e79518.chunk.js",
-    "main.js.map": "/AnimoSched/static/js/main.d4e79518.chunk.js.map",
+    "main.js": "/AnimoSched/static/js/main.28051c26.chunk.js",
+    "main.js.map": "/AnimoSched/static/js/main.28051c26.chunk.js.map",
     "runtime-main.js": "/AnimoSched/static/js/runtime-main.c8ca2c54.js",
     "runtime-main.js.map": "/AnimoSched/static/js/runtime-main.c8ca2c54.js.map",
     "static/css/2.ff40b960.chunk.css": "/AnimoSched/static/css/2.ff40b960.chunk.css",
     "static/js/2.65642a7e.chunk.js": "/AnimoSched/static/js/2.65642a7e.chunk.js",
     "static/js/2.65642a7e.chunk.js.map": "/AnimoSched/static/js/2.65642a7e.chunk.js.map",
     "index.html": "/AnimoSched/index.html",
-    "precache-manifest.d2e252991c564b9fff0e4b6575d29381.js": "/AnimoSched/precache-manifest.d2e252991c564b9fff0e4b6575d29381.js",
+    "precache-manifest.3c99e933f4420b995aaf60d6b56c5b3d.js": "/AnimoSched/precache-manifest.3c99e933f4420b995aaf60d6b56c5b3d.js",
     "service-worker.js": "/AnimoSched/service-worker.js",
     "static/css/2.ff40b960.chunk.css.map": "/AnimoSched/static/css/2.ff40b960.chunk.css.map",
     "static/css/main.f18bf2d0.chunk.css.map": "/AnimoSched/static/css/main.f18bf2d0.chunk.css.map",
@@ -32,6 +32,6 @@
     "static/css/2.ff40b960.chunk.css",
     "static/js/2.65642a7e.chunk.js",
     "static/css/main.f18bf2d0.chunk.css",
-    "static/js/main.d4e79518.chunk.js"
+    "static/js/main.28051c26.chunk.js"
   ]
 }

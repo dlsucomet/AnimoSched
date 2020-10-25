@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/AnimoSched/precache-manifest.d2e252991c564b9fff0e4b6575d29381.js"
+  "/AnimoSched/precache-manifest.3c99e933f4420b995aaf60d6b56c5b3d.js"
 );
 
 self.addEventListener('message', (event) => {

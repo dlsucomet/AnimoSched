@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "99f0bcecc67e35ea54eaeddfc13559a4",
+    "revision": "04c9f03b20342a996a9c250560a2050a",
     "url": "/AnimoSched/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/AnimoSched/static/css/2.ff40b960.chunk.css"
   },
   {
-    "revision": "2b25afd6f1736017d058",
+    "revision": "d4888e8603d2a4b72958",
     "url": "/AnimoSched/static/css/main.f18bf2d0.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/AnimoSched/static/js/2.65642a7e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2b25afd6f1736017d058",
-    "url": "/AnimoSched/static/js/main.d4e79518.chunk.js"
+    "revision": "d4888e8603d2a4b72958",
+    "url": "/AnimoSched/static/js/main.28051c26.chunk.js"
   },
   {
     "revision": "875162bbf63bdc82711e",
